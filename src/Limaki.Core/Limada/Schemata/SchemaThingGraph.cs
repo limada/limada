@@ -52,9 +52,9 @@ namespace Limada.Schemata {
             ThingGraph.DeepCopy(markers, markerGraph);
             markerGraph.DeepCopy(markers, ThingGraph);
 
-            foreach(IThing marker in markerGraph) {
+            foreach(var marker in markerGraph) {
                 var markerId = marker.Id;
-                foreach(ILink link in markerGraph.Edges(marker)) {
+                foreach(var link in markerGraph.Edges(marker)) {
                     if (link.Marker == null)
                         continue;
                     

@@ -234,7 +234,7 @@ namespace Limada.UseCases.Cms {
             if (thing == null)
                 return null;
 
-            var result = new StreamContent (ThingContentFacade.ContentOf (ThingGraph, thing));
+            var result = new StreamContent (thing.ContentOf ());
             result.Source = thing.Id.ToString ("X16");
 
             SetMimeType(result);
@@ -300,7 +300,7 @@ namespace Limada.UseCases.Cms {
                     var converter = Registry.Pooled<ConverterPool<Stream>> ()
                             .Find (thing.StreamType, sinkType);
                     if (converter != null) {
-                        var source = ThingContentFacade.ContentOf (thing);
+                        var source = thing.ContentOf ();
                         using (var reader = new StreamReader (converter.Use (source, sinkType).Data))
                             result.Data = reader.ReadToEnd ();
                         source.Data.Dispose ();

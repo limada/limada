@@ -21,7 +21,6 @@ using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Xwt.Drawing;
-using Limaki.View.XwtBackend;
 using Limada.View.ContentViewers;
 using Limaki.Usecases;
 
@@ -32,6 +31,7 @@ namespace Limaki.View.XwtBackend {
 		public Vindow MainWindow { get; set; }
         public IVindowBackend MainWindowBackend { get; set; }
         public Menu Menu { get; set; }
+
         public Label StatusLabel { get; set; }
         public Size WindowSize { get; set; }
         public Action OnShow { get; set; }

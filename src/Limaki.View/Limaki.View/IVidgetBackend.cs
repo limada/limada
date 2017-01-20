@@ -19,15 +19,15 @@ using Xwt;
 
 namespace Limaki.View {
 
-    public interface IVidgetBackend:IDisposable {
+    public interface IVidgetBackend : IDisposable {
 
         IVidget Frontend { get; }
         Size Size { get; }
         string ToolTipText { get; set; }
 
-        void Update();
-        void QueueDraw();
-        void QueueDraw(Rectangle rect);
+        void Update ();
+        void QueueDraw ();
+        void QueueDraw (Rectangle rect);
 
         void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
 

@@ -17,46 +17,39 @@ using System.IO;
 using System.Linq;
 using Limaki.Common;
 using Limaki.Common.Collections;
-using Limaki.Graphs;
 using Limaki.View;
-using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Visualizers;
 
 namespace Limada.View.Vidgets {
 
     public class SceneStream {
-        public Int64 Id = 0;
+        public long Id = 0;
         public Stream Stream = null;
     }
 
     public class VisualsDisplayHistory {
+        
         private History<long> _history = null;
         protected History<long> History {
-            get {
-                if (_history == null) {
-                    _history = new History<long>();
-                }
-                return _history;
-            }
+            get { return _history ?? (_history = new History<long> ()); }
         }
 
 
-        public bool CanGoForward() {
-            return History.HasForward();
+        public bool CanGoForward () {
+            return History.HasForward ();
         }
 
-        public bool CanGoBack() {
-            return History.HasBack();
+        public bool CanGoBack () {
+            return History.HasBack ();
         }
 
-        public void Clear() {
+        public void Clear () {
             _history = null;
         }
 
-        public void Store(SceneInfo info) {
-            History.Add(info.Id);
+        public void Store (SceneInfo info) {
+            History.Add (info.Id);
         }
 
         public void Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager) {

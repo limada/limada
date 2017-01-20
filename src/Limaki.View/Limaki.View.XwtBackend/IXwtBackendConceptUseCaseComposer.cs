@@ -13,6 +13,6 @@ namespace Limaki.View.XwtBackend {
         IVindowBackend MainWindowBackend { get; set; }
         Menu Menu { get; set; }
         Label StatusLabel { get; set; }
-        
+
     }
 }

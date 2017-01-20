@@ -139,7 +139,7 @@ namespace Limada.View.Vidgets {
             GraphStreamViewButton = new ToolStripButton (GraphStreamViewCommand){ IsCheckable = true };
             GraphGraphViewButton = new ToolStripButton (GraphGraphViewCommand){ IsCheckable = true };
             var toggleViewButton = new ToolStripButton (ToggleViewCommand );
-            var viewVisualNote = new ToolStripButton (OpenNewWindowCommand );
+            var newWindowButton = new ToolStripButton (OpenNewWindowCommand );
             GoBackButton = new ToolStripButton (GoBackCommand );
             GoForwardButton = new ToolStripButton (GoForwardCommand );
             var goHomeButton = new ToolStripButton (GoHomeCommand );
@@ -157,7 +157,7 @@ namespace Limada.View.Vidgets {
                 GraphStreamViewButton,
                 GraphGraphViewButton,
                 toggleViewButton,
-                viewVisualNote,
+
                 new ToolStripSeparator (),
                 GoBackButton,
                 GoForwardButton,
@@ -166,7 +166,6 @@ namespace Limada.View.Vidgets {
                 newSheetButton,
                 newNoteButton,
 				saveSheetButton,
-				comboHost
                 );
         }
 

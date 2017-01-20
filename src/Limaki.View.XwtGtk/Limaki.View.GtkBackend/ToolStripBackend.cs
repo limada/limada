@@ -29,19 +29,10 @@ namespace Limaki.View.GtkBackend {
             this.Frontend = (ToolStrip)frontend;
         }
 
-
         protected override void Compose () {
             base.Compose ();
             Widget.Orientation = Gtk.Orientation.Horizontal;
             Widget.ToolbarStyle = Gtk.ToolbarStyle.Icons;
-        }
-
-        [Obsolete]
-        public void AddItems (params Gtk.ToolItem[] items) {
-            var ic = Widget.NItems;
-            for (int i = 0; i < items.Length; i++)
-                Widget.Insert (items[i], ic + i);
-
         }
 
         public void InsertItem (int index, IToolStripItemBackend item) {

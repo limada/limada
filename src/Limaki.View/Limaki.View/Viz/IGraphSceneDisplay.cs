@@ -36,16 +36,8 @@ namespace Limaki.View.Viz {
         void OnSceneFocusChanged();
 
         bool Check();
-
+		
     }
 
-    public static class GraphSceneDisplayExtensions {
-
-        public static void Clear<TItem, TEdge>(this IGraphSceneDisplay<TItem, TEdge> d) where TEdge : TItem, IEdge<TItem> {
-            d.Info = new SceneInfo { };
-            d.DataId = 0;
-            d.Text = string.Empty;
-        }
-
-    }
+    
 }

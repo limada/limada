@@ -59,17 +59,10 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                 if (ShapeCombo.SelectedIndex == -1)
                     return;
                 var shape = shapes[ShapeCombo.SelectedIndex];
-                var currentDisplay = this.CurrentDisplay;
-                if (currentDisplay != null) {
-                    foreach (var visual in currentDisplay.Data.Selected.Elements) {
-                        SceneExtensions.ChangeShape (currentDisplay.Data, visual, shape);
-                    }
-                    currentDisplay.Perform ();
-                }
+                ShapeChange (shape);
             };
 
-            this.AddItems (styleSheetComboHost);
-			this.AddItems (shapeComboHost);
+            this.AddItems (styleSheetComboHost, shapeComboHost, new ToolStripSeparator ());
 
         }
 

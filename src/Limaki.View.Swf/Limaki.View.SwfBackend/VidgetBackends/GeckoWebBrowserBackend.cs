@@ -339,6 +339,26 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
+        public virtual ContentInfo Find (string extension) {
+            return ContentSpecs.Find (extension);
+        }
+
+        public virtual ContentInfo FindMime (string mime) {
+            return ContentSpecs.FindMime (mime);
+        }
+
+        public virtual ContentInfo Find (long contentType) {
+            return ContentSpecs.Find (contentType);
+        }
+
+        public virtual bool Supports (string extension) {
+            return ContentSpecs.Supports (extension);
+        }
+
+        public virtual bool Supports (long contentType) {
+            return ContentSpecs.Supports (contentType);
+        }
+
         #endregion
     }
 }

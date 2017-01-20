@@ -21,6 +21,7 @@ using Limaki.Graphs;
 using Limaki.View.Visuals;
 
 namespace Limada.View.VisualThings {
+    
     /// <summary>
     /// helper class to manage VisualGraphs backed by StreamThings
     /// </summary>
@@ -68,9 +69,7 @@ namespace Limada.View.VisualThings {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (sourceGraph != null) {
                 var thingGraph = graph.ThingGraph();
-                return ThingContentFacade.ContentOf(
-                    thingGraph,
-                    sourceGraph.Get(visual));
+                return thingGraph.ContentOf(sourceGraph.Get(visual));
             }
             return null;
         }

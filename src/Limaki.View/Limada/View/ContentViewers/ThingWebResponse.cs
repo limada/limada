@@ -93,7 +93,7 @@ namespace Limada.View.ContentViewers {
 
 
         public virtual WebContent GetContentFromThing(IThingGraph graph, IThing thing) {
-            var info = ThingContentFacade.ContentOf(graph, thing);
+            var info = graph.ContentOf(thing);
             var uri = GetUri(thing);
             return GetContentFromContent(info, uri);
         }

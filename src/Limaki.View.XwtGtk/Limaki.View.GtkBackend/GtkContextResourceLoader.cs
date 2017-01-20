@@ -48,9 +48,6 @@ namespace Limaki.View.GtkBackend {
             var tk = Toolkit.CurrentEngine;
             tk.RegisterBackend<ITextEntryBackend, Xwt.GtkBackend.TextEntryMultiLineBackend>();
 
-            // prototype clipboard:
-            //tk.RegisterBackend<ClipboardBackend, GtkClipboardBackend1> ();
-            //tk.ClipboardBackend = new GtkClipboardBackend1 ();
 
             context.Factory.Add<IUISystemInformation, GtkSystemInformation> ();
 

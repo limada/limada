@@ -20,19 +20,17 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.XwtBackend {
 
-    public class ToolStripBackendDummy : VidgetBackend<Xwt.Canvas>, IToolStripBackend {
+    public class ToolStripBackendDummy : VidgetBackend<Xwt.HBox>, IToolStripBackend {
         
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
         }
 
-        public void InsertItem (int index, IToolStripItemBackend toolStripItemBackend) { }
+        public void InsertItem (int index, IToolStripItemBackend backend) { }
 
-        public void RemoveItem (IToolStripItemBackend toolStripItemBackend) { }
+        public void RemoveItem (IToolStripItemBackend backend) { }
 
         public void SetVisibility (Visibility value) { }
-
-        
     }
 
     public class ArrangerToolStripBackend : ToolStripBackendDummy, IArrangerToolStripBackend { }

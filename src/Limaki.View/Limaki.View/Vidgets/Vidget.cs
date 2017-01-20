@@ -16,7 +16,7 @@ using Xwt;
 using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
-    [BackendType(typeof(IVidgetBackend))]
+    [BackendType (typeof (IVidgetBackend))]
     public abstract class Vidget : IVidget {
 
         private VidgetBackendHost _backendHost;
@@ -33,7 +33,7 @@ namespace Limaki.View.Vidgets {
             get { return _backendHost; }
         }
 
-        public abstract void Dispose();
+        public abstract void Dispose ();
 
         public virtual IVidgetBackend Backend {
             get { return BackendHost.Backend; }
@@ -43,6 +43,11 @@ namespace Limaki.View.Vidgets {
 
         public virtual string ToolTipText { get { return Backend.ToolTipText; } set { Backend.ToolTipText = value; } }
 
-        public virtual void SetFocus() { Backend.SetFocus (); }
+        public virtual void SetFocus () { Backend.SetFocus (); }
+
+        public virtual void Update () { Backend.Update (); }
+        public virtual void QueueDraw () { Backend.QueueDraw (); }
+        public virtual void QueueDraw (Rectangle rect) { Backend.QueueDraw (rect); }
+
     }
 }

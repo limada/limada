@@ -57,7 +57,7 @@ namespace Limada.UseCases {
         public LayoutToolStrip LayoutToolStrip { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
 
-		public IGraphSceneDisplayMesh<IVisual, IVisualEdge> mesh { get { return Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>>(); }}
+        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>>(); }}
 
 		public Func<IVidget> GetCurrentVidget { get; set; }
         
@@ -134,8 +134,8 @@ namespace Limada.UseCases {
         public bool AskForVisualsDisplayHistorySaveChanges { get; set; }
 
         public virtual void SaveChanges () {
-			var displays = mesh.Displays;
             VisualsDisplayHistory.SaveChanges (displays, SheetManager, AskForVisualsDisplayHistorySaveChanges);
+			var displays = Mesh.Displays;
             FavoriteManager.SaveChanges (displays);
         }
 
@@ -234,9 +234,9 @@ namespace Limada.UseCases {
                 var display = view.AdjacentDisplay (view.CurrentDisplay);
                 var oldScene = display.Data;
 
-                mesh.RemoveScene (oldScene);
+                Mesh.RemoveScene (oldScene);
 
-                var scene = mesh.CreateSinkScene (oldScene.Graph);
+                var scene = Mesh.CreateSinkScene (oldScene.Graph);
                 display.Data = scene;
 
                 var visuals = new ThingGraphUseCases ()
@@ -246,7 +246,7 @@ namespace Limada.UseCases {
                 new GraphSceneFacade<IVisual, IVisualEdge> (() => scene, display.Layout)
                     .Add (visuals, true, false);
 
-                mesh.AddScene (scene);
+                Mesh.AddScene (scene);
 
                 var aligner = new Aligner<IVisual, IVisualEdge> (scene, display.Layout);
                 aligner.OneColumn (visuals, (Point) display.Layout.Border, display.Layout.Options ());

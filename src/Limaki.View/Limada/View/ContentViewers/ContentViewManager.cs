@@ -89,7 +89,7 @@ namespace Limada.View.ContentViewers {
                 if (viewer.ContentId != thing.Id) {
                     SaveStream(graph, viewer);
 
-                    var content = ThingContentFacade.ContentOf(graph, thing);
+                    var content = graph.ContentOf(thing);
                     if (viewer is SheetViewer) {
                         content.Source = thing.Id;
                     }

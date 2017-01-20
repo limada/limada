@@ -25,14 +25,12 @@ namespace Limada.View.VisualThings {
     public static class VisualThingGraphExtension {
 
         public static IThingGraph ThingGraph(this IGraph<IVisual, IVisualEdge> graph) {
-            IThingGraph result = null;
-
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
-            if (sourceGraph != null && (sourceGraph.Source is IThingGraph)) {
-                result = sourceGraph.Source as IThingGraph;
+            if (sourceGraph?.Source is IThingGraph) {
+                return sourceGraph.Source as IThingGraph;
             }
-            return result;
+            return null;
         }
 
         public static IThingFactory ThingFactory(this IGraph<IVisual, IVisualEdge> graph) {
@@ -40,9 +38,8 @@ namespace Limada.View.VisualThings {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (sourceGraph != null) {
-                var thingGraph = sourceGraph.Source as IThingGraph;
                 var adapter = sourceGraph.Mapper.Transformer as VisualThingTransformer;
-                result = adapter.ThingFactory;
+                result = adapter?.ThingFactory;
             }
             if (result == null)
                 result = Registry.Factory.Create<IThingFactory>();

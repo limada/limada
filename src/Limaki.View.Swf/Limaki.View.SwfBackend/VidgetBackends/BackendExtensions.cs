@@ -1,4 +1,3 @@
-using System.Windows.Forms;
 using SWF=System.Windows.Forms;
 using LVV = Limaki.View.Vidgets;
 
@@ -6,15 +5,15 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
     public static class BackendExtensions {
 
-        public static Control ToSwf (this IVidget item) {
+        public static SWF.Control ToSwf (this IVidget item) {
             return item.Backend.ToSwf ();
         }
 
-        public static Control ToSwf (this IVidgetBackend item) {
+        public static SWF.Control ToSwf (this IVidgetBackend item) {
             var swfBackend = item as ISwfBackend;
             if (swfBackend != null)
                 return swfBackend.Control;
-            return item as Control;
+            return item as SWF.Control;
         }
 
         public static SWF.ToolStripItem ToSwf (this LVV.IToolStripItemBackend backend) {
@@ -25,9 +24,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         public static bool? IsChecked (this SWF.ToolStripButton control ) {
-            if (control.CheckState == CheckState.Checked)
+            if (control.CheckState == SWF.CheckState.Checked)
                 return true;
-            if (control.CheckState == CheckState.Unchecked)
+            if (control.CheckState == SWF.CheckState.Unchecked)
                 return false;
             return null;
         }
@@ -35,11 +34,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         public static void IsChecked (this SWF.ToolStripButton control, bool? value) {
             if (value.HasValue) {
                 if (value.Value)
-                    control.CheckState = CheckState.Checked;
+                    control.CheckState = SWF.CheckState.Checked;
                 else
-                    control.CheckState = CheckState.Unchecked;
+                    control.CheckState = SWF.CheckState.Unchecked;
             } else
-                control.CheckState = CheckState.Indeterminate;
+                control.CheckState = SWF.CheckState.Indeterminate;
         }
     }
 }

@@ -23,8 +23,15 @@ namespace Limaki.View {
     /// is like a controller for a concrete backend
     /// </summary>
     public interface IVidget : IDisposable {
+
         IVidgetBackend Backend { get; }
         Size Size { get; }
+
         void SetFocus ();
+
+        void Update ();
+        void QueueDraw ();
+        void QueueDraw (Rectangle rect);
+
     }
 }

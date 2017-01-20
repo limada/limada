@@ -46,7 +46,7 @@ namespace Limada.View.Vidgets {
             var pageThing = source.ThingOf(page) as IStreamThing;
             if (pageThing != null ) {
                 try {
-                    result = ThingContentFacade.ContentOf(pageThing);
+                    result = pageThing.ContentOf();
                 } finally {
                     pageThing.ClearRealSubject(true);
                 }

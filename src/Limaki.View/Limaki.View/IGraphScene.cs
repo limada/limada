@@ -90,6 +90,10 @@ namespace Limaki.View {
         public static SceneInfo FromInfo(SceneInfo other) {
             return new SceneInfo { Name = other.Name, Id = other.Id, _state = other.State.Clone() };
         }
+
+        public override string ToString () {
+            return ($"{nameof (SceneInfo)} {{{nameof (Id)}={Id:X16}, {nameof (Name)}=\"{Name}\", {State}}}");
+        }
     }
 
     public interface ISpatialZIndex<TItem> : ISpatialIndex<TItem> {

@@ -403,7 +403,7 @@ namespace Limada.View.Vidgets {
             currentDisplay.Text = name;
             currentDisplay.Viewport.Reset();
             currentDisplay.Perform();
-            currentDisplay.Backend.QueueDraw();
+            currentDisplay.QueueDraw();
             OnViewChanged();
         }
 
@@ -594,9 +594,9 @@ namespace Limada.View.Vidgets {
         public override void Dispose () {
             Clear();
 
-            if (_contentViewManager != null)
-                this.ContentViewManager.Dispose();
-
+            if (_contentViewManager != null) {
+                this.ContentViewManager.Dispose ();
+            }
             Mesh.RemoveDisplay (Display1);
             Mesh.RemoveDisplay (Display2);
 

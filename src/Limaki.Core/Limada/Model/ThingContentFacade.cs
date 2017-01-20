@@ -5,21 +5,54 @@ using Limaki.Common;
 
 namespace Limada.Model {
 
+    public static class ThingContentExtentions {
+        /// <summary>
+        /// gets a content of a thing
+        /// and content.Description and content.Source
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="thing"></param>
+        /// <returns></returns>
+        public static Content<Stream> ContentOf (this IThingGraph graph, IThing thing) {
+            var result = ContentOf (thing);
+            if (result != null && graph is SchemaThingGraph) {
+                result.Description = graph.Description (thing);
+                result.Source = graph.Source (thing);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// gets a content of a thing
+        /// </summary>
+        /// <param name="thing"></param>
+        /// <returns></returns>
+        public static Content<Stream> ContentOf (this IThing thing) {
+            var result = default (Content<Stream>);
+            var streamThing = thing as IStreamThing;
+            if (streamThing != null) {
+                result = new Content<Stream> ();
+
+                streamThing.DeCompress ();
+                result.Data = streamThing.Data as Stream;
+                result.Compression = streamThing.Compression;
+                result.ContentType = streamThing.StreamType;
+                streamThing.ClearRealSubject (false);
+            }
+            return result;
+        }
+    }
+
     public class ThingContentFacade {
         public ThingContentFacade (IThingFactory factory) {
-            this._factory = factory;
+            _factory = factory;
         }
 
         public ThingContentFacade() {}
 
         private IThingFactory _factory = null;
         public IThingFactory Factory {
-            get {
-                if (_factory == null) {
-                    _factory = Registry.Factory.Create<IThingFactory>();
-                }
-                return _factory;
-            }
+            get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory> ()); }
             set { _factory = value; }
         }
 
@@ -110,40 +143,6 @@ namespace Limada.Model {
             }
         }
 
-        /// <summary>
-        /// gets a content of a thing
-        /// and content.Description and content.Source
-        /// </summary>
-        /// <param name="graph"></param>
-        /// <param name="thing"></param>
-        /// <returns></returns>
-        public static Content<Stream> ContentOf(IThingGraph graph, IThing thing) {
-            var result = ContentOf (thing);
-            if (result !=null && graph is SchemaThingGraph) {
-                result.Description = graph.Description(thing);
-                result.Source = graph.Source(thing);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// gets a content of a thing
-        /// </summary>
-        /// <param name="thing"></param>
-        /// <returns></returns>
-        public static Content<Stream> ContentOf(IThing thing) {
-            var result = default( Content<Stream> );
-            var streamThing = thing as IStreamThing;
-            if (streamThing!=null) {
-                result = new Content<Stream> ();
-                
-                streamThing.DeCompress ();
-                result.Data = streamThing.Data as Stream;
-                result.Compression = streamThing.Compression;
-                result.ContentType = streamThing.StreamType;
-                streamThing.ClearRealSubject (false);
-            }
-            return result;
-        }
+       
     }
 }

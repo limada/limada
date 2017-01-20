@@ -84,6 +84,8 @@ namespace Limaki.Common {
         #region ICloneable Member
 
         public void CopyTo (State target) {
+            if (this == target)
+                return;
             target.Clean = this.Clean;
             target.Creating = this.Creating;
             target.Dirty = this.Dirty;
@@ -129,7 +131,9 @@ namespace Limaki.Common {
             #endregion
         }
 
-
+        public override string ToString () {
+            return $"{nameof (State)}={Memento ()}";
+        }
 	}
 
     public enum StateMemento {

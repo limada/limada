@@ -151,9 +151,9 @@ namespace Limada.Tests.Model {
                 sheet.Read(s);
             }
 
-            var visualThingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
+            var visualThingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink> ();
 
-            foreach(var visual in scene.Elements) {
+            foreach (var visual in scene.Elements) {
                 var thing = visualThingGraph.Get (visual);
                 Assert.IsNotNull (thing);
             }
