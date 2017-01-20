@@ -32,12 +32,13 @@ using DialogResult = Limaki.View.Vidgets.DialogResult;
 using ImageExporter = Limaki.View.Viz.ImageExporter;
 using MessageBoxButtons = Limaki.View.Vidgets.MessageBoxButtons;
 using ToolStrip = System.Windows.Forms.ToolStrip;
+using System.Linq;
 
 namespace Limada.Usecases {
 
     public class SwfConceptUseCaseComposer : IBackendConceptUseCaseComposer {
 
-        public Form Mainform { get { return MainWindowBackend as Form; } }
+        public Form Mainform { get { return MainWindowBackend.ToSwf() as Form; } }
         public IVindowBackend MainWindowBackend { get; set; }
 
         public ToolStripContainer ToolStripContainer { get; set; }
@@ -98,6 +99,7 @@ namespace Limada.Usecases {
         }
 
         public void Compose (ConceptUsecase useCase) {
+            
             ToolStripContainer.Dock = DockStyle.Fill;
             Mainform.Controls.Add (ToolStripContainer);
 
@@ -156,6 +158,7 @@ namespace Limada.Usecases {
         }
 
         public void InstrumentMenus (ConceptUsecase useCase) {
+            
             var l = new Localizer ();
             this.MenuStrip.Items.AddRange (new ToolStripMenuItem[] {
             
