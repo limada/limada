@@ -80,6 +80,7 @@
     <Compile Include="[Prototypes]\GtkClipboardBackend1.cs" />
     <Compile Include="[Prototypes]\GtkPrototyper.cs" />
     <Compile Include="[Prototypes]\ImageFormats.cs" />
+    <Compile Include="Limaki.View.GtkBackend\ToolbarPanelBackend.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk.Windows\Xwt.Gtk.Windows.csproj">

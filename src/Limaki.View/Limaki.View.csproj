@@ -121,7 +121,6 @@
     <Compile Include="Limaki.View\Vidgets\ToolStripButton.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripDropDownButton.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripItem.cs" />
-    <Compile Include="Limaki.View\Vidgets\ToolStripItemCollection.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripItemHost.cs" />
     <Compile Include="Limaki.View\Vidgets\VidgetUtils.cs" />
     <Compile Include="Limaki.View\Vidgets\Vindow.cs" />
@@ -274,8 +273,7 @@
     <Compile Include="Limada\View\Vidgets\FavoriteManager.cs" />
     <Compile Include="Limada\View\Vidgets\VisualsDisplayHistory.cs" />
     <Compile Include="Limada\View\Vidgets\VisualThingSearch.cs" />
-    <Compile Include="Limada\View\Sheet.cs" />
-    <Compile Include="Limada\View\Vidgets\SheetManager.cs" />
+    <Compile Include="Limada\View\SheetSerializer.cs" />
     <Compile Include="Limada\View\Vidgets\DigidocViz.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingTransformer.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingGraph.cs" />
@@ -413,7 +411,6 @@
     <Compile Include="Limaki.View\ContentViewers\ContentViewer.cs" />
     <Compile Include="Limaki.View\Visuals\BruteForceIndex.cs" />
     <Compile Include="Limaki.View\Visuals\VisualGraphEntityTransformer.cs" />
-    <Compile Include="Limaki.View\Visuals\ISheetManager.cs" />
     <Compile Include="Limaki.View\Visuals\IVisual.cs" />
     <Compile Include="Limaki.View\Visuals\IVisualEdge.cs" />
     <Compile Include="Limaki.View\Visuals\IVisualFactory.cs" />
@@ -448,6 +445,17 @@
     <Compile Include="Limaki.Contents\Text\TextHtmlConverter.cs" />
     <Compile Include="Limaki.Contents\Text\MarkDownHtmlConverter.cs" />
     <Compile Include="Limaki.Contents\Text\RtfHtmlConverter.cs" />
+    <Compile Include="Limada\View\Vidgets\SceneManager.cs" />
+    <Compile Include="Limaki.View\Visuals\ISceneManager.cs" />
+    <Compile Include="Limaki.View\Visuals\SheetStore.cs" />
+    <Compile Include="Limaki.View\Viz\GraphSceneDisplayExtensions.cs" />
+    <Compile Include="Limaki.View\Visuals\ISceneManagerExtensions.cs" />
+    <Compile Include="[Obsolete]\SheetManager.cs" />
+    <Compile Include="[Obsolete]\ISheetManager.cs" />
+    <Compile Include="[Obsolete]\SheetSerializer0.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolbarPanel.cs" />
+    <Compile Include="Limaki.View\Vidgets\ItemContainerBase.cs" />
+    <Compile Include="Limaki.View.XwtBackend\ToolbarBackendDummy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

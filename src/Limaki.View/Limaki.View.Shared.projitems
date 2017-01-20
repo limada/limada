@@ -213,7 +213,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\FavoriteManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\VisualsDisplayHistory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\VisualThingSearch.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Sheet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\View\SheetSerializer0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\SheetManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\DigidocViz.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\VisualThings\VisualThingTransformer.cs" />
@@ -383,5 +383,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\About.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Contents\Text\TextHtmlConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Contents\Text\RtfHtmlConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\SceneManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\SheetStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\ISceneManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\SceneManagerExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\GraphSceneDisplayExtensions.cs" />
   </ItemGroup>
 </Project>
