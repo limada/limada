@@ -81,11 +81,9 @@ namespace Limada.Tests.Model {
         }
 
         Stream SaveSheet (IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
-            var sheet = new Sheet(scene, layout);
-            sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
-
+            var sheet = new SheetSerializer();
             var s = new MemoryStream();
-            sheet.Save(s);
+            sheet.Save (s, scene.Graph, scene.CloneLayout (layout));
             s.Position = 0;
             return s;
         }
@@ -112,13 +110,13 @@ namespace Limada.Tests.Model {
             ReportDetail (reader.ReadToEnd ());
             s.Position = 0;
 
-            var sheet = new Sheet(new Scene(), layout);
-            sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
+            var newScene = new Scene ();
+            var sheet = new SheetSerializer();
 
             var targetGraph = new VisualThingGraph(new VisualGraph(), thingGraph);
-            sheet.Scene.Graph = targetGraph;
+            newScene.Graph = targetGraph;
             s.Position = 0;
-            sheet.Read (s);
+            sheet.Read (s, newScene.Graph, newScene.CloneLayout (layout));
 
             foreach(var target in targetGraph) {
                 var thing = targetGraph.Get (target);
@@ -141,15 +139,13 @@ namespace Limada.Tests.Model {
 
 
         void TestScene (IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Stream s) {
-            
-            
-            var sheetManager = new SheetManager();
-            scene.CleanScene();
 
-            using (var sheet = new Sheet(scene, layout)) {
-                s.Position = 0;
-                sheet.Read(s);
-            }
+            scene.CleanScene ();
+
+            var sheet = new SheetSerializer ();
+            s.Position = 0;
+            sheet.Read (s, scene.Graph, scene.CloneLayout (layout));
+
 
             var visualThingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink> ();
 

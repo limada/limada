@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Limada.Model;
 using Limada.View.VisualThings;
@@ -25,13 +26,14 @@ using Limaki.View.Visuals;
 
 namespace Limada.View {
     
-    public class Sheet:IDisposable {
+    [Obsolete]
+    public class SheetSerializer0:IDisposable {
 		
-        public Sheet(IGraphScene<IVisual,IVisualEdge> scene) {
-            this._scene = scene;
+        public SheetSerializer0(IGraphScene<IVisual,IVisualEdge> scene) {
+            this.Scene= scene;
         }
 
-        public Sheet(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout): this(scene) {
+        public SheetSerializer0(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout): this(scene) {
             this._layout = layout;
         }
 
@@ -49,11 +51,7 @@ namespace Limada.View {
             protected set { _layout = value; }
         }
 
-        private IGraphScene<IVisual, IVisualEdge> _scene = null;
-        public virtual IGraphScene<IVisual, IVisualEdge> Scene {
-            get { return _scene; }
-            protected set { _scene = value; }
-        }
+        public virtual IGraphScene<IVisual, IVisualEdge> Scene { get; protected set; }
 
         public virtual void Save(Stream s) {
 
@@ -94,4 +92,3 @@ namespace Limada.View {
     }
 
 }
-
