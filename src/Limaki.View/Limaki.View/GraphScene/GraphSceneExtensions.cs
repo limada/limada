@@ -92,5 +92,24 @@ namespace Limaki.View.GraphScene {
                         new Pair<UiState> (UiState.None, UiState.Selected))
                     );
         }
+
+        public static void CheckLayout<TItem, TEdge> (this IGraph<TItem, TEdge> graph, IGraphSceneLayout<TItem, TEdge> layout) where TEdge : TItem, IEdge<TItem> {
+            if (graph != layout.Data.Graph) {
+                throw new ArgumentException ($"{nameof (layout)}.Graph differs from {nameof (graph)}: {graph.GetHashCode ():X8} != {layout.Data.Graph.GetHashCode ():X8}");
+            }
+        }
+
+        public static void CheckLayout<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene, IGraphSceneLayout<TItem, TEdge> layout) where TEdge : TItem, IEdge<TItem> {
+            if (scene != layout.Data) {
+                throw new ArgumentException ($"{nameof (layout)}.Data differs from {nameof (scene)}: {scene.GetHashCode ():X8} != {layout.Data.Graph.GetHashCode ():X8}");
+            }
+        }
+
+        public static IGraphSceneLayout<TItem, TEdge> CloneLayout<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene, IGraphSceneLayout<TItem, TEdge> layout) where TEdge : TItem, IEdge<TItem> {
+            IGraphSceneLayout<TItem, TEdge> result = null;
+            Func<IGraphScene<TItem, TEdge>> handler = () => scene;
+            result = Activator.CreateInstance (layout.GetType (), new object [] { handler, layout.StyleSheet}) as IGraphSceneLayout<TItem, TEdge>;
+            return result;
+        }
     }
 }

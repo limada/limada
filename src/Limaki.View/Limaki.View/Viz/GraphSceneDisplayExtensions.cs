@@ -28,5 +28,27 @@ namespace Limaki.View.Viz {
             d.DataId = 0;
             d.Text = string.Empty;
         }
+
+        public static void Wink<TItem, TEdge> (this IGraphSceneDisplay<TItem, TEdge> display) where TEdge : TItem, IEdge<TItem> {
+
+            var color = display.BackColor;
+            var zoomState = display.ZoomState;
+            var zoomFactor = display.Viewport.ZoomFactor;
+
+            Action<Color, Drawing.ZoomState, double> setDispay = (c, s, f) => {
+                display.BackColor = c;
+                display.ZoomState = s;
+                display.Viewport.ZoomFactor = f;
+                display.Viewport.UpdateZoom ();
+                Application.MainLoop.DispatchPendingEvents ();
+            };
+
+            Application.MainLoop.QueueExitAction (() => {
+                setDispay (Colors.AliceBlue, Drawing.ZoomState.Custom, zoomFactor + 0.1);
+                setDispay (color, zoomState, zoomFactor);
+            });
+
+            Application.MainLoop.DispatchPendingEvents ();
+        }
     }
 }
