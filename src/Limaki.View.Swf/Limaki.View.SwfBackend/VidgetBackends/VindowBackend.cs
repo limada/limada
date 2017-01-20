@@ -12,52 +12,25 @@
  * 
  */
 
+using System;
 using System.Windows.Forms;
-using Limaki.View;
 using Limaki.View.Vidgets;
-using Xwt.GdiBackend;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class VindowBackend : Form, IVindowBackend {
+    public class VindowBackend : VidgetBackend<Form>, IVindowBackend {
 
         public void SetContent (IVidget value) {
             var backend = value.Backend.ToSwf ();
-            if (!this.Controls.Contains (backend)) {
+            if (!Control.Controls.Contains (backend)) {
                 backend.Dock = DockStyle.Fill;
-                this.Controls.Add (backend);
+                Control.Controls.Add (backend);
             }
         }
 
-        #region IVidgetBackend-Implementation
-
-        public IVindow Frontend { get; protected set; }
-
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (IVindow)frontend;
+        public void Show () {
+            Control.Show ();
         }
-
-        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
-
-        Xwt.Size IVidgetBackend.Size { get { return this.Size.ToXwt (); } }
-
-        Xwt.Size IVindowBackend.Size {
-            get { return this.Size.ToXwt (); }
-            set { this.Size = value.ToGdi (); }
-        }
-
-        public string ToolTipText { get; set; }
-
-        public void QueueDraw () {
-            Invalidate ();
-        }
-        public void QueueDraw (Xwt.Rectangle rect) {
-            this.Invalidate (rect.ToGdi ());
-        }
-
-        void IVidgetBackend.SetFocus () { this.Focus (); }
-
-        #endregion
-
     }
+
 }

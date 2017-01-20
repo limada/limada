@@ -38,11 +38,11 @@ namespace Limada.Usecases {
             
             CreateUseCase (result);
             
-            return result;
+            return result.ToSwf() as Form;
         }
 
         public void CreateUseCase(IVindowBackend vindowBackend) {
-            var mainform = vindowBackend as Form;
+            var mainform = vindowBackend.ToSwf() as Form;
 
             mainform.Icon = Limaki.View.Properties.GdiIconery.LimadaIcon;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
