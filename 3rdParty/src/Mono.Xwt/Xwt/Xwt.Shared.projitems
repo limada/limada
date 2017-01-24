@@ -311,5 +311,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt.Motion\IAnimatable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt.Motion\ObjectTransforms.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt.Motion\Tweener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.Extended\ClipboardBackend.cs" />
   </ItemGroup>
 </Project>
