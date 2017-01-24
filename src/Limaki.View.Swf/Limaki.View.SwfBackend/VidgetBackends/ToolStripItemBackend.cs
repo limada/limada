@@ -26,7 +26,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <remarks>
-    /// cannot be refactored to VidgetBackend as ToolStripItem is not a Control
+    /// cannot be refactored to VidgetBackend as ToolbarItem is not a Control
     /// </remarks>
     public abstract class ToolStripItemBackend<T> : IVidgetBackend, ISwfToolStripItemBackend where T : System.Windows.Forms.ToolStripItem {
 

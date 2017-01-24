@@ -15,7 +15,6 @@
 using System;
 using System.Diagnostics;
 using Limaki.View.Vidgets;
-using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.Common.Linqish;
 
 namespace Limaki.View.GtkBackend {
@@ -56,7 +55,7 @@ namespace Limaki.View.GtkBackend {
             Trace.WriteLine ($"{nameof (toolbarSizeRequested)}:{new Xwt.Size (e.Requisition.Width, e.Requisition.Height)}");
         };
 
-        public void InsertItem (int index, IToolStripBackend item) {
+        public void InsertItem (int index, IToolbarBackend item) {
             
             var toolStrip = item.ToGtk() as Gtk.Toolbar;
             toolStrip.ShowArrow = true;
@@ -80,7 +79,7 @@ namespace Limaki.View.GtkBackend {
             Widget.PackStart (toolStrip, false, false, 0);
         }
 
-        public void RemoveItem (IToolStripBackend item) {
+        public void RemoveItem (IToolbarBackend item) {
             Widget.Remove (item.ToGtk ());
         }
 

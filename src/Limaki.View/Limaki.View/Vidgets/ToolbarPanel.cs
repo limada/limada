@@ -20,8 +20,8 @@ using Xwt.Backends;
 namespace Limaki.View.Vidgets {
 
     [BackendType (typeof (IToolbarPanelBackend))]
-    public class ToolbarPanel : ContainerVidget<ToolStrip, IToolStripBackend> {
+    public class ToolbarPanel : ContainerVidget<Toolbar, IToolbarBackend> {
     }
 
-    public interface IToolbarPanelBackend : IVidgetBackend, IContainerVidgetBackend<IToolStripBackend> { }
+    public interface IToolbarPanelBackend : IVidgetBackend, IContainerVidgetBackend<IToolbarBackend> { }
 }

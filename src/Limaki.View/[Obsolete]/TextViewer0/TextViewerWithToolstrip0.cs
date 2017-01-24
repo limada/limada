@@ -1,7 +1,9 @@
+using System;
 using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
 
+    [Obsolete]
     [BackendType(typeof(ITextViewerWithToolstripVidgetBackend0))]
     public class TextViewerWithToolstrip0 : Vidget {
         TextViewer _textViewer = null;

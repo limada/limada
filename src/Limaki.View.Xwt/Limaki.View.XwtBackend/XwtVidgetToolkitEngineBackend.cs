@@ -16,10 +16,9 @@ using Limada.View.Vidgets;
 using Limaki.Usecases.Vidgets;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers;
-using Limaki.View.Viz.Visualizers.ToolStrips;
+using Limaki.View.Viz.Visualizers.Toolbars;
 using Limaki.View.Viz.Visuals;
 using Xwt.Drawing;
-using Limaki.View.XwtBackend;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
@@ -51,13 +50,13 @@ namespace Limaki.View.XwtBackend {
 
             RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend> ();
 
-            RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
-            RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
-            RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
-            RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
-            RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
+            RegisterBackend<IArrangerToolbarBackend, ArrangerToolbarBackend>();
+            RegisterBackend<IDisplayModeToolbarBackend, DisplayModeToolbarBackend>();
+            RegisterBackend<ISplitViewToolbarBackend, SplitViewToolbarBackend>();
+            RegisterBackend<ILayoutToolbarBackend, LayoutToolbarBackend> ();
+            RegisterBackend<IMarkerToolbarBackend, MarkerToolbarBackend>();
 
-            RegisterBackend<IToolbarPanelBackend,ToolbarBackendDummy> ();
+            RegisterBackend<IToolbarPanelBackend,ToolbarPanelBackendDummy> ();
         }
     }
 

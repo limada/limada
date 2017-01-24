@@ -16,11 +16,10 @@ using Limada.View.Vidgets;
 using Limada.View.SwfBackend;
 using Limaki.Usecases.Vidgets;
 using Limaki.View.SwfBackend.Viz;
-using Limaki.View.SwfBackend.Viz.ToolStrips;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Visualizers;
-using Limaki.View.Viz.Visualizers.ToolStrips;
+using Limaki.View.Viz.Visualizers.Toolbars;
 using Limaki.View.Viz.Visuals;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
@@ -44,20 +43,20 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             RegisterBackend<ITextOkCancelBoxBackend, TextOkCancelBoxBackend> ();
             RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend>();
 
-            RegisterBackend<IToolbarPanelBackend, XwtBackend.ToolbarBackendDummy> ();
-            RegisterBackend<IToolStripBackend, ToolStripBackend> ();
-            RegisterBackend<IToolStripButtonBackend, ToolStripButtonBackend> ();
-            RegisterBackend<IToolStripDropDownButtonBackend, ToolStripDropDownButtonBackend> ();
-            RegisterBackend<IToolStripSeparatorBackend, ToolStripSeparatorBackend> ();
+            RegisterBackend<IToolbarPanelBackend, XwtBackend.ToolbarPanelBackendDummy> ();
+            RegisterBackend<IToolbarBackend, ToolbarBackend> ();
+            RegisterBackend<IToolbarButtonBackend, ToolbarButtonBackend> ();
+            RegisterBackend<IToolbarDropDownButtonBackend, ToolbarDropDownButtonBackend> ();
+            RegisterBackend<IToolbarSeparatorBackend, ToolbarSeparatorBackend> ();
 
-            RegisterBackend<IToolStripItemHostBackend, ToolStripItemHostBackend> ();
+            RegisterBackend<IToolbarItemHostBackend, ToolbarItemHostBackend> ();
             RegisterBackend<IComboBoxBackend, ComboBoxBackend> ();
 
-            RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
-            RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
-            RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend> ();
-            RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
-            RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
+            RegisterBackend<IArrangerToolbarBackend, ArrangerToolbarBackend>();
+            RegisterBackend<IDisplayModeToolbarBackend, DisplayModeToolbarBackend>();
+            RegisterBackend<IMarkerToolbarBackend, MarkerToolbarBackend> ();
+            RegisterBackend<ISplitViewToolbarBackend, SplitViewToolbarBackend>();
+            RegisterBackend<ILayoutToolbarBackend, LayoutToolbarBackend> ();
 
             RegisterBackend<ICanvasVidgetBackend, CanvasVidgetBackend>();
 

@@ -26,12 +26,12 @@ using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Modelling;
-using Limaki.View.Viz.Visualizers.ToolStrips;
 using System;
 using System.Linq;
 using Xwt;
 using Limaki.Usecases.Vidgets;
 using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Visualizers.Toolbars;
 
 namespace Limada.UseCases {
 	
@@ -51,12 +51,12 @@ namespace Limada.UseCases {
         public FavoriteManager FavoriteManager { get; set; }
 
         public ToolbarPanel Toolbar { get; set; }
-        public ArrangerToolStrip ArrangerToolStrip { get; set; }
-        public DisplayModeToolStrip DisplayModeToolStrip { get; set; }
-        public SplitViewToolStrip SplitViewToolStrip { get; set; }
+        public ArrangerToolbar ArrangerToolbar { get; set; }
+        public DisplayModeToolbar DisplayModeToolbar { get; set; }
+        public SplitViewToolbar SplitViewToolbar { get; set; }
 
-        public LayoutToolStrip LayoutToolStrip { get; set; }
-        public MarkerToolStrip MarkerToolStrip { get; set; }
+        public LayoutToolbar LayoutToolbar { get; set; }
+        public MarkerToolbar MarkerToolbar { get; set; }
 
         public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>>(); }}
 

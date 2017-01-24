@@ -15,7 +15,6 @@
 using Limada.UseCases;
 using Limaki.Usecases;
 using System.Linq;
-using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.XwtBackend;
 using Xwt.Backends;
 using Limaki.Common.Linqish;

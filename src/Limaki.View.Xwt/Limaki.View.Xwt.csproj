@@ -67,7 +67,7 @@
     <Compile Include="Limaki.View.XwtBackend\VindowBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\WebViewBackend.cs" />
     <Compile Include="Sandbox\ScrollDisplayBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DummyToolStripBackends.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\ToolbarBackendDummy.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DigidocViewerBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DragDropMouseBackendHandler.cs" />
@@ -78,7 +78,7 @@
     <Compile Include="Limaki.View.XwtBackend\[todo]\PrintManager.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\StyleEditor.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerDummyBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerWithToolstripBackend0.cs" />
+    <Compile Include="[Obsolete]\TextViewerWithToolstripBackend0.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\SplitViewBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\FileDialogBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\TextOkCancelBoxBackend.cs" />
@@ -159,9 +159,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="[Obsolete]\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

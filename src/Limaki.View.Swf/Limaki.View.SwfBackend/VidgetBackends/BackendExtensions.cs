@@ -16,7 +16,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             return item as SWF.Control;
         }
 
-        public static SWF.ToolStripItem ToSwf (this LVV.IToolStripItemBackend backend) {
+        public static SWF.ToolStripItem ToSwf (this LVV.IToolbarItemBackend backend) {
             var swfBackend = backend as ISwfToolStripItemBackend;
             if (swfBackend != null)
                 return swfBackend.Control;

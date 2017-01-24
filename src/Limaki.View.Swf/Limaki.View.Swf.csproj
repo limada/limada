@@ -63,7 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Limada.View.SwfBackend\SplitViewToolStripBackend.cs" />
+    <Compile Include="Limada.View.SwfBackend\SplitViewToolbarBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropEventConverter.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropMouseBackendHandler.cs" />
@@ -90,17 +90,15 @@
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\PlainTextBoxBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextViewerBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextBoxEditorControler.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextViewerWithToolstripBackend0.cs" />
+    <Compile Include="[Obsolete]\TextViewerWithToolstripBackend0.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextOkCancelBoxBackend.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripButtonBackend.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripDropDownButtonBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolbarButtonBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolbarDropDownButtonBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemBackend.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemHostBackend.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripSeparatorBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolbarItemHostBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolbarSeparatorBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VidgetBackend.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VindowBackend.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VindowBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\WebBrowserBackend.cs" />
     <Compile Include="Limaki.Drawing.GdiBackend\FontMemento.cs" />
     <Compile Include="Limaki.Drawing.GdiBackend\GdiConverter.cs" />
@@ -111,8 +109,8 @@
     <Compile Include="Limaki.Drawing.GdiBackend\GdiUtils.cs" />
     <Compile Include="Limada.View.SwfBackend\DigidocViewerBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\XulRunner.cs" />
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\CustomToolStripBackends.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\Viz\CustomToolbarBackends.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolbarBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripRenderer.cs" />
     <Compile Include="Limada.Usecases\SwfAppFactory.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\SwfVidgetToolkitEngineBackend.cs" />
@@ -242,9 +240,7 @@
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="[Obsolete]\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

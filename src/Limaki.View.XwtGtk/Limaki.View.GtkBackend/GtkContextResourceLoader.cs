@@ -17,7 +17,7 @@ using Limada.View.Vidgets;
 using Limaki.Common.IOC;
 using Limaki.Usecases;
 using Limaki.View.Vidgets;
-using Limaki.View.Viz.Visualizers.ToolStrips;
+using Limaki.View.Viz.Visualizers.Toolbars;
 using Limaki.View.XwtBackend;
 using System.Diagnostics;
 using Xwt;
@@ -55,18 +55,18 @@ namespace Limaki.View.GtkBackend {
             factories.Add (new GtkUsecaseFactory ());
 
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolbarPanelBackend, ToolbarPanelBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripBackend, ToolStripBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripItemHostBackend, ToolStripItemHostBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripButtonBackend, ToolStripButtonBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripDropDownButtonBackend, ToolStripDropDownPopupButtonBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripSeparatorBackend, ToolStripSeparatorBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolbarBackend, ToolbarBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolbarItemHostBackend, ToolbarItemHostBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolbarButtonBackend, ToolbarButtonBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolbarDropDownButtonBackend, ToolbarDropDownPopupButtonBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolbarSeparatorBackend, ToolbarSeparatorBackend> ();
 
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IArrangerToolbarBackend, ArrangerToolbarBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IDisplayModeToolbarBackend, DisplayModeToolbarBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IMarkerToolbarBackend, MarkerToolbarBackend> ();
 
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolbarBackend, SplitViewToolbarBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolbarBackend, LayoutToolbarBackend> ();
 #if WINDOWSBACKEND
             if (false) {
                 var gtkEngine = Xwt.Backends.ToolkitEngineBackend.GetToolkitBackend<Xwt.GtkBackend.GtkEngine> ();

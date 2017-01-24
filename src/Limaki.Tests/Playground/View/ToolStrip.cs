@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Limaki.Viewers.ToolStrips {
+namespace Limaki.Prototype.Viewers.Toolbars {
     /// <summary>
     ///  this is a prototype; not used so far
     /// </summary>

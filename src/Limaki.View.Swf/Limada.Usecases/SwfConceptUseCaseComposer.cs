@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2010-2013 Lytico
+ * Copyright (C) 2010-2017 Lytico
  *
  * http://www.limada.org
  * 
@@ -88,6 +88,7 @@ namespace Limada.Usecases {
 
             if (PdfContentViewer.Available ())
                 viewerProvider.Add (new PdfContentViewer ());
+
             if (MarkdownContentViewer.Available ())
                 viewerProvider.Add (new MarkdownContentViewer ());
 
@@ -215,7 +216,7 @@ namespace Limada.Usecases {
                 })
             });
 
-            var font = System.Drawing.SystemFonts.MenuFont;
+            var font = SystemFonts.MenuFont;
             MenuStrip.Font = font;
 
             Action<ToolStripMenuItem> setFont = null;
@@ -258,7 +259,7 @@ namespace Limada.Usecases {
         private void ShowLayoutEditor (ConceptUsecase useCase) {
             options = new Options ();
             options.ApplyButton.Click += (s1, e1) => {
-                useCase.ArrangerToolStrip.FullLayout(useCase.GetCurrentDisplay().Layout.Options());
+                useCase.ArrangerToolbar.FullLayout(useCase.GetCurrentDisplay().Layout.Options());
             };
 
             var editor = new LayoutEditor ();

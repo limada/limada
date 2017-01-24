@@ -66,7 +66,7 @@ namespace Limaki.View.GtkBackend {
 
         }
 
-        public static Gtk.ToolItem ToGtk (this LVV.IToolStripItemBackend backend) {
+        public static Gtk.ToolItem ToGtk (this LVV.IToolbarItemBackend backend) {
             var vb = backend as IGtkBackend;
             if (vb != null)
                 return (Gtk.ToolItem) vb.Widget;

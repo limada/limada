@@ -20,10 +20,10 @@ using Limaki.View.ContentViewers;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Visualizers;
-using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.Viz.Mesh;
 using Limada.Model;
 using Limaki.View.GraphScene;
+using Limaki.View.Viz.Visualizers.Toolbars;
 
 namespace Limada.UseCases {
 
@@ -57,12 +57,12 @@ namespace Limada.UseCases {
 
             useCase.FavoriteManager = new FavoriteManager();
 
-            useCase.DisplayModeToolStrip = new DisplayModeToolStrip();
-            useCase.ArrangerToolStrip = new ArrangerToolStrip();
-            useCase.SplitViewToolStrip = new SplitViewToolStrip();
+            useCase.DisplayModeToolbar = new DisplayModeToolbar();
+            useCase.ArrangerToolbar = new ArrangerToolbar();
+            useCase.SplitViewToolbar = new SplitViewToolbar();
 
-            useCase.LayoutToolStrip = new LayoutToolStrip ();
-            useCase.MarkerToolStrip = new MarkerToolStrip();
+            useCase.LayoutToolbar = new LayoutToolbar ();
+            useCase.MarkerToolbar = new MarkerToolbar();
 
             useCase.FileDialogShow = this.FileDialogShow;
 
@@ -77,7 +77,7 @@ namespace Limada.UseCases {
 
             useCase.SceneManager.SheetStore.SceneInfoRegistered = sceneInfo => {
                 useCase.VisualsDisplayHistory.Store (sceneInfo);
-                //useCase.SplitViewToolStrip.Attach(splitView.CurrentDisplay);
+                //useCase.SplitViewToolbar.Attach(splitView.CurrentDisplay);
             };
             useCase.AskForVisualsDisplayHistorySaveChanges = true;
             useCase.SplitView.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
@@ -87,15 +87,15 @@ namespace Limada.UseCases {
             useCase.FavoriteManager.SceneManager = useCase.SceneManager;
             useCase.FavoriteManager.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
 
-            useCase.SplitViewToolStrip.SplitView = useCase.SplitView;
-            useCase.SplitViewToolStrip.SceneManager = useCase.SceneManager;
+            useCase.SplitViewToolbar.SplitView = useCase.SplitView;
+            useCase.SplitViewToolbar.SceneManager = useCase.SceneManager;
 
-            useCase.DisplayModeToolStrip.SplitView = useCase.SplitView;
-            useCase.SplitView.CurrentVidgetChanged += c => useCase.DisplayModeToolStrip.Attach (c);
-            useCase.SplitView.CurrentVidgetChanged += c => useCase.LayoutToolStrip.Attach (c);
-            useCase.SplitView.CurrentVidgetChanged += c => useCase.MarkerToolStrip.Attach (c);
-            useCase.SplitView.CurrentVidgetChanged += c => useCase.SplitViewToolStrip.Attach (c);
-            useCase.SplitView.CurrentVidgetChanged += c => useCase.ArrangerToolStrip.Attach (c);
+            useCase.DisplayModeToolbar.SplitView = useCase.SplitView;
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.DisplayModeToolbar.Attach (c);
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.LayoutToolbar.Attach (c);
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.MarkerToolbar.Attach (c);
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.SplitViewToolbar.Attach (c);
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.ArrangerToolbar.Attach (c);
 
             useCase.DisplayStyleChanged += useCase.SplitView.DoDisplayStyleChanged;
 
@@ -131,11 +131,11 @@ namespace Limada.UseCases {
                 return;
 
             toolbar.AddItems (
-                useCase.SplitViewToolStrip,
-                useCase.ArrangerToolStrip,
-                useCase.DisplayModeToolStrip,
-                useCase.MarkerToolStrip,
-                useCase.LayoutToolStrip
+                useCase.SplitViewToolbar,
+                useCase.ArrangerToolbar,
+                useCase.DisplayModeToolbar,
+                useCase.MarkerToolbar,
+                useCase.LayoutToolbar
             );
         }
 
