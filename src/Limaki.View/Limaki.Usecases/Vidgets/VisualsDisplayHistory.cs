@@ -6,27 +6,20 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2017 Lytico
  *
  * http://www.limada.org
+ * 
  */
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Limaki.Common;
 using Limaki.Common.Collections;
-using Limaki.View;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 
-namespace Limada.View.Vidgets {
-
-    public class SceneStream {
-        public long Id = 0;
-        public Stream Stream = null;
-    }
+namespace Limaki.View.Vidgets {
 
     public class VisualsDisplayHistory {
         

@@ -99,7 +99,6 @@
     <Compile Include="Xwt\WebBrowserWidget.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtBackendHelper.cs" />
     <Compile Include="Limaki.View\ContentViewers\HtmlContentViewerBase.cs" />
-    <Compile Include="Limada\View\Vidgets\SplitViewToolbar.cs" />
     <Compile Include="Limaki.Usecases\IGraphSceneUiManager.cs" />
     <Compile Include="Limada\UseCases\Content\ThingGraphUiManager.cs" />
     <Compile Include="Limada\UseCases\ThingGraphUseCases.cs" />
@@ -161,7 +160,6 @@
     <Compile Include="Limaki.Usecases\Vidgets\ISplitViewBackend.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolbarCommand.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\Toolbars\DisplayModeToolbar.cs" />
-    <Compile Include="Limada\View\Vidgets\SplitViewDumnmy.cs" />
     <Compile Include="Limaki.View\Vidgets\CanvasVidget.cs" />
     <Compile Include="Limaki.View\Vidgets\ITextViewerVidgetBackend.cs" />
     <Compile Include="[Obsolete]\TextViewer0\ITextViewerWithToolstripVidgetBackend0.cs" />
@@ -271,8 +269,6 @@
     <Compile Include="Limaki.Drawing\Painters\StringPainterBase.cs" />
     <Compile Include="Limaki.Drawing\ZoomState.cs" />
     <Compile Include="Limada\View\Vidgets\FavoriteManager.cs" />
-    <Compile Include="Limada\View\Vidgets\VisualsDisplayHistory.cs" />
-    <Compile Include="Limada\View\Vidgets\VisualThingSearch.cs" />
     <Compile Include="Limada\View\SheetSerializer.cs" />
     <Compile Include="Limada\View\Vidgets\DigidocViz.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingTransformer.cs" />
@@ -394,7 +390,6 @@
     <Compile Include="Limaki.Usecases\Vidgets\ISplitView.cs" />
     <Compile Include="Limaki.View\Vidgets\TextOkCancelBox.cs" />
     <Compile Include="Limaki.View\Vidgets\IWebBrowser.cs" />
-    <Compile Include="Limada\View\Vidgets\SplitView0.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentStreamViewer.cs" />
     <Compile Include="Limada\View\ContentViewers\HtmlContentViewer.cs" />
     <Compile Include="Limaki.View\ContentViewers\SheetViewer.cs" />
@@ -456,6 +451,14 @@
     <Compile Include="Limaki.View\Vidgets\ToolbarPanel.cs" />
     <Compile Include="Limaki.View\Vidgets\ItemContainerBase.cs" />
     <Compile Include="Limaki.View.XwtBackend\ToolbarPanelBackendDummy.cs" />
+    <Compile Include="Limaki.View\ContentViewers\IContentViewManager.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\VisualsDisplayHistory.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\IFavoriteManager.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\SplitViewDumnmy.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\SplitViewToolbar.cs" />
+    <Compile Include="Limada\View\Vidgets\VisualThingSearch.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\IVisualGraphSceneSearch.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\SplitView0.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

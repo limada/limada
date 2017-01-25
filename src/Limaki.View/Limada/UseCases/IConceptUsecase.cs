@@ -12,7 +12,7 @@ namespace Limada.UseCases {
     public interface IConceptUsecase {
         ISplitView SplitView { get;}
         VisualsDisplayHistory VisualsDisplayHistory { get;  }
-        FavoriteManager FavoriteManager { get; }
+        IFavoriteManager FavoriteManager { get; }
         IGraphSceneUiManager GraphSceneUiManager { get;}
         ISceneManager SceneManager { get; }
 

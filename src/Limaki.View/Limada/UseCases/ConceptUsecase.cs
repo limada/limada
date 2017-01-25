@@ -14,7 +14,6 @@
 
 using Limada.IO;
 using Limada.UseCases.Contents;
-using Limada.View.Vidgets;
 using Limada.View.VisualThings;
 using Limaki.Common;
 using Limaki.Drawing;
@@ -48,7 +47,7 @@ namespace Limada.UseCases {
 
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         public ISceneManager SceneManager { get; set; }
-        public FavoriteManager FavoriteManager { get; set; }
+        public IFavoriteManager FavoriteManager { get; set; }
 
         public ToolbarPanel Toolbar { get; set; }
         public ArrangerToolbar ArrangerToolbar { get; set; }
@@ -261,7 +260,6 @@ namespace Limada.UseCases {
 
         public virtual void Dispose () {
             this.SplitView.Dispose ();
-
         }
 
     }

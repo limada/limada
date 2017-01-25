@@ -210,21 +210,24 @@ namespace Limaki.View.XwtBackend {
 
         }
 
-        public void ViewInWindow (IVidgetBackend backend, Action onClose) {
-            var widget = backend as Widget;
-            if (widget != null) {
+        public void ViewInWindow (IVidget vidget, Action onClose) {
+
+            if (vidget != null) {
                 var parent = SplitContainer.ParentWindow;
-                var window = new Window {
-                    Icon = Iconerias.Iconery.SubWinIcon,
-                    InitialLocation = WindowLocation.Manual,
-                    Title = Frontend.CurrentDisplay.Info.Name + " - *",
-                    // Decorated = false,
-                    Resizable = true,
-                    Size = new Size (parent.Size.Width / 3, parent.Size.Height / 3),
-                    TransientFor = parent,
-                };
-                window.Content = widget;
-                window.Location = 
+				var vindow = new Vindow();
+				vindow.Content = vidget;
+				var window = vindow.Backend as Window;
+
+				window.Icon = Iconerias.Iconery.SubWinIcon;
+				window.InitialLocation = WindowLocation.Manual;
+				window.Title = Frontend.CurrentDisplay.Info.Name + " - *";
+				// Decorated = false,
+				window.Resizable = true;
+				window.Size = new Size(parent.Size.Width / 3, parent.Size.Height / 3);
+				window.TransientFor = parent;
+
+
+				window.Location = 
                     new Point (this.SplitContainer.ScreenBounds.X, this.SplitContainer.ScreenBounds.Y + (this.Size.Height - window.Height) / 2);
 
                 Func<Point> calcOffset = () => 

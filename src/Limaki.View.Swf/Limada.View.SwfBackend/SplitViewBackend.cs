@@ -45,8 +45,8 @@ namespace Limada.View.SwfBackend {
         protected override void Compose () {
             base.Compose ();
             
-            Control.Dock = System.Windows.Forms.DockStyle.Fill;
-            Control.Margin = new System.Windows.Forms.Padding (2);
+            Control.Dock = DockStyle.Fill;
+            Control.Margin = new Padding(2);
             Control.Name = "SplitView";
             Control.Panel2MinSize = 0;
             Control.SplitterWidth = 3;
@@ -114,7 +114,8 @@ namespace Limada.View.SwfBackend {
             }
         }
 
-        public void ViewInWindow (IVidgetBackend backend, Action onClose) {
+        public void ViewInWindow (IVidget vidget, Action onClose) {
+			var backend = vidget.Backend;
             var control = backend.ToSwf (); 
             if (control != null) {
                 control.Dock = DockStyle.Fill;
@@ -122,7 +123,6 @@ namespace Limada.View.SwfBackend {
                     FormBorderStyle = FormBorderStyle.SizableToolWindow,
                     Icon = GdiIconery.LimadaSubWinIcon,
                     Text = Frontend.CurrentDisplay.Info.Name + " - *"
-                    
                 };
                 form.FormClosing += (s, e) => onClose();
                 form.Controls.Add (control);

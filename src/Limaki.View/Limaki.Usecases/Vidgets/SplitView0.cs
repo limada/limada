@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2013 Lytico
+ * Copyright (C) 2006-2017 Lytico
  *
  * http://www.limada.org
  * 
@@ -17,8 +17,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Limada.View.ContentViewers;
-using Limada.View.VisualThings;
 using Limaki.Common;
 using Limaki.Common.Linqish;
 using Limaki.Contents;
@@ -37,10 +35,10 @@ using Limaki.View.Viz.Visuals;
 using Xwt;
 using Xwt.Backends;
 
-namespace Limada.View.Vidgets {
+namespace Limaki.View.Vidgets {
 
     [BackendType(typeof(ISplitViewBackend))]
-    public class SplitView0 : Vidget, ISplitView, IDisposable, ICheckable {
+    public class SplitView0 : Vidget, ISplitView, ICheckable {
 
         public SplitView0 () {
             Compose();
@@ -133,13 +131,6 @@ namespace Limada.View.Vidgets {
         }
 
         private object locker = new object();
-        object _currentWidget = null;
-        public object CurrentWidget {
-            get { return _currentWidget; }
-            protected set {
-
-            }
-        }
 
         IVidget _currentVidget = null;
         public IVidget CurrentVidget  {
@@ -212,17 +203,13 @@ namespace Limada.View.Vidgets {
         }
 
         public event EventHandler ViewChanged = null;
-        public void OnViewChanged() {
-            if (ViewChanged != null) {
-                ViewChanged(this,new EventArgs());
-            }
+        protected void OnViewChanged() {
+            ViewChanged?.Invoke(this,new EventArgs());
         }
 
         public event Action<IVidget> CurrentVidgetChanged = null;
-        public void OnCurrentVidgetChanged (IVidget vidget) {
-            if (CurrentVidgetChanged != null) {
-                CurrentVidgetChanged (vidget);
-            }
+        protected void OnCurrentVidgetChanged (IVidget vidget) {
+            CurrentVidgetChanged?.Invoke (vidget);
         }
 
         #endregion
@@ -236,12 +223,12 @@ namespace Limada.View.Vidgets {
             var graph = source.Data.Graph;
             var focused = source.Data.Focused;
 
-            IVidgetBackend backend = null;
+            IVidget vidget = null;
             Action onClose = null;
 
             if (graph != null && focused != null) {
-                using (var contentViewManager = new ContentViewManager { IsProviderOwner = false }) {
-
+                using (var contentViewManager = Registry.Create<IContentViewManager> ()) {
+                    contentViewManager.IsProviderOwner = false;
                     if (contentViewManager.IsContent (graph, focused)) {
                         // TODO: get viewer, make a new instance of it, get the backend
                         // if sheetviewer, use display(see down) as Viewer
@@ -258,10 +245,10 @@ namespace Limada.View.Vidgets {
                 display.Data = Mesh.CreateSinkScene (graph);
 
                 Mesh.AddDisplay (display);
-                backend = display.Backend;
+				vidget = display;
             }
 
-            Backend.ViewInWindow (backend, onClose);
+            Backend.ViewInWindow (vidget, onClose);
         }
 
         public void ChangeData() {
@@ -290,11 +277,11 @@ namespace Limada.View.Vidgets {
 
         public IVidget ContentVidget { get; protected set; }
 
-        private ContentViewManager _contentViewManager = null;
-        public ContentViewManager ContentViewManager {
+        private IContentViewManager _contentViewManager = null;
+        public IContentViewManager ContentViewManager {
             get {
                 if (_contentViewManager == null) {
-                    _contentViewManager = new ContentViewManager();
+                    _contentViewManager = Registry.Create<IContentViewManager>();
                 }
                 
                 _contentViewManager.BackColor = Display1.BackColor;
@@ -351,12 +338,12 @@ namespace Limada.View.Vidgets {
         public void SaveDocument() {
             if (CurrentVidget == CurrentDisplay) {
                 var display = this.CurrentDisplay;
-                //if (SheetManager.IsSaveable(display.Data)) {
-                    var info = display.Info;
-                    Backend.ShowTextDialog("Sheet:", info.Name, SaveSheet);
-                //}
+				if (SceneManager.IsSaveable(display.Data)){
+					var info = display.Info;
+					Backend.ShowTextDialog("Sheet:", info.Name, SaveSheet);
+				}
             } else {
-                this.ContentViewManager.SaveStream (CurrentDisplay.Data.Graph.ThingGraph (), ContentViewManager.CurrentViewer as ContentStreamViewer);
+                this.ContentViewManager.SaveStream (CurrentDisplay.Data.Graph, ContentViewManager.CurrentViewer as ContentStreamViewer);
             }
         }
 
@@ -394,12 +381,15 @@ namespace Limada.View.Vidgets {
         #endregion
 
         #region Search
+        IVisualGraphSceneSearch _visualGraphSceneSearch = null;
+        IVisualGraphSceneSearch VisualGraphSceneSearch { 
+            get { return _visualGraphSceneSearch ?? (_visualGraphSceneSearch = Registry.Create<IVisualGraphSceneSearch>()); } 
+        }
 
         public void Search (string name) {
             var currentDisplay = this.CurrentDisplay;
             VisualsDisplayHistory.Store(currentDisplay, SceneManager);
-            new VisualThingSearch()
-                .LoadSearch(currentDisplay.Data, currentDisplay.Layout, name);
+            VisualGraphSceneSearch.LoadSearch(currentDisplay.Data, currentDisplay.Layout, name);
             var info = SceneManager.SheetStore.CreateSceneInfo ();
             info.Name = name;
             currentDisplay.Info = info;
@@ -411,7 +401,7 @@ namespace Limada.View.Vidgets {
 
         public void DoSearch() {
             var currentDisplay = this.CurrentDisplay;
-            if (new VisualThingSearch().IsSearchable(currentDisplay.Data)) {
+            if (VisualGraphSceneSearch.IsSearchable(currentDisplay.Data)) {
                 Backend.ShowTextDialog("Search:", "", this.Search);
             }
         }
@@ -502,7 +492,7 @@ namespace Limada.View.Vidgets {
 
         #region Favorites
 
-        public FavoriteManager FavoriteManager {get;set;}
+        public IFavoriteManager FavoriteManager { get; set; }
 
         public void AddFocusedToFavorites() {
             FavoriteManager.AddToFavorites(CurrentDisplay.Data);
@@ -528,8 +518,7 @@ namespace Limada.View.Vidgets {
             if (scene == null)
                 return;
 
-            var content = new Content<Stream> (
-                new MemoryStream (), CompressionType.bZip2);
+            var content = new Content<Stream> (new MemoryStream (), CompressionType.bZip2);
             content.Description = title;
 
             if (Registry.Factory.Contains<IMarkdownEdit>()) {
@@ -552,8 +541,8 @@ namespace Limada.View.Vidgets {
                 writer.Flush ();
                 content.Data.Position = 0;
             }
-            
-            var visual = Registry.Pooled<IVisualContentViz>().VisualOfContent(scene.Graph, content);
+
+            var visual = scene.VisualOfContent (content);
             var root = scene.Focused;
 
             var layout = currentDiplay.Layout;
@@ -608,7 +597,7 @@ namespace Limada.View.Vidgets {
             }
 
             if (this.SceneManager == null) {
-                throw new CheckFailedException (this.GetType (), typeof (SceneManager));
+                throw new CheckFailedException (this.GetType (), typeof (ISceneManager));
             }
             if (this.Display1 == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IGraphSceneDisplay<IVisual, IVisualEdge>));

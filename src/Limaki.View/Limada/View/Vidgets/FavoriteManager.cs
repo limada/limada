@@ -25,14 +25,15 @@ using Limaki.Contents;
 using Limaki.Graphs;
 using Limaki.View;
 using Limaki.View.GraphScene;
+using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Mesh;
 using Limaki.View.Viz.Visualizers;
 
 namespace Limada.View.Vidgets {
-
-    public class FavoriteManager {
+    
+    public class FavoriteManager:IFavoriteManager {
 
         public FavoriteManager() {
 			ResetHomeId();
@@ -58,7 +59,7 @@ namespace Limada.View.Vidgets {
             return thing;
         }
 
-        public void AddToFavorites(IGraphScene<IVisual, IVisualEdge> scene, IThing marker, bool oneAndOnly) {
+        protected void AddToFavorites(IGraphScene<IVisual, IVisualEdge> scene, IThing marker, bool oneAndOnly) {
             if (scene == null || scene.Focused == null)
                 return;
 
@@ -89,7 +90,7 @@ namespace Limada.View.Vidgets {
             }
         }
 
-        public IGraphSceneDisplay<IVisual, IVisualEdge> Display { get; set; }
+        protected IGraphSceneDisplay<IVisual, IVisualEdge> Display { get; set; }
 
         protected virtual void DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, Content<Stream> content) {
             SceneManager.Load (display, content);
@@ -175,7 +176,8 @@ namespace Limada.View.Vidgets {
                                            .ToArray ();
                 // register sheets
                 foreach (var s in sheetThings) {
-                    SceneManager.SheetStore.RegisterSceneInfo (s.Id, thingGraph.Description (s).ToString ());
+                    var info = SceneManager.SheetStore.RegisterSceneInfo (s.Id, thingGraph.Description (s).ToString ());
+                    info.State.Clean = true;
                 }
 
                 // look if there is only one sheet; show it 
@@ -186,6 +188,7 @@ namespace Limada.View.Vidgets {
                         return;
                 }
             }
+
             // Favorites sheet could be in SheetManager
             if (homeIsStored) {
                 var sheetStream = SceneManager.StreamFromStore (HomeId);
@@ -235,7 +238,7 @@ namespace Limada.View.Vidgets {
 
         }
 
-        public virtual bool AddToSheets (IThingGraph graph, Int64 sheetId) {
+        protected virtual bool AddToSheets (IThingGraph graph, Int64 sheetId) {
             var thing = graph.GetById (sheetId) as IStreamThing;
             if (thing != null && thing.StreamType == ContentTypes.LimadaSheet) {
                 var add = graph.Edges (thing).Where (l => l.Marker.Id != CommonSchema.DescriptionMarker.Id).Count () == 0;

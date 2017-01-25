@@ -21,13 +21,14 @@ using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Modelling;
 using Xwt;
+using Limaki.View.Vidgets;
 
 namespace Limada.View.Vidgets {
-
+    
     /// <summary>
     /// searchs in a VisualScene backed by a ThingGraph
     /// </summary>
-    public class VisualThingSearch {
+    public class VisualThingSearch:IVisualGraphSceneSearch {
 
         public bool IsSearchable(IGraphScene<IVisual, IVisualEdge> scene) {
             return scene != null && scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>() != null;

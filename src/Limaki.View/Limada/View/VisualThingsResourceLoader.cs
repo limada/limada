@@ -1,13 +1,17 @@
 using Limada.Model;
+using Limada.View.ContentViewers;
 using Limada.View.Vidgets;
 using Limada.View.VisualThings;
 using Limaki.Common.IOC;
 using Limaki.Graphs;
 using Limaki.View;
+using Limaki.View.ContentViewers;
 using Limaki.View.GraphScene;
+using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 
 namespace Limada.View {
+    
     /// <summary>
     /// applies VisualThings
     /// </summary>
@@ -23,6 +27,8 @@ namespace Limada.View {
 			context.Factory.Add<ISceneViz<IVisual,IThing,IVisualEdge,ILink>, VisualThingsSceneVizImpl> ();
             context.Factory.Add<ISceneViz<IVisual, IVisualEdge>, VisualThingsSceneVizImpl> ();
             context.Factory.Add<ISceneManager, SceneManager> ();
+            context.Factory.Add<IVisualGraphSceneSearch, VisualThingSearch> ();
+            context.Factory.Add<IContentViewManager, ContentViewManager> ();
 
             context.Factory.Add<IMarkerFacade<IVisual, IVisualEdge>> (p => {
                 var graph = p[0] as IGraph<IVisual, IVisualEdge>;

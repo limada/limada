@@ -2,14 +2,11 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Usecases.Vidgets;
-using Limaki.View;
-using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Visualizers;
-using Limada.View.ContentViewers;
+using Limaki.View.ContentViewers;
 
-namespace Limada.View.Vidgets {
+namespace Limaki.View.Vidgets {
 
 	public class SplitViewDumnmy : Vidget, ISplitView {
 
@@ -22,7 +19,7 @@ namespace Limada.View.Vidgets {
 
         public event EventHandler ViewChanged;
         public event Action<IVidget> CurrentVidgetChanged;
-        public ContentViewManager ContentViewManager { get; set; }
+        public IContentViewManager ContentViewManager { get; set; }
 
         public virtual void ToggleView() { }
 
@@ -89,7 +86,7 @@ namespace Limada.View.Vidgets {
 
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         public ISceneManager SceneManager { get; set; }
-        public FavoriteManager FavoriteManager { get; set; }
+        public IFavoriteManager FavoriteManager { get; set; }
 
     }
 }

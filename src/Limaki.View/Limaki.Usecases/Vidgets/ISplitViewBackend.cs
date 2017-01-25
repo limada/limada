@@ -28,9 +28,9 @@ namespace Limaki.Usecases.Vidgets {
         void SetFocusCatcher (IVidgetBackend backend);
         void ReleaseFocusCatcher(IVidgetBackend backend);
 
-        void AttachViewer (IVidget backend, Action onShowAction);
+        void AttachViewer (IVidget vidget, Action onShowAction);
         void ShowTextDialog (string title, string text, Action<string> onOk);
 
-        void ViewInWindow (IVidgetBackend backend, Action onClose);
+        void ViewInWindow (IVidget vidget, Action onClose);
     }
 }

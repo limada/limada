@@ -13,11 +13,12 @@
  */
 
 using System;
-using Limada.View.ContentViewers;
 using Limada.View.Vidgets;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.View;
+using Limaki.View.ContentViewers;
+using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 
@@ -36,9 +37,9 @@ namespace Limaki.Usecases.Vidgets {
 
         VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         ISceneManager SceneManager { get; set; }
-        FavoriteManager FavoriteManager { get; set; }
+        IFavoriteManager FavoriteManager { get; set; }
 
-        ContentViewManager ContentViewManager { get; set; }
+        IContentViewManager ContentViewManager { get; set; }
 
         void ToggleView();
 

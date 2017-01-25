@@ -44,11 +44,7 @@ namespace Limada.UseCases {
             usecase.FavoriteManager.SaveChanges (displays);
             usecase.GraphSceneUiManager.Save ();
 
-            // TODO: save contents
-            // ContentViewManager.SaveContentOfViewers
-            var backHandler = Mesh.BackHandler<IThing, ILink> ();
-            var thingGraph = backHandler.BackGraphOf (usecase.SplitView.Display1.Data.Graph) as IThingGraph;
-            usecase.SplitView.ContentViewManager.SaveContentOfViewers (thingGraph);
+            usecase.SplitView.ContentViewManager.SaveContentOfViewers ();
 
             XmlUsecase = new UsecaseXmlSerializer ()
                       .Write (usecase);

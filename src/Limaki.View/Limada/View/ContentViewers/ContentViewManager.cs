@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2013 Lytico
+ * Copyright (C) 2006-2017 Lytico
  *
  * http://www.limada.org
  */
@@ -24,13 +24,14 @@ using Limaki.View;
 using Limaki.View.ContentViewers;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
+using Limaki.View.Viz.Mesh;
 using Limaki.View.Viz.UI.GraphScene;
 using Xwt;
 using Xwt.Drawing;
 
 namespace Limada.View.ContentViewers {
 
-    public class ContentViewManager:IDisposable {
+    public class ContentViewManager:IContentViewManager {
 
         public ContentViewManager() {
             IsProviderOwner = true;
@@ -40,7 +41,7 @@ namespace Limada.View.ContentViewers {
         public IGraphSceneDisplay<IVisual, IVisualEdge> SheetViewer { get; set; }
         public ISceneManager SceneManager { get; set; }
 
-        public Color BackColor = SystemColors.Background;
+        public Color BackColor { get; set; } = SystemColors.Background;
 
         /// <summary>
         /// called in OnAttachViewer
@@ -170,24 +171,41 @@ namespace Limada.View.ContentViewers {
              }
         }
 
-        [TODO ("Refactor this to use State")]
-        public void SaveStream (IThingGraph graph, ContentStreamViewer viewer) {
-            if (viewer == null || graph == null || viewer.ContentId == 0 || !viewer.CanSave ())
+
+		[TODO("Refactor this to use State")]
+		protected void SaveStream(IThingGraph thingGraph, ContentStreamViewer viewer) {
+            if (thingGraph == null || !viewer.CanSave ())
                 return;
 
-            var thing = graph.GetById (viewer.ContentId) as IStreamThing;
+			var thing = thingGraph.GetById(viewer.ContentId) as IStreamThing;
             if (thing != null) {
                 var content = new Content<Stream> ();
                 viewer.Save (content);
-                new ThingContentFacade ().AssignContent (graph, thing, content);
-                content.Data.Dispose ();
+                new ThingContentFacade ().AssignContent (thingGraph, thing, content);
+                if (content.Data != null) {
+                    content.Data.Dispose ();
+                }
                 content.Data = null;
-                content = null;
-                thing.State.Clean = true;
+				content = null;
+				thing.State.Clean = true;
             }
+		}
+
+		public void SaveStream(IGraph<IVisual, IVisualEdge> graph, ContentStreamViewer viewer) {
+
+			if (viewer == null || graph == null || viewer.ContentId == 0 || !viewer.CanSave())
+				return;
+
+			SaveStream(graph.ThingGraph(), viewer);
+		}
+
+        private IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        protected IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh {
+            get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); }
         }
 
-        public void SaveContentOfViewers(IThingGraph graph) {
+        public void SaveContentOfViewers() {
+            var graph = Mesh.Displays.Select (d => d.Data.Graph.ThingGraph ()).FirstOrDefault (t => t != null);
             if (graph == null)
                 return;
 
