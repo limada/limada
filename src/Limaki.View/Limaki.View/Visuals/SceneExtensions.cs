@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using Limaki.View.Viz.Modelling;
 using Xwt;
+using Limaki.Contents;
+using System.IO;
 
 namespace Limaki.View.Visuals {
 
@@ -159,6 +161,52 @@ namespace Limaki.View.Visuals {
             }
         }
 
+        static IVisualContentViz _visualContentViz = null;
+        public static IVisualContentViz VisualContentViz {
+            get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentViz> ()); }
+        }
 
+        /// <summary>
+        /// gives back the conntent of the scene's focused 
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <returns></returns>
+        public static Content<Stream> ContentOfFocused (this IGraphScene<IVisual, IVisualEdge> scene) {
+            if (scene == null)
+                return null;
+            return scene.ContentOfVisual (scene.Focused);
+        }
+
+        public static Content<Stream> ContentOfVisual (this IGraphScene<IVisual, IVisualEdge> scene, IVisual visual) {
+            if (scene == null || scene.Graph == null || visual == null)
+                return null;
+
+            return VisualContentViz.ContentOf (scene.Graph, visual);
+        }
+
+        public static IVisual VisualOfContent (this IGraphScene<IVisual, IVisualEdge> scene, Content<Stream> content) {
+            if (scene == null || scene.Graph == null || content == null)
+                return null;
+            return VisualContentViz.VisualOfContent (scene.Graph, content);
+        }
+
+        /// <summary>
+        /// adds a visual containing content to the scene
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="content"></param>
+        /// <param name="layout"></param>
+        public static void AddContent (this IGraphScene<IVisual, IVisualEdge> scene, Content<Stream> content, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
+            var visualOfContent = VisualContentViz.VisualOfContent (scene.Graph, content);
+            scene.AddVisual (visualOfContent, layout);
+        }
+
+        public static void AddVisual (this IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
+            if (scene.Focused != null) {
+                PlaceVisual (scene, scene.Focused, visual, layout);
+            } else {
+                AddItem (scene, visual, layout, scene.NoHit);
+            }
+        }
     }
 }

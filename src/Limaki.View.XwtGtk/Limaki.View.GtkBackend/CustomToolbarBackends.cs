@@ -1,4 +1,4 @@
-using Limada.View.Vidgets;
+using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.Toolbars;
 
 namespace Limaki.View.GtkBackend {

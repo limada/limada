@@ -36,16 +36,16 @@ namespace Limada.View.SwfBackend {
 
             Frontend.Compose ();
             
-            var panel = new Panel { Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White };
+            var panel = new Panel { Dock = DockStyle.Fill, BackColor = Color.White };
             Control.SuspendLayout();
             
             var pagesDisplayBackend = Frontend.PagesDisplay.Backend as Control;
-            pagesDisplayBackend.Dock = System.Windows.Forms.DockStyle.Right;
+            pagesDisplayBackend.Dock = DockStyle.Right;
             pagesDisplayBackend.Width = (int)Frontend.GetDefaultWidth ();
             pagesDisplayBackend.TabStop = false;
             
 
-            var splitter = new System.Windows.Forms.Splitter { Dock = DockStyle.Right };
+            var splitter = new Splitter { Dock = DockStyle.Right };
             Control.Controls.AddRange(new Control[] { panel, splitter, pagesDisplayBackend });
 
             Control.ResumeLayout(false);
@@ -55,7 +55,7 @@ namespace Limada.View.SwfBackend {
             Application.DoEvents();
 
             Frontend.AttachContentViewer = contentViewer => {
-                var contentControl = (contentViewer.Backend as System.Windows.Forms.Control);
+                var contentControl = (contentViewer.Backend as Control);
                 if (contentControl.Dock != DockStyle.Fill)
                     contentControl.Dock = DockStyle.Fill;
                 

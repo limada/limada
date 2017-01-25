@@ -82,15 +82,15 @@ namespace Limada.Model {
         /// </summary>
         /// <param name="thing"></param>
         /// <param name="content"></param>
-        public void AssignContent(IStreamThing thing, Content<Stream> content) {
-            if (thing != null && thing.ContentContainer != null) {
-                thing.Data = content.Data;
-                thing.Compression = content.Compression;
-                thing.StreamType = content.ContentType;
-                thing.Compress();
-                thing.Flush ();
-                thing.ClearRealSubject ();
-            }
+        public void AssignContent (IStreamThing thing, Content<Stream> content) {
+            if (thing == null || thing.ContentContainer == null || content == null || content.Data == null)
+                return;
+            thing.Data = content.Data;
+            thing.Compression = content.Compression;
+            thing.StreamType = content.ContentType;
+            thing.Compress ();
+            thing.Flush ();
+            thing.ClearRealSubject ();
         }
 
         /// <summary>

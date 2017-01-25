@@ -26,56 +26,16 @@ namespace Limada.View.VisualThings {
     /// </summary>
     public static class VisualThingsSceneExtensions {
 
-        static IVisualContentViz _visualContentViz = null;
-        public static IVisualContentViz VisualContentViz {
-            get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentViz>()); }
-        }
-
-        /// <summary>
-        /// gives back the conntent of the scene's focused if it is backed by a StreamThing
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <returns></returns>
-        public static Content<Stream> ContentOfFocused (this IGraphScene<IVisual, IVisualEdge> scene) {
-            var graph = scene.Graph;
-            if (graph != null && scene.Focused != null) {
-                return VisualContentViz.ContentOf(graph, scene.Focused);
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// adds a visual, backed by a StreamThing out of content
-        /// to the scene
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <param name="content"></param>
-        /// <param name="layout"></param>
-        public static void AddContent (this IGraphScene<IVisual,IVisualEdge> scene, Content<Stream> content,  IGraphSceneLayout<IVisual, IVisualEdge> layout) {
-            var visualOfContent = VisualContentViz.VisualOfContent(scene.Graph, content);
-            scene.AddVisual(visualOfContent, layout);
-        }
-
-        public static void AddVisual (this IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
-            if (scene.Focused != null) {
-                SceneExtensions.PlaceVisual(scene, scene.Focused, visual, layout);
-            } else {
-                SceneExtensions.AddItem(scene, visual, layout, scene.NoHit);
-            }
-        }
-
-      
         /// <summary>
         /// true if scene.Graph is backed by a ThingGraph
         /// </summary>
         /// <param name="scene"></param>
         /// <returns></returns>
         public static bool HasThingGraph (this IGraphScene<IVisual, IVisualEdge> scene) {
-            if (scene != null) {
-                var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
-                return graph != null;
-            }
-            return false;
+            if (scene == null)
+                return false;
+
+            return scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink> ()!=null;
         }
     }
 }
