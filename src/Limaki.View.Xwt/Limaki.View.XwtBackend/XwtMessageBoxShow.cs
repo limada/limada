@@ -23,6 +23,8 @@ namespace Limaki.View.XwtBackend {
 
         public DialogResult Show (string title, string text, MessageBoxButtons buttons) {
 
+            Application.MainLoop.DispatchPendingEvents ();
+
             if (buttons == MessageBoxButtons.None) {
 				MessageDialog.ShowMessage (title, text);
                 return DialogResult.None;
