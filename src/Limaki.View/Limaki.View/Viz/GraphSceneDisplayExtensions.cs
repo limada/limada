@@ -30,7 +30,9 @@ namespace Limaki.View.Viz {
         }
 
         public static void Wink<TItem, TEdge> (this IGraphSceneDisplay<TItem, TEdge> display) where TEdge : TItem, IEdge<TItem> {
-
+            if (display == null)
+                return;
+            
             var color = display.BackColor;
             var zoomState = display.ZoomState;
             var zoomFactor = display.Viewport.ZoomFactor;
@@ -45,7 +47,8 @@ namespace Limaki.View.Viz {
 
             Application.MainLoop.QueueExitAction (() => {
                 setDispay (Colors.AliceBlue, Drawing.ZoomState.Custom, zoomFactor + 0.1);
-                setDispay (color, zoomState, zoomFactor);
+                Application.TimeoutInvoke (10, () => { setDispay (color, zoomState, zoomFactor); display.QueueDraw ();return false;});
+
             });
 
             Application.MainLoop.DispatchPendingEvents ();
