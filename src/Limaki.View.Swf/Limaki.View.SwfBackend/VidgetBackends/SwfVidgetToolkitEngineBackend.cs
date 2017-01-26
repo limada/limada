@@ -43,7 +43,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             RegisterBackend<ITextOkCancelBoxBackend, TextOkCancelBoxBackend> ();
             RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend>();
 
-            RegisterBackend<IToolbarPanelBackend, XwtBackend.ToolbarPanelBackendDummy> ();
+            RegisterBackend<IToolbarPanelBackend, ToolbarPanelBackendDummy> ();
             RegisterBackend<IToolbarBackend, ToolbarBackend> ();
             RegisterBackend<IToolbarButtonBackend, ToolbarButtonBackend> ();
             RegisterBackend<IToolbarDropDownButtonBackend, ToolbarDropDownButtonBackend> ();
