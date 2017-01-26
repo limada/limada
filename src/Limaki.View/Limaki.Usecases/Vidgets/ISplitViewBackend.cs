@@ -19,16 +19,12 @@ namespace Limaki.Usecases.Vidgets {
 
     public interface ISplitViewBackend:IVidgetBackend {
 
-        void InitializeDisplay (IVidgetBackend displayBackend);
-
         void GraphGraphView ();
         void GraphContentView ();
         void ToggleView ();
 
-        void SetFocusCatcher (IVidgetBackend backend);
-        void ReleaseFocusCatcher(IVidgetBackend backend);
-
         void AttachViewer (IVidget vidget, Action onShowAction);
+
         void ShowTextDialog (string title, string text, Action<string> onOk);
 
         void ViewInWindow (IVidget vidget, Action onClose);

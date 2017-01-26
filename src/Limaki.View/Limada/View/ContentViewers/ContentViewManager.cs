@@ -43,16 +43,19 @@ namespace Limada.View.ContentViewers {
 
         public Color BackColor { get; set; } = SystemColors.Background;
 
+        [Obsolete]
         /// <summary>
         /// called in OnAttachViewer
         /// </summary>
         public Action<IVidget, Action> AttachViewer { get; set; }
 
+        [Obsolete]
         /// <summary>
         /// delegated to Viewer.AttachBackend
         /// </summary>
         public Action<IVidgetBackend> AttachViewerBackend { get; set; }
 
+        [Obsolete]
         /// <summary>
         /// delegated to Viewer.DetachBackend
         /// </summary>
@@ -68,22 +71,6 @@ namespace Limada.View.ContentViewers {
         private ContentViewerProvider _providers = null;
         public ContentViewerProvider ContentViewerProvider { get { return _providers ?? (_providers = Registry.Pooled<ContentViewerProvider>()); } }
         public ContentVisualViewerProvider ContentVisualViewerProvider { get { return ContentViewerProvider as ContentVisualViewerProvider; } }
-
-        protected void OnAttachViewer(ContentViewer viewer, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
-            
-            if (viewer is SheetViewer) {
-                var sheetViewer = viewer as SheetViewer;
-                sheetViewer.SheetDisplay = this.SheetViewer;
-                sheetViewer.SceneManager = this.SceneManager;
-            }
-
-            viewer.BackColor = this.BackColor;
-
-
-			AttachViewerBackend?.Invoke(viewer.Backend);
-			AttachViewer?.Invoke(viewer.Frontend, () => viewer.OnShow());
-            
-        }
 
         protected void LoadStreamThing (ContentStreamViewer viewer, IThingGraph graph, IStreamThing thing) {
             try {
@@ -143,7 +130,35 @@ namespace Limada.View.ContentViewers {
              return false;
         }
 
-        public ContentViewer CurrentViewer { get; set; }
+        ContentViewer _currentViewer = null;
+        public ContentViewer CurrentViewer {
+            get { return _currentViewer; }
+            set {
+                if (value != _currentViewer && _currentViewer!=null) {
+                    DetachCurrentViewer (_currentViewer);
+                }
+                _currentViewer = value;
+                OnAttachCurrentViewer (_currentViewer);
+            }
+        }
+
+        public Action<ContentViewer> AttachCurrentViewer { get; set; }
+        public Action<ContentViewer> DetachCurrentViewer { get; set; }
+        protected void OnAttachCurrentViewer (ContentViewer viewer) {
+            if (viewer == null)
+                return;
+            if (viewer is SheetViewer) {
+                var sheetViewer = viewer as SheetViewer;
+                sheetViewer.SheetDisplay = this.SheetViewer;
+                sheetViewer.SceneManager = this.SceneManager;
+            }
+
+            viewer.BackColor = this.BackColor;
+
+            AttachCurrentViewer?.Invoke (viewer);
+
+        }
+
         protected void LoadThing (IGraph<IVisual, IVisualEdge> visualGraph, IVisual visual) {
             var graph = visualGraph.Source<IVisual, IVisualEdge,IThing, ILink>();
 
@@ -153,7 +168,6 @@ namespace Limada.View.ContentViewers {
                      var viewer = ContentVisualViewerProvider.Supports(visualGraph, visual);
                      if (viewer != null) {
                          CurrentViewer = viewer;
-                         OnAttachViewer(viewer, graph, visual);
                          LoadThing(viewer, visualGraph, visual);
                      }
                      var streamThing = thing as IStreamThing;
@@ -163,7 +177,6 @@ namespace Limada.View.ContentViewers {
                          
                          if (streamViewer != null) {
                              CurrentViewer = streamViewer;
-                             OnAttachViewer(streamViewer, graph, visual);
                              LoadStreamThing(streamViewer, graph.Source as IThingGraph, streamThing);
                          }
                      }

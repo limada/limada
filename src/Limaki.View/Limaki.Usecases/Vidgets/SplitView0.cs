@@ -23,10 +23,7 @@ using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Usecases.Vidgets;
-using Limaki.View;
 using Limaki.View.ContentViewers;
-using Limaki.View.GraphScene;
-using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Mesh;
@@ -75,8 +72,7 @@ namespace Limaki.View.Vidgets {
             display.SceneFocusChanged -= SceneFocusChanged;
             display.SceneFocusChanged += SceneFocusChanged;
             
-            Backend.SetFocusCatcher(display.Backend);
-            Backend.InitializeDisplay(display.Backend);
+            AttachVidget (display);
 
             Mesh.AddDisplay (display);
 
@@ -152,12 +148,28 @@ namespace Limaki.View.Vidgets {
             }
         }
 
-        public void DisplayGotFocus(object sender) {
-            CurrentDisplay = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
+        protected void AttachVidget (IVidget vidget) {
+            vidget.GotFocus -= VidgetGotFocus;
+            vidget.ButtonReleased -= VidgetGotFocus;
+            vidget.GotFocus += VidgetGotFocus;
+            vidget.ButtonReleased += VidgetGotFocus;
         }
 
-        public void VidgetGotFocus (IVidget sender) {
-            CurrentVidget = sender;
+        protected void DetachVidget (IVidget vidget) { 
+            vidget.GotFocus -= VidgetGotFocus;
+            vidget.ButtonReleased -= VidgetGotFocus;
+        }
+
+        protected void VidgetGotFocus (object sender, EventArgs e) {
+            var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
+            if (display != null) {
+                CurrentDisplay = display;
+                return;
+            }
+            var vidget = sender as IVidget;
+            if (vidget != null) {
+                CurrentVidget = vidget;
+            }
         }
 
         protected IExceptionHandler ExceptionHandler {
@@ -252,8 +264,7 @@ namespace Limaki.View.Vidgets {
         }
 
         public void ChangeData() {
-
-
+            
 			IList<IGraphSceneDisplay<IVisual, IVisualEdge>> displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { Display2 };
 
             Clear ();
@@ -286,12 +297,13 @@ namespace Limaki.View.Vidgets {
                 
                 _contentViewManager.BackColor = Display1.BackColor;
 
-                _contentViewManager.AttachViewer = (v, a) => {
-                    Backend.AttachViewer (v, a);
-                    ContentVidget = v;
+                _contentViewManager.AttachCurrentViewer = v => {
+                    Backend.AttachViewer (v.Frontend, () => v.OnShow ());
+                    ContentVidget = v.Frontend;
+                    AttachVidget (v.Frontend);
                 };
-                _contentViewManager.AttachViewerBackend = Backend.SetFocusCatcher;
-               
+                _contentViewManager.DetachCurrentViewer = v => DetachVidget (v.Frontend);
+
                 _contentViewManager.SceneManager = this.SceneManager;
 
                 return _contentViewManager;
@@ -409,8 +421,7 @@ namespace Limaki.View.Vidgets {
         #endregion
 
         #region History
-
-
+        
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         
         private void Clear() {

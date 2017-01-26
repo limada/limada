@@ -22,6 +22,7 @@ using Limaki.View.Vidgets;
 using Limaki.View.Viz;
 using Xwt;
 using System.Collections.Generic;
+using Limaki.View.Visuals;
 
 namespace Limaki.View.XwtBackend {
 
@@ -43,69 +44,6 @@ namespace Limaki.View.XwtBackend {
             SetScrollingPanelContent(Frontend.Display1.Backend.ToXwt(), SplitContainer.Panel1);
             SetScrollingPanelContent(Frontend.Display2.Backend.ToXwt(), SplitContainer.Panel2);
 
-        }
-
-        public void InitializeDisplay (IVidgetBackend displayBackend) {
-            var backend = displayBackend.ToXwt ().PeeledScrollView ();
-
-            backend.GotFocus -= DisplayGotFocus;
-            backend.ButtonReleased -= DisplayGotFocus;
-            backend.GotFocus += DisplayGotFocus;
-            backend.ButtonReleased += DisplayGotFocus;
-        }
-
-        protected void DisplayGotFocus (object sender, EventArgs e) {
-            sender = (sender as IVidgetBackend).ToXwt().PeeledScrollView ();
-            var backend = sender as VisualsDisplayBackend;
-            if (backend != null) {
-                Frontend.DisplayGotFocus(backend.Display);
-            }
-        }
-
-        object FocusDone = null;
-        protected void WidgetGotFocus (object sender, EventArgs e) {
-            if (FocusDone == sender)
-                return;
-            FocusDone = sender;
-            Trace.WriteLine (string.Format ("{0} {1}", sender.GetType ().Name, sender.GetHashCode ()));
-            var widget = sender as Widget;
-            var displayBackend = (sender as IVidgetBackend).ToXwt ().PeeledScrollView () as VisualsDisplayBackend;
-            if (displayBackend != null) {
-                Frontend.DisplayGotFocus (displayBackend.Display);
-            } else if (widget != null) {
-                IVidget vidget = null;
-                if (_vidgets.TryGetValue (widget, out vidget)) {
-                    if (vidget != null)
-                        Frontend.VidgetGotFocus (vidget);
-                    else
-                        Trace.WriteLine ("\tSplitviewBackend error: frontend is null!");
-                } else {
-                    Trace.WriteLine ("\tSplitviewBackend error: frontend not registered!");
-                }
-            }
-        }
-
-        protected Dictionary<Widget, IVidget> _vidgets = new Dictionary<Widget, IVidget> ();
-        public void SetFocusCatcher (IVidgetBackend backend) {
-            var widget = (backend.ToXwt()).PeeledScrollView();
-            if (widget != null) {
-                _vidgets[widget] = backend.Frontend;
-                //widget.MouseEntered += WidgetGotFocus;
-                widget.ButtonPressed -= WidgetGotFocus;
-                widget.GotFocus -= WidgetGotFocus;
-                widget.ButtonPressed += WidgetGotFocus;
-                widget.GotFocus += WidgetGotFocus;
-            }
-        }
-
-        public void ReleaseFocusCatcher (IVidgetBackend backend) {
-            var widget = (backend.ToXwt()).PeeledScrollView();
-            if (widget != null) {
-                //widget.MouseEntered -= WidgetGotFocus;
-                widget.ButtonPressed -= WidgetGotFocus;
-                widget.GotFocus -= WidgetGotFocus;
-                _vidgets.Remove (widget);
-            }
         }
 
         public void GraphGraphView () {
@@ -204,7 +142,7 @@ namespace Limaki.View.XwtBackend {
 
                 textDialogVisible = false;
                 // hide is changing the CurrentDisplay (whyever)
-                Frontend.DisplayGotFocus (display);
+                // Frontend.DisplayGotFocus (display);
             };
 
 

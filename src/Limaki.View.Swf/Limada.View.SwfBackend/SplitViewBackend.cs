@@ -32,7 +32,7 @@ namespace Limada.View.SwfBackend {
 
     public class SplitViewBackend : VidgetBackend<SplitContainer>, ISplitViewBackend, IDisposable {
         
-        public new SplitView0 Frontend { get; protected set; }
+        public new ISplitView Frontend { get; protected set; }
 
         protected SplitContainer SplitContainer { get { return Control; } }
 
@@ -69,49 +69,6 @@ namespace Limada.View.SwfBackend {
 
             // this is for mono on linux:
             Control.ActiveControl = displayBackend1;
-        }
-
-        public void InitializeDisplay (IVidgetBackend displayBackend) {
-        }
-
-
-        protected Dictionary<Control, IVidget> _vidgets = new Dictionary<Control, IVidget> ();
-
-        void ControlGotFocus(object sender, EventArgs e) {
-            Trace.WriteLine(string.Format("{0} {1}", sender.GetType().Name,sender.GetHashCode()));
-            var control = sender as Control;
-            var displayBackend = sender as VisualsDisplayBackend;
-            if (displayBackend != null) {
-                Frontend.DisplayGotFocus(displayBackend.Display);
-            } else if(control!=null) {
-                IVidget vidget = null;
-                if (_vidgets.TryGetValue (control, out vidget)) {
-                    Frontend.VidgetGotFocus (vidget);
-                }
-            }
-        }
-
-        public void SetFocusCatcher (IVidgetBackend backend) {
-            var control = backend.ToSwf ();
-            if (control != null) {
-                _vidgets[control] = backend.Frontend;
-                control.Enter -= ControlGotFocus;
-                control.MouseUp -= ControlGotFocus;
-                control.GotFocus -= ControlGotFocus;
-                //control.Enter += ControlGotFocus;
-                control.MouseUp += ControlGotFocus;
-                control.GotFocus += ControlGotFocus;
-            }
-        }
-
-        public void ReleaseFocusCatcher (IVidgetBackend backend) {
-            var control = backend.ToSwf (); 
-            if (control != null) {
-                control.Enter -= ControlGotFocus;
-                control.MouseUp -= ControlGotFocus;
-                control.GotFocus -= ControlGotFocus;
-                _vidgets.Remove (control);
-            }
         }
 
         public void ViewInWindow (IVidget vidget, Action onClose) {
@@ -256,7 +213,7 @@ namespace Limada.View.SwfBackend {
                 SplitContainer.ResumeLayout (true);
 				display.Backend.QueueDraw ();
                 // hide is changing the CurrentDisplay (whyever)
-                Frontend.DisplayGotFocus (display);
+                // TODO: Frontend.DisplayGotFocus (display);
             };
 
         }

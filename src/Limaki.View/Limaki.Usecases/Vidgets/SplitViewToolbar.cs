@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using Limaki.Iconerias;
 using Limaki.Usecases.Vidgets;
-using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Visualizers.Toolbars;

@@ -13,7 +13,6 @@
  */
 
 using System;
-using Limada.View.Vidgets;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.View;
