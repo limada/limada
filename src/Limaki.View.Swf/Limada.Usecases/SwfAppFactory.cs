@@ -33,22 +33,20 @@ namespace Limada.Usecases {
 
         public SwfAppFactory(): base(new SwfContextResourceLoader()) {}
 
-        public Form MainForm() {
-            var result = new VindowBackend ();
-            
-            CreateUseCase (result);
-            
-            return result.ToSwf() as Form;
-        }
 
-        public void CreateUseCase(IVindowBackend vindowBackend) {
-            var mainform = vindowBackend.ToSwf() as Form;
+        public ConceptUsecase CreateUseCase( ) {
+            
+            var vindow = new Vindow ();
+
+            var mainform = vindow.Backend.ToSwf() as Form;
 
             mainform.Icon = Limaki.View.Properties.GdiIconery.LimadaIcon;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
-
-            var backendComposer = new SwfConceptUseCaseComposer();
-            backendComposer.MainWindowBackend = vindowBackend;
+            Xwt.SwfBackend.SwfEngine.SwfApplicationContext.MainForm = mainform;
+              
+            var backendComposer = new SwfConceptUseCaseComposer { 
+                MainWindow = vindow
+            };
 
             var factory = new UsecaseFactory<ConceptUsecase>();
             factory.Composer = new ConceptUsecaseComposer();
@@ -67,6 +65,8 @@ namespace Limada.Usecases {
                 Application.Exit();
                 Environment.Exit(0);
             }
+
+            return useCase;
         }
 
         public override void Run () {
@@ -74,7 +74,12 @@ namespace Limada.Usecases {
             Application.EnableVisualStyles ();
             Application.SetCompatibleTextRenderingDefault (false);
 
-            Application.Run (MainForm ());
+            var context = new ApplicationContext ();
+            Xwt.SwfBackend.SwfEngine.SwfApplicationContext = context;
+
+            CreateUseCase ();
+
+            Application.Run (context);
         }
     }
     
