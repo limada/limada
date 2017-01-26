@@ -13,9 +13,6 @@
 
 using System;
 using Limaki.Graphs;
-using Limaki.View.Viz.Modelling;
-using Limaki.View.Viz.Rendering;
-using Limaki.View.Viz.UI.GraphScene;
 using Xwt;
 using Xwt.Drawing;
 

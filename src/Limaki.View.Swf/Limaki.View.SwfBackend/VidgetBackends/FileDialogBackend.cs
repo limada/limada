@@ -57,6 +57,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Frontend = frontend as IFileDialogVidget;
         }
 
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
+        }
+
         IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
 
         public Size Size {
@@ -64,7 +69,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         public string ToolTipText { get; set; }
-    public void Update () { }
+        public void Update () { }
 
         public void QueueDraw () { }
 

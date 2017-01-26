@@ -23,7 +23,6 @@ namespace Limaki.View.XwtBackend {
             base.InitializeBackend (frontend, context);
         }
 
-
         public void InsertItem (int index, IToolbarBackend backend) { }
 
         public void RemoveItem (IToolbarBackend backend) { }

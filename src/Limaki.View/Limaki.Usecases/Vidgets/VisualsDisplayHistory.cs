@@ -28,7 +28,6 @@ namespace Limaki.View.Vidgets {
             get { return _history ?? (_history = new History<long> ()); }
         }
 
-
         public bool CanGoForward () {
             return History.HasForward ();
         }

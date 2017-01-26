@@ -184,6 +184,7 @@
     </Compile>
     <Compile Include="Limada.View.SwfBackend\SplitViewBackend.cs" />
     <Compile Include="Xwt.GdiBackend\SystemColorsGdiBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolbarPanelBackendDummy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
