@@ -186,9 +186,9 @@ namespace Limaki.View.XwtBackend {
 
             Trace.WriteLine (string.Format ("ButtonPressed {0} == {1} {2} | {3}", this.MouseLocation (), args.Position, args.MultiplePress, this.GetType ().Name));
 
-            // dismiss events of MultiplePress; its handled in MouseActions
-            if (args.MultiplePress > 1)
-                return;
+            // don't dismiss events of MultiplePress; its handled in MouseActions
+            //if (args.MultiplePress > 1)
+            //    return;
 
             lastButton = args.Button.ToLmk ();
             Display.ActionDispatcher.OnMouseDown (args.ToLmk ());

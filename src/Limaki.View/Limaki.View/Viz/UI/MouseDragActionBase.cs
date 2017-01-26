@@ -58,11 +58,11 @@ namespace Limaki.View.Viz.UI {
         protected Rectangle DragBoxFromMouseDown { get; set; }
         protected int HitCount  { get; set; }
 
+        Size dragSize = SystemInformation.DragSize;
+        
         protected void BaseMouseDown(MouseActionEventArgs e) {
             base.OnMouseDown(e);
-           
-            var dragSize = SystemInformation.DragSize;
-
+        
             if (DragBoxFromMouseDown == Rectangle.Zero)
                 DragBoxFromMouseDown = new Rectangle (new Point (e.X - (dragSize.Width / 2),
                     e.Y - (dragSize.Height / 2)), dragSize);
@@ -70,13 +70,11 @@ namespace Limaki.View.Viz.UI {
             LastMousePos = e.Location;
 
             if (Behaviour == DragBehaviour.DoubleClick) {
-				var elapsed = Environment.TickCount - LastMouseTime;
-				var hit = CheckDoubleClickHit (e.X, e.Y);
-				if (elapsed <= SystemInformation.DoubleClickTime && hit) {
+                var hit = CheckDoubleClickHit (e.X, e.Y);
+                if (e.Clicks > 1 && hit)
                     HitCount++;
-                } else {
+                else
                     HitCount = 0;
-                }
             }
             LastMouseTime = Environment.TickCount;
         }
