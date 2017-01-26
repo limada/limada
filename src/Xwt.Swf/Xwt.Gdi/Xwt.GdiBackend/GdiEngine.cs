@@ -77,9 +77,7 @@ namespace Xwt.GdiBackend {
         public override void CancelTimerInvoke(object id) {
             throw new NotImplementedException();
         }
-
-       
-
+        
         public override bool HasNativeParent (Widget w) {
             throw new NotImplementedException();
         }

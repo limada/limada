@@ -73,6 +73,9 @@
     <Compile Include="..\..\AssemblyInfo.Shared.cs">
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
+    <Compile Include="Xwt.SwfBackend\Backend.cs" />
+    <Compile Include="Xwt.SwfBackend\MenuBackend.cs" />
+    <Compile Include="Xwt.SwfBackend\MenuItemBackend.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
@@ -83,6 +86,9 @@
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
       <Name>Xwt.Gdi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Xwt.SwfBackend\[todo]\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

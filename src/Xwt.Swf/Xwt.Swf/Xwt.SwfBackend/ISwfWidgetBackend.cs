@@ -24,7 +24,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using SWF = System.Windows.Forms;
+
 namespace Xwt.SwfBackend {
+    
     public interface ISwfWidgetBackend {
+        SWF.Control Control { get;}
     }
 }

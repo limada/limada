@@ -30,7 +30,7 @@ using SWF=System.Windows.Forms;
 
 namespace Xwt.SwfBackend {
 
-    public class WindowFrameBackend : IWindowFrameBackend {
+    public class WindowFrameBackend : IWindowFrameBackend, ISwfWidgetBackend {
 
         SWF.Form form;
         IWindowFrameEventSink eventSink;
@@ -56,6 +56,8 @@ namespace Xwt.SwfBackend {
             get { return form; }
             set { form = value; }
         }
+
+        SWF.Control ISwfWidgetBackend.Control { get { return Form;} }
 
         protected WindowFrame Frontend {
             get { return frontend; }
