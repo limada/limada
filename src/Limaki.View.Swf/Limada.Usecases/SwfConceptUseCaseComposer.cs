@@ -33,13 +33,13 @@ using ImageExporter = Limaki.View.Viz.ImageExporter;
 using MessageBoxButtons = Limaki.View.Vidgets.MessageBoxButtons;
 using ToolStrip = System.Windows.Forms.ToolStrip;
 using System.Linq;
+using Xwt.Backends;
 
 namespace Limada.Usecases {
 
     public class SwfConceptUseCaseComposer : IBackendConceptUseCaseComposer {
 
-        public Form Mainform { get { return MainWindowBackend.ToSwf() as Form; } }
-        public IVindowBackend MainWindowBackend { get; set; }
+        public Form Mainform { get { return MainWindow.Backend.ToSwf() as Form; } }
 
         public ToolStripContainer ToolStripContainer { get; set; }
         public MenuStrip MenuStrip { get; set; }
@@ -53,13 +53,12 @@ namespace Limada.Usecases {
 
         public Action OnShow { get; set; }
 
+        public Xwt.Menu Menu { get; set; }
+
         public void Factor (ConceptUsecase useCase) {
 
             if (MainWindow == null) {
                 this.MainWindow = new Vindow ();
-            }
-            if (MainWindowBackend == null) {
-                MainWindowBackend = MainWindow.Backend;
             }
 
             useCase.MainWindow = this.MainWindow;
@@ -68,8 +67,6 @@ namespace Limada.Usecases {
 
             StatusStrip = new StatusStrip ();
             StatusLabel = new ToolStripStatusLabel ();
-
-            MenuStrip = new MenuStrip ();
 
             var splitViewBackend = useCase.SplitView.Backend.ToSwf() as SplitContainer;
             ToolStripContainer.SuspendLayout();
@@ -127,10 +124,11 @@ namespace Limada.Usecases {
             };
 
             useCase.ApplicationQuit = () => useCase.ApplicationQuitted = true;
-            
-            InstrumentMenus (useCase);
 
-
+            useCase.ShowAboutWindow = () => {
+                if (AboutForm == null) AboutForm = new AboutForm ();
+                AboutForm.ShowDialog ();
+            };
 
         }
 
@@ -140,12 +138,14 @@ namespace Limada.Usecases {
         /// <param name="useCase">Use case.</param>
         public void Compose2 (ConceptUsecase useCase) {
 
+            ComposeMenus (useCase);
+
             if (useCase.Toolbar == null)
                 return;
 
             var toolStrips = useCase.Toolbar.Items
-                                 .Cast<Limaki.View.IVidget> ()
-                                 .Select (v => v.ToSwf () as ToolStrip).ToArray ();
+                .Cast<Limaki.View.IVidget> ()
+                .Select (v => v.ToSwf () as ToolStrip).ToArray ();
 
             var utils = new ToolStripUtils {
                 ToolStripItemSelectedColor = Color.White,
@@ -158,64 +158,38 @@ namespace Limada.Usecases {
                 );
         }
 
-        public void InstrumentMenus (ConceptUsecase useCase) {
-            
+        public void ComposeAdditionalMenus (ConceptUsecase useCase) {
             var l = new Localizer ();
-            this.MenuStrip.Items.AddRange (new ToolStripMenuItem[] {
-            
-            new ToolStripMenuItem(l["File"], null, new ToolStripMenuItem[] {
-                new ToolStripMenuItem(l["Open ..."], null, (s, e) => { useCase.OpenFile(); }),
-                new ToolStripMenuItem(l["Save"], null, (s, e) => { useCase.SaveFile(); }),
-                new ToolStripMenuItem(l["SaveAs ..."], null, (s, e) => { useCase.SaveAsFile(); }),
-                new ToolStripMenuItem(l["Export"], null, new ToolStripMenuItem[] {
-                    new ToolStripMenuItem(l["current view ..."], null, (s, e) => { useCase.ExportCurrentView(); }),
-                    new ToolStripMenuItem(l["view as image ..."], null, (s, e) => { this.ExportAsImage(useCase); }),
-                    new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ExportContent(); }),
-                    new ToolStripMenuItem(l["Report (pdf)..."], null, (s, e) => { useCase.ExportThings(); }),
-                }),
-				new ToolStripMenuItem(l["Import"], null, new ToolStripMenuItem[] { 
-					new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),
-                    new ToolStripMenuItem(l["multi content ..."], null, (s, e) => { useCase.ImportGraphCursor(); }),
-                    new ToolStripMenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportThingGraphRaw(); })
-				}),
-                new ToolStripMenuItem(l["Print ..."], null, (s, e) => { this.Print(useCase); }),
-                new ToolStripMenuItem(l["PrintPreview ..."], null, (s, e) => { this.PrintPreview(useCase); }),
-                new ToolStripMenuItem(l["Exit"], null, (s, e) => { Application.Exit();}),
-            }),
-
-            new ToolStripMenuItem(l["Edit"], null, new ToolStripMenuItem[] {
-                new ToolStripMenuItem(l["Copy"], null, (s, e) => {
-                    var display = useCase.GetCurrentDisplay();
-                    if (display != null) ((ICopyPasteAction)display.ActionDispatcher).Copy();
-                }),
-                new ToolStripMenuItem(l["Paste"], null, (s, e) => {
-                    var display = useCase.GetCurrentDisplay();
-                    if (display != null) ((ICopyPasteAction) display.ActionDispatcher).Paste ();
-                }),
-                new ToolStripMenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
+            var addToFile = new ToolStripMenuItem[] {
+                new ToolStripMenuItem (l["Print ..."], null, (s, e) => { this.Print (useCase); }),
+                new ToolStripMenuItem (l["PrintPreview ..."], null, (s, e) => { this.PrintPreview (useCase); }),
+            };
 #if DEBUG
-                new ToolStripMenuItem(l["Merge"], null, (s, e) => { useCase.MergeVisual(); }),
+            var addToEdit = new ToolStripMenuItem[] {
+                new ToolStripMenuItem (l["Merge"], null, (s, e) => { useCase.MergeVisual (); }),
+            };
 #endif
-            }),
+            var addToStyle = new ToolStripMenuItem[] {
+                new ToolStripMenuItem (l["Layout"], null, (s, e) => { this.ShowLayoutEditor (useCase); }),
+                new ToolStripMenuItem (l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor (useCase); }),
+            };
 
-            new ToolStripMenuItem(l["Style"], null, new ToolStripMenuItem[] {
-                new ToolStripMenuItem(l["Layout"], null, (s, e) => { this.ShowLayoutEditor(useCase); }),
-                new ToolStripMenuItem(l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor(useCase); }),
-            }),
+            var addToCurrentView = new ToolStripMenuItem (l["view as image ..."], null,
+                (s, e) => { this.ExportAsImage (useCase); });
+        }
 
-            new ToolStripMenuItem(l["Favorites"], null, new ToolStripMenuItem[] {
-                new ToolStripMenuItem(l["Add to favorites"], null, (s, e) => 
-                     useCase.FavoriteManager.AddToFavorites(useCase.GetCurrentDisplay().Data)),
-                new ToolStripMenuItem(l["View on open "], null, (s, e) => 
-                    useCase.FavoriteManager.SetAutoView(useCase.GetCurrentDisplay().Data)),
-            }),
+        public void ComposeMenus (ConceptUsecase useCase) {
 
-            new ToolStripMenuItem(l["About"], null, (s, e) => {
-                if(About == null) About = new AboutForm();
-                    About.ShowDialog();
-                })
-            });
+            if (useCase.Menu == null)
+                return;
 
+            ComposeAdditionalMenus (useCase);
+
+            var menuBackend = useCase.Menu.GetBackend () as Xwt.Swf.Xwt.SwfBackend.MenuBackend;
+            if (menuBackend != null) {
+                MenuStrip = menuBackend.Menu;
+            }
+            
             var font = SystemFonts.MenuFont;
             MenuStrip.Font = font;
 
@@ -232,13 +206,13 @@ namespace Limada.Usecases {
                 setFont (item);
         }
 
-        Form About = null;
+        Form AboutForm = null;
 
         public DialogResult MessageBoxShow (string text, string title, MessageBoxButtons buttons) {
             return Converter.Convert (MessageBox.Show (Mainform, text, title, Converter.Convert (buttons)));
         }
         
-        #region Menu - Format
+        #region StyleEditors
 
         Rectangle ControlSize (Control control) {
             Rectangle result = Rectangle.Empty;

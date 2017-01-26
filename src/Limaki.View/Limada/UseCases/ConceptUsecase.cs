@@ -43,6 +43,9 @@ namespace Limada.UseCases {
         }
 
         public virtual IVindow MainWindow { get; set; }
+
+        public Menu Menu { get; set; }
+
         public ISplitView SplitView { get; set; }
 
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
@@ -256,6 +259,11 @@ namespace Limada.UseCases {
             } catch (Exception e) {
                 Registry.Pooled<IExceptionHandler> ().Catch (e, MessageType.OK);
             }
+        }
+
+        public Action ShowAboutWindow { get;set;}
+        public virtual void DoShowAboutWindow () {
+            ShowAboutWindow?.Invoke();
         }
 
         public virtual void Dispose () {

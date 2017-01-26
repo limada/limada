@@ -22,5 +22,6 @@ namespace Limada.UseCases {
 		Vindow MainWindow { get; set; }
 		Size WindowSize { get; set; }
 		Action OnShow { get; set; }
-	}
+
+    }
 }

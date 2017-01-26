@@ -30,7 +30,6 @@ namespace Limaki.View.XwtBackend {
 
 		public Vindow MainWindow { get; set; }
         public IVindowBackend MainWindowBackend { get; set; }
-        public Menu Menu { get; set; }
 
         public Label StatusLabel { get; set; }
         public Size WindowSize { get; set; }
@@ -57,10 +56,7 @@ namespace Limaki.View.XwtBackend {
 
 			var mainWindowBackend = MainWindowBackend as Window;
             mainWindowBackend.Size = WindowSize;
-            mainWindowBackend.MainMenu = CreateMenu (useCase);
             mainWindowBackend.Padding = 2;
-
-            this.Menu = mainWindowBackend.MainMenu;
                 
             var splitViewBackend = useCase.SplitView.Backend.ToXwt();
 
@@ -86,7 +82,7 @@ namespace Limaki.View.XwtBackend {
         public virtual void Compose (ConceptUsecase useCase) {
 
             var mainWindowBackend = MainWindowBackend as Window;
-
+            mainWindowBackend.MainMenu = useCase.Menu;
             useCase.DataPostProcess =
                dataName => mainWindowBackend.Title = dataName + " - " + useCase.UseCaseTitle;
 
@@ -127,6 +123,10 @@ namespace Limaki.View.XwtBackend {
                 viewerProvider.Add (new MarkdownContentViewer ());
 
             ComposeAbout (AboutWindow);
+
+            useCase.ShowAboutWindow = () => {
+                AboutWindow.Show ();
+            };
         }
 
         About _about = null;
@@ -152,63 +152,7 @@ namespace Limaki.View.XwtBackend {
 
         }
 
-        private Menu CreateMenu (ConceptUsecase useCase) {
-            var menu = new Menu();
-
-            var l = new Localizer();
-            menu.AddItems(
-
-            new MenuItem(l["File"], null, null, new MenuItem[] {
-                new MenuItem(l["Open ..."], null, (s, e) => { useCase.OpenFile(); }),
-                new MenuItem(l["Save"], null, (s, e) => { useCase.SaveFile(); }),
-                new MenuItem(l["SaveAs ..."], null, (s, e) => { useCase.SaveAsFile(); }),
-                new MenuItem(l["Export"], null,null, new MenuItem[] {
-                    new MenuItem(l["current view ..."], null, (s, e) => { useCase.ExportCurrentView(); }),
-                    new MenuItem(l["view as image ..."], null, (s, e) => { this.ExportAsImage(useCase); }),
-                    new MenuItem(l["Content ..."], null, (s, e) => { useCase.ExportContent(); }),
-                    new MenuItem(l["Report (pdf)..."], null, (s, e) => { useCase.ExportThings(); }),
-                }),
-				new MenuItem(l["Import"], null, null,new MenuItem[] { 
-					new MenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),
-                    new MenuItem(l["multi content ..."], null, (s, e) => { useCase.ImportGraphCursor(); }),
-                    new MenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportThingGraphRaw(); })
-				}),
-                new MenuItem(l["Print ..."], null, (s, e) => { this.Print(useCase); }),
-                new MenuItem(l["PrintPreview ..."], null, (s, e) => { this.PrintPreview(useCase); }),
-                new MenuItem(l["Exit"], null, (s, e) => { Application.Exit();}),
-            }),
-
-            new MenuItem(l["Edit"], null, null, new MenuItem[] {
-                new MenuItem(l["Copy"], null, (s, e) => {
-                    var display = useCase.GetCurrentDisplay();
-                    if (display != null) display.ActionDispatcher.Copy();
-                }),
-                new MenuItem(l["Paste"], null, (s, e) => {
-                    var display = useCase.GetCurrentDisplay();
-                    if (display != null) display.ActionDispatcher.Paste();
-                }),
-                new MenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
-            }),
-
-            new MenuItem(l["Style"], null, null, new MenuItem[] {
-                new MenuItem(l["Layout"], null, (s, e) => { this.ShowLayoutEditor(useCase); }),
-                new MenuItem(l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor(useCase); }),
-            }),
-
-            new MenuItem(l["Favorites"], null, null, new MenuItem[] {
-                new MenuItem(l["Add to favorites"], null, (s, e) => 
-                     useCase.FavoriteManager.AddToFavorites(useCase.GetCurrentDisplay().Data)),
-                new MenuItem(l["View on open "], null, (s, e) => 
-                    useCase.FavoriteManager.SetAutoView(useCase.GetCurrentDisplay().Data)),
-            }),
-
-            new MenuItem(l["About"], null, (s, e) => {
-                AboutWindow.Show();
-            })
-            );
-            return menu;
-        }
-
+       
         private void ExportAsImage (ConceptUsecase useCase) {
             var currentDisplay = useCase.GetCurrentDisplay();
             if (currentDisplay != null && currentDisplay.Data != null) {
