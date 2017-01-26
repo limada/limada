@@ -12,6 +12,7 @@
  * 
  */
 
+using System;
 using Limaki.View;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz;
@@ -47,6 +48,11 @@ namespace Limaki.View.Headless.VidgetBackends {
             this.Frontend = frontend;
         }
 
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
+        }
+
         public virtual Size Size { get; set; }
         
         public string ToolTipText { get; set; }
@@ -54,5 +60,7 @@ namespace Limaki.View.Headless.VidgetBackends {
         public void Dispose () {
            
         }
+
+
     }
 }

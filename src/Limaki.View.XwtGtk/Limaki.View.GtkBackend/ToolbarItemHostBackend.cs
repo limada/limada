@@ -33,7 +33,7 @@ namespace Limaki.View.GtkBackend {
 					if(Widget.Child != null)
                     	Widget.Remove (Widget.Child);
 					child.Show ();
-                    Widget.Child = child;
+                    Widget.Child = GtkBackendHelper.EventsRootWidget(child);
                 }
             }
         }

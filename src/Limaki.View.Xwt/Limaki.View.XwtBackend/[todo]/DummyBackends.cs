@@ -31,6 +31,11 @@ namespace Limaki.View.XwtBackend {
             this.Frontend = frontend;
         }
 
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
+        }
+
         void IVidgetBackend.Update () { XwtBackendHelper.VidgetBackendUpdate(this); }
 
         void IVidgetBackend.QueueDraw () { XwtBackendHelper.VidgetBackendInvalidate(this); }
@@ -38,6 +43,7 @@ namespace Limaki.View.XwtBackend {
         void IVidgetBackend.QueueDraw (Rectangle rect) { XwtBackendHelper.VidgetBackendInvalidate(this, rect); }
 
         public string ToolTipText { get; set; }
+
 
         #endregion
 

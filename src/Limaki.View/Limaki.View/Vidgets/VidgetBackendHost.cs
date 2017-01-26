@@ -39,6 +39,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace Limaki.View.Vidgets {
     
@@ -53,14 +54,14 @@ namespace Limaki.View.Vidgets {
         }
     }
 
-    public class VidgetBackendHost {
+    public class VidgetBackendHost : IVidgetEventSink {
 
         public IVidget Frontend { get; internal set; }
 
         IVidgetBackend _backend;
         public IVidgetBackend Backend {
             get {
-                LoadBackend();
+                LoadBackend ();
                 return _backend;
             }
         }
@@ -85,30 +86,48 @@ namespace Limaki.View.Vidgets {
             get { return _backend != null; }
         }
 
-        protected virtual void OnBackendCreated () { }
+        protected virtual void OnBackendCreated () {
+            if (_backend != null)
+                _backend.InitializeEvents (this);
+        }
 
         protected virtual IVidgetBackend OnCreateBackend () {
-            return EngineBackend.CreateBackendForFrontend(Frontend.GetType());
+            return EngineBackend.CreateBackendForFrontend (Frontend.GetType ());
         }
 
         public void EnsureBackendLoaded () {
             if (_backend == null)
-                LoadBackend();
+                LoadBackend ();
         }
 
         protected virtual void LoadBackend () {
             if (usingCustomBackend) {
                 usingCustomBackend = false;
-                _backend.InitializeBackend(Frontend, _engine.Context);
-                OnBackendCreated();
+                _backend.InitializeBackend (Frontend, _engine.Context);
+                OnBackendCreated ();
             } else if (_backend == null) {
-                _backend = OnCreateBackend();
+                _backend = OnCreateBackend ();
                 if (_backend == null)
-                    throw new InvalidOperationException("No backend found for object: " + Frontend.GetType());
-                _backend.InitializeBackend(Frontend, _engine.Context);
-                OnBackendCreated();
+                    throw new InvalidOperationException ("No backend found for object: " + Frontend.GetType ());
+                _backend.InitializeBackend (Frontend, _engine.Context);
+                OnBackendCreated ();
             }
         }
 
+        IDictionary<string, EventHandler> _events = new Dictionary<string, EventHandler> ();
+
+        public void AddEvent (string name, EventHandler h) {
+            _events [name] = h;
+        }
+
+        public void RemoveEvent (string name, EventHandler h) {
+            _events.Remove (name);
+        }
+
+        public void OnEvent<T> (string name, T args) where T:EventArgs {
+            EventHandler result = null;
+            _events.TryGetValue (name, out result);
+            result?.Invoke (Frontend, args);
+        }
     }
 }

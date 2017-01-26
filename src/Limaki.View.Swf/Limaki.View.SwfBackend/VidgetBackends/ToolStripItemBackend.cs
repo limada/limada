@@ -12,7 +12,6 @@
  * 
  */
 
-using System.Windows.Forms;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
 using System;
@@ -28,7 +27,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
     /// <remarks>
     /// cannot be refactored to VidgetBackend as ToolbarItem is not a Control
     /// </remarks>
-    public abstract class ToolStripItemBackend<T> : IVidgetBackend, ISwfToolStripItemBackend where T : System.Windows.Forms.ToolStripItem {
+    public abstract class ToolStripItemBackend<T> : IVidgetBackend, ISwfToolStripItemBackend where T : SWF.ToolStripItem {
 
         public IVidget Frontend { get; protected set; }
 
@@ -36,15 +35,20 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Frontend = Frontend;
         }
 
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
+        }
+
         public ToolStripItemBackend () {
             Compose ();
         }
 
+        public T Control { get; protected set; }
+
         protected virtual void Compose () {
             this.Control = Activator.CreateInstance<T>();
         }
-
-        public T Control { get; protected set; }
 
         public Xwt.Size Size {
             get { return Control.Size.ToXwt (); }

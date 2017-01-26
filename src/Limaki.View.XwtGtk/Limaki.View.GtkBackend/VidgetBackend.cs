@@ -12,7 +12,9 @@
  * 
  */
 
+using System;
 using Limaki.View.Vidgets;
+using Limaki.View.XwtBackend;
 
 namespace Limaki.View.GtkBackend {
     
@@ -28,12 +30,19 @@ namespace Limaki.View.GtkBackend {
             this.Frontend = frontend;
         }
 
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
+            Widget.FocusInEvent += (s, e) => EventSink?.OnEvent (nameof (IVidget.GotFocus), new EventArgs ());
+            Widget.ButtonReleaseEvent += (s, e) => EventSink?.OnEvent (nameof (IVidget.ButtonReleased), e.ToXwt ((Gtk.Widget)s).ToLmk ());
+        }
+
         public VidgetBackend () {
             Compose ();
         }
 
         protected virtual void Compose () {
-            this.Widget = new T ();
+            Widget = new T ();
         }
 
         public T Widget { get; protected set; }

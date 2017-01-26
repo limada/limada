@@ -19,6 +19,7 @@ using Box = Gtk.Box;
 using Rectangle = Gdk.Rectangle;
 using Widget = Gtk.Widget;
 using LVV = Limaki.View.Vidgets;
+using Xwt.GtkBackend;
 
 namespace Limaki.View.GtkBackend {
 
@@ -127,7 +128,7 @@ namespace Limaki.View.GtkBackend {
             // widgets such as Label which doesn't have its own gdk window
 
             if (widget is Gtk.EventBox) {
-                ((Gtk.EventBox)widget).VisibleWindow = true;
+                ((Gtk.EventBox) widget).VisibleWindow = true;
                 return widget;
             }
 
@@ -142,6 +143,27 @@ namespace Limaki.View.GtkBackend {
                 return eventBox;
             }
             return widget;
+        }
+
+        public static void ReplaceChild (Gtk.Widget oldWidget, Gtk.Widget newWidget) {
+            Xwt.GtkBackend.GtkEngine.ReplaceChild (oldWidget, newWidget);
+        }
+
+        public static Gtk.Widget EventsRootWidget(Widget widget) {
+            if (widget.Parent is Gtk.EventBox)
+                return widget.Parent;
+            return widget; 
+        }
+
+        public static ButtonEventArgs ToXwt (this Gtk.ButtonReleaseEventArgs args, Widget widget) {
+            var a = new ButtonEventArgs ();
+
+            var pointer_coords = EventsRootWidget(widget).CheckPointerCoordinates (args.Event.Window, args.Event.X, args.Event.Y);
+            a.X = pointer_coords.X;
+            a.Y = pointer_coords.Y;
+
+            a.Button = (PointerButton)args.Event.Button;
+            return a;
         }
     }
 }

@@ -28,10 +28,17 @@ namespace Limaki.View {
         Size Size { get; }
 
         void SetFocus ();
+        event EventHandler GotFocus;
+
+        event EventHandler ButtonReleased;
 
         void Update ();
         void QueueDraw ();
         void QueueDraw (Rectangle rect);
 
+    }
+
+    public interface IVidgetEventSink {
+        void OnEvent<T> (string name, T args) where T:EventArgs;
     }
 }

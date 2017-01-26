@@ -33,6 +33,11 @@ namespace Limaki.View.XwtBackend {
 			this.SetContent (value);
         }
 
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;    
+        }
+
         public string ToolTipText { get; set; }
     }
 }

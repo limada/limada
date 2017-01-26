@@ -93,6 +93,7 @@ namespace Limaki.View.XwtBackend {
 
             return builder.ToString();
         }
+
         public abstract bool Run (IVidget parent);
 
         public virtual void Cleanup () { }
@@ -101,6 +102,11 @@ namespace Limaki.View.XwtBackend {
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = frontend as IFileDialogVidget;
+        }
+
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
         }
 
         IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }

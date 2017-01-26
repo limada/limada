@@ -12,6 +12,7 @@
  * 
  */
 
+using System;
 using Xwt;
 using Xwt.Backends;
 
@@ -44,6 +45,31 @@ namespace Limaki.View.Vidgets {
         public virtual string ToolTipText { get { return Backend.ToolTipText; } set { Backend.ToolTipText = value; } }
 
         public virtual void SetFocus () { Backend.SetFocus (); }
+
+        protected EventHandler gotFocus;
+
+        public event EventHandler GotFocus {
+            add {
+                gotFocus += value;
+                BackendHost.AddEvent (nameof(IVidget.GotFocus), gotFocus);
+            }
+            remove {
+                BackendHost.RemoveEvent (nameof (IVidget.GotFocus), gotFocus);
+                gotFocus -= value;
+            }
+        }
+
+        protected event EventHandler buttonReleased;
+        public event EventHandler ButtonReleased {
+            add {
+                buttonReleased += value;
+                BackendHost.AddEvent (nameof (IVidget.ButtonReleased), buttonReleased);
+            }
+            remove {
+                BackendHost.RemoveEvent (nameof (IVidget.ButtonReleased), buttonReleased);
+                buttonReleased -= value;
+            }
+        }
 
         public virtual void Update () { Backend.Update (); }
         public virtual void QueueDraw () { Backend.QueueDraw (); }

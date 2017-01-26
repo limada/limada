@@ -2,6 +2,7 @@ using System.Windows.Controls;
 using Limaki.View.Vidgets;
 using System.Windows;
 using System;
+using Limaki.View.XwtBackend;
 
 namespace Limaki.View.WpfBackend {
 
@@ -16,13 +17,22 @@ namespace Limaki.View.WpfBackend {
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = frontend;
         }
+        
+        protected IVidgetEventSink EventSink { get; set; }
+
+        public virtual void InitializeEvents (IVidgetEventSink eventsink) {
+            this.EventSink = eventsink;
+            Control.GotFocus += (s, e) => EventSink?.OnEvent (nameof (IVidget.GotFocus), new EventArgs ());
+            Control.MouseUp += (s, e) => EventSink?.OnEvent (nameof (IVidget.ButtonReleased), WpfConverter.ToXwtButtonArgs ((Control) s, e).ToLmk ());
+        }
 
         public VidgetBackend () {
             Compose ();
         }
 
         public virtual void Compose () {
-            this.Control = Activator.CreateInstance<T>();
+            Control = Activator.CreateInstance<T>();
+
         }
 
         public virtual T Control { get; protected set; }

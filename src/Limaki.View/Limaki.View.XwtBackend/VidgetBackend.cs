@@ -12,11 +12,12 @@
  * 
  */
 
+using System;
 using Limaki.View.Vidgets;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
-
+    
     public abstract class VidgetBackend<T> : IVidgetBackend, IXwtBackend where T : Widget, new () {
 
         public virtual IVidget Frontend { get; protected set; }
@@ -24,13 +25,18 @@ namespace Limaki.View.XwtBackend {
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = frontend;
         }
+        protected IVidgetEventSink EventSink { get; set; }
+        public virtual void InitializeEvents (IVidgetEventSink eventsink) {
+            EventSink = eventsink;
+            Widget.ComposeEvents (EventSink);
+        }
 
         public VidgetBackend () {
             Compose ();
         }
 
         protected virtual void Compose () {
-            this.Widget = new T ();
+            Widget = new T ();
         }
 
         public T Widget { get; protected set; }
@@ -63,9 +69,17 @@ namespace Limaki.View.XwtBackend {
         Widget IXwtBackend.Widget {
             get { return this.Widget; }
         }
-
-
+        
     }
 
-    
+    public static class XwtVidgetBackendExtensions {
+
+        public static void ComposeEvents (this Widget Widget, IVidgetEventSink EventSink) {
+
+            Widget.GotFocus += (s, e) => EventSink?.OnEvent (nameof (IVidget.GotFocus), new EventArgs ());
+            Widget.ButtonReleased += (s, e) => EventSink?.OnEvent (nameof (IVidget.ButtonReleased), e.ToLmk ());
+
+        }
+    }
+
 }

@@ -16,6 +16,7 @@ using Limaki.Common;
 using Limaki.View;
 using Limaki.View.DragDrop;
 using Limaki.View.SwfBackend.DragDrop;
+using Limaki.View.SwfBackend.VidgetBackends;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Rendering;
@@ -92,6 +93,8 @@ namespace Limaki.View.SwfBackend.Viz {
 
                 Opaque = true; //!Commons.Mono; // opaque works on mono too, but is slower
             }
+
+            
         }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
@@ -106,6 +109,12 @@ namespace Limaki.View.SwfBackend.Viz {
             if (!this.DesignMode) {
                 this._backendRenderer.Opaque = this.Opaque;
             }
+        }
+
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
+            this.ComposeEvents (EventSink);
         }
 
         private IDisplay<T> _display = null;

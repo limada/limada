@@ -55,6 +55,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+
             Display<T> display = null;
             var factory = CreateDisplayFactory (this);
             if (frontend != null)
@@ -76,6 +77,14 @@ namespace Limaki.View.XwtBackend {
             this.DragOver += (s, e) => this.HandleDragOver (e);
             this.DragDrop += (s, e) => this.HandleDragDrop (e);
             this.DragLeave += (s, e) => this.HandleDragLeave (e);
+
+           
+        }
+
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
+            this.ComposeEvents (EventSink);
         }
 
         protected IDisplay<T> _display = null;

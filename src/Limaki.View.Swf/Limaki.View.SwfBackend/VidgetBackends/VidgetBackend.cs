@@ -17,6 +17,7 @@ using Limaki.View;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
 using Xwt;
+using System;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
@@ -32,12 +33,18 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Frontend = frontend;
         }
 
+        IVidgetEventSink EventSink { get; set; }
+        public void InitializeEvents (IVidgetEventSink eventSink) {
+            EventSink = eventSink;
+            Control.ComposeEvents (EventSink);
+        }
+
         public VidgetBackend () {
             Compose ();
         }
 
         protected virtual void Compose () {
-            this.Control = new T ();
+            Control = new T ();
         }
 
         public T Control { get; protected set; }
@@ -69,6 +76,14 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         Control ISwfBackend.Control {
             get { return this.Control; }
+        }
+    }
+
+    public static class SwfVidgetBackendExtentions {
+        public static void ComposeEvents (this Control Control , IVidgetEventSink EventSink) {
+            Control.GotFocus += (s, e) => EventSink?.OnEvent (nameof (IVidget.GotFocus), new EventArgs ());
+            Control.Enter += (s, e) => EventSink?.OnEvent (nameof (IVidget.GotFocus), new EventArgs ());
+            Control.MouseUp += (s, e) => EventSink?.OnEvent (nameof (IVidget.ButtonReleased), Converter.Convert (e));
         }
     }
 }

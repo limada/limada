@@ -30,6 +30,7 @@ namespace Limaki.View {
         void QueueDraw (Rectangle rect);
 
         void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
+        void InitializeEvents (IVidgetEventSink eventSink);
 
         void SetFocus ();
 
