@@ -226,8 +226,12 @@ namespace Limaki.Usecases.Vidgets {
             var isRoot = path == null;
             if (isRoot) {
                 foreach (var drive in DriveInfo.GetDrives ()) {
-                    graph.Add (new VisualDir (DriveIcon,
-                        string.Format ("{0} ({1})", drive.VolumeLabel, drive.Name)));
+                    try {
+                        graph.Add (new VisualDir (DriveIcon,
+                            string.Format ("{0} ({1})", drive.VolumeLabel, drive.Name)));
+                    }
+                    catch (Exception ex) {
+                    }
                 }
             } else {
 
