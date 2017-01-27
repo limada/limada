@@ -47,6 +47,8 @@ namespace Limaki.Common {
             return new MemoryStream (buffer, 0, buffer.Length, true);
         }
 
+        public static String AsUnicodeSting (this byte[] source) => Encoding.Unicode.GetString (source);
+
         public static byte[] GetBuffer (this Stream stream, int buflen) {
             var oldPos = stream.Position;
             buflen = Math.Min (buflen, (int)stream.Length);
