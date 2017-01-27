@@ -46,7 +46,7 @@ namespace Limada.Schemata {
         /// </summary>
         public static readonly IThing EmptyMarker = Thing(0x528FE1B697E54910);
 
-        public static string EmtpyMarkerString = "°";
+        public static string EmtpyMarkerString = ((char)(0x00b0)).ToString ();
         public static string ThingString = "·";
         public static string NullString =  ((char)(0x2260)).ToString(); // not equal
         public static string ProxyString = ((char)(0x221E)).ToString(); // infinite
