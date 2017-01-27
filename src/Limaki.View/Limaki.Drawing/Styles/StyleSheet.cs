@@ -53,7 +53,7 @@ namespace Limaki.Drawing.Styles {
         }
 
         protected SystemFonts _systemfonts = null;
-        protected SystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = new SystemFonts()); } }
+        protected SystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = SystemFonts.Fonts); } }
 
         protected IDrawingUtils _drawingUtils = null;
         protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pooled<IDrawingUtils>()); } }
@@ -150,7 +150,7 @@ namespace Limaki.Drawing.Styles {
 
         public static IStyle CreateStyleWithSystemSettings() {
             var result = new Style ("SystemStyle");
-            var systemfonts = new SystemFonts();
+            var systemfonts = SystemFonts.Fonts;
             var drawingUtils = Registry.Pooled<IDrawingUtils>();
 
             result.Font = systemfonts.DefaultFont;

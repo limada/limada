@@ -32,7 +32,12 @@ namespace Xwt {
 
     public class SystemFonts {
 
-        public SystemFonts () {
+        static SystemFonts _fonts = null;
+        public static SystemFonts Fonts {
+            get { return _fonts ?? (_fonts = new SystemFonts ()); }
+        }
+
+        protected SystemFonts () {
             backend = Toolkit.CurrentEngine.CreateBackendHandler<SystemFontBackend> ();
         }
 

@@ -23,7 +23,7 @@ namespace Limaki.Drawing.Styles {
     public class StyleSheets : Dictionary<string, IStyleSheet> {
 
         SystemFonts _systemfonts = null;
-        protected SystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = new SystemFonts()); } }
+        protected SystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = SystemFonts.Fonts); } }
 
         IDrawingUtils _drawingUtils = null;
         protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pooled<IDrawingUtils> ()); } }
