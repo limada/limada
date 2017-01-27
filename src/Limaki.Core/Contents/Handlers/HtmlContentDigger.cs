@@ -35,7 +35,16 @@ namespace Limaki.Contents.IO {
         protected virtual Content<Stream> Digg (Content<Stream> source, Content<Stream> sink) {
 			if (!_spot.Supports(source.ContentType) || source.Data == null)
                 return sink;
+            
             var buffer = ByteUtils.GetBuffer(source.Data, (int)source.Data.Length); 
+            if (sink.ContentType == HtmlContentSpot.MOZURL) {
+                if (buffer != null) {
+                    var desc = Encoding.Unicode.GetString (buffer);
+                    sink.Source = desc;
+                }
+                return sink;
+            }
+
             var s = (TextHelper.IsUnicode(buffer) ? 
                 Encoding.Unicode.GetString(buffer) :
                 Encoding.UTF8.GetString (buffer)); 

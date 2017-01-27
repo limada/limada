@@ -28,38 +28,29 @@ namespace Limaki.Contents.IO {
     public class HtmlContentSpot : ContentDetector {
 
         public HtmlContentSpot (): base (
+           new ContentInfo []{
+                new ContentInfo("HTML",HTML,"html","text/html",CompressionType.bZip2 ),
+                new ContentInfo("XHTML", XHTML,"xhtml","application/xhtml+xml",CompressionType.bZip2),
 
-                new ContentInfo[]{
-                                 new ContentInfo(
-                                     "HTML",
-                                     HTML,
-                                     "html",
-                                     "text/html",
-                                     CompressionType.bZip2
-                                     ),
-                                 new ContentInfo(
-                                     "XHTML",
-                                     XHTML,
-                                     "xhtml",
-                                     "application/xhtml+xml",
-                                     CompressionType.bZip2
-                                     ),
-                                new ContentInfo(
-                                     "moz-url",
-                                     MOZURL,
-                                     "url",
-                                     "text/x-moz-url-priv",
-                                     CompressionType.bZip2
-                                     ),
+                new ContentInfo("moz-url",MOZURL,"url","text/x-moz-url-priv", CompressionType.bZip2),
+                new ContentInfo("moz-url",MOZINFO,"url","text/_moz_htmlinfo", CompressionType.bZip2),
+                new ContentInfo("moz-url",MOZCONTEXT,"url","text/_moz_htmlcontext", CompressionType.bZip2),
 
-                             }
-            ) {}
+            }
+        ) {}
 
         public static long HTML = unchecked ((long)0x97BC58EE45132F1E);
 
         public static long XHTML = 0x280efaf080c35e30;
 
-        public static long MOZURL = unchecked((long)0xD343485588820A82);
+        /// <summary>
+        /// contains url of content
+        /// on linux, this comes if pasted; on dragdrop, it don't com
+        /// </summary>
+        public static long MOZURL = unchecked((long)0xD343485588820A82); 
+
+        public static long MOZINFO = unchecked((long)0x1AA81E695F084884);
+        public static long MOZCONTEXT = unchecked((long)0x1990C55EB3657397);
 
         public override bool SupportsMagics { 
             get { return true; }

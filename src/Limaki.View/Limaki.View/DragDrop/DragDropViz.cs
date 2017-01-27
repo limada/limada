@@ -160,16 +160,6 @@ namespace Limaki.View.DragDrop {
                             if (content.Data == null && (content.Description == null || string.IsNullOrEmpty (content.Description.ToString ())))
                                 continue;
                         }
-
-                        if (info != null) {
-                            // TODO: remove this hack
-                            if (info.ContentType == HtmlContentSpot.MOZURL) {
-                                if (bytes != null) {
-                                    source = Encoding.Unicode.GetString (bytes);
-                                }
-                            }
-                        }
-
                         if (content != null) { 
                             if (content.Description == null)
                                 content.Description = desc;
