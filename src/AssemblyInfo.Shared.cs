@@ -1,13 +1,10 @@
 ﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-
-[assembly: AssemblyCompany("Limada")]
-[assembly: AssemblyCopyright ("Copyright © Limada.org 2016")]
+[assembly: AssemblyCompany("www.limada.org")]
+[assembly: AssemblyCopyright ("© Lytico 2006 - 2017 (http://github.com/lytico)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("16.12.1.0")]
-[assembly: AssemblyFileVersion("16.12.1.0")]
+[assembly: AssemblyVersion("17.01.0.0")]
+[assembly: AssemblyFileVersion("17.01.0.0")]
+
 
