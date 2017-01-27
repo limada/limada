@@ -1,6 +1,7 @@
 using Xwt;
 
 namespace Limaki.View.DragDrop {
+    
     public class DragDropInfo {
         // Source
         public bool AutodetectDrag { get; set; }

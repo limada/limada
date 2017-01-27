@@ -18,9 +18,11 @@ using Xwt.Drawing;
 namespace Limaki.View.XwtBackend {
 
     public class XwtSystemFontBackend : SystemFontBackend {
+        
         public Font CreateFont(string family, double size) {
             return Xwt.Drawing.Font.FromName(family).WithSize(size);
         }
+
         public override Font CaptionFont { get { return Font.SystemFont; } }
                 
         public override Font DefaultFont { get { return Font.SystemFont; } }

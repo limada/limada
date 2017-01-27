@@ -43,7 +43,7 @@ namespace Limaki.View.Viz.Rendering {
             var clipBounds = camera.ToSource(e.Clipper.Bounds);
 
 #if TraceRender
-            Trace.WriteLine ("***** clipBounds:\t" + clipBounds);
+            Trace.WriteLine ($"\t{nameof(Render)}.{nameof(clipBounds)}:\t{clipBounds}");
             //+"\toffset(g)"+new SizeS(g.Transform.OffsetX, g.Transform.OffsetY)
 #endif
 

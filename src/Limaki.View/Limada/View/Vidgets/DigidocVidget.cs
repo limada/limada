@@ -43,23 +43,14 @@ using Limaki.Contents.IO;
 
 namespace Limada.View.Vidgets {
 
-    public interface IDigidocViewerBackend : IVidgetBackend {
-
-    }
+    public interface IDigidocViewerBackend : IVidgetBackend { }
 
     [BackendType (typeof(IDigidocViewerBackend))]
     public class DigidocVidget : Vidget, IZoomTarget {
 
         IDigidocViewerBackend _backend = null;
-
         public virtual new IDigidocViewerBackend Backend {
-            get {
-                if (_backend == null) {
-                    _backend = BackendHost.Backend as IDigidocViewerBackend;
-                }
-                return _backend;
-            }
-            set { _backend = value; }
+            get { return _backend ?? (_backend = base.Backend as IDigidocViewerBackend); }
         }
 
         IGraphSceneDisplay<IVisual, IVisualEdge> _pagesDisplay = null;

@@ -37,13 +37,13 @@ namespace Limaki.View.GtkBackend {
             Widget.Spacing = 2;
 
             Widget.SizeAllocated += (s, e) => {
-                Trace.WriteLine ($"{nameof (ToolbarPanelBackend)}.{nameof (Widget.SizeAllocated)}:{e.Allocation}");
+                Trace.WriteLine ($"{nameof (ToolbarPanelBackend)}.{nameof (Widget.SizeAllocated)}:\t{e.Allocation}");
                 Widget.Children.ForEach (c => {
                     //TODO
                 });
             };
             Widget.SizeRequested += (s, e) => {
-                Trace.WriteLine ($"{nameof (ToolbarPanelBackend)}.{nameof (Widget.SizeRequested)}:{new Xwt.Size (e.Requisition.Width, e.Requisition.Height)}");
+                Trace.WriteLine ($"{nameof (ToolbarPanelBackend)}.{nameof (Widget.SizeRequested)}:\t{new Xwt.Size (e.Requisition.Width, e.Requisition.Height)}");
                 Widget.Children.ForEach (c => {
                     //TODO
                 });
@@ -52,7 +52,7 @@ namespace Limaki.View.GtkBackend {
 
         Action<object, Gtk.SizeRequestedArgs> toolbarSizeRequested = (s, e) => {
             //TODO
-            Trace.WriteLine ($"{nameof (toolbarSizeRequested)}:{new Xwt.Size (e.Requisition.Width, e.Requisition.Height)}");
+            Trace.WriteLine ($"{nameof (toolbarSizeRequested)}:\t{new Xwt.Size (e.Requisition.Width, e.Requisition.Height)}");
         };
 
         public void InsertItem (int index, IToolbarBackend item) {

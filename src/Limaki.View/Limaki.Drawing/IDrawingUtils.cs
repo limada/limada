@@ -17,7 +17,6 @@ namespace Limaki.Drawing {
         /// <returns></returns>
         Size ScreenResolution();
 
-        
         Size Resolution(Context context);
     }
 }

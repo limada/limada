@@ -170,7 +170,7 @@ namespace Limaki.View.Viz.Visuals {
             IVisual item = null;
 
 #if TRACE
-            Trace.WriteLine (string.Join ("|", Clipboard.GetTypesAvailable ().Select(f => f.Id)));
+            Trace.WriteLine ($"{this.GetType ().Name}.{nameof(Paste)}:\t" + string.Join (" | ", Clipboard.GetTypesAvailable ().Select (f => f.Id)));
 #endif
             if (InprocDragDrop.ClipboardData != null) {
                 // TODO: refactor to use same code as above
