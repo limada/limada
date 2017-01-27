@@ -17,19 +17,20 @@ using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.View;
 using System.Linq;
+using System.Reflection;
 
 namespace Limaki.Usecases {
 
     public class About {
+
         string _version = null;
-        public string Version {
-            get {
-                if (_version == null) {
-                    _version = System.Reflection.Assembly.GetAssembly (GetType ()).GetName ().Version.ToString (4);
-                }
-                return _version;
-            }
-        }
+        public string Version { get { return _version ?? (_version = Assembly.GetName ().Version.ToString (4)); } }
+
+        string _company = null;
+        public string Company { get { return _company ?? (_company = AssemblyAttibue<AssemblyCompanyAttribute> ().Company); } }
+
+        string _copyright = null;
+        public string Copyright { get { return _copyright ?? (_copyright = AssemblyAttibue<AssemblyCopyrightAttribute> ().Copyright); } }
 
         public string Credits {
             get {
@@ -41,10 +42,29 @@ namespace Limaki.Usecases {
 
         public string ToolKitType { get; set; }
 
+        public string ApplicationName { get; set; }
+
         public override string ToString () {
-            return string.Format ($"Version {Version}\nCredits {Credits}\nToolKitType {ToolKitType??""}");
+            return $@"
+Version: {Version}
+
+{Company} 
+{Copyright}
+
+ToolKitType: {ToolKitType ?? ""}
+
+Credits: 
+
+{Credits}
+";
         }
 
-        public string Link { get { return "www.limada.org";}}
+        public string Link { get { return "www.limada.org"; } }
+
+
+        static Assembly Assembly { get { return Assembly.GetAssembly (typeof (About)); } }
+        static A AssemblyAttibue<A> () where A : Attribute {
+            return Assembly.GetCustomAttributes (typeof (A), true).Cast<A> ().FirstOrDefault ();
+        }
     }
 }
