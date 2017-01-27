@@ -103,7 +103,7 @@ namespace Limaki.View.Vidgets {
         protected virtual void LoadBackend () {
             if (usingCustomBackend) {
                 usingCustomBackend = false;
-                _backend.InitializeBackend (Frontend, _engine.Context);
+                _backend.InitializeBackend (Frontend, ToolkitEngine.Context);
                 OnBackendCreated ();
             } else if (_backend == null) {
                 _backend = OnCreateBackend ();
