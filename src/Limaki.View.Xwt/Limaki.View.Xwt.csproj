@@ -92,7 +92,6 @@
     <Compile Include="Limaki.View.XwtBackend\Viz\VisualsTextEditAction.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtMessageBoxShow.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtCursorHandlerBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\XwtDrawingUtils.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtExeptionHandlerBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtMessager.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\ProgressHandler.cs" />
