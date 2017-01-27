@@ -31,6 +31,7 @@ using Xwt.Drawing;
 namespace Xwt.GdiBackend {
 
     public class GdiTextLayoutBackendHandler : TextLayoutBackendHandler {
+        
         public override void SetWidth (object backend, double value) {
             var tl = (GdiTextLayoutBackend) backend;
             tl.Width = value;
@@ -66,9 +67,26 @@ namespace Xwt.GdiBackend {
             return tl.Size;
         }
 
+        private static System.Drawing.Graphics _deviceContext = null;
+        public static System.Drawing.Graphics DeviceContext {
+            get {
+                
+                if (_deviceContext == null) {
+                    _deviceContext =
+                        System.Drawing.Graphics.FromImage (
+                        new System.Drawing.Bitmap (1000, 1000,
+                            System.Drawing.Imaging.PixelFormat.Format32bppArgb));
+                    GdiConverter.SetQuality (_deviceContext, GdiConverter.DrawTextHighQuality);
+                }
+                return _deviceContext;
+            }
+            set { _deviceContext = value; }
+        }
 
         public override object Create () {
-            return new GdiTextLayoutBackend () { WrapMode = WrapMode.Word };
+            var result = new GdiTextLayoutBackend () { WrapMode = WrapMode.Word };
+            result.Context = new GdiContext (DeviceContext);
+            return result;
         }
         
         public override object Create (Context context) {
@@ -95,12 +113,14 @@ namespace Xwt.GdiBackend {
 
         public override double GetBaseline(object backend)
         {
-            throw new NotImplementedException();
+            var tl = (GdiTextLayoutBackend)backend;
+            return tl.Baseline;
         }
 
         public override double GetMeanline(object backend)
         {
-            throw new NotImplementedException();
+            var tl = (GdiTextLayoutBackend)backend;
+            return tl.Meanline;
         }
     }
 }

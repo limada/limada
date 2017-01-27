@@ -23,27 +23,30 @@ using Xwt.Backends;
 
 namespace Limaki.View.GdiBackend {
 
-    public class GdiDrawingUtils : IDrawingUtils {
+    public class GdiDrawingUtils : Drawing.XwtBackend.XwtDrawingUtils, IDrawingUtils {
 
-        public virtual Size GetTextDimension(string text, IStyle style) {
+        public override Size GetTextDimension(string text, IStyle style) {
+
+            return base.GetTextDimension (text, style);
+
             return GdiUtils.GetTextDimension(
                 (System.Drawing.Font)style.Font.GetBackend(),
                 text,
                 style.AutoSize.ToGdi());
         }
 
-        public Size GetObjectDimension (object value, IStyle style) {
+        public override Size GetObjectDimension (object value, IStyle style) {
             var result = new Size ();
             if (!DrawingExtensions.TryGetObjectDimension (value, style, out result))
                 return Size.Zero;
             return result;
         }
 
-        public Size ScreenResolution() {
+        public override Size ScreenResolution() {
             return new Size(GdiUtils.DeviceContext.DpiX, GdiUtils.DeviceContext.DpiY);
         }
 
-        public Size Resolution(Context context) {
+        public override Size Resolution(Context context) {
             var ctx = (Xwt.GdiBackend.GdiContext)context.GetBackend();
             if (ctx.Graphics.PageUnit == System.Drawing.GraphicsUnit.Point)
                 return new Size(72, 72);

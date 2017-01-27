@@ -89,11 +89,23 @@ namespace Xwt.GdiBackend {
                     _format.FormatFlags |= SD.StringFormatFlags.NoWrap;
                 else
                     _format.FormatFlags &= ~SD.StringFormatFlags.NoWrap;
+                _format.Alignment = SD.StringAlignment.Near;
+                _format.LineAlignment = SD.StringAlignment.Center;
                 return _format;
             }
         }
 
         public WrapMode WrapMode { get; set; }
 
+        public double Baseline { get {
+                throw new NotImplementedException ();
+            } 
+        }
+
+        public double Meanline {
+            get {
+                throw new NotImplementedException ();
+            }
+        }
     }
 }

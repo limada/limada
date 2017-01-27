@@ -22,8 +22,6 @@ namespace Limaki.View.GdiBackend {
 
     public class GdiUtils {
         
-
-
         public static System.Drawing.Graphics CreateGraphics () {
             return System.Drawing.Graphics.FromImage (
                         new System.Drawing.Bitmap (1, 1,

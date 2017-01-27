@@ -19,6 +19,7 @@ using Xwt.GdiBackend;
 namespace Limaki.View.GdiBackend {
 
     public class GdiSystemFontBackend : SystemFontBackend {
+        
         public override Font CaptionFont { get { return System.Drawing.SystemFonts.CaptionFont.ToXwt(); } }
                 
         public override Font DefaultFont { get { return System.Drawing.SystemFonts.DefaultFont.ToXwt(); } }

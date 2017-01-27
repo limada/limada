@@ -18,7 +18,7 @@ using Xwt;
 using Xwt.Drawing;
 using System;
 
-namespace Limaki.View.XwtBackend {
+namespace Limaki.Drawing.XwtBackend  {
 
     public class XwtDrawingUtils : IDrawingUtils {
 
@@ -26,6 +26,7 @@ namespace Limaki.View.XwtBackend {
         SystemFonts SystemFonts = new SystemFonts ();
 
         public Size GetTextDimension (string text, IStyle style) {
+        public virtual Size GetTextDimension (string text, IStyle style) {
             var result = default (Size);
             if (style == null) {
                 style = new Style ("") { Font = SystemFonts.DefaultFont.WithSize(10) };
@@ -43,19 +44,19 @@ namespace Limaki.View.XwtBackend {
             return result;
         }
 
-        public Size GetObjectDimension (object value, IStyle style) {
+        public virtual Size GetObjectDimension (object value, IStyle style) {
             var result = new Size ();
             if (!DrawingExtensions.TryGetObjectDimension (value, style, out result))
                 return Size.Zero;
             return result;
         }
 
-        public Size ScreenResolution () {
+        public virtual Size ScreenResolution () {
             var f = Desktop.PrimaryScreen.ScaleFactor;
             return  new Size (96*f, 96*f);
         }
 
-        public Size Resolution (Context context) {
+        public virtual Size Resolution (Context context) {
             return new Size (96, 96);
         }
 

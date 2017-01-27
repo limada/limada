@@ -150,6 +150,8 @@ namespace Xwt.GdiBackend {
                                            & ~StringFormatFlags.FitBlackBox
                                            & StringFormatFlags.LineLimit
                     ;
+                defaultStringFormat.Alignment = SD.StringAlignment.Near;
+                defaultStringFormat.LineAlignment = SD.StringAlignment.Center;
             }
             return defaultStringFormat;
         }
