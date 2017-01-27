@@ -2,6 +2,7 @@ using System;
 using Xwt.Backends;
 
 namespace Xwt.Swf.Xwt.SwfBackend {
+    
     public class MenuItemBackend : Backend<MenuItem>, IMenuItemBackend {
         
         public System.Windows.Forms.ToolStripItem MenuItem { get; protected set; }
@@ -52,8 +53,8 @@ namespace Xwt.Swf.Xwt.SwfBackend {
         }
 
         public bool Sensitive {
-            get { return MenuItem.Available; }
-            set { MenuItem.Available = value; }
+            get { return MenuItem.Enabled; }
+            set { MenuItem.Enabled = value; }
         }
 
         public bool UseMnemonic {

@@ -11,6 +11,7 @@ using SD = System.Drawing;
 namespace Xwt.Swf.Xwt.SwfBackend {
 
     public class MenuBackend : Backend<Menu>, IMenuBackend {
+        
         public SWF.MenuStrip Menu { get; protected set; }
 
         internal SWF.ToolStripItemCollection ItemsCollection { get; set; }
