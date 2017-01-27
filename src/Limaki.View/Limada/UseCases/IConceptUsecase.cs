@@ -19,9 +19,8 @@ namespace Limada.UseCases {
     }
 
 	public interface IBackendConceptUseCaseComposer : IComposer<ConceptUsecase> {
-		Vindow MainWindow { get; set; }
-		Size WindowSize { get; set; }
+		IVindow MainWindow { get; set; }
 		Action OnShow { get; set; }
-
+        Action FinalizeCompose { get; set; }
     }
 }

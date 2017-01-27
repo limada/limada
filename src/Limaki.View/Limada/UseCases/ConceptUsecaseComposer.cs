@@ -25,6 +25,7 @@ using Limada.Model;
 using Limaki.View.GraphScene;
 using Limaki.View.Viz.Visualizers.Toolbars;
 using Xwt;
+using System.Linq;
 
 namespace Limada.UseCases {
 
@@ -66,7 +67,9 @@ namespace Limada.UseCases {
             useCase.MarkerToolbar = new MarkerToolbar();
 
             useCase.FileDialogShow = this.FileDialogShow;
-            useCase.Menu = CreateMenu (useCase);
+
+            useCase.Toolbar = new ToolbarPanel ();
+            useCase.Menu = new Menu ();
 
             Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider>();
         }
@@ -121,13 +124,17 @@ namespace Limada.UseCases {
             streamManager.MessageBoxShow = useCase.MessageBoxShow;
             streamManager.Progress = useCase.Progress;
 
-            if (useCase.Toolbar == null) {
-                useCase.Toolbar = new ToolbarPanel ();
-                ComposeToolbar (useCase);
+            ComposeMenu (useCase);
+
+            ComposeToolbar (useCase);
+
+            if (useCase.ExportAsImage == null) {
+                useCase.ExportAsImage = () => {
+                    useCase.ExportAsImageImpl (useCase);
+                };
             }
-            if (useCase.Menu == null) {
-                useCase.Menu = CreateMenu (useCase);
-            }
+
+            useCase.About.ApplicationName = useCase.UseCaseTitle;
         }
 
         public virtual void ComposeToolbar (ConceptUsecase useCase) {
@@ -144,51 +151,48 @@ namespace Limada.UseCases {
             );
         }
 
-        protected virtual Menu CreateMenu (ConceptUsecase useCase) {
-            var menu = new Menu ();
-
+        protected virtual void ComposeMenu (ConceptUsecase useCase) {
+            
+            var menu = useCase.Menu;
+            menu.Font = SystemFonts.Fonts.MenuFont;
             var l = new Localizer ();
-            menu.AddItems (
 
+            var menuItems = new MenuItem [] {
             new MenuItem (l["File"], null, null, new MenuItem[] {
-                new MenuItem(l["Open ..."], null, (s, e) => { useCase.OpenFile(); }),
-                new MenuItem(l["Save"], null, (s, e) => { useCase.SaveFile(); }),
-                new MenuItem(l["SaveAs ..."], null, (s, e) => { useCase.SaveAsFile(); }),
+                new MenuItem(l["Open ..."], null, (s, e) =>  useCase.OpenFile() ),
+                new MenuItem(l["Save"], null, (s, e) => useCase.SaveFile() ),
+                new MenuItem(l["SaveAs ..."], null, (s, e) =>  useCase.SaveAsFile()),
                 new MenuItem(l["Export"], null,null, new MenuItem[] {
-                    new MenuItem(l["current view ..."], null, (s, e) => { useCase.ExportCurrentView(); }),
-                    //TODO: new MenuItem(l["view as image ..."], null, (s, e) => { useCase.ExportAsImage(useCase); }),
-                    new MenuItem(l["Content ..."], null, (s, e) => { useCase.ExportContent(); }),
-                    new MenuItem(l["Report (pdf)..."], null, (s, e) => { useCase.ExportThings(); }),
+                    new MenuItem(l["current view ..."], null, (s, e) => useCase.ExportCurrentView()),
+                    new MenuItem(l["view as image ..."], null, (s, e) => useCase.ExportAsImage?.Invoke()),
+                    new MenuItem(l["Content ..."], null, (s, e) => useCase.ExportContent() ),
+                    new MenuItem(l["Report (pdf)..."], null, (s, e) => useCase.ExportThings()),
                 }),
                 new MenuItem(l["Import"], null, null,new MenuItem[] {
-                    new MenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),
-                    new MenuItem(l["multi content ..."], null, (s, e) => { useCase.ImportGraphCursor(); }),
-                    new MenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportThingGraphRaw(); })
+                    new MenuItem(l["Content ..."], null, (s, e) => useCase.ImportContent()),
+                    new MenuItem(l["multi content ..."], null, (s, e) =>  useCase.ImportGraphCursor()),
+                    new MenuItem(l["File from previous version ..."], null, (s, e) => useCase.ImportThingGraphRaw())
                 }),
                 //TODO: new MenuItem(l["Print ..."], null, (s, e) => { this.Print(useCase); }),
                 //TODO: new MenuItem(l["PrintPreview ..."], null, (s, e) => { this.PrintPreview(useCase); }),
-                new MenuItem(l["Exit"], null, (s, e) => { Application.Exit();}),
+                new MenuItem(l["Exit"], null, (s, e) => Application.Exit()),
             }),
 
             new MenuItem (l["Edit"], null, null, new MenuItem[] {
-                new MenuItem(l["Copy"], null, (s, e) => {
-                    var display = useCase.GetCurrentDisplay();
-                    if (display != null) display.ActionDispatcher.Copy();
-                }),
-                new MenuItem(l["Paste"], null, (s, e) => {
-                    var display = useCase.GetCurrentDisplay();
-                    if (display != null) display.ActionDispatcher.Paste();
-                }),
-#if DEBUG
-                new MenuItem (l["Merge"], null, (s, e) => { useCase.MergeVisual (); }),
-#endif
-                new MenuItem (l["Search"], null, (s, e) => { useCase.Search(); }),
+                    
+                new MenuItem(l["Copy"], null, (s, e) => useCase.GetCurrentDisplay()?.ActionDispatcher?.Copy()),
+                new MenuItem(l["Paste"], null, (s, e) => useCase.GetCurrentDisplay()?.ActionDispatcher?.Paste()),
+
+                new MenuItem (l["Style"], null, null, new MenuItem[] {
+                    useCase.ShowLayoutEditor != null ? new MenuItem(l["Layout"], null, (s, e) => useCase.ShowLayoutEditor()) : null,
+                    useCase.ShowLayoutEditor != null ? new MenuItem(l["StyleSheet"], null, (s, e) =>  useCase.ShowStyleEditor()) : null,
                 }),
 
-            new MenuItem (l["Style"], null, null, new MenuItem[] {
-                //TODO: new MenuItem(l["Layout"], null, (s, e) => { this.ShowLayoutEditor(useCase); }),
-                //TODO: new MenuItem(l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor(useCase); }),
-            }),
+#if DEBUG
+                new MenuItem (l["Merge"], null, (s, e) => useCase.MergeVisual ()),
+#endif
+                new MenuItem (l["Search"], null, (s, e) => useCase.Search() ),
+                }),
 
             new MenuItem (l["Favorites"], null, null, new MenuItem[] {
                 new MenuItem(l["Add to favorites"], null, (s, e) =>
@@ -197,11 +201,13 @@ namespace Limada.UseCases {
                     useCase.FavoriteManager.SetAutoView(useCase.GetCurrentDisplay().Data)),
             }),
 
-            new MenuItem (l["About"], null, (s, e) => {
-                useCase.DoShowAboutWindow ();
-            })
-            );
-            return menu;
+            new MenuItem (l["Help"], null, null, new MenuItem[] {
+                useCase.ShowAboutWindow != null ? new MenuItem (l["About"], null, (s, e) => useCase.ShowAboutWindow ()): null,
+            }),
+
+            };
+            menu.AddItems (menuItems.Where (i => i != null).ToArray());
+
         }
 
         public DialogResult FileDialogShow (FileDialogMemento value, bool open) {

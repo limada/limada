@@ -30,7 +30,7 @@ namespace Limaki.View.GtkBackend {
             
             var backendComposer = BackendComposer as IXwtBackendConceptUseCaseComposer;
 
-            var xwtWindow = backendComposer.MainWindowBackend as Xwt.Window;
+            var xwtWindow = backendComposer.MainWindow.Backend as Xwt.Window;
             ComposeWindow (xwtWindow);
             AddToolbar (xwtWindow, useCase.Toolbar);
 
@@ -46,7 +46,7 @@ namespace Limaki.View.GtkBackend {
             windowBackend.Window.SizeRequested += (s, e) => {
                 var req = e.Requisition;
                 var size = new Xwt.Size (e.Requisition.Width, e.Requisition.Height);
-                Trace.WriteLine ($"{nameof (windowBackend)}.{nameof (windowBackend.Window.SizeRequested)}:{size}");
+                Trace.WriteLine ($"{nameof (windowBackend)}.{nameof (windowBackend.Window.SizeRequested)}:\t{size}");
                 req.Width = (int)minSize.Width;
                 e.Requisition = req;
             };

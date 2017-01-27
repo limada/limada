@@ -39,6 +39,8 @@ namespace Limada.Usecases {
 
     public class SwfConceptUseCaseComposer : IBackendConceptUseCaseComposer {
 
+        public IVindow MainWindow { get; set; }
+
         public Form Mainform { get { return MainWindow.Backend.ToSwf() as Form; } }
 
         public ToolStripContainer ToolStripContainer { get; set; }
@@ -47,13 +49,14 @@ namespace Limada.Usecases {
         public ToolStripStatusLabel StatusLabel { get; set; }
         public StatusStrip StatusStrip { get; set; }
 
-        public Vindow MainWindow { get; set; }
 
         public Xwt.Size WindowSize { get; set; }
 
         public Action OnShow { get; set; }
 
         public Xwt.Menu Menu { get; set; }
+
+        public Action FinalizeCompose { get; set; }
 
         public void Factor (ConceptUsecase useCase) {
 
@@ -111,9 +114,9 @@ namespace Limada.Usecases {
            
             useCase.Progress = (m, i, count) => {
                 if (i == -1 && count == -1)
-                    this.StatusLabel.Text = m;
+                    StatusLabel.Text = m;
                 else
-                    this.StatusLabel.Text = string.Format(m, i, count);
+                    StatusLabel.Text = string.Format(m, i, count);
                 Application.DoEvents ();
             };
 
@@ -130,6 +133,11 @@ namespace Limada.Usecases {
                 AboutForm.ShowDialog ();
             };
 
+            useCase.ExportAsImage = () => ExportAsImage (useCase);
+            useCase.ShowStyleEditor = () => ShowStyleEditor (useCase);
+            useCase.ShowLayoutEditor= () => ShowLayoutEditor (useCase);
+
+            FinalizeCompose += () => Compose2 (useCase);
         }
 
         /// <summary>
@@ -147,9 +155,7 @@ namespace Limada.Usecases {
                 .Cast<Limaki.View.IVidget> ()
                 .Select (v => v.ToSwf () as ToolStrip).ToArray ();
 
-            var utils = new ToolStripUtils {
-                ToolStripItemSelectedColor = Color.White,
-            };
+            var utils = new ToolStripUtils { ToolStripItemSelectedColor = Color.White };
 
             utils.InitializeToolstrips (
                 this.ToolStripContainer.TopToolStripPanel,
@@ -164,18 +170,7 @@ namespace Limada.Usecases {
                 new ToolStripMenuItem (l["Print ..."], null, (s, e) => { this.Print (useCase); }),
                 new ToolStripMenuItem (l["PrintPreview ..."], null, (s, e) => { this.PrintPreview (useCase); }),
             };
-#if DEBUG
-            var addToEdit = new ToolStripMenuItem[] {
-                new ToolStripMenuItem (l["Merge"], null, (s, e) => { useCase.MergeVisual (); }),
-            };
-#endif
-            var addToStyle = new ToolStripMenuItem[] {
-                new ToolStripMenuItem (l["Layout"], null, (s, e) => { this.ShowLayoutEditor (useCase); }),
-                new ToolStripMenuItem (l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor (useCase); }),
-            };
 
-            var addToCurrentView = new ToolStripMenuItem (l["view as image ..."], null,
-                (s, e) => { this.ExportAsImage (useCase); });
         }
 
         public void ComposeMenus (ConceptUsecase useCase) {
@@ -183,15 +178,14 @@ namespace Limada.Usecases {
             if (useCase.Menu == null)
                 return;
 
-            ComposeAdditionalMenus (useCase);
+            // ComposeAdditionalMenus (useCase);
 
             var menuBackend = useCase.Menu.GetBackend () as Xwt.Swf.Xwt.SwfBackend.MenuBackend;
             if (menuBackend != null) {
                 MenuStrip = menuBackend.Menu;
             }
-            
-            var font = SystemFonts.MenuFont;
-            MenuStrip.Font = font;
+
+            var font = MenuStrip.Font;
 
             Action<ToolStripMenuItem> setFont = null;
             setFont = (item) => {
@@ -240,7 +234,7 @@ namespace Limada.Usecases {
             editor.Dock = DockStyle.Fill;
             editor.SelectedObject = useCase.GetCurrentDisplay ().Layout;
             editor.PropertyValueChanged += (s1, e1) => {
-                useCase.OnDisplayStyleChanged (s1, new EventArgs<IStyle> (null));
+                useCase.DisplayStyleChanged?.Invoke (s1, new EventArgs<IStyle> (null));
             };
 
             options.SuspendLayout ();
@@ -259,14 +253,14 @@ namespace Limada.Usecases {
             options.Show ();
         }
 
-        public Options ComposeStyleEditor (IEnumerable<IStyle> styles, EventHandler<EventArgs<IStyle>> styleChanged) {
+        public Options ComposeStyleEditor (IEnumerable<IStyle> styles, Action<object,EventArgs<IStyle>> styleChanged) {
             options = new Options ();
             options.ApplyButton.Visible = false;
 
             var editor = new StyleEditor ();
             editor.Dock = DockStyle.Fill;
 
-            editor.PropertyValueChanged += styleChanged;
+            editor.PropertyValueChanged += (s, e) => styleChanged?.Invoke (s,e);
 
             options.OptionChanger = editor;
 
@@ -300,7 +294,7 @@ namespace Limada.Usecases {
         }
 
         private void ShowStyleEditor (ConceptUsecase useCase) {
-            var options = ComposeStyleEditor (useCase.GetCurrentDisplay ().StyleSheet.Styles, useCase.OnDisplayStyleChanged);
+            var options = ComposeStyleEditor (useCase.GetCurrentDisplay ().StyleSheet.Styles, useCase.DisplayStyleChanged);
             options.Show ();
         }
 

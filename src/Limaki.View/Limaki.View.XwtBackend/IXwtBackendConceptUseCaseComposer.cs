@@ -10,7 +10,6 @@ namespace Limaki.View.XwtBackend {
 
     public interface IXwtBackendConceptUseCaseComposer : IBackendConceptUseCaseComposer {
 		
-        IVindowBackend MainWindowBackend { get; set; }
         Label StatusLabel { get; set; }
 
     }

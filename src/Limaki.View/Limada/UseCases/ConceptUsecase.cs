@@ -31,16 +31,14 @@ using Xwt;
 using Limaki.Usecases.Vidgets;
 using Limaki.View.Viz.Mesh;
 using Limaki.View.Viz.Visualizers.Toolbars;
+using Limaki.View.Viz.Visualizers;
+using Xwt.Drawing;
 
 namespace Limada.UseCases {
 	
     public class ConceptUsecase : IDisposable, IProgress, IConceptUsecase {
 
-        protected string _useCaseTitle = "limada::concept";
-        public string UseCaseTitle {
-            get { return _useCaseTitle; }
-            set { _useCaseTitle = value; }
-        }
+        public string UseCaseTitle { get; set; } = "limada::concept";
 
         public virtual IVindow MainWindow { get; set; }
 
@@ -66,12 +64,7 @@ namespace Limada.UseCases {
         
         public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
 
-        public event EventHandler<EventArgs<IStyle>> DisplayStyleChanged = null;
-        public void OnDisplayStyleChanged (object sender, EventArgs<IStyle> arg) {
-            if (DisplayStyleChanged != null) {
-                DisplayStyleChanged (sender, arg);
-            }
-        }
+        public Action<object, EventArgs<IStyle>> DisplayStyleChanged { get; set; }
 
         public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }
 
@@ -79,6 +72,9 @@ namespace Limada.UseCases {
 
         public Action ApplicationQuit { get; set; }
         public bool ApplicationQuitted { get; set; }
+
+        About _about = null;
+        public virtual About About { get { return _about ?? (_about = Registry.Pooled<About> ()); } }
 
 #region Open/Save
 
@@ -262,8 +258,28 @@ namespace Limada.UseCases {
         }
 
         public Action ShowAboutWindow { get;set;}
-        public virtual void DoShowAboutWindow () {
-            ShowAboutWindow?.Invoke();
+        public Action ShowLayoutEditor { get; set; }
+        public Action ShowStyleEditor { get; set; }
+        public Action ExportAsImage { get; set; }
+               
+        public void ExportAsImageImpl (ConceptUsecase useCase) {
+            var currentDisplay = useCase.GetCurrentDisplay ();
+            if (currentDisplay != null && currentDisplay.Data != null) {
+                var saveFileDialog = new FileDialogMemento {
+                    DefaultExt = "png",
+                    Filter = "PNG-Image|*.png|All Files|*.*",
+                };
+
+                if (useCase.FileDialogShow (saveFileDialog, false) == DialogResult.Ok) {
+                    var image =
+                        new ImageExporter (currentDisplay.Data, currentDisplay.Layout) { StyleSheet = currentDisplay.StyleSheet }
+                            .ExportImage ();
+                    if (image != null) {
+                        image.Save (saveFileDialog.FileName, ImageFileType.Png);
+                        image.Dispose ();
+                    }
+                }
+            }
         }
 
         public virtual void Dispose () {

@@ -23,6 +23,7 @@ using Limaki.Usecases;
 using Limaki.View.XwtBackend;
 using Xwt;
 using System.Diagnostics;
+using Limaki.View.Vidgets;
 
 namespace Limaki.View.XwtBackend {
 
@@ -76,16 +77,14 @@ namespace Limaki.View.XwtBackend {
             Action onShow = null;
             if (true) {
                 var composer = CreateUseCase ();
-                window = composer.MainWindowBackend as Window;
-                if (composer.OnShow != null)
-                    onShow += composer.OnShow;
+                window = composer.MainWindow.Backend as Window;
+                onShow += composer?.OnShow;
             } else {
                 window = new PrototypeWindow ().Composed ();
             }
 
             window.Show ();
-            if (onShow != null)
-                onShow ();
+            onShow?.Invoke ();
 
             MessageDialog.RootWindow = window;
             Application.UnhandledException += (s, e) =>
@@ -98,21 +97,30 @@ namespace Limaki.View.XwtBackend {
             Application.Dispose ();
         }
 
+
         protected virtual IXwtBackendConceptUseCaseComposer CreateUseCase () {
-			
-			Limaki.Iconerias.Iconery.Compose ();
+
+            var vindow = new Vindow (new MainWindowBackend());
+
+            var mainWindowBackend = vindow.Backend as MainWindowBackend;
+			Iconerias.Iconery.Compose ();
+            mainWindowBackend.Icon = Iconerias.Iconery.LimadaLogo;
+            mainWindowBackend.Size = new Size (800, 600);
+            mainWindowBackend.Padding = 2;
+
             var backendComposer = Registry.Create<IXwtBackendConceptUseCaseComposer> ();
-            backendComposer.MainWindowBackend = new MainWindowBackend {
-                Icon = Limaki.Iconerias.Iconery.LimadaLogo
-            };
-            backendComposer.WindowSize = new Size (800, 600);
+            backendComposer.MainWindow = vindow;
 
             var factory = new UsecaseFactory<ConceptUsecase> ();
             factory.Composer = new ConceptUsecaseComposer ();
             factory.BackendComposer = backendComposer;
 
             var useCase = factory.Create ();
+            useCase.MainWindow = vindow;
+
             factory.Compose (useCase);
+
+            backendComposer.FinalizeCompose?.Invoke ();
 
             CallPlugins (factory, useCase);
 

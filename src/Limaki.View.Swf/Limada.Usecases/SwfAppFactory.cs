@@ -39,10 +39,11 @@ namespace Limada.Usecases {
             var vindow = new Vindow ();
 
             var mainform = vindow.Backend.ToSwf() as Form;
+            Xwt.SwfBackend.SwfEngine.SwfApplicationContext.MainForm = mainform;
 
+            Limaki.Iconerias.Iconery.Compose ();
             mainform.Icon = Limaki.View.Properties.GdiIconery.LimadaIcon;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
-            Xwt.SwfBackend.SwfEngine.SwfApplicationContext.MainForm = mainform;
               
             var backendComposer = new SwfConceptUseCaseComposer { 
                 MainWindow = vindow
@@ -53,9 +54,11 @@ namespace Limada.Usecases {
             factory.BackendComposer = backendComposer;
             
             var useCase = factory.Create();
+            useCase.MainWindow = vindow;
+
             factory.Compose(useCase);
 
-            backendComposer.Compose2 (useCase);
+            backendComposer.FinalizeCompose?.Invoke ();
 
             CallPlugins(factory, useCase);
             

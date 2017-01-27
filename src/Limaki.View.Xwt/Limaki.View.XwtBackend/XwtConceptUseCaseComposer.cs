@@ -23,40 +23,26 @@ using Xwt;
 using Xwt.Drawing;
 using Limada.View.ContentViewers;
 using Limaki.Usecases;
+using System.Linq;
 
 namespace Limaki.View.XwtBackend {
    
     public class XwtConceptUseCaseComposer : IXwtBackendConceptUseCaseComposer {
 
-		public Vindow MainWindow { get; set; }
-        public IVindowBackend MainWindowBackend { get; set; }
+		public IVindow MainWindow { get; set; }
 
         public Label StatusLabel { get; set; }
-        public Size WindowSize { get; set; }
         public Action OnShow { get; set; }
 
         public Vindow AboutWindow { get; set; }
-        public IVindowBackend AboutWindowBackend { get; set; }
+
+        public Action FinalizeCompose { get; set; }
 
         public virtual void Factor (ConceptUsecase useCase) {
-			
-			if (MainWindow == null) { 
-				MainWindow = new Vindow (MainWindowBackend);
-			}
-			if (MainWindowBackend == null)
-				MainWindowBackend = MainWindow.Backend;
-			
+
             if (AboutWindow == null) { 
                 AboutWindow = new Vindow ();
             }
-            if (AboutWindowBackend == null)
-                AboutWindowBackend = AboutWindow.Backend;
-            
-			useCase.MainWindow = MainWindow;
-
-			var mainWindowBackend = MainWindowBackend as Window;
-            mainWindowBackend.Size = WindowSize;
-            mainWindowBackend.Padding = 2;
                 
             var splitViewBackend = useCase.SplitView.Backend.ToXwt();
 
@@ -74,14 +60,14 @@ namespace Limaki.View.XwtBackend {
             box.PackStart(splitViewBackend, true);
             box.PackEnd(StatusLabel);
 
-            mainWindowBackend.Content = box;
+            (MainWindow.Backend as Window).Content = box;
 
             OnShow += () => (splitViewBackend as Paned).PositionFraction = 0.50;// WindowSize.Width / 2;
         }
 
         public virtual void Compose (ConceptUsecase useCase) {
 
-            var mainWindowBackend = MainWindowBackend as Window;
+            var mainWindowBackend = MainWindow.Backend as Window;
             mainWindowBackend.MainMenu = useCase.Menu;
             useCase.DataPostProcess =
                dataName => mainWindowBackend.Title = dataName + " - " + useCase.UseCaseTitle;
@@ -121,12 +107,12 @@ namespace Limaki.View.XwtBackend {
 
             if (MarkdownContentViewer.Available ())
                 viewerProvider.Add (new MarkdownContentViewer ());
-
-            ComposeAbout (AboutWindow);
-
+            
             useCase.ShowAboutWindow = () => {
+                ComposeAbout (AboutWindow);
                 AboutWindow.Show ();
             };
+
         }
 
         About _about = null;
@@ -135,42 +121,44 @@ namespace Limaki.View.XwtBackend {
         void ComposeAbout (IVindow window) {
             
             var backend = window.Backend as Window;
-            backend.Padding = 2;
+            backend.Title = $"about {About.ApplicationName}";
 
-            var aboutLabel = new Label {
+            VBox box = null;
+            Label aboutLabel = null;
+
+            if (backend.Content != null) {
+                box = backend.Content as VBox;
+                if (box != null) {
+                    aboutLabel = box.Children.FirstOrDefault (c => c.Name == nameof (aboutLabel)) as Label;
+                    if (aboutLabel != null) {
+                        aboutLabel.Text = About.ToString ();
+                    }
+                }
+                return;
+            };
+
+            backend.CloseRequested += (s, e)=>{
+                e.AllowClose = false;
+                backend.Hide ();
+            };
+
+            backend.Padding = 2;
+            backend.TransientFor = MainWindow.Backend as Window;
+
+            aboutLabel = new Label {
+                Name = nameof(aboutLabel),
                 Text = About.ToString(),
                 TextColor = Colors.Black,
                 TextAlignment = Alignment.Start,
             };
 
-            var box = new VBox {
+            box = new VBox {
                 Spacing = 2
             };
 
             box.PackStart (aboutLabel);
             backend.Content = box;
 
-        }
-
-       
-        private void ExportAsImage (ConceptUsecase useCase) {
-            var currentDisplay = useCase.GetCurrentDisplay();
-            if (currentDisplay != null && currentDisplay.Data != null) {
-                var saveFileDialog = new FileDialogMemento {
-                    DefaultExt = "png",
-                    Filter = "PNG-Image|*.png|All Files|*.*",
-                };
-
-                if (useCase.FileDialogShow(saveFileDialog, false) == DialogResult.Ok) {
-                    var image =
-                        new ImageExporter(currentDisplay.Data, currentDisplay.Layout) { StyleSheet = currentDisplay.StyleSheet }
-                            .ExportImage();
-                    if (image != null) {
-                        image.Save(saveFileDialog.FileName, ImageFileType.Png);
-                        image.Dispose();
-                    }
-                }
-            }
         }
 
         [TODO]
