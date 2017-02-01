@@ -192,8 +192,8 @@ namespace Limaki.Contents.IO {
                 }
                 if (description != null)
                     sink.Description = description;
-                if (description == plainText)
-                    sink.Data = null;
+                //if (description == plainText)
+                //    sink.Data = null;
 
             } catch (Exception e) {
                 throw e;
