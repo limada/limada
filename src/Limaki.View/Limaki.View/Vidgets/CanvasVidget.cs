@@ -18,9 +18,7 @@ using Xwt.Backends;
 using Xwt.Drawing;
 
 namespace Limaki.View.Vidgets {
-
-
-
+    
     [BackendType(typeof(ICanvasVidgetBackend))]
     public class CanvasVidget : Vidget, ICanvasVidget {
 
@@ -43,23 +41,6 @@ namespace Limaki.View.Vidgets {
         protected virtual void OnDraw (ContextEventArgs e) {
             if (Draw != null)
                 Draw(this, e);
-        }
-
-        /// <summary>
-        /// Invalidates and forces the redraw of the whole area of the widget
-        /// </summary>
-        public virtual void QueueDraw () {
-            Backend.QueueDraw();
-        }
-
-        /// <summary>
-        /// Invalidates and forces the redraw of a rectangular area of the widget
-        /// </summary>
-        /// <param name='rect'>
-        /// Area to invalidate
-        /// </param>
-        public virtual void QueueDraw (Rectangle rect) {
-            Backend.QueueDraw(rect);
         }
 
         #endregion
