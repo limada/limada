@@ -24,6 +24,7 @@ namespace Limaki.View.GraphScene {
         void Flush (IGraphScene<TSinkItem, TSinkEdge> scene);
         
         void MergeVisual (IGraphScene<TSinkItem, TSinkEdge> scene);
+        void RevertEdges (IGraphScene<TSinkItem, TSinkEdge> scene);
     }
 
     public interface ISceneViz<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>: ISceneViz<TSinkItem, TSinkEdge>

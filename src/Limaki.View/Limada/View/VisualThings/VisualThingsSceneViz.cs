@@ -192,5 +192,19 @@ namespace Limada.View.VisualThings {
             scene.Requests.Add (new DeleteCommand<IVisual, IVisualEdge> (sweep, scene));
 
         }
+
+        public void RevertEdges (IGraphScene<IVisual, IVisualEdge> scene) {
+
+            var edges = scene.Selected.Elements.OfType<IVisualEdge> ().ToArray ();
+            if (edges.Count () == 0)
+                return;
+            
+            foreach (var edge in edges){
+                scene.Graph.RevertEdge (edge);
+                scene.Graph.OnGraphChange (scene.Graph, new GraphChangeArgs<IVisual, IVisualEdge> (scene.Graph, edge, GraphEventType.Update));
+                scene.Requests.Add (new LayoutCommand<IVisual> (edge, LayoutActionType.Justify));
+            }
+            
+        }
     }
 }

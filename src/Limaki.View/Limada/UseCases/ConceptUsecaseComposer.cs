@@ -190,6 +190,7 @@ namespace Limada.UseCases {
 
 #if DEBUG
                 new MenuItem (l["Merge"], null, (s, e) => useCase.MergeVisual ()),
+                new MenuItem (l["Revert link"], null, (s, e) => useCase.RevertEdges ()),
 #endif
                 new MenuItem (l["Search"], null, (s, e) => useCase.Search() ),
                 }),

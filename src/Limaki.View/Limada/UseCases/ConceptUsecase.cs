@@ -208,6 +208,21 @@ namespace Limada.UseCases {
             }
         }
 
+        public virtual void RevertEdges () {
+
+            try {
+                var display = GetCurrentDisplay ();
+                if (display != null) {
+                    
+                    Registry.Create<ISceneViz<IVisual, IVisualEdge>> ().RevertEdges (display.Data);
+                    display.Perform ();
+
+                }
+            } catch (Exception ex) {
+                Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
+            }
+        }
+
         public virtual void RefreshCompression () {
             try {
                 var rfcThingGraph = GetCurrentDisplay ().Data.Graph.ThingGraph ();
