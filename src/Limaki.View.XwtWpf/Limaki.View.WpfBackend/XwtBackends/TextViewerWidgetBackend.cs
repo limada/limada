@@ -27,6 +27,7 @@ using Xwt.WPFBackend;
 using SWM = System.Windows.Media;
 using SW = System.Windows;
 using System.Linq;
+using System.Text;
 
 namespace Limaki.View.WpfBackend {
 
@@ -76,15 +77,23 @@ namespace Limaki.View.WpfBackend {
         }
 
         public void Load (Stream stream, TextViewerTextType textType) {
-            new TextRange (TextBox.Document.ContentStart, TextBox.Document.ContentEnd)
-                .Load (stream, textType.ToWpf());
+            var format = textType.ToWpf ();
+            if (format == SW.DataFormats.UnicodeText) {
+                var reader = new StreamReader (stream, textType == TextViewerTextType.UnicodePlainText ? Encoding.Unicode : Encoding.ASCII);
+                var text = reader.ReadToEnd ();
+                TextBox.Document.Blocks.Clear ();
+                TextBox.Document.Blocks.Add (new Paragraph(new Run(text)));
+            } else {
+                new TextRange (TextBox.Document.ContentStart, TextBox.Document.ContentEnd)
+                    .Load (stream, format);
+            }
+
             Modified = false;
             TextBox.Selection.Select (TextBox.Document.ContentStart, TextBox.Document.ContentStart);
         }
 
         public void Clear () {
-            new TextRange (TextBox.Document.ContentStart, TextBox.Document.ContentEnd)
-                .Text = string.Empty;
+            TextBox.Document.Blocks.Clear ();
         }
 
         private bool _showFrame = true;

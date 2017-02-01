@@ -22,7 +22,7 @@ namespace Limaki.View.WpfBackend {
             if (value == TextViewerTextType.PlainText)
                 return DataFormats.OemText;
             if (value == TextViewerTextType.UnicodePlainText)
-                return DataFormats.Text;
+                return DataFormats.UnicodeText;
             if (value == TextViewerTextType.RichText)
                 return DataFormats.Rtf;
             return null;
