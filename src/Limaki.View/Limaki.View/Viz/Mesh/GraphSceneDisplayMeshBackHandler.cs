@@ -232,6 +232,8 @@ namespace Limaki.View.Viz.Mesh {
                             if (backItem is TSourceEdge && sinkItem is TSinkEdge) {
 
                                 SceneEdgeChanged (graph, (TSourceEdge)backItem, scene, (TSinkEdge)sinkItem);
+                                if (visible)
+                                    displays.Add (DisplayOf (scene));
 
                             } else {
 
@@ -261,7 +263,10 @@ namespace Limaki.View.Viz.Mesh {
                 visit (backItem);
 
                 displays.Where (display => display != null)
-                    .ForEach (display => display.Perform ());
+                        .ForEach (display => {
+                            display.Perform ();
+                            Xwt.Application.MainLoop.QueueExitAction (() => display.QueueDraw ());
+                });
 
                 Action<TSourceItem> visitAfter = sourceItem => {
                     foreach (var scene in scenes) {
@@ -280,6 +285,8 @@ namespace Limaki.View.Viz.Mesh {
                 };
 
                 visitAfter (backItem);
+
+                Xwt.Application.MainLoop.DispatchPendingEvents ();
 
             } catch (Exception ex) {
                 Trace.TraceError (ex.Message);
