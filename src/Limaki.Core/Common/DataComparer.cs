@@ -20,6 +20,7 @@ namespace Limaki.Common {
     public abstract class DataComparer<T> : Comparer<T> {
 
         public virtual int CompareObjects(object aData, object bData) {
+            
             if (aData == null && bData == null)
                 return 0;
 
@@ -47,5 +48,18 @@ namespace Limaki.Common {
         }
 
         protected abstract object GetData(T item);
+    }
+
+    public interface IDataComparer<T> : IComparer<T> { 
+    }
+
+    public class DataComparer<T, K> : Comparer<T>, IDataComparer<T> {
+
+        public Comparer<K> KeyComparer { get; set; }
+
+        public Func<T, K> Key { get; set; }
+
+        public override int Compare (T x, T y) => KeyComparer.Compare (Key (x), Key (y));
+
     }
 }
