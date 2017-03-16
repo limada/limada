@@ -50,7 +50,8 @@ namespace Limaki.Contents.IO {
             var isUnicode = TextHelper.IsUnicode(buffer); 
             if (isUnicode)
                return ContentSpecs.First(t => t.ContentType == ContentTypes.Text);
-
+            else
+                return ContentSpecs.First (t => t.ContentType == ContentTypes.ASCII);
             return null;
 
         }
