@@ -28,5 +28,11 @@ namespace Limaki.Graphs {
         public TItem Node { get; set; }
         public TItem Path { get; set; }
         public int Level { get; set; }
+
+        public override string ToString () {
+            return $"{{Node={Node} Path={Path} Level={Level}}}";
+        }
     }
+
+
 }
