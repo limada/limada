@@ -218,16 +218,6 @@ namespace Limaki.View.GraphScene {
 
         }
 
-        public class LevelItemComparer<T> : Comparer<LevelItem<T>> {
-            public virtual DataComparer<T> OrderBy { get; set; }
-            public override int Compare (LevelItem<T> x, LevelItem<T> y) {
-                if (x.Level == y.Level) {
-                    return OrderBy.Compare (x.Node, y.Node);
-                }
-                return x.Level.CompareTo (y.Level);
-            }
-        }
-
         public virtual void Expand (bool deep) {
             var scene = this.Scene;
             if (scene.Selected.Count > 0) {
