@@ -202,8 +202,7 @@ namespace Limada.Tests.ThingGraphs {
 
             pair.Remove(testEntity); // Java
 
-            var walker1 = new Walker<IThing, ILink>(pair.Source);
-            foreach (var item in walker1.DeepWalk(testThing4, 0)) {
+            foreach (var item in pair.Source.Walk().DeepWalk(testThing4, 0)) {
                 var thing = item.Node;
                 Assert.AreNotEqual(thing, testThing);
                 if (thing is ILink) {
@@ -213,8 +212,8 @@ namespace Limada.Tests.ThingGraphs {
                 }
             }
 
-            var walker = new Walker<IGraphEntity, IGraphEdge>(pair);
-            foreach (var item in walker.DeepWalk(testItem4, 0)) {
+
+            foreach (var item in pair.Walk().DeepWalk(testItem4, 0)) {
                 var thing = item.Node;
                 Assert.AreNotEqual(thing, testEntity);
                 if (thing is IGraphEdge) {

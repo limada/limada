@@ -179,16 +179,16 @@ namespace Limaki.Graphs {
 
             if (graph != null) {
                 var graphroots = new List<Pair<TItem, int>>();
-                var walker = new Walker<TItem, TEdge>(graph);
+                var walk = graph.Walk();
 
                 var focusedroot = default(Pair<TItem, int>);
 
                 foreach (var item in graph) {
-                    if (!walker.Visited.Contains(item)) {
+                    if (!walk.Visited.Contains(item)) {
                         bool selected = false;
                         int count = 0;
                         var root = new Pair<TItem, int>(item, int.MaxValue);
-                        foreach (var levelItem in walker.DeepWalk(item, 0)) {
+                        foreach (var levelItem in walk.DeepWalk(item, 0)) {
                             if (!(levelItem.Node is IEdge<TItem>)) {
                                 count = graph.InEdgeCount(levelItem.Node);
                                 if (root.Two > count) {

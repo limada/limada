@@ -21,6 +21,7 @@ namespace Limaki.Graphs {
 
     public static class GraphExtensions {
 
+    
         public static string EdgeString<TItem, TEdge>(TEdge edge)
             where TEdge : IEdge<TItem> {
             string root = string.Empty;
@@ -73,14 +74,14 @@ namespace Limaki.Graphs {
                     else
                         sink.Add(i);
                 };
-                Walker<TItem, TEdge> walker = new Walker<TItem, TEdge>(source);
-                foreach (TItem item in source) {
-                    if (!walker.Visited.Contains(item)) {
+                var walk = source.Walk();
+                foreach (var item in source) {
+                    if (!walk.Visited.Contains(item)) {
                         state(item);
                         if (checkItem(item) && (whereItem == null || whereItem(item))) {
                             merge(item);
                         }
-                        foreach (LevelItem<TItem> levelItem in walker.DeepWalk(item, 0)) {
+                        foreach (var levelItem in walk.DeepWalk(item, 0)) {
                             state(levelItem.Node);
                             if (levelItem.Node is TEdge) {
                                 var edge = (TEdge) levelItem.Node;
@@ -133,23 +134,12 @@ namespace Limaki.Graphs {
             return graph;
         }
 
-        public static TItem Adjacent<TItem> (this IEdge<TItem> edge, TItem item)  {
-            if (edge != null) {
-                if (edge.Root.Equals (item))
-                    return edge.Leaf;
-                else if (edge.Leaf.Equals (item))
-                    return edge.Root;
-                else
-                    return default (TItem);
-            } else {
-                return default (TItem);
 
-            }
-        }
-        
         public static void OnGraphChange<TItem, TEdge> (this IGraph<TItem, TEdge> graph, TItem item, GraphEventType eventType)
         where TEdge : IEdge<TItem> {
             graph.OnGraphChange (graph, new GraphChangeArgs<TItem, TEdge> (graph, item, eventType));
         }
+
+
     }
 }

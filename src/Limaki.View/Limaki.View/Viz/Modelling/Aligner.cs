@@ -92,7 +92,7 @@ namespace Limaki.View.Viz.Modelling {
             if (itemCache.Count == 0)
                 return;
 
-            var walk = new Walker<TItem, TEdge> (this.Graph).DeepWalk (root, 1)
+            var walk = this.Graph.Walk().DeepWalk (root, 1)
                 .Where (l => !(l.Node is TEdge) && itemCache.Contains (l.Node))
                 .ToArray ();
 

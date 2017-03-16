@@ -326,7 +326,7 @@ namespace Limada.UseCases.Cms {
         /// <param name="thing"></param>
         /// <returns></returns>
         public IEnumerable<IThing> Leafs (IThing thing) {
-            return new Walker<IThing, ILink> (ThingGraph)
+            return ThingGraph.Walk()
                  .ExpandWalk (thing, 0, Walk.Leafs<IThing, ILink> ())
                  .Where (item => !(item.Node is ILink || item.Node == thing))
                  .Select (item => item.Node);
@@ -339,7 +339,7 @@ namespace Limada.UseCases.Cms {
         /// <param name="thing"></param>
         /// <returns></returns>
         public IEnumerable<IThing> Roots (IThing thing) {
-            return new Walker<IThing, ILink> (ThingGraph)
+            return ThingGraph.Walk()
                 .ExpandWalk (thing, 0, Walk.Roots<IThing, ILink> ())
                 .Where (item => !(item.Node is ILink || item.Node == thing))
                 .Select (item => item.Node);

@@ -53,8 +53,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             thing = schemaGraph.DescribedThing (description);
             Assert.AreEqual(described, thing);
 
-            Walker<IThing, ILink> walker = new Walker<IThing, ILink>(Graph);
-            foreach (var item in walker.DeepWalk(described, 0)) {
+            foreach (var item in Graph.Walk().DeepWalk(described, 0)) {
                 Assert.IsFalse(item.Node.Equals(descriptionLink));
                 Assert.IsFalse(item.Node.Equals(description));
             }

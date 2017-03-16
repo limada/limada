@@ -29,8 +29,8 @@ namespace Limada.Tests.ThingGraphs {
 
         public void IsRemoved<TItem, TEdge>(IGraph<TItem, TEdge> dataSource, TItem root, TItem removed)
         where TEdge : IEdge<TItem>, TItem {
-            var walker = new Walker<TItem, TEdge>(dataSource);
-            foreach (var level in walker.DeepWalk(root, 0)) {
+
+            foreach (var level in dataSource.Walk().DeepWalk(root, 0)) {
                 var item = level.Node;
                 Assert.AreNotEqual(item, removed);
                 if (item is TEdge) {
@@ -73,9 +73,9 @@ namespace Limada.Tests.ThingGraphs {
         /// <returns></returns>
         public int Expand<TItem, TEdge>(IGraph<TItem, TEdge> dataSource, TItem root)
         where TEdge : IEdge<TItem>, TItem {
+
             int result = 0;
-            Walker<TItem, TEdge> walker = new Walker<TItem, TEdge>(dataSource);
-            foreach (LevelItem<TItem> level in walker.DeepWalk(root, 0)) {
+            foreach (var level in dataSource.Walk().DeepWalk(root, 0)) {
                 result += level.Level; // do something here
             }
             return result;
@@ -122,8 +122,7 @@ namespace Limada.Tests.ThingGraphs {
             programming.one = pairOne.Get(programming.thing); // Programming
 
             // expand viewOne:
-            var walker = new Walker<IVisual, IVisualEdge>(pairOne);
-            foreach (var item in walker.DeepWalk(programming.one, 0)) {
+            foreach (var item in pairOne.Walk().DeepWalk(programming.one, 0)) {
                 viewOne.Sink.Add(item.Node);
             }
 

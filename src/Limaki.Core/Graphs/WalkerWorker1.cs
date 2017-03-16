@@ -52,12 +52,12 @@ namespace Limaki.Graphs {
         }
 
         public void AddExpanded (TITem root, IGraph<TITem, TEdge> data) {
-            new Walker<TITem, TEdge> (data)
+            data.Walk ()
                 .ExpandWalk (root, 0).ForEach (item => this.Add (item.Node));
         }
 
         public void AddDeepExpanded (TITem root, IGraph<TITem, TEdge> data) {
-            new Walker<TITem, TEdge> (data)
+            data.Walk ()
                 .DeepWalk (root, 0).ForEach (item => this.Add (item.Node));
         }
 
@@ -83,7 +83,7 @@ namespace Limaki.Graphs {
         }
 
         public void RemoveCollapsed (TITem root, IGraph<TITem, TEdge> graph) {
-            new Walker<TITem, TEdge> (graph)
+            graph.Walk ()
                 .CollapseWalk (root, 0).ForEach (item => this.Remove (item.Node));
         }
 

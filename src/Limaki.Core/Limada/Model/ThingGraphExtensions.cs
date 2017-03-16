@@ -29,18 +29,18 @@ namespace Limada.Model {
         public static void DeepCopy(this IThingGraph source, IEnumerable<IThing> items, IThingGraph target) {
 
             if (source != null && target != null) {
-                Walker<IThing, ILink> walker = new Walker<IThing, ILink>(source);
-                Queue<IThing> queue = new Queue<IThing>(items);
+                var walk = source.Walk();
+                var queue = new Queue<IThing>(items);
                 while (queue.Count != 0) {
-                    IThing item = queue.Dequeue();
-                    if (!walker.Visited.Contains(item)) {
+                    var item = queue.Dequeue();
+                    if (!walk.Visited.Contains(item)) {
                         if (item is ILink)
                             target.Add((ILink)item);
                         else
                             target.Add(item);
 
-                        foreach (LevelItem<IThing> levelItem in walker.DeepWalk(item, 0)) {
-                            ILink link = levelItem.Node as ILink;
+                        foreach (var levelItem in walk.DeepWalk(item, 0)) {
+                            var link = levelItem.Node as ILink;
                             if (link != null) {
                                 target.Add(link);
                                 queue.Enqueue(link.Marker);
@@ -177,9 +177,9 @@ namespace Limada.Model {
             Action<IThing> addThing = null;
             Action<ILink> addLink = (link) => {
                 if (!done.Contains(link)) {
-                    var walker = new Walker<IThing, ILink>(sourceGraph);
+                    var walk = sourceGraph.Walk();
                     if (!done.Contains(link.Marker)) {
-                        foreach (var thing in walker.Walk (link.Marker, 0))
+                        foreach (var thing in walk.Walk (link.Marker, 0))
                             addThing (thing.Node);
                     }
                     addThing(link.Root);

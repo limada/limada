@@ -241,11 +241,11 @@ namespace Limaki.View.GraphScene {
                 var aligner = CreateAligner(scene);
                 var options = Layout.Options();
 
-                var walker = new Walker<TItem, TEdge>(this.SubGraph);
+                var walk = SubGraph.Walk();
 
                 roots.ForEach (root => {
                     affected.Add (root);
-                    var walk = (deep ? walker.DeepWalk (root, 1) : walker.ExpandWalk (root, 1))
+                    var route = (deep ? walk.DeepWalk (root, 1) : walk.ExpandWalk (root, 1))
                         .OnEach (l => {
                                     if (l.Node is TEdge)
                                         aligner.Locator.AffectedEdges.Add ((TEdge) l.Node);
@@ -254,16 +254,16 @@ namespace Limaki.View.GraphScene {
                         .Where (l => !(l.Node is TEdge) && affected.Contains (l.Node));
 
                     if (OrderBy != null)
-                        walk = walk.OrderBy (l => l, new LevelItemComparer<TItem> { OrderBy = this.OrderBy });
+                        route = route.OrderBy (l => l, new LevelItemComparer<TItem> { OrderBy = this.OrderBy });
 
-                    walk = walk.ToArray ();
-                    if (walk.Count () > 0) {
+                    route = route.ToArray ();
+                    if (route.Count () > 0) {
                         var bounds = new Rectangle (aligner.Locator.GetLocation (root), aligner.Locator.GetSize (root));
                         options.Collisions = Collisions.None;
-                        var cols = aligner.MeasureWalk (walk, ref bounds, options);
+                        var cols = aligner.MeasureWalk (route, ref bounds, options);
                         aligner.DequeColumn (cols, ref bounds, options);
                         options.Collisions = Collisions.NextFree | Collisions.PerColumn | Collisions.Toggle;
-                        aligner.LocateColumns (cols, ref bounds, options);
+                        aligner.LocateColumns (cols, bounds, options);
                     }
                 });
 
@@ -355,7 +355,7 @@ namespace Limaki.View.GraphScene {
 
             var aligner = CreateAligner(scene);
             
-            var walker = new Walker<TItem, TEdge>(this.SubGraph);
+            var walker = SubGraph.Walk();
             var options = Layout.Options();
             var pos = new Point(Layout.Border.Width, Layout.Border.Height);
 
@@ -376,8 +376,7 @@ namespace Limaki.View.GraphScene {
         }
 
         public virtual bool IsExpanded (SubGraph<TItem, TEdge> subGraph, TItem target) {
-            var walker = new Walker<TItem, TEdge> (subGraph.Source);
-            foreach (var item in walker.ExpandWalk (target, 0)) {
+            foreach (var item in subGraph.Source.Walk().ExpandWalk (target, 0)) {
                 if (!subGraph.Sink.Contains (item.Node)) {
                     return false;
                 }

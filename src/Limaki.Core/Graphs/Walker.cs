@@ -15,6 +15,7 @@
 
 using System.Collections.Generic;
 using System;
+using Limaki.Common;
 
 namespace Limaki.Graphs {
 
@@ -371,7 +372,32 @@ namespace Limaki.Graphs {
 
         }
 
+        public static Walker<TItem, TEdge> Walk<TItem, TEdge> (this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem => new Walker<TItem, TEdge> (graph);
+
+        /// <summary>
+        /// node is edge and path is either root or leaf of node
+        /// </summary>
+        public static bool StepIsAdjacent<TItem> (this LevelItem<TItem> step) => (step.Node is IEdge<TItem>) && (((IEdge<TItem>)step.Node).Adjacent (step.Path) != null);
+
+        /// <summary>
+        /// node is edge and path is edge
+        /// </summary>
+        public static bool StepIsEdgeToEdge<TItem> (this LevelItem<TItem> step)  => (step.Node is IEdge<TItem>) && (step.Path is IEdge<TItem>);
+
+
+    }
+
+    public class LevelItemComparer<T> : Comparer<LevelItem<T>> {
+        
+        public virtual DataComparer<T> OrderBy { get; set; }
+
+        public override int Compare (LevelItem<T> x, LevelItem<T> y) {
+            if (x.Level == y.Level) {
+                return OrderBy.Compare (x.Node, y.Node);
+            }
+            return x.Level.CompareTo (y.Level);
         }
     }
+
 
 }

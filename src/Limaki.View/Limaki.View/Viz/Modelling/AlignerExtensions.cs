@@ -89,18 +89,19 @@ namespace Limaki.View.Viz.Modelling {
             else
                 roots = roots.OrderBy(e => e, comparer);
 
-            var walker = new Walker<TItem, TEdge> (data.Graph);
+            var walk = data.Graph.Walk();
             roots.ForEach (root => {
-                var walk = new List<LevelItem<TItem>> ();
-                walker.DeepWalk (root, 1)
+                var steps = new List<LevelItem<TItem>> ();
+                walk.DeepWalk (root, 1)
                     .ForEach (l => {
                         if (l.Node is TEdge)
+                            // no need; should be done in aligner.Colomns
                             aligner.Locator.AffectedEdges.Add ((TEdge) l.Node);
                         else
-                            walk.Add (l);
+                            steps.Add (l);
                     });
                 var bounds = new Rectangle (pos, Size.Zero);
-                aligner.Columns (walk, ref bounds, options);
+                aligner.Columns (steps, ref bounds, options);
                 pos = options.Dimension == Dimension.X ?
                       new Point (pos.X, pos.Y + bounds.Size.Height + options.Distance.Height) :
                       new Point (pos.X + bounds.Size.Width + options.Distance.Width, pos.Y);

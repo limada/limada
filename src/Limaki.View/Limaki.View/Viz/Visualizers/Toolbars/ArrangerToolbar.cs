@@ -150,7 +150,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 var selected = display.Data.Selected.Elements;
                 var root = display.Data.Focused;
                 if (selected.Count () == 1) {
-                    selected = new Walker<IVisual, IVisualEdge> (display.Data.Graph).DeepWalk (root, 0).Select (l => l.Node);
+                    selected = display.Data.Graph.Walk().DeepWalk (root, 0).Select (l => l.Node);
                 }
                 Call (CurrentDisplay, (aligner, items) => aligner.Columns (root, items, options), selected);
             }
@@ -163,7 +163,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 var selected = display.Data.Selected.Elements;
                 var root = display.Data.Focused;
                 if (selected.Count () == 1) {
-                    var walk = new Walker<IVisual, IVisualEdge> (display.Data.Graph)
+                    var walk = display.Data.Graph.Walk()
                         .DeepWalk (root, 0, Walk.Leafs<IVisual, IVisualEdge> ())
                         .Where (l => !(l.Node is IVisualEdge))
                         .ToArray ();
@@ -176,7 +176,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                         var cols = aligner.MeasureWalk (walk, ref bounds, options);
                         aligner.DequeColumn (cols, ref bounds, options);
                         options.Collisions = Collisions.NextFree | Collisions.PerColumn | Collisions.Toggle;
-                        aligner.LocateColumns (cols, ref bounds, options);
+                        aligner.LocateColumns (cols, bounds, options);
                     }
                         , walk.Select (l => l.Node));
                     options.Collisions = save;
