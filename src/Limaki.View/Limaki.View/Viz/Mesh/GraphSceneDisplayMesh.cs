@@ -190,13 +190,21 @@ namespace Limaki.View.Viz.Mesh {
             if (sourceGraph != null) {
                 sourceGraph = sourceGraph.RootSource ();
 
-                var result = BackHandler (sourceGraph).CreateSinkGraph (sourceGraph.Source);
+                var backHandler = BackHandler (sourceGraph);
 
-                if (result != null) {
-                    // souround with a view
-                    var view = Activator.CreateInstance ((result as ISinkGraph<TItem, TEdge>).Sink.GetType ())
-                        as IGraph<TItem,TEdge>;
-                    return new SubGraph<TItem, TEdge> (result, view);
+                if (backHandler != null) {
+                    var result = backHandler.CreateSinkGraph (sourceGraph.Source);
+
+                    if (result != null) {
+                        // souround with a view
+                        var view = Activator.CreateInstance ((result as ISinkGraph<TItem, TEdge>).Sink.GetType ())
+                            as IGraph<TItem, TEdge>;
+                        return new SubGraph<TItem, TEdge> (result, view);
+                    }
+                } else {
+                    // asuming a graph without backing graph
+                    var view = Activator.CreateInstance(sourceGraph.Source.GetType()) as IGraph<TItem, TEdge>;
+                    return new SubGraph<TItem, TEdge> (sourceGraph.Source, view);
                 }
             }
             return null;
