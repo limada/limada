@@ -116,5 +116,20 @@ namespace Limaki.Common.Text {
 
         }
 
+        public static string ReplaceLeading (this string text, char leadChar, string replaceWith) {
+            if (string.IsNullOrEmpty (text))
+                return text;
+            var lastLead = -1;
+            for (var i = 0; i < text.Length;i++){
+                if (text [i] != leadChar) {
+                    lastLead = i;
+                    break;
+                }
+            }
+            if (lastLead == -1)
+                return text;
+            return String.Concat (Enumerable.Repeat (replaceWith, lastLead))+ text.Substring (lastLead);
+            
+        } 
     }
 }
