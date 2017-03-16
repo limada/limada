@@ -289,18 +289,21 @@ namespace Limaki.Graphs {
 
 
         public virtual IEnumerable<TEdge> Vein(TEdge source) {
-            Queue<TEdge> work = new Queue<TEdge>();
-            Set<TEdge> done = new Set<TEdge>();
-            work.Enqueue(source);
+            if (source == null)
+                yield break;
             
-            while (work.Count > 0) {
-                TEdge curr = work.Dequeue();
+            var queue = new Queue<TEdge>();
+            var done = new Set<TEdge>();
+            queue.Enqueue(source);
+            
+            while (queue.Count > 0) {
+                var curr = queue.Dequeue();
                 if (!done.Contains(curr)) {
                     if (RootIsEdge(curr)) {
-                        work.Enqueue((TEdge)(object)curr.Root);
+                        queue.Enqueue((TEdge)(object)curr.Root);
                     }
                     if (LeafIsEdge(curr)) {
-                        work.Enqueue((TEdge)(object)curr.Leaf);
+                        queue.Enqueue((TEdge)(object)curr.Leaf);
                     }
 
                     done.Add(curr);
