@@ -28,7 +28,7 @@ namespace Limada.Schemata {
         /// if metaLink.leaf == marker:
         /// hide all links where thing.leafLinks.marker==marker 
         /// </summary>
-        public static readonly IThing Hide = Thing<string>("««hide all»»", 0x0A154BF91CE930E9);
+        public static readonly IThing Hide = Thing<string>($"{MetaSchema.OpenMetaChar}hide all{MetaSchema.CloseMetaChar}", 0x0A154BF91CE930E9);
 
         /// <summary>
         /// if metaLink.root == marker:
@@ -36,7 +36,7 @@ namespace Limada.Schemata {
         /// if metaLink.leaf == marker:
         /// show only links where Item.leafLinks.marker==marker 
         /// </summary>
-        public static readonly IThing ShowOnly = Thing<string>("««show only»»", 0xF777C0C38553C101);
+        public static readonly IThing ShowOnly = Thing<string>($"{MetaSchema.OpenMetaChar}show only{MetaSchema.CloseMetaChar}", 0xF777C0C38553C101);
 
 
     }
