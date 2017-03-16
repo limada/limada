@@ -69,7 +69,8 @@ namespace Limaki.View.Viz.Rendering {
                 ItemRenderer.Render(hovered, e);
             }
 
-            if (focused != null && DrawingExtensions.Intersects(clipBounds, layout.GetShape(focused).BoundsRect)) {
+
+            if (focused != null && layout.GetShape(focused)!=null && DrawingExtensions.Intersects(clipBounds, layout.GetShape(focused).BoundsRect)) {
                 ItemRenderer.Render(focused, e);
             }
         }
