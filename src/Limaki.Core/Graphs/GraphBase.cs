@@ -246,14 +246,10 @@ namespace Limaki.Graphs {
             }
         }
 
-        public virtual bool RootIsEdge(TEdge curr) {
-            return curr.Root is TEdge;
-        }
+        public virtual bool RootIsEdge (TEdge curr) => curr.RootIsEdge ();
 
-        public virtual bool LeafIsEdge(TEdge curr) {
-            return curr.Leaf is TEdge;
-        }
-
+        public virtual bool LeafIsEdge (TEdge curr) => curr.LeafIsEdge ();
+            
         public virtual IEnumerable<TEdge> Fork (TItem source) {
             var work = new Queue<TEdge>();
             var done = new Set<TEdge>();
