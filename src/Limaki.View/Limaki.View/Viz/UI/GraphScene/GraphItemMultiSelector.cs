@@ -180,7 +180,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
             }
 
-            //if (key == Key.C) {
+            if (key == Key.K) {
                 if (Scene.Focused != null) {
                     Select(Scene, Scene.Graph.Foliage(Scene.Graph.Walk ().CollapseWalk(Scene.Focused, 0).Edges<TItem, TEdge>()),
                            e.Modifiers);
