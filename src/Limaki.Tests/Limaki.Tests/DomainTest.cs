@@ -45,6 +45,13 @@ namespace Limaki.Tests {
             headless.RegisterDragDropFormats (context);
         }
 
+        public void RegisterHtml5 (IApplicationContext context) { 
+            var html5 = new Html5ContextResourceLoader ();
+            html5.ApplyHtml5Resources (context);
+            SystemFonts.Clear ();
+            new ViewContextResourceLoader ().ApplyResources (context);
+        }
+
         IContextWriter _reportPainter = null;
         public virtual IContextWriter ReportPainter {
             get {
