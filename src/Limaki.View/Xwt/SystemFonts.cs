@@ -41,6 +41,10 @@ namespace Xwt {
             backend = Toolkit.CurrentEngine.CreateBackendHandler<SystemFontBackend> ();
         }
 
+        public static void Clear () {
+            _fonts = null;
+        }
+
         private SystemFontBackend backend;
 
         public Font CaptionFont { get { return backend.CaptionFont; } }
