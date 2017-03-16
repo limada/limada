@@ -34,10 +34,8 @@ namespace Limaki.UnitTest {
         public event MessageEventHandler WriteDetail = null;
         public event MessageEventHandler WriteSummary = null;
 
-        public void ReportDetail(string message) {
-            if (WriteDetail != null) {
-                WriteDetail(this, message);
-            }
+        public void ReportDetail (string message) {
+            WriteDetail?.Invoke (this, message);
         }
         public void ReportDetail(string message,params object[] args) {
             ReportDetail(string.Format(message, args));
@@ -81,8 +79,8 @@ namespace Limaki.UnitTest {
         public virtual void Setup() {
             summaryDone = false;
             if (DoDetail)
-                WriteDetail += new MessageEventHandler(TestBase_WriteMessage);
-            WriteSummary += new MessageEventHandler(TestBase_WriteMessage);
+                WriteDetail += TestBase_WriteMessage;
+            WriteSummary += TestBase_WriteMessage;
             System.GC.Collect(0);
             Tickers.Add(defaultTicker, defaultTicker);
             Tickers.Start();
