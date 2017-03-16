@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2012 Lytico
+ * Copyright (C) 2012 - 2017 Lytico
  *
  * http://www.limada.org
  * 
@@ -57,6 +57,7 @@ namespace Limaki.View.Viz.Modelling {
         }
 
         public virtual void OneColumn (IEnumerable<TItem> items, AlignerOptions options) {
+            
             var comparer = new PointComparer { Order = options.PointOrder, Delta = options.PointOrderDelta };
             var colItems = items.OrderBy(item => Locator.GetLocation(item), comparer);
             var bounds = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
@@ -68,6 +69,7 @@ namespace Limaki.View.Viz.Modelling {
         }
 
         public virtual void Columns (IEnumerable<TItem> items, AlignerOptions options) {
+            
             var comparer = new PointComparer { Order = options.PointOrder, Delta = options.PointOrderDelta };
 
             var walk = items.Select(item => new { location = comparer.Round(Locator.GetLocation(item)), item });
@@ -80,7 +82,7 @@ namespace Limaki.View.Viz.Modelling {
                 cols.Enqueue(MeasureColumn(colItems, options, ref bounds));
             }
 
-            LocateColumns(cols, ref bounds, options);
+            LocateColumns(cols, bounds, options);
         }
 
 
@@ -102,7 +104,7 @@ namespace Limaki.View.Viz.Modelling {
 
         public virtual void Columns (IEnumerable<LevelItem<TItem>> walk, ref Rectangle bounds, AlignerOptions options) {
             var cols = MeasureWalk(walk, ref bounds, options);
-            LocateColumns(cols, ref bounds, options);
+            LocateColumns(cols, bounds, options);
         }
 
         public void DequeColumn( Queue<Tuple<IEnumerable<TItem>, Rectangle>> cols,ref Rectangle bounds, AlignerOptions options ) {
@@ -110,15 +112,16 @@ namespace Limaki.View.Viz.Modelling {
             if (options.Dimension == Dimension.X) {
                 bounds.Location = new Point(
                     bounds.X + rootCol.Item2.Width + options.Distance.Width,
-                    bounds.Y - AlignDelta(bounds.Height, rootCol.Item2.Height, options.AlignY));
+                    bounds.Y - options.AlignY.Delta(bounds.Height, rootCol.Item2.Height));
             } else {
                 bounds.Location = new Point(
-                    bounds.X - AlignDelta(bounds.Width, rootCol.Item2.Width, options.AlignX),
+                    bounds.X - options.AlignX.Delta(bounds.Width, rootCol.Item2.Width),
                     bounds.Y + rootCol.Item2.Height + options.Distance.Height);
             }
         }
 
         public virtual Queue<Tuple<IEnumerable<TItem>, Rectangle>> MeasureWalk (IEnumerable<LevelItem<TItem>> walk, ref Rectangle bounds, AlignerOptions options) {
+
             var colPos = bounds.Location;
 
             var cols = new Queue<Tuple<IEnumerable<TItem>, Rectangle>>();
@@ -150,7 +153,7 @@ namespace Limaki.View.Viz.Modelling {
             return cols;
         }
 
-        public virtual void LocateColumns (Queue<Tuple<IEnumerable<TItem>, Rectangle>> cols, ref Rectangle bounds, AlignerOptions options) {
+        public virtual void LocateColumns (Queue<Tuple<IEnumerable<TItem>, Rectangle>> cols, Rectangle bounds, AlignerOptions options) {
             var colPos = bounds.Location;
             var locate = new LocateVisitBuilder<TItem>(this.Locator);
 
@@ -158,6 +161,17 @@ namespace Limaki.View.Viz.Modelling {
                 var col = cols.Dequeue();
                 LocateColumn(col.Item1, col.Item2, bounds, ref colPos, locate, options);
             }
+        }
+
+        public virtual void LocateColumn (IEnumerable<TItem> col, Rectangle colBounds, Rectangle bounds, AlignerOptions options) { 
+            var colPos = bounds.Location;
+            var locate = new LocateVisitBuilder<TItem> (this.Locator);
+            LocateColumn (col, colBounds, bounds, ref colPos, locate, options);
+        }
+
+        public virtual void LocateColumn (IEnumerable<TItem> col, Rectangle colBounds, ref Point colPos, AlignerOptions options) {
+            var locate = new LocateVisitBuilder<TItem> (this.Locator);
+            LocateColumn (col, colBounds, new Rectangle(colPos, new Size()), ref colPos, locate, options);
         }
 
         public virtual Tuple<IEnumerable<TItem>, Rectangle> MeasureColumn (IEnumerable<TItem> colItems, AlignerOptions options, ref Rectangle bounds) {
@@ -186,13 +200,27 @@ namespace Limaki.View.Viz.Modelling {
 
         }
 
-        public double AlignDelta (double boundsSize, double size, Alignment alignement) {
-            var delta = 0d;
-            if (Alignment.Center == alignement)
-                delta = (boundsSize - size) / 2;
-            else if (Alignment.End == alignement)
-                delta = (boundsSize - size);
-            return delta;
+        public virtual Rectangle MeasureItem (TItem item, Dimension dimension, Size distance, ref Rectangle bounds) {
+
+            Action<TItem> visit = null;
+
+            AffectedEdges (ref visit);
+
+            var measure = new MeasureVisitBuilder<TItem> (this.Locator);
+            var fBounds = measure.Bounds (ref visit);
+            var fSize = measure.SizeToFit (ref visit, distance, dimension);
+
+            visit(item);
+
+            var colBounds = fBounds ();
+            if (colBounds.IsEmpty)
+                colBounds.Location = bounds.Location;
+            colBounds.Size = fSize ();
+
+            bounds.Location = bounds.Location.Min (colBounds.Location);
+            bounds.Size = bounds.Size.SizeToFit (colBounds.Size, dimension);
+
+            return colBounds;
         }
 
         protected virtual void LocateColumn (IEnumerable<TItem> colItems, Rectangle colBounds, Rectangle bounds, ref Point colPos, ILocateVisitBuilder<TItem> locate, AlignerOptions options) {
@@ -205,7 +233,9 @@ namespace Limaki.View.Viz.Modelling {
             Action<TItem> visit = null;
             
             if (options.Dimension == Dimension.X) {
-                colPos.Y = bounds.Y + AlignDelta(bounds.Height, colBounds.Height, options.AlignY);
+
+                colPos.Y = bounds.Y + options.AlignY.Delta (bounds.Height, colBounds.Height);
+
                 colPos = nextFree(colPos);
                 locate.Locate(ref visit,
                                locate.Align(colPos.X, colBounds.Width, options.AlignX, Dimension.X),
@@ -214,8 +244,9 @@ namespace Limaki.View.Viz.Modelling {
                 VisitItems(colItems, visit);
 
                 colPos.X += colBounds.Width + options.Distance.Width;
+                
             } else {
-                colPos.X = bounds.X + AlignDelta(bounds.Width, colBounds.Width, options.AlignX); ;
+                colPos.X = bounds.X + options.AlignX.Delta (bounds.Width, colBounds.Width);
                 colPos = nextFree(colPos);
 
                 locate.Locate(ref visit,
