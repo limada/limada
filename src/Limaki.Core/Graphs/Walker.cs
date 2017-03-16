@@ -26,7 +26,7 @@ namespace Limaki.Graphs {
     public class Walker<TItem, TEdge> : WalkerBase<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {
 
-        public Walker (IGraph<TItem, TEdge> graph) : base(graph) { }
+        public Walker (IGraph<TItem, TEdge> graph) : base (graph) { }
 
         /// <summary>
         /// Iterates over all items and links which are connected to each other
@@ -35,9 +35,10 @@ namespace Limaki.Graphs {
         /// </summary>
         /// <remarks>the clique containing the start-item, but with multiple egdes allowed</remarks>
         /// <param name="start"></param>
-        /// <param name="level"></param>
+        /// <param name="startLevel"></param>
         /// <returns></returns>
-        public virtual IEnumerable<LevelItem<TItem>> DeepWalk (TItem start, int level, Func<LevelItem<TItem>, bool> predicate, bool breathFirst) {
+        public virtual IEnumerable<LevelItem<TItem>> DeepWalk (TItem start, int startLevel, Func<LevelItem<TItem>, bool> predicate, bool breathFirst) {
+
             Action<TItem, TItem, int> put = null; ;
             Func<LevelItem<TItem>> get = null;
             Func<int> loopCount = null;
@@ -72,34 +73,36 @@ namespace Limaki.Graphs {
                 get = () => stack.Pop ();
             }
 
-            put(start, default(TItem), level);
+            put (start, default (TItem), startLevel);
 
-            while (loopCount() > 0) {
-                var item = get();
+            while (loopCount () > 0) {
+
+                var item = get ();
                 yield return item;
 
-                level = item.Level + 1;
+                var level = item.Level + 1;
 
                 if (item.Node is TEdge) {
-                    var edge = (TEdge) item.Node;
+                    var edge = (TEdge)item.Node;
 
                     // follow links of edge:
-                    foreach (var edge_edge in graph.Edges(edge))
-                        put(edge_edge, edge, level);
+                    foreach (var edge_edge in graph.Edges (edge))
+                        put (edge_edge, edge, level);
 
-                    var adjacent = graph.Adjacent(edge, item.Path);
+                    var adjacent = graph.Adjacent (edge, item.Path);
 
                     if (adjacent != null) {
                         // follow adjacent of node:
-                        put(adjacent, edge, level);
+                        put (adjacent, edge, level);
                     } else {
-                        put(edge.Root, edge, level);
-                        put(edge.Leaf, edge, level);
+                        put (edge.Root, edge, level);
+                        put (edge.Leaf, edge, level);
                     }
+
                 } else {
                     // follow links of node:
-                    foreach (var edge in graph.Edges(item.Node))
-                        put(edge, item.Node, level);
+                    foreach (var edge in graph.Edges (item.Node))
+                        put (edge, item.Node, level);
 
                 }
             }
@@ -122,159 +125,159 @@ namespace Limaki.Graphs {
         /// <param name="level"></param>
         /// <returns></returns>
         public virtual IEnumerable<LevelItem<TItem>> Walk (TItem start, int level) {
-            return Walk(start, level, null);
+            return Walk (start, level, null);
         }
 
         public virtual IEnumerable<LevelItem<TItem>> Walk (TItem start, int level, Func<LevelItem<TItem>, bool> predicate) {
-            var queue = new Queue<LevelItem<TItem>>();
+            var queue = new Queue<LevelItem<TItem>> ();
             Func<TItem, TItem, int, LevelItem<TItem>> take = (node, path, l) => {
-                if (!Visited.Contains(node)) {
-                    var item = new LevelItem<TItem>(node, path, l);
-                    if (predicate == null || predicate(item)) {
+                if (!Visited.Contains (node)) {
+                    var item = new LevelItem<TItem> (node, path, l);
+                    if (predicate == null || predicate (item)) {
                         if (node is TEdge)
-                            queue.Enqueue(item);
+                            queue.Enqueue (item);
                         else
                             return item;
                     }
-                    Visited.Add(node);
+                    Visited.Add (node);
                 }
                 return null;
             };
 
             Func<TItem, TItem, int, LevelItem<TItem>> enqueue = (node, path, l) => {
-                if (!Visited.Contains(node)) {
-                    var item = new LevelItem<TItem>(node, path, l);
-                    if (predicate == null || predicate(item))
-                        queue.Enqueue(item);
-                    Visited.Add(node);
+                if (!Visited.Contains (node)) {
+                    var item = new LevelItem<TItem> (node, path, l);
+                    if (predicate == null || predicate (item))
+                        queue.Enqueue (item);
+                    Visited.Add (node);
                 }
                 return null;
             };
 
-            enqueue(start, default(TItem), level);
+            enqueue (start, default (TItem), level);
 
             while (queue.Count > 0) {
-                var item = queue.Dequeue();
+                var item = queue.Dequeue ();
                 yield return item;
 
                 level = item.Level + 1;
                 if (item.Node is TEdge) {
 
-                    var edge = (TEdge) item.Node;
+                    var edge = (TEdge)item.Node;
 
                     // follow link of links  // Fork!?
-                    foreach (var edge_edge in graph.Edges(edge))
-                        enqueue(edge_edge, edge, level);
+                    foreach (var edge_edge in graph.Edges (edge))
+                        enqueue (edge_edge, edge, level);
 
-                    var adjacent = graph.Adjacent(edge, item.Path);
+                    var adjacent = graph.Adjacent (edge, item.Path);
                     if (adjacent != null) {
                         // follow adjacent of node:
-                        var result = take(adjacent, edge, level);
+                        var result = take (adjacent, edge, level);
                         if (result != null)
                             yield return result;
 
                     } else {
-                        var result = take(edge.Root, edge, level);
+                        var result = take (edge.Root, edge, level);
                         if (result != null)
                             yield return result;
-                        result = take(edge.Leaf, edge, level);
+                        result = take (edge.Leaf, edge, level);
                         if (result != null)
                             yield return result;
                     }
                 } else {
-                    foreach (var edge in graph.Edges(item.Node))
-                        enqueue(edge, item.Node, level);
+                    foreach (var edge in graph.Edges (item.Node))
+                        enqueue (edge, item.Node, level);
                 }
             }
         }
 
         public virtual IEnumerable<LevelItem<TItem>> ExpandWalk (TItem start, int level) {
-            return ExpandWalk(start, level, null);
+            return ExpandWalk (start, level, null);
         }
 
         public virtual IEnumerable<LevelItem<TItem>> ExpandWalk (TItem start, int level, Func<LevelItem<TItem>, bool> predicate) {
 
-            var queue = new Queue<LevelItem<TItem>>();
+            var queue = new Queue<LevelItem<TItem>> ();
             Action<TItem, TItem, int> enqueue = (node, path, l) => {
-                if (!Visited.Contains(node)) {
-                    var item = new LevelItem<TItem>(node, path, l);
-                    if (predicate == null || predicate(item))
-                        queue.Enqueue(item);
-                    Visited.Add(node);
+                if (!Visited.Contains (node)) {
+                    var item = new LevelItem<TItem> (node, path, l);
+                    if (predicate == null || predicate (item))
+                        queue.Enqueue (item);
+                    Visited.Add (node);
                 }
             };
 
-            enqueue(start, default(TItem), level);
+            enqueue (start, default (TItem), level);
 
             while (queue.Count > 0) {
-                var item = queue.Dequeue();
+                var item = queue.Dequeue ();
                 yield return item;
 
                 level = item.Level;
 
                 if (item.Node is TEdge) {
 
-                    var edge = (TEdge) item.Node;
+                    var edge = (TEdge)item.Node;
 
-                    var adjacent = graph.Adjacent(edge, start);
-                    if (adjacent != null || (edge.Equals(start)) || (graph.RootIsEdge(edge) && graph.LeafIsEdge(edge))) {
+                    var adjacent = graph.Adjacent (edge, start);
+                    if (adjacent != null || (edge.Equals (start)) || (graph.RootIsEdge (edge) && graph.LeafIsEdge (edge))) {
                         // follow link of links
-                        foreach (var edge_edge in graph.Edges(edge))
-                            enqueue(edge_edge, edge, level + 1);
+                        foreach (var edge_edge in graph.Edges (edge))
+                            enqueue (edge_edge, edge, level + 1);
                     }
 
                     if (adjacent != null) { // follow adjacent of start:
-                        enqueue(adjacent, edge, level);
+                        enqueue (adjacent, edge, level);
                     } else {
-                        enqueue(edge.Root, edge, level);
-                        enqueue(edge.Leaf, edge, level);
+                        enqueue (edge.Root, edge, level);
+                        enqueue (edge.Leaf, edge, level);
 
                     }
-                } else if (item.Node.Equals(start)) {
-                    foreach (var edge in graph.Edges(item.Node))
-                        enqueue(edge, item.Node, level + 1);
+                } else if (item.Node.Equals (start)) {
+                    foreach (var edge in graph.Edges (item.Node))
+                        enqueue (edge, item.Node, level + 1);
 
                 }
             }
         }
 
         public virtual IEnumerable<LevelItem<TItem>> CollapseWalk (TItem start, int level) {
-            var queue = new Queue<TItem>();
-            foreach (var edge in graph.Edges(start)) {
-                foreach (var subedge in graph.Edges(edge)) {
-                    if (!Visited.Contains(subedge)) {
-                        if (subedge.Leaf.Equals(edge)) {
+            var queue = new Queue<TItem> ();
+            foreach (var edge in graph.Edges (start)) {
+                foreach (var subedge in graph.Edges (edge)) {
+                    if (!Visited.Contains (subedge)) {
+                        if (subedge.Leaf.Equals (edge)) {
                             continue;
                         }
-                        queue.Enqueue(subedge);
-                        Visited.Add(subedge);
-                        if (!Visited.Contains(subedge.Leaf)) {
-                            queue.Enqueue(subedge.Leaf);
-                            Visited.Add(subedge.Leaf);
+                        queue.Enqueue (subedge);
+                        Visited.Add (subedge);
+                        if (!Visited.Contains (subedge.Leaf)) {
+                            queue.Enqueue (subedge.Leaf);
+                            Visited.Add (subedge.Leaf);
                         }
                     }
                 }
 
-                if (!Visited.Contains(edge)) {
-                    if (edge.Leaf.Equals(start)) {
+                if (!Visited.Contains (edge)) {
+                    if (edge.Leaf.Equals (start)) {
                         continue;
                     }
-                    queue.Enqueue(edge);
-                    Visited.Add(edge);
-                    if (!Visited.Contains(edge.Leaf)) {
-                        queue.Enqueue(edge.Leaf);
-                        Visited.Add(edge.Leaf);
+                    queue.Enqueue (edge);
+                    Visited.Add (edge);
+                    if (!Visited.Contains (edge.Leaf)) {
+                        queue.Enqueue (edge.Leaf);
+                        Visited.Add (edge.Leaf);
                     }
                 }
             }
 
             while (queue.Count > 0) {
-                var item = queue.Dequeue();
-                yield return new LevelItem<TItem>(item, default(TItem), 0);
-                foreach (var edge in graph.Twig(item)) {
-                    if (!Visited.Contains(edge)) {
-                        Visited.Add(edge);
-                        yield return new LevelItem<TItem>(edge, default(TItem), 0);
+                var item = queue.Dequeue ();
+                yield return new LevelItem<TItem> (item, default (TItem), 0);
+                foreach (var edge in graph.Twig (item)) {
+                    if (!Visited.Contains (edge)) {
+                        Visited.Add (edge);
+                        yield return new LevelItem<TItem> (edge, default (TItem), 0);
                     }
                 }
             }
@@ -287,50 +290,50 @@ namespace Limaki.Graphs {
         /// <param name="level"></param>
         /// <returns></returns>
         public virtual IEnumerable<LevelItem<TItem>> CollapseWalk1 (TItem start, int level) {
-            var queue = new Queue<TItem>();
-            queue.Enqueue(start);
+            var queue = new Queue<TItem> ();
+            queue.Enqueue (start);
 
             while (queue.Count > 0) {
-                var item = queue.Dequeue();
-                yield return new LevelItem<TItem>(item, default(TItem), 0);
-                foreach (var edge in graph.Twig(item)) {
-                    if (!Visited.Contains(edge)) {
+                var item = queue.Dequeue ();
+                yield return new LevelItem<TItem> (item, default (TItem), 0);
+                foreach (var edge in graph.Twig (item)) {
+                    if (!Visited.Contains (edge)) {
 
-                        queue.Enqueue(edge);
-                        Visited.Add(edge);
+                        queue.Enqueue (edge);
+                        Visited.Add (edge);
 
-                        if (edge.Leaf.Equals(item)) {
+                        if (edge.Leaf.Equals (item)) {
                             continue;
                         }
 
-                        if (graph.Adjacent(edge, item) != null) {
+                        if (graph.Adjacent (edge, item) != null) {
                             //if (!done.Contains(edge.Root)) {
                             //    queue.Enqueue(edge.Root);
                             //    done.Add(edge.Root);
                             //} 
-                            if (!Visited.Contains(edge.Leaf)) {
-                                queue.Enqueue(edge.Leaf);
-                                Visited.Add(edge.Leaf);
+                            if (!Visited.Contains (edge.Leaf)) {
+                                queue.Enqueue (edge.Leaf);
+                                Visited.Add (edge.Leaf);
                             }
                         }
                     }
                 }
             }
         }
-       
+
     }
 
     public static class Walk {
 
         public static Func<LevelItem<TItem>, bool> Leafs<TItem, TEdge> () where TEdge : IEdge<TItem>, TItem {
             return e => {
-                var edge = e.Node is TEdge ? (TEdge) e.Node : default (TEdge);
+                var edge = e.Node is TEdge ? (TEdge)e.Node : default (TEdge);
                 if (edge == null || e.Path == null)
                     return true;
-                if (edge.Root.Equals(e.Path))
+                if (edge.Root.Equals (e.Path))
                     return true;
-                var pathEdge = e.Path is TEdge ? (TEdge) e.Path : default (TEdge);
-                if (pathEdge != null && pathEdge.Leaf.Equals(e.Node))
+                var pathEdge = e.Path is TEdge ? (TEdge)e.Path : default (TEdge);
+                if (pathEdge != null && pathEdge.Leaf.Equals (e.Node))
                     return true;
                 return false;
             };
@@ -339,18 +342,21 @@ namespace Limaki.Graphs {
 
         public static Func<LevelItem<TItem>, bool> Roots<TItem, TEdge> () where TEdge : IEdge<TItem>, TItem {
             return e => {
-                var edge = e.Node is TEdge ? (TEdge) e.Node : default (TEdge);
+                var edge = e.Node is TEdge ? (TEdge)e.Node : default (TEdge);
                 if (edge == null || e.Path == null)
                     return true;
-                if (edge.Leaf.Equals(e.Path))
+                if (edge.Leaf.Equals (e.Path))
                     return true;
-                var pathEdge = e.Path is TEdge ? (TEdge) e.Path : default (TEdge);
-                if (pathEdge != null && pathEdge.Root.Equals(e.Node))
+                var pathEdge = e.Path is TEdge ? (TEdge)e.Path : default (TEdge);
+                if (pathEdge != null && pathEdge.Root.Equals (e.Node))
                     return true;
                 return false;
             };
 
         }
+    }
+
+    public static class WalkerExtensions {
 
         public static IEnumerable<TItem> Items<TItem> (this IEnumerable<LevelItem<TItem>> items) {
             foreach (var item in items)
@@ -365,8 +371,6 @@ namespace Limaki.Graphs {
 
         }
 
-        public static Walker<TItem, TEdge> Create<TItem, TEdge> (IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
-            return new Walker<TItem, TEdge>(graph);
         }
     }
 

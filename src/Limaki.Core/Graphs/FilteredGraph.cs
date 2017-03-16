@@ -161,13 +161,10 @@ namespace Limaki.Graphs {
             }
         }
 
-        public override bool RootIsEdge(TEdge curr) {
-            return Source.RootIsEdge(curr);
-        }
+        public override bool RootIsEdge(TEdge curr) =>  Source.RootIsEdge(curr);
 
-        public override bool LeafIsEdge(TEdge curr) {
-            return Source.LeafIsEdge(curr);
-        }
+        public override bool LeafIsEdge(TEdge curr) => Source.LeafIsEdge(curr);
+        
 
         public override void DoChangeData(TItem item, object data) {
             Source.DoChangeData (item, data);

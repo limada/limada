@@ -16,6 +16,7 @@
 namespace Limaki.Graphs {
 
     public class LevelItem<TItem> {
+        
         public LevelItem() {}
 
         public LevelItem(TItem node, TItem path, int level) {
@@ -23,6 +24,7 @@ namespace Limaki.Graphs {
             this.Path = path;
             this.Level = level;
         }
+
         public TItem Node { get; set; }
         public TItem Path { get; set; }
         public int Level { get; set; }

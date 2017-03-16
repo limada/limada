@@ -12,7 +12,6 @@
  * 
  */
 
-#define MonoCollectionBug
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +27,6 @@ namespace Limaki.Common.Collections {
         public MultiDictionaryBase() { _list = new TDictionary(); }
 
         ICollection<V> CreateCollection(){ return new TCollection();}
-
-
 
         #region MultiDictionary
 

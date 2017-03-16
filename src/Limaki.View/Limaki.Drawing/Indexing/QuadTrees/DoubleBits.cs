@@ -5,7 +5,7 @@
  * under the terms of the license below.
  *
  * Changes:
- * Adopted to work with RectangleF and PointF
+ * Adopted to work with Xwt.Rectangle and Xwt.Point
  * Generic Items introduced
  * 
  * Author of changes: Lytico

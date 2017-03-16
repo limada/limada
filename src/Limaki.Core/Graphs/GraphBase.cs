@@ -262,7 +262,7 @@ namespace Limaki.Graphs {
                 work.Enqueue (curr);
             }
 
-            foreach (TEdge edge in this.Edges(source)) {
+            foreach (var edge in this.Edges(source)) {
                 work.Enqueue(edge);
             }
 

@@ -119,7 +119,7 @@
     <Compile Include="Common\Collections\FilteredCollection.cs" />
     <Compile Include="Common\Collections\History.cs" />
     <Compile Include="Common\Collections\IMultiDictionary.cs" />
-    <Compile Include="Common\Collections\MultiDictiionary.cs" />
+    <Compile Include="Common\Collections\MultiDictionary.cs" />
     <Compile Include="Common\Collections\MultiDictionaryBase.cs" />
     <Compile Include="Common\Collections\Set.cs" />
     <Compile Include="Common\IProgressHandler.cs" />

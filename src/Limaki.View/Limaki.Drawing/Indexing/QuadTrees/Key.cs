@@ -5,7 +5,7 @@
  * under the terms of the license below.
  *
  * Changes:
- * Adopted to work with RectangleF and PointF
+ * Adopted to work with Xwt.Rectangle and Xwt.Point
  * Generic Items introduced
  * 
  * Author of changes: Lytico
@@ -88,9 +88,9 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         }
 
         public static int ComputeQuadLevel ( Rectangle env ) {
-            double dx = env.Width;
-            double dy = env.Height;
-            double dMax = dx > dy ? dx : dy;
+            var dx = env.Width;
+            var dy = env.Height;
+            var dMax = dx > dy ? dx : dy;
             int level = DoubleBits.GetExponent(dMax) + 1;
             return level;
         }
@@ -113,9 +113,9 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
 
         private void ComputeKey ( int level, Rectangle itemEnv ) {
             double quadSize = DoubleBits.PowerOf2(level);
-            _pt.X = (double) ( Math.Floor(itemEnv.X / quadSize) * quadSize );
-            _pt.Y = (double) ( Math.Floor(itemEnv.Y / quadSize) * quadSize );
-            _env = new Rectangle(_pt.X, _pt.Y, (double) quadSize, (double) quadSize);
+            _pt.X = ( Math.Floor(itemEnv.X / quadSize) * quadSize );
+            _pt.Y = ( Math.Floor(itemEnv.Y / quadSize) * quadSize );
+            _env = new Rectangle(_pt.X, _pt.Y, quadSize, quadSize);
         }
     }
 }

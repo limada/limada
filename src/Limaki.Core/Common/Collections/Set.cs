@@ -15,12 +15,7 @@
 using System.Collections.Generic;
 
 namespace Limaki.Common.Collections {
-    /// <summary>
-    /// Set is a simple override of HashSet to resolve naming conflicts
-    /// among .NET 2.0 and .Net 3.5.
-    /// On .NET 2.0 a slightly changed version of monos implementation is used 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
+
     public class Set<T> : HashSet<T>, ICollection<T> {
         public Set() : base() {}
 

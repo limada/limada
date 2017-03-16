@@ -66,6 +66,7 @@ namespace Limaki.Graphs {
         IEnumerable<KeyValuePair<TItem, ICollection<TEdge>>> ItemsWithEdges();
 
         #region basic algorithms
+
         /// <summary>
         /// A Twig of an item is a sequence of edges where
         /// - that item is a root or leaf of an edge (same as: Edges(item))

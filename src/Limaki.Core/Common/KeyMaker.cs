@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 namespace Limaki.Common {
+    
     public class KeyMaker {
+        
         protected static IEqualityComparer comparer = EqualityComparer<object>.Default;
 
         public static int GetHashCode<T1, T2>(T1 item1, T2 item2) {

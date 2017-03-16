@@ -193,14 +193,14 @@ namespace Limaki.View.Viz.Modelling {
 
         ISpatialIndex<TItem> _index = null;
         public IEnumerable<TItem> ElementsIn (Rectangle bounds) {
-            if(_index==null) {
+            if (_index == null) {
                 _index = new SpatialQuadTreeIndex<TItem> {
-                                                             BoundsOf = item => new Rectangle(this.GetLocation(item), this.GetSize(item)),
-                                                             HasBounds = item => this.HasLocation(item) && this.HasSize(item)
-                                                         };
-                _index.AddRange(this.changedLocations.Keys);
+                    BoundsOf = item => new Rectangle (this.GetLocation (item), this.GetSize (item)),
+                    HasBounds = item => this.HasLocation (item) && this.HasSize (item)
+                };
+                _index.AddRange (this.changedLocations.Keys);
             }
-            var result= _index.Query(bounds);
+            var result = _index.Query (bounds);
             return result;
         }
         

@@ -12,18 +12,20 @@
  * 
  */
 
-
-using Limaki.Common.Collections;
 using System.Collections.Generic;
 
 namespace Limaki.Graphs {
+    
     public class WalkerBase<TItem,TEdge> where TEdge:IEdge<TItem> {
+
         protected IGraph<TItem, TEdge> graph = null;
+
+        public IGraph<TItem, TEdge> Graph { get { return graph; } }
 
         public WalkerBase(IGraph<TItem, TEdge> graph) {
             this.graph = graph;
         }
 
-        public ICollection<TItem> Visited = new Set<TItem>();
+        public ICollection<TItem> Visited { get; set; } = new HashSet<TItem>();
     }
 }

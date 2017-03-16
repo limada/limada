@@ -41,6 +41,7 @@ namespace Limaki.View.Html5 {
         }
 
         public virtual void ApplyHtml5Resources (IApplicationContext context) {
+            
             RegisterXwtBackends(false);
 
             context.Factory.Add<IExceptionHandler, Html5ExeptionHandlerBackend> ();
