@@ -30,6 +30,7 @@ using System;
 using Xwt.Backends;
 using System.Globalization;
 using Xwt.Drawing;
+using System.Linq;
 
 namespace Xwt.Html5.Backend {
     
@@ -176,8 +177,13 @@ namespace Xwt.Html5.Backend {
             c.Context.CommandLine ("lineWidth = {0}", width.ToHtml ());
         }
 
-        public override void SetLineDash (object backend, double offset, params double[] pattern) {
-            var c = (Html5Context) backend;
+        public override void SetLineDash (object backend, double offset, params double [] pattern) {
+            var c = (Html5Context)backend;
+            if (pattern.Length ==0)
+                c.Context.CommandLine ($"setLineDash([])");
+            else
+                // TODO: set offset, set patters > 2
+                c.Context.CommandLine ($"setLineDash([{string.Join (",", pattern.Select (d => d.ToHtml ()))}])");
         }
 
         public override void SetPattern (object backend, object p) {
