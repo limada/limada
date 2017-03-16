@@ -7,6 +7,7 @@ using Limaki.Drawing;
 using System.Text;
 using Limaki.Common;
 using Limaki.Contents;
+using Limaki.Common.Text;
 
 namespace Limaki.View.XwtBackend {
 
@@ -39,8 +40,13 @@ namespace Limaki.View.XwtBackend {
             string html = null;
             if (textType == TextViewerTextType.PlainText || textType == TextViewerTextType.UnicodePlainText) {
                 var reader = new StreamReader (stream, textType == TextViewerTextType.UnicodePlainText ? Encoding.Unicode : Encoding.ASCII);
-                var text = reader.ReadToEnd ();
-                html = System.Net.WebUtility.HtmlEncode (text);
+                var text = new StringBuilder();
+                var line = reader.ReadLine ();
+                while (line != null) {
+                    text.Append ($"{System.Net.WebUtility.HtmlEncode (line).ReplaceLeading(' ',"&emsp;")}<br>");
+                    line = reader.ReadLine ();
+                }
+                html = text.ToString();
 
             }
 
