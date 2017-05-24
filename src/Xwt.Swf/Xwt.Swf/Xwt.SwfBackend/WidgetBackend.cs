@@ -167,6 +167,14 @@ namespace Xwt.SwfBackend {
 
         public virtual void InitializeBackend (object frontend, ApplicationContext context) {
         }
+
+        public Point ConvertToParentCoordinates (Point widgetCoordinates) {
+            throw new NotImplementedException ();
+        }
+
+        public Point ConvertToWindowCoordinates (Point widgetCoordinates) {
+            throw new NotImplementedException ();
+        }
     }
 
 }

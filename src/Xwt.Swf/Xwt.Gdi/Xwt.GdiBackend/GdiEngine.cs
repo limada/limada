@@ -81,5 +81,9 @@ namespace Xwt.GdiBackend {
         public override bool HasNativeParent (Widget w) {
             throw new NotImplementedException();
         }
+
+        public override object GetNativeWindow (IWindowFrameBackend backend) {
+            throw new NotImplementedException ();
+        }
     }
 }

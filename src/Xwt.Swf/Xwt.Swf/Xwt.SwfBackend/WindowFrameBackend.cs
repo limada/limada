@@ -218,6 +218,24 @@ namespace Xwt.SwfBackend {
             }
         }
 
+        public bool HasFocus {
+            get {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public object Window {
+            get {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public IntPtr NativeHandle {
+            get {
+                throw new NotImplementedException ();
+            }
+        }
+
         public void InitializeBackend (object frontend, ApplicationContext context) {
             throw new NotImplementedException();
         }

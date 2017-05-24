@@ -88,9 +88,9 @@ namespace Xwt.GdiBackend {
             return ((SD.Bitmap)image.Image).PixelFormat.ToXwt();
         }
 
-        public override object ConvertToBitmap (object handle, double width, double height, double scaleFactor, XD.ImageFormat format) {
-            var image = (GdiImage)handle;
-            return image.ConvertToBitmap(width, height, scaleFactor, format);
+        public override object ConvertToBitmap (ImageDescription idesc, double scaleFactor, XD.ImageFormat format) {
+            var image = (GdiImage)idesc.Backend;
+            return image.ConvertToBitmap(idesc.Size.Width, idesc.Size.Height, scaleFactor, format);
         }
 
         public override bool HasMultipleSizes (object handle) {
@@ -125,6 +125,10 @@ namespace Xwt.GdiBackend {
 
         public override Drawing.Image GetStockIcon (string id) {
             throw new NotImplementedException();
+        }
+
+        public override Size GetSize (string file) {
+            throw new NotImplementedException ();
         }
     }
 }
