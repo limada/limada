@@ -21,7 +21,6 @@
     <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -30,17 +29,6 @@
     <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseDistri|AnyCPU'">
-    <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET40;DISTRI</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -361,6 +349,8 @@
     <Compile Include="Common\IOUtils.cs" />
     <Compile Include="Common\ByteUtils.cs" />
     <Compile Include="Contents\Handlers\HtmlConverterBase.cs" />
+    <Compile Include="Data\IDomainQuore.cs" />
+    <Compile Include="Common\Linqish\CallCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3rdParty\CommonMark\LICENSE.md" />

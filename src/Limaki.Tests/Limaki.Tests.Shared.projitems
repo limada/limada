@@ -162,5 +162,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\Mono\MonoGenericError2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\Mono\MonoMarshalByRefError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\Data\Streams\ContentPoolTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playground\View\BlockAlignerPrototyper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playground\View\AlignerPrototyperBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playground\View\TreeAligner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playground\View\RectangleLocator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playground\View\Walker1.cs" />
   </ItemGroup>
 </Project>
