@@ -107,6 +107,12 @@ namespace Limaki.Iconerias {
             LimadaLogo = ConvertedResources.LimadaLogo;
             SubWinIcon = ConvertedResources.SubWinIcon;
 
+            awesome.FillColor = Xwt.Drawing.Colors.Aqua.WithAlpha (1);
+            awesome.StrokeColor = Colors.Black;
+            awesome.LineWidth = 1;
+
+            ErpIcon = awesome.AsImage (awesome.FaPaintBrush,32);
+
         }
 
         public static Image Arrange { get; set; }
@@ -213,5 +219,8 @@ namespace Limaki.Iconerias {
 
         public static Image ViewState { get; set; }
         public static Image FileMenu { get; private set; }
+
+        public static Image ErpIcon { get; set; }
+
     }
 }
