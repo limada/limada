@@ -119,7 +119,7 @@ namespace Limaki.Data.db4o {
         }
 
         public virtual IObjectContainer CreateEmbeddedSession(IEmbeddedConfiguration config) {
-            var file = Iori.ToFileName(this.Iori);
+            var file = Iori.ToFileName();
             if (!System.IO.File.Exists(file)) {
                 config.File.BlockSize = 16;
                 Trace.TraceInformation("{0}: File not exists: {1}", this.GetType().FullName, file);
@@ -167,7 +167,7 @@ namespace Limaki.Data.db4o {
                 return null;
 
             // remark: if port == 0, then server runs in embedded mode
-            var file = Iori.ToFileName (this.Iori);
+            var file = Iori.ToFileName ();
             var serverCer = "limada.limo.cer";
 			#if !__ANDROID__
             if (File.Exists (serverCer)) {

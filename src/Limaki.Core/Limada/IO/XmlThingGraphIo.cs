@@ -32,7 +32,7 @@ namespace Limada.IO {
         protected override ThingGraphContent OpenInternal (Iori source) {
             try {
                 IThingGraph thingGraph = null;
-                var fileName = Iori.ToFileName(source);
+                var fileName = source.ToFileName();
                 if (File.Exists(fileName)) {
                     using (var file = new FileStream(fileName, FileMode.Open))
                         thingGraph = Open(file);
@@ -73,7 +73,7 @@ namespace Limada.IO {
             if (source == null)
                 return;
 
-            using (var sink = new FileStream(Iori.ToFileName(sinkInfo), FileMode.Create)) {
+            using (var sink = new FileStream(sinkInfo.ToFileName(), FileMode.Create)) {
 
                 var serializer = new ThingXmlSerializer { Graph = source.Data, Things = source.Data.Elements().ToList() };
 

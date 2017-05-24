@@ -147,7 +147,7 @@ namespace Limada.IO.db4o {
             gateway.Close();
             ReportDetail("done:\t");
             if (this.Log != null) {
-                var logfilename = Iori.ToFileName(source) + ".log";
+                var logfilename = source.ToFileName() + ".log";
                 if (File.Exists(logfilename))
                     File.Delete(logfilename);
                 var logfile = new StreamWriter(logfilename);

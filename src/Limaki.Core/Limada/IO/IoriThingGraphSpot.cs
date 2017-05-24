@@ -90,14 +90,14 @@ namespace Limada.IO {
         }
 
         public virtual void Write (Iori source, Iori sink) {
-            using (var file = File.Open(Iori.ToFileName(sink), FileMode.Create)) {
+            using (var file = File.Open(sink.ToFileName(), FileMode.Create)) {
                 Write(source, file);
             }
         }
 
         protected override ThingGraphContent OpenInternal (Iori source) {
             Iori sourceInfo = null;
-            using (var file = File.OpenRead(Iori.ToFileName(source))) {
+            using (var file = File.OpenRead(source.ToFileName())) {
                 sourceInfo = Read(file);
                 if (sourceInfo != null) {
                     if (string.IsNullOrEmpty(sourceInfo.Path)) {
