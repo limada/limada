@@ -9,7 +9,7 @@
     <RootNamespace>Limaki</RootNamespace>
     <AssemblyName>Limaki.Core</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <ReleaseVersion>17.4</ReleaseVersion>
   </PropertyGroup>
