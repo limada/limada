@@ -21,18 +21,22 @@ namespace Limaki.Common.Linqish {
     public class MethodExtractor : ExpressionVisitor {
 
         private MethodInfo _member;
-        public MethodInfo GetMethodInfo<T, TMember> (Expression<Func<T, TMember>> exp) {
-            _member = null;
+
+        public MethodInfo GetMethodInfo<T, R> (Expression<Func<T, R>> exp) => RunVisits (exp);
+
+        public MethodInfo GetMethodInfo<T> (Expression<Action<T>> exp) => RunVisits (exp);
+
+        public MethodInfo GetMethodInfo<T, P> (Expression<Action<T, P>> exp) => RunVisits (exp);
+        public MethodInfo GetMethodInfo<T, P1, P2> (Expression<Action<T, P1, P2>> exp) => RunVisits (exp);
+        public MethodInfo GetMethodInfo<T, P1, P2, P3> (Expression<Action<T, P1, P2, P3>> exp) => RunVisits (exp);
+        public MethodInfo GetMethodInfo<T, P1, P2, P3, P4> (Expression<Action<T, P1, P2, P3, P4>> exp) => RunVisits (exp);
+
+
+        protected MethodInfo RunVisits (Expression exp) { 
+             _member = null;
             this.Visit (exp);
             return _member;
         }
-
-        public MethodInfo GetMethodInfo<T> (Expression<Action<T>> exp) {
-            _member = null;
-            this.Visit (exp);
-            return _member;
-        }
-
         protected override Expression VisitMethodCall (MethodCallExpression node) {
 
             var result = base.VisitMethodCall (node);

@@ -53,6 +53,12 @@ namespace Limaki.Common.Linqish {
             return expr;
         }
 
-      
+        public static IQueryable<T> WhereIf<T> (this IQueryable<T> query, Expression<Func<T, bool>> whereClause) {
+            if (whereClause != null) {
+                return query.Where (whereClause);
+            }
+            return query;
+
+        }
     }
 }
