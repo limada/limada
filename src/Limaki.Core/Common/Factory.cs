@@ -81,7 +81,7 @@ namespace Limaki.Common {
             }
         }
 
-        private IDictionary<Type, Delegate> _clazzes = null;
+        protected IDictionary<Type, Delegate> _clazzes = null;
         protected IDictionary<Type, Delegate> Clazzes {
             get {
                 if (_clazzes == null) {
