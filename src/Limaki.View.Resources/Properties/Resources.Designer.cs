@@ -53,7 +53,7 @@ namespace Limaki.View.Properties {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Globalization.CultureInfo Culture {
             get {
-                return resourceCulture;
+                return global::System.Globalization.CultureInfo.InvariantCulture;
             }
             set {
                 resourceCulture = value;
@@ -65,7 +65,7 @@ namespace Limaki.View.Properties {
         /// </summary>
         public static System.Drawing.Bitmap LogoDrop32 {
             get {
-                object obj = ResourceManager.GetObject("LogoDrop32", resourceCulture);
+                object obj = ResourceManager.GetObject("LogoDrop32", Culture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -75,7 +75,7 @@ namespace Limaki.View.Properties {
         /// </summary>
         public static System.Drawing.Icon LogoDropIcon {
             get {
-                object obj = ResourceManager.GetObject("LogoDropIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("LogoDropIcon", Culture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -85,7 +85,7 @@ namespace Limaki.View.Properties {
         /// </summary>
         public static System.Drawing.Bitmap SubWin {
             get {
-                object obj = ResourceManager.GetObject("SubWin", resourceCulture);
+                object obj = ResourceManager.GetObject("SubWin", Culture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,7 +95,7 @@ namespace Limaki.View.Properties {
         /// </summary>
         public static System.Drawing.Icon SubWinIcon {
             get {
-                object obj = ResourceManager.GetObject("SubWinIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("SubWinIcon", Culture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
