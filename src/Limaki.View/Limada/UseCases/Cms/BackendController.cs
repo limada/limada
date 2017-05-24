@@ -60,7 +60,7 @@ namespace Limada.UseCases.Cms {
                 Trace.WriteLine (string.Format ("Provider already opened {0}", Current.Description));
                 var conn = Current.Data as IGatewayConnection;
                 if (conn != null) {
-                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen, Iori.ToFileName (conn.Gateway.Iori)));
+                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen, conn.Gateway.Iori.ToFileName ()));
                 }
             } else {
                 var ioManager = new ThingGraphIoManager { };
@@ -68,7 +68,7 @@ namespace Limada.UseCases.Cms {
                 try {
                     var sink = sinkIo.Open(Iori);
                     if (sink != null) {
-                        Trace.WriteLine (string.Format ("DataBase opened {0}", Iori.ToFileName (Iori)));
+                        Trace.WriteLine (string.Format ("DataBase opened {0}", Iori.ToFileName ()));
                         Current = sink;
                         var graph = new SchemaThingGraph (Current.Data);
                         PrepareGraph (graph);
@@ -79,7 +79,7 @@ namespace Limada.UseCases.Cms {
                 } catch (Exception e) {
                     Trace.WriteLine (e.Message);
                     _thingGraph = new ThingGraph ();
-                    Trace.WriteLine (string.Format ("Empty Graph created {0}", Iori.ToFileName (Iori)));
+                    Trace.WriteLine (string.Format ("Empty Graph created {0}", Iori.ToFileName ()));
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace Limada.UseCases.Cms {
             if (Current != null) {
 
                 Close(Current);
-                Trace.WriteLine (string.Format ("DataBase closed {0}", Iori.ToFileName (Iori)));
+                Trace.WriteLine (string.Format ("DataBase closed {0}", Iori.ToFileName ()));
                 Current = null;
             }
         }
