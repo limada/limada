@@ -12,7 +12,7 @@ namespace Limaki.View.XwtBackend {
 
 			Preload();
 
-            var factory = new XwtAppFactory();
+            var factory = new XwtConceptUsecaseAppFactory();
             factory.Run();
         }
 

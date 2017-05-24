@@ -26,8 +26,8 @@ using System.Diagnostics;
 using Limaki.View.Vidgets;
 
 namespace Limaki.View.XwtBackend {
-
-    public class XwtAppFactory : UsecaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
+    
+    public class XwtConceptUsecaseAppFactory : UsecaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
         ToolkitType? _toolkitType = null;
         public override ToolkitType XwtToolkitType {
@@ -39,7 +39,7 @@ namespace Limaki.View.XwtBackend {
             protected set { _toolkitType = value; }
         }
 
-        public XwtAppFactory () : base () { }
+        public XwtConceptUsecaseAppFactory () : base () { }
 
         public override bool TakeToolkit (IToolkitAware loader) {
             return base.TakeToolkit (loader) || loader.ToolkitType == XwtContextResourceLoader.ToolkitGuid;
@@ -75,13 +75,11 @@ namespace Limaki.View.XwtBackend {
 
             Window window = null;
             Action onShow = null;
-            if (true) {
-                var composer = CreateUseCase ();
-                window = composer.MainWindow.Backend as Window;
-                onShow += composer?.OnShow;
-            } else {
-                window = new PrototypeWindow ().Composed ();
-            }
+           
+            var composer = CreateUseCase ();
+            window = composer.MainWindow.Backend as Window;
+            onShow += composer?.OnShow;
+
 
             window.Show ();
             onShow?.Invoke ();

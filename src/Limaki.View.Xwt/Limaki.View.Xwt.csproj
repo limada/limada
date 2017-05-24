@@ -101,7 +101,7 @@
     <Compile Include="Limaki.View.XwtBackend\XwtVidgetToolkitEngineBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\MainWindowBackend.cs" />
     <Compile Include="Sandbox\PrototypeData.cs" />
-    <Compile Include="XwtAppFactory.cs" />
+    <Compile Include="XwtConceptUsecaseAppFactory.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtConceptUseCaseComposer.cs" />
     <Compile Include="Sandbox\PrototypeWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
