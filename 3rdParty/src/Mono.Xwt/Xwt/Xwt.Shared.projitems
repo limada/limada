@@ -33,7 +33,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CellView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CellViewCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CheckBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Xwt\CheckBoxCellView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CheckBoxMenuItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CheckBoxState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ChildrenCollection.cs" />

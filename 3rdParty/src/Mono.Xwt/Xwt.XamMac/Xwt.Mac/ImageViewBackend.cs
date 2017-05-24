@@ -23,24 +23,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Xwt.Backends;
-using Xwt.Drawing;
-
-#if MONOMAC
-using nint = System.Int32;
-using nfloat = System.Single;
-using MonoMac.ObjCRuntime;
-using MonoMac.AppKit;
-#else
-using ObjCRuntime;
 using AppKit;
-#endif
+using Xwt.Backends;
 
 namespace Xwt.Mac
 {
-	public class ImageViewBackend: ViewBackend<NSImageView,IWidgetEventSink>, IImageViewBackend
+	public class ImageViewBackend: ViewBackend<NSView,IWidgetEventSink>, IImageViewBackend
 	{
+		CustomAlignedContainer Container {
+			get { return (CustomAlignedContainer)base.Widget; }
+		}
+
+		public new NSImageView Widget {
+			get { return (NSImageView)Container.Child; }
+		}
+
 		public ImageViewBackend ()
 		{
 		}
@@ -48,7 +45,7 @@ namespace Xwt.Mac
 		public override void Initialize ()
 		{
 			base.Initialize ();
-			ViewObject = new CustomNSImageView ();
+			ViewObject = new CustomAlignedContainer (EventSink, ApplicationContext, new NSImageView ());
 		}
 
 		protected override Size GetNaturalSize ()
@@ -66,24 +63,6 @@ namespace Xwt.Mac
 
 			Widget.Image = image.ToNSImage ();
 			Widget.SetFrameSize (Widget.Image.Size);
-		}
-	}
-	
-	class CustomNSImageView: NSImageView, IViewObject
-	{
-		public NSView View {
-			get {
-				return this;
-			}
-		}
-
-		public ViewBackend Backend { get; set; }
-
-		public override void ResetCursorRects ()
-		{
-			base.ResetCursorRects ();
-			if (Backend.Cursor != null)
-				AddCursorRect (Bounds, Backend.Cursor);
 		}
 	}
 }

@@ -31,7 +31,7 @@ using System.CodeDom;
 
 namespace Xwt.Drawing
 {
-	public struct StyleSet: IEnumerable<string>
+	public struct StyleSet: IEnumerable<string>, IEquatable<StyleSet>
 	{
 		string [] styles;
 
@@ -102,6 +102,19 @@ namespace Xwt.Drawing
 			}
 			return new StyleSet {
 				styles = newStyles
+			};
+		}
+
+		public StyleSet RemoveAll (string [] styles)
+		{
+			if (styles == null || styles.Length == 0)
+				return this;
+
+			if (this.styles == null)
+				return this;
+
+			return new StyleSet {
+				styles = this.styles.Except (styles).ToArray ()
 			};
 		}
 

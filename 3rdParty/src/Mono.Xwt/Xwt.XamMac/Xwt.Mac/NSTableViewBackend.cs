@@ -27,19 +27,11 @@
 // THE SOFTWARE.
 
 using System;
-using Xwt.Backends;
-
-#if MONOMAC
-using nint = System.Int32;
-using nfloat = System.Single;
-using CGRect = System.Drawing.RectangleF;
-using CGPoint = System.Drawing.PointF;
-using CGSize = System.Drawing.SizeF;
-using MonoMac.AppKit;
-#else
+using System.Linq;
 using AppKit;
 using CoreGraphics;
-#endif
+using Foundation;
+using Xwt.Backends;
 
 namespace Xwt.Mac
 {
@@ -63,10 +55,86 @@ namespace Xwt.Mac
 			}
 		}
 
+		public override NSObject WeakDataSource {
+			get { return base.WeakDataSource; }
+			set {
+				base.WeakDataSource = value;
+				AutosizeColumns ();
+			}
+		}
+
+		public override void AddColumn (NSTableColumn tableColumn)
+		{
+			base.AddColumn (tableColumn);
+			AutosizeColumns ();
+		}
+
+		internal void AutosizeColumns ()
+		{
+			var columns = TableColumns ();
+			foreach (var col in columns)
+				AutosizeColumn (col);
+			if (columns.Any (c => c.ResizingMask.HasFlag (NSTableColumnResizing.Autoresizing)))
+				SizeToFit ();
+		}
+
+		void AutosizeColumn (NSTableColumn tableColumn)
+		{
+			var column = IndexOfColumn (tableColumn);
+
+			var s = tableColumn.HeaderCell.CellSize;
+			if (!tableColumn.ResizingMask.HasFlag (NSTableColumnResizing.UserResizingMask)) {
+				for (int i = 0; i < base.RowCount; i++)
+				{
+					var cell = base.GetCell (column, i);
+					s.Width = (nfloat)Math.Max (s.Width, cell.CellSize.Width);
+				}
+				if (!tableColumn.ResizingMask.HasFlag (NSTableColumnResizing.Autoresizing))
+					tableColumn.Width = s.Width;
+			}
+			tableColumn.MinWidth = s.Width;
+		}
+
+		nint IndexOfColumn (NSTableColumn tableColumn)
+		{
+			nint icol = -1;
+			foreach (var col in TableColumns ()) {
+				icol++;
+				if (col == tableColumn)
+					return icol;
+			}
+			return icol;
+		}
+
+		public override void ReloadData ()
+		{
+			base.ReloadData ();
+			QueueColumnResize ();
+		}
+
+		public override void ReloadData (NSIndexSet rowIndexes, NSIndexSet columnIndexes)
+		{
+			base.ReloadData (rowIndexes, columnIndexes);
+			QueueColumnResize ();
+		}
+
+		bool columnResizeQueued;
+		void QueueColumnResize ()
+		{
+			if (!columnResizeQueued) {
+				columnResizeQueued = true;
+				Application.MainLoop.QueueExitAction (delegate {
+					columnResizeQueued = false;
+					AutosizeColumns ();
+				});
+			}
+		}
+
 		public NSTableViewBackend(IWidgetEventSink eventSink, ApplicationContext context) {
 			this.context = context;
 			this.eventSink = eventSink;
-			this.Delegate = new ListDelegate () ;
+			this.Delegate = new ListDelegate ();
+			AllowsColumnReordering = false;
 		}
 
 

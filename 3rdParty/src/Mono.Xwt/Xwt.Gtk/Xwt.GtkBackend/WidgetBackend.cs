@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Xwt.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Xwt.GtkBackend
 {
@@ -42,8 +43,6 @@ namespace Xwt.GtkBackend
 		IWidgetEventSink eventSink;
 		WidgetEvent enabledEvents;
 		bool destroyed;
-		SizeConstraint currentWidthConstraint = SizeConstraint.Unconstrained;
-		SizeConstraint currentHeightConstraint = SizeConstraint.Unconstrained;
 
 		bool minSizeSet;
 		
@@ -290,7 +289,7 @@ namespace Xwt.GtkBackend
 		
 		protected virtual void Dispose (bool disposing)
 		{
-			if (Widget != null && disposing && Widget.Parent == null && !destroyed) {
+			if (Widget != null && disposing && !destroyed) {
 				MarkDestroyed (Frontend);
 				Widget.Destroy ();
 			}
@@ -300,7 +299,16 @@ namespace Xwt.GtkBackend
 
 		void MarkDestroyed (Widget w)
 		{
-			var bk = (WidgetBackend) Toolkit.GetBackend (w);
+			var wbk = Toolkit.GetBackend (w);
+			var bk = wbk as WidgetBackend;
+			if (bk == null) {
+				var ew = wbk as Xwt.Widget;
+				if (ew == null)
+					return;
+				bk = Toolkit.GetBackend (ew) as WidgetBackend;
+				if (bk == null)
+					return;
+			}
 			bk.destroyed = true;
 			foreach (var c in w.Surface.Children)
 				MarkDestroyed (c);
@@ -314,8 +322,6 @@ namespace Xwt.GtkBackend
 
 		public void SetSizeConstraints (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
-			currentWidthConstraint = widthConstraint;
-			currentHeightConstraint = heightConstraint;
 		}
 		
 		DragDropData DragDropInfo {
@@ -324,6 +330,22 @@ namespace Xwt.GtkBackend
 					dragDropInfo = new DragDropData ();
 				return dragDropInfo;
 			}
+		}
+
+		public Point ConvertToParentCoordinates (Point widgetCoordinates)
+		{
+			int x = 0, y = 0;
+			if (RootWidget?.Parent != null)
+				Widget.TranslateCoordinates (RootWidget.Parent, x, y, out x, out y);
+			return new Point (x, y);
+		}
+
+		public Point ConvertToWindowCoordinates (Point widgetCoordinates)
+		{
+			int x = 0, y = 0;
+			if (RootWidget?.Toplevel != null)
+				Widget.TranslateCoordinates (RootWidget.Toplevel, x, y, out x, out y);
+			return new Point (x, y);
 		}
 		
 		public Point ConvertToScreenCoordinates (Point widgetCoordinates)
@@ -814,8 +836,8 @@ namespace Xwt.GtkBackend
 			var pointer_coords = EventsRootWidget.CheckPointerCoordinates (args.Event.Window, args.Event.X, args.Event.Y);
 			return new MouseScrolledEventArgs ((long) args.Event.Time, pointer_coords.X, pointer_coords.Y, direction);
 		}
-        
 
+		[GLib.ConnectBefore]
 		protected void HandleWidgetFocusOutEvent (object o, Gtk.FocusOutEventArgs args)
 		{
 			ApplicationContext.InvokeUserCode (delegate {
@@ -823,7 +845,8 @@ namespace Xwt.GtkBackend
 			});
 		}
 
-		protected void HandleWidgetFocusInEvent (object o, EventArgs args)
+		[GLib.ConnectBefore]
+		void HandleWidgetFocusInEvent(object o, EventArgs args)
 		{
 			if (!CanGetFocus)
 				return;
@@ -832,7 +855,8 @@ namespace Xwt.GtkBackend
 			});
 		}
 
-		protected void HandleLeaveNotifyEvent (object o, Gtk.LeaveNotifyEventArgs args)
+		[GLib.ConnectBefore]
+		void HandleLeaveNotifyEvent(object o, Gtk.LeaveNotifyEventArgs args)
 		{
 			if (args.Event.Detail == Gdk.NotifyType.Inferior)
 				return;
@@ -841,7 +865,8 @@ namespace Xwt.GtkBackend
 			});
 		}
 
-		protected void HandleEnterNotifyEvent (object o, Gtk.EnterNotifyEventArgs args)
+		[GLib.ConnectBefore]
+		void HandleEnterNotifyEvent(object o, Gtk.EnterNotifyEventArgs args)
 		{
 			if (args.Event.Detail == Gdk.NotifyType.Inferior)
 				return;
@@ -852,6 +877,7 @@ namespace Xwt.GtkBackend
 
 		protected virtual void OnEnterNotifyEvent (Gtk.EnterNotifyEventArgs args) {}
 
+		[GLib.ConnectBefore]
 		void HandleMotionNotifyEvent (object o, Gtk.MotionNotifyEventArgs args)
 		{
 			var a = GetMouseMovedEventArgs (args);

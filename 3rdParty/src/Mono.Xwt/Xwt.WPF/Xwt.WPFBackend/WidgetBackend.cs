@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -263,6 +264,18 @@ namespace Xwt.WPFBackend
 		public static FrameworkElement GetFrameworkElement (IWidgetBackend backend)
 		{
 			return backend == null ? null : (FrameworkElement)backend.NativeWidget;
+		}
+
+		public Point ConvertToParentCoordinates (Point widgetCoordinates)
+		{
+			var p = Widget.TranslatePoint (widgetCoordinates.ToWpfPoint (), Frontend.Parent.Surface.NativeWidget as UIElement);
+			return p.ToXwtPoint ();
+		}
+
+		public Point ConvertToWindowCoordinates (Point widgetCoordinates)
+		{
+			var p = Widget.TranslatePoint (widgetCoordinates.ToWpfPoint (), GetParentWindow ());
+			return p.ToXwtPoint ();
 		}
 
 		public Point ConvertToScreenCoordinates (Point widgetCoordinates)
@@ -589,7 +602,7 @@ namespace Xwt.WPFBackend
 		void WidgetKeyDownHandler (object sender, System.Windows.Input.KeyEventArgs e)
 		{
 			KeyEventArgs args;
-			if (MapToXwtKeyArgs (e, out args)) {
+			if (e.MapToXwtKeyArgs (out args)) {
 				Context.InvokeUserCode (delegate {
 					eventSink.OnKeyPressed (args);
 				});
@@ -601,7 +614,7 @@ namespace Xwt.WPFBackend
 		void WidgetKeyUpHandler (object sender, System.Windows.Input.KeyEventArgs e)
 		{
 			KeyEventArgs args;
-			if (MapToXwtKeyArgs (e, out args)) {
+			if (e.MapToXwtKeyArgs (out args)) {
 				Context.InvokeUserCode (delegate
 				{
 					eventSink.OnKeyReleased (args);
@@ -609,18 +622,6 @@ namespace Xwt.WPFBackend
 				if (args.Handled)
 					e.Handled = true;
 			}
-		}
-
-		bool MapToXwtKeyArgs (System.Windows.Input.KeyEventArgs e, out KeyEventArgs result)
-		{
-			result = null;
-
-			var key = KeyboardUtil.TranslateToXwtKey (e.Key);
-			if ((int)key == 0)
-				return false;
-
-			result = new KeyEventArgs (key, (int)e.Key, KeyboardUtil.GetModifiers (), e.IsRepeat, e.Timestamp);
-			return true;
 		}
 
 		void WidgetPreviewTextInputHandler (object sender, System.Windows.Input.TextCompositionEventArgs e)
@@ -636,7 +637,7 @@ namespace Xwt.WPFBackend
 
 		void WidgetMouseDownHandler (object o, MouseButtonEventArgs e)
 		{
-			var args = ToXwtButtonArgs (e);
+			var args = e.ToXwtButtonArgs (Widget);
 			Context.InvokeUserCode (delegate () {
 				eventSink.OnButtonPressed (args);
 			});
@@ -646,25 +647,13 @@ namespace Xwt.WPFBackend
 
 		void WidgetMouseUpHandler (object o, MouseButtonEventArgs e)
 		{
-			Mouse.Capture(null);
-			var args = ToXwtButtonArgs (e);
-			Context.InvokeUserCode (delegate ()
+            var args = e.ToXwtButtonArgs (Widget);
+            Context.InvokeUserCode (delegate ()
 			{
 				eventSink.OnButtonReleased (args);
 			});
 			if (args.Handled)
 				e.Handled = true;
-		}
-
-		ButtonEventArgs ToXwtButtonArgs (MouseButtonEventArgs e)
-		{
-			var pos = e.GetPosition (Widget);
-			return new ButtonEventArgs () {
-				X = pos.X,
-				Y = pos.Y,
-				MultiplePress = e.ClickCount,
-				Button = e.ChangedButton.ToXwtButton ()
-			};
 		}
 
 		void WidgetGotFocusHandler (object o, RoutedEventArgs e)
@@ -917,7 +906,7 @@ namespace Xwt.WPFBackend
 
 		void CheckDrop (object sender, System.Windows.DragEventArgs e)
 		{
-			var types = e.Data.GetFormats ().Select (t => t.ToXwtTransferType ()).ToArray ();
+			var types = e.Data.GetFormats ().Select (DataConverter.ToXwtTransferType).ToArray ();
 			var pos = e.GetPosition (Widget).ToXwtPoint ();
 			var proposedAction = DetectDragAction (e.KeyStates);
 
@@ -967,7 +956,7 @@ namespace Xwt.WPFBackend
 
 			WidgetDragLeaveHandler (sender, e);
 
-			var types = e.Data.GetFormats ().Select (t => t.ToXwtTransferType ()).ToArray ();
+			var types = e.Data.GetFormats ().Select (DataConverter.ToXwtTransferType).ToArray ();
 			var pos = e.GetPosition (Widget).ToXwtPoint ();
 			var actualEffect = currentDragEffect;
 
@@ -1055,9 +1044,44 @@ namespace Xwt.WPFBackend
 			if (Widget.IsVisible)
 				Context.InvokeUserCode (this.eventSink.OnBoundsChanged);
 		}
+
+		Task IDispatcherBackend.InvokeAsync(Action action)
+		{
+			var ts = new TaskCompletionSource<int>();
+			var result = Widget.Dispatcher.BeginInvoke((Action)delegate
+			{
+				try
+				{
+					action();
+					ts.SetResult(0);
+				}
+				catch (Exception ex)
+				{
+					ts.SetException(ex);
+				}
+			}, null);
+			return ts.Task;
+		}
+
+		Task<T> IDispatcherBackend.InvokeAsync<T>(Func<T> func)
+		{
+			var ts = new TaskCompletionSource<T>();
+			var result = Widget.Dispatcher.BeginInvoke((Action)delegate
+			{
+				try
+				{
+					ts.SetResult(func());
+				}
+				catch (Exception ex)
+				{
+					ts.SetException(ex);
+				}
+			}, null);
+			return ts.Task;
+		}
 	}
 
-	public interface IWpfWidgetBackend
+	public interface IWpfWidgetBackend : IDispatcherBackend
 	{
 		FrameworkElement Widget { get; }
 	}

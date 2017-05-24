@@ -49,7 +49,7 @@ namespace Xwt
 		Descending
 	}
 
-	public class ListViewColumn: ICellContainer
+	public partial class ListViewColumn: ICellContainer
 	{
 		CellViewCollection views;
 		string title;
@@ -133,6 +133,18 @@ namespace Xwt
 				isResizeable = value;
 				if (Parent != null)
 					Parent.UpdateColumn (this, Handle, ListViewColumnChange.CanResize);
+			}
+		}
+
+		bool expands;
+
+		public bool Expands {
+			get { return expands; }
+			set
+			{
+				expands = value;
+				if (Parent != null)
+					Parent.UpdateColumn (this, Handle, ListViewColumnChange.Expanding);
 			}
 		}
 

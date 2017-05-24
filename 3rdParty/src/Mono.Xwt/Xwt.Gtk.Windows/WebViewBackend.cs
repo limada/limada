@@ -182,7 +182,47 @@ namespace Xwt.Gtk.Windows
 			get { return (IWebViewEventSink)base.EventSink; }
 		}
 
-		public override void EnableEvent (object eventId)
+        public bool ContextMenuEnabled {
+            get {
+                throw new NotImplementedException ();
+            }
+
+            set {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public bool DrawsBackground {
+            get {
+                throw new NotImplementedException ();
+            }
+
+            set {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public bool ScrollBarsEnabled {
+            get {
+                throw new NotImplementedException ();
+            }
+
+            set {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public string CustomCss {
+            get {
+                throw new NotImplementedException ();
+            }
+
+            set {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public override void EnableEvent (object eventId)
 		{
 			base.EnableEvent (eventId);
 			if (eventId is WebViewEvent) {

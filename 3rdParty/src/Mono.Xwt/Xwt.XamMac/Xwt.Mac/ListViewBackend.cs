@@ -28,22 +28,10 @@
 // THE SOFTWARE.
 
 using System;
-using Xwt.Backends;
-
-#if MONOMAC
-using nint = System.Int32;
-using nfloat = System.Single;
-using CGRect = System.Drawing.RectangleF;
-using CGPoint = System.Drawing.PointF;
-using CGSize = System.Drawing.SizeF;
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.CoreGraphics;
-#else
-using Foundation;
 using AppKit;
 using CoreGraphics;
-#endif
+using Foundation;
+using Xwt.Backends;
 
 namespace Xwt.Mac
 {
@@ -107,7 +95,7 @@ namespace Xwt.Mac
 			//      only the visible rows are reloaded.
 			source.RowInserted += (sender, e) => Table.ReloadData();
 			source.RowDeleted += (sender, e) => Table.ReloadData();
-			source.RowChanged += (sender, e) => Table.ReloadData();
+			source.RowChanged += (sender, e) => Table.ReloadData (NSIndexSet.FromIndex (e.Row), NSIndexSet.FromNSRange (new NSRange(0, Table.ColumnCount - 1)));
 			source.RowsReordered += (sender, e) => Table.ReloadData();
 		}
 		
@@ -160,10 +148,6 @@ namespace Xwt.Mac
 		{
 			CurrentEventRow = (int)pos;
 		}
-
-		// TODO
-		public bool BorderVisible { get; set; }
-
 
 		public int GetRowAtPosition (Point p)
 		{

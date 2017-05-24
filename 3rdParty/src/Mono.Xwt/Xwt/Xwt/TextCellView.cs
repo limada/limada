@@ -33,7 +33,7 @@ using Xwt.Backends;
 
 namespace Xwt
 {
-	public sealed class TextCellView: CellView, ITextCellViewFrontend
+	public partial class TextCellView: CellView, ITextCellViewFrontend
 	{
 		string text;
 		string markup;

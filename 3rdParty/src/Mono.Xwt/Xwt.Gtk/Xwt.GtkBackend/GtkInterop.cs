@@ -34,25 +34,25 @@ namespace Xwt.GtkBackend
 {
 	public static class GtkInterop
 	{
-		public const string LIBATK          = "libatk-1.0-0.dll";
-		public const string LIBGLIB         = "libglib-2.0-0.dll";
-		public const string LIBGOBJECT      = "libgobject-2.0-0.dll";
-		public const string LIBPANGO        = "libpango-1.0-0.dll";
-		public const string LIBPANGOCAIRO   = "libpangocairo-1.0-0.dll";
-		public const string LIBFONTCONFIG   = "fontconfig";
+		internal const string LIBATK          = "libatk-1.0-0.dll";
+		internal const string LIBGLIB         = "libglib-2.0-0.dll";
+		internal const string LIBGOBJECT      = "libgobject-2.0-0.dll";
+		internal const string LIBPANGO        = "libpango-1.0-0.dll";
+		internal const string LIBPANGOCAIRO   = "libpangocairo-1.0-0.dll";
+		internal const string LIBFONTCONFIG   = "fontconfig";
 
 		#if XWT_GTK3
-		public const string LIBGTK          = "libgtk-3-0.dll";
-		public const string LIBGDK          = "libgdk-3-0.dll";
-		public const string LIBGTKGLUE      = "gtksharpglue-3";
-		public const string LIBGLIBGLUE     = "glibsharpglue-3";
-		public const string LIBWEBKIT       = "libwebkitgtk-3.0-0.dll";
+        public const string LIBGTK          = "libgtk-3-0.dll";
+		internal const string LIBGDK          = "libgdk-3-0.dll";
+		internal const string LIBGTKGLUE      = "gtksharpglue-3";
+		internal const string LIBGLIBGLUE     = "glibsharpglue-3";
+		internal const string LIBWEBKIT       = "libwebkitgtk-3.0-0.dll";
 		#else
 		public const string LIBGTK          = "libgtk-win32-2.0-0.dll";
-		public const string LIBGDK          = "libgdk-win32-2.0-0.dll";
-		public const string LIBGTKGLUE      = "gtksharpglue-2";
-		public const string LIBGLIBGLUE     = "glibsharpglue-2";
-		public const string LIBWEBKIT       = "libwebkitgtk-1.0-0.dll";
+		internal const string LIBGDK          = "libgdk-win32-2.0-0.dll";
+		internal const string LIBGTKGLUE      = "gtksharpglue-2";
+		internal const string LIBGLIBGLUE     = "glibsharpglue-2";
+		internal const string LIBWEBKIT       = "libwebkitgtk-1.0-0.dll";
 		#endif
 	}
 
@@ -62,6 +62,7 @@ namespace Xwt.GtkBackend
 	public class FastPangoAttrList : IDisposable
 	{
 		IntPtr list;
+		public Gdk.Color DefaultLinkColor = Toolkit.CurrentEngine.Defaults.FallbackLinkColor.ToGtkValue ();
 
 		public FastPangoAttrList ()
 		{
@@ -108,8 +109,9 @@ namespace Xwt.GtkBackend
 				AddFontAttribute ((Pango.FontDescription)Toolkit.GetBackend (xa.Font), start, end);
 			}
 			else if (attr is LinkTextAttribute) {
+				// TODO: support "link-color" style prop for TextLayoutBackendHandler and CellRendererText
 				AddUnderlineAttribute (Pango.Underline.Single, start, end);
-				AddForegroundAttribute (Colors.Blue.ToGtkValue (), start, end);
+				AddForegroundAttribute (DefaultLinkColor, start, end);
 			}
 		}
 
@@ -239,7 +241,10 @@ namespace Xwt.GtkBackend
 		public int IndexToByteIndex (int i)
 		{
 			if (i >= indexToByteIndex.Length)
-				return i;
+				// if the index exceeds the byte index range, return the last byte index + 1
+				// telling pango to span the attribute to the end of the string
+				// this happens if the string contains multibyte characters
+				return indexToByteIndex[i-1] + 1;
 			return indexToByteIndex[i];
 		}
 

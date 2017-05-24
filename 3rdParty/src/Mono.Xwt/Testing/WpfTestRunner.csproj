@@ -8,10 +8,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WpfTestRunner</RootNamespace>
     <AssemblyName>WpfTestRunner</AssemblyName>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <TestRunnerCommand>bin\WpfTestRunner.exe</TestRunnerCommand>
-    <ReleaseVersion>17.1</ReleaseVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>17.4</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -22,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -32,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit-console-runner">
@@ -137,17 +141,17 @@
     <EmbeddedResource Include="Tests\ninep-tt.9.png">
       <LogicalName>ninep-tt.9.png</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\ninep-ss.9%402x.png">
-      <LogicalName>ninep-ss.9@2x.png</LogicalName>
+    <EmbeddedResource Include="Tests\ninep-ss%402x.9.png">
+      <LogicalName>ninep-ss@2x.9.png</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\ninep-st.9%402x.png">
-      <LogicalName>ninep-st.9@2x.png</LogicalName>
+    <EmbeddedResource Include="Tests\ninep-st%402x.9.png">
+      <LogicalName>ninep-st@2x.9.png</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\ninep-ts.9%402x.png">
-      <LogicalName>ninep-ts.9@2x.png</LogicalName>
+    <EmbeddedResource Include="Tests\ninep-ts%402x.9.png">
+      <LogicalName>ninep-ts@2x.9.png</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\ninep-tt.9%402x.png">
-      <LogicalName>ninep-tt.9@2x.png</LogicalName>
+    <EmbeddedResource Include="Tests\ninep-tt%402x.9.png">
+      <LogicalName>ninep-tt@2x.9.png</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -159,9 +163,7 @@
   </Target>
   -->
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
 </Project>

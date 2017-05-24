@@ -3,8 +3,10 @@
 //  
 // Author:
 //       Carlos Alberto Cortez <calberto.cortez@gmail.com>
+//       Konrad M. Kruczynski <kkruczynski@antmicro.com>
 // 
 // Copyright (c) 2011 Carlos Alberto Cortez
+// Copyright (c) 2016 Antmicro Ltd
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,18 +29,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using Xwt.Backends;
 
 
 namespace Xwt.WPFBackend
 {
-	public class WindowFrameBackend : IWindowFrameBackend
+	public class WindowFrameBackend : IWindowFrameBackend, IDispatcherBackend
 	{
 		System.Windows.Window window;
+		WindowInteropHelper interopHelper;
 		IWindowFrameEventSink eventSink;
 		WindowFrame frontend;
 		bool resizable = true;
@@ -83,7 +88,20 @@ namespace Xwt.WPFBackend
 
 		public System.Windows.Window Window {
 			get { return window; }
-			set { window = value; }
+			set {
+				window = value;
+				interopHelper = new WindowInteropHelper(window);
+			}
+		}
+
+		object IWindowFrameBackend.Window
+		{
+			get { return window; }
+		}
+
+		public IntPtr NativeHandle
+		{
+			get { return interopHelper != null ? interopHelper.Handle : IntPtr.Zero; }
 		}
 
 		public virtual bool HasMenu {
@@ -99,7 +117,7 @@ namespace Xwt.WPFBackend
 			get { return eventSink; }
 		}
 
-		bool IWindowFrameBackend.Decorated {
+		public virtual bool Decorated {
 			get { return window.WindowStyle != WindowStyle.None; }
 			set {
 				window.WindowStyle = value ? WindowStyle.SingleBorderWindow : WindowStyle.None;
@@ -112,12 +130,18 @@ namespace Xwt.WPFBackend
 			set { window.ShowInTaskbar = value; }
 		}
 
-		void IWindowFrameBackend.SetTransientFor (IWindowFrameBackend window)
+		public void SetTransientFor (IWindowFrameBackend window)
 		{
-			this.Window.Owner = ((WindowFrameBackend) window).Window;
+			var wpfBackend = window as WindowFrameBackend;
+			if (wpfBackend != null)
+				Window.Owner = wpfBackend.Window;
+			else if (window != null)
+				interopHelper.Owner = window.NativeHandle;
+			else
+				Window.Owner = null;
 		}
 
-		bool IWindowFrameBackend.Resizable {
+		public virtual bool Resizable {
 			get {
 				return resizable;
 			}
@@ -138,9 +162,9 @@ namespace Xwt.WPFBackend
 			}
 		}
 
-		void UpdateResizeMode ()
+		protected void UpdateResizeMode ()
 		{
-			var m = resizable && window.WindowStyle == WindowStyle.SingleBorderWindow ? ResizeMode.CanResize : ResizeMode.NoResize;
+			var m = resizable && window.WindowStyle != WindowStyle.None ? ResizeMode.CanResize : ResizeMode.NoResize;
 			if (m != window.ResizeMode) {
 				window.ResizeMode = m;
 				OnResizeModeChanged ();
@@ -189,6 +213,11 @@ namespace Xwt.WPFBackend
 			set { window.Opacity = value; }
 		}
 
+		public bool HasFocus
+		{
+			get { return window.IsActive; }
+		}
+
 		void IWindowFrameBackend.Present ()
 		{
 			window.Activate ();
@@ -232,8 +261,10 @@ namespace Xwt.WPFBackend
 		public void SetSize (double width, double height)
 		{
 			var r = Bounds;
-			r.Width = width;
-			r.Height = height;
+			if (width >= 0)
+				r.Width = width;
+			if (height >= 0)
+				r.Height = height;
 			Bounds = r;
 		}
 
@@ -418,6 +449,41 @@ namespace Xwt.WPFBackend
 			size.Height = Math.Max (0, size.Height);
 
 			return new Rectangle (loc, size);
+		}
+
+		Task IDispatcherBackend.InvokeAsync(Action action)
+		{
+			var ts = new TaskCompletionSource<int>();
+			var result = Window.Dispatcher.BeginInvoke((Action)delegate
+			{
+				try
+				{
+					action();
+					ts.SetResult(0);
+				}
+				catch (Exception ex)
+				{
+					ts.SetException(ex);
+				}
+			}, null);
+			return ts.Task;
+		}
+
+		Task<T> IDispatcherBackend.InvokeAsync<T>(Func<T> func)
+		{
+			var ts = new TaskCompletionSource<T>();
+			var result = Window.Dispatcher.BeginInvoke((Action)delegate
+			{
+				try
+				{
+					ts.SetResult(func());
+				}
+				catch (Exception ex)
+				{
+					ts.SetException(ex);
+				}
+			}, null);
+			return ts.Task;
 		}
 	}
 }

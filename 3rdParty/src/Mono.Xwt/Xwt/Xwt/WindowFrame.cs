@@ -3,8 +3,10 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
+//       Konrad M. Kruczynski <kkruczynski@antmicro.com>
 // 
 // Copyright (c) 2011 Xamarin Inc
+// Copyright (c) 2016 Antmicro Ltd
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -282,6 +284,10 @@ namespace Xwt
 			get { return Backend.Opacity; }
 			set { Backend.Opacity = value; }
 		}
+
+		public bool HasFocus {
+			get { return Backend.HasFocus; }
+		}
 		
 		/// <summary>
 		/// Gets or sets a value indicating whether this window is in full screen mode
@@ -322,6 +328,8 @@ namespace Xwt
 		/// </summary>
 		public void Present ()
 		{
+			if (!Visible)
+				AdjustSize ();
 			Backend.Present ();
 		}
 

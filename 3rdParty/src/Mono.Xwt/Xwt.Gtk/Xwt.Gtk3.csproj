@@ -9,8 +9,9 @@
     <AssemblyName>Xwt.Gtk3</AssemblyName>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
+    <NoWarn>0612, 0618</NoWarn>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <ReleaseVersion>17.1</ReleaseVersion>
+    <ReleaseVersion>17.4</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -26,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -62,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.Gtk3.cs" />
-    <Compile Include="GtkClipboardBackend.cs" />
     <Compile Include="Xwt.GtkBackend\LabelBackend.cs" />
     <Compile Include="Xwt.GtkBackend\PasswordEntryBackend.cs" />
     <Compile Include="Xwt.GtkBackend\WidgetBackend.cs" />
@@ -144,6 +144,7 @@
     <Compile Include="Xwt.GtkBackend.CellViews\CustomCellRendererImage.cs" />
     <Compile Include="Xwt.GtkBackend.CellViews\CustomCellRendererText.cs" />
     <Compile Include="Xwt.GtkBackend.CellViews\CustomCellRendererToggle.cs" />
+    <Compile Include="Xwt.GtkBackend.CellViews\CustomCellRendererComboBox.cs" />
     <Compile Include="Xwt.GtkBackend.CellViews\Gtk3CellRendererCustom.cs" />
     <Compile Include="Xwt.GtkBackend\CustomListModel.cs" />
     <Compile Include="Xwt.GtkBackend\ListBoxBackend.cs" />
@@ -175,6 +176,11 @@
     <Compile Include="Xwt.GtkBackend\SelectFontDialogBackend.cs" />
     <Compile Include="Xwt.GtkBackend\Gtk3FontChooserDialog.cs" />
     <Compile Include="Xwt.GtkBackend\FontSelectorBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\PopupWindowBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\UtilityWindowBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\TextWrapper.cs" />
+    <Compile Include="Limaki.Extended\GtkClipboardBackend.cs" />
+    <Compile Include="Limaki.Extended\TextEntryMultiLineBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

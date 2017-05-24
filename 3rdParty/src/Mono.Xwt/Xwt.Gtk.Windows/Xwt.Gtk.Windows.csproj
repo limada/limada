@@ -9,8 +9,8 @@
     <AssemblyName>Xwt.Gtk.Windows</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
+    <ReleaseVersion>17.4</ReleaseVersion>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <ReleaseVersion>17.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +47,10 @@
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="PresentationCore" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GtkWindowsDesktopBackend.cs" />
@@ -54,6 +58,10 @@
     <Compile Include="Win32.cs" />
     <Compile Include="WindowsPlatformBackend.cs" />
     <Compile Include="WebViewBackend.cs" />
+    <Compile Include="..\Xwt.WPF\Xwt.WPFBackend.Interop\IDocHostUIHandler.cs">
+      <Link>IDocHostUIHandler.cs</Link>
+    </Compile>
+    <Compile Include="GtkWin32Interop.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

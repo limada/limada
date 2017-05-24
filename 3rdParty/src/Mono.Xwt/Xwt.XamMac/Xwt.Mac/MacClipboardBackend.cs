@@ -23,25 +23,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using System.IO;
 using System.Linq;
-using Xwt.Backends;
 using System.Collections.Generic;
-
-#if MONOMAC
-using nint = System.Int32;
-using nfloat = System.Single;
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-#else
-using Foundation;
 using AppKit;
-#endif
+using Foundation;
+using Xwt.Backends;
 
 namespace Xwt.Mac
 {
-	public class MacClipboardBackend: ClipboardBackend
+	public partial class MacClipboardBackend: ClipboardBackend
 	{
 		PasteboardOwner owner;
 
@@ -82,7 +75,7 @@ namespace Xwt.Mac
 			if (type == TransferDataType.Text)
 				return data.ToString ();
 			if (type == TransferDataType.Image)
-				return new NSImage (data);
+				return ApplicationContext.Toolkit.WrapImage (new NSImage (data));
 
 			unsafe {
 				var bytes = new byte [data.Length];
@@ -102,11 +95,6 @@ namespace Xwt.Mac
 			throw new NotImplementedException ();
 		}
 
-        public override IEnumerable<TransferDataType> GetTypesAvailable () 
-        {
-            foreach (var t in NSPasteboard.GeneralPasteboard.Types)
-                yield return TransferDataType.FromId (t);
-        }
 
         #endregion
     }
@@ -124,7 +112,11 @@ namespace Xwt.Mac
 		{
 			NSData data;
 			var obj = DataSource ();
-			if (obj is NSImage)
+			if (obj is Xwt.Drawing.Image) {
+				var bmp = ((Xwt.Drawing.Image)obj).ToBitmap ();
+				data = ((NSImage)Toolkit.GetBackend (bmp)).AsTiff ();
+			}
+			else if (obj is NSImage)
 				data = ((NSImage)obj).AsTiff ();
 			else if (obj is Uri)
 				data = NSData.FromUrl ((NSUrl)((Uri)obj));

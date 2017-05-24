@@ -148,6 +148,7 @@ namespace Xwt.GtkBackend
 			tc.Title = col.Title;
 			tc.Resizable = col.CanResize;
 			tc.Alignment = col.Alignment.ToGtkAlignment ();
+			tc.Expand = col.Expands;
 			tc.SortIndicator = col.SortIndicatorVisible;
 			tc.SortOrder = (SortType)col.SortDirection;
 			if (col.SortDataField != null)
@@ -160,10 +161,50 @@ namespace Xwt.GtkBackend
 		
 		void MapTitle (ListViewColumn col, Gtk.TreeViewColumn tc)
 		{
-			if (col.HeaderView == null)
-				tc.Title = col.Title;
-			else
-				tc.Widget = CellUtil.CreateCellRenderer (ApplicationContext, col.HeaderView);
+            if (col.HeaderView == null)
+                tc.Title = col.Title;
+            else {
+                var oldWidget = tc.Widget;
+                tc.Widget = CellUtil.CreateCellRenderer (ApplicationContext, col.HeaderView);
+               
+                if (tc.Widget != null) {
+                    // lytic: added show; otherwise the header is not visible
+                    tc.Widget.Show ();
+
+                    if (oldWidget == null) { // avoid to add events multiple times
+                        tc.Clickable = true;
+                        var chk = tc.Widget as Gtk.CheckButton;
+                        if (chk != null) {
+                            tc.Clicked += (s, e) => chk.Click ();
+                        } else {
+                            tc.Clicked += (s, e) => {
+                                col.HeaderView.RaiseButtonPressed (new ButtonEventArgs {
+                                    X = 0,
+                                    Y = 0,
+                                    Button = PointerButton.Left
+                                });
+
+                            };
+                        }
+                    }
+                    if (false) {
+                        // http://stackoverflow.com/questions/6960243/how-do-you-attach-a-popup-menu-to-a-column-header-button-in-gtk2-using-pygobject
+                        var top = tc.Widget;
+                        // not working: event never fired
+                        while (top.Parent != Widget) {
+                            top = top.Parent;
+                            top.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
+                            top.ButtonPressEvent += (s, e) => {
+                                col.HeaderView.RaiseButtonPressed (new ButtonEventArgs {
+                                    X = e.Event.X,
+                                    Y = e.Event.Y,
+                                    Button = (PointerButton)e.Event.Button
+                                });
+                            };
+                        }
+                    }
+                }
+            }
 		}
 		
 		void MapColumn (ListViewColumn col, Gtk.TreeViewColumn tc)
@@ -212,6 +253,11 @@ namespace Xwt.GtkBackend
 				case ListViewColumnChange.Alignment:
 					tc.Alignment = col.Alignment.ToGtkAlignment ();
 					break;
+
+                // lytico: 
+                case ListViewColumnChange.Width:
+                    tc.MinWidth = col.Width;
+                    break;
 			}
 		}
 
@@ -246,7 +292,10 @@ namespace Xwt.GtkBackend
 
 		protected Gtk.TreeViewColumn GetCellColumn (CellView cell)
 		{
-			return cellViews [cell].Column;
+			CellInfo ci;
+			if (cellViews.TryGetValue (cell, out ci))
+				return ci.Column;
+			return null;
 		}
 
 		#region ICellRendererTarget implementation

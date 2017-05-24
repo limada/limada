@@ -72,7 +72,7 @@ namespace Xwt.Backends
 				return "FreeSans, Nimbus Sans L, Garuda, Utkal, Arial, Helvetica, sans-serif";
 
 				case DesktopType.Mac:
-				return "SF UI Text, Helvetica Neue, Helvetica, Lucida Grande, Lucida Sans Unicode, Arial, sans-serif";
+				return "-apple-system-font, .AppleSystemUIFont, Helvetica Neue, Helvetica, Lucida Grande, Lucida Sans Unicode, Arial, sans-serif";
 
 				default:
 				return "Segoe UI, Tahoma, Arial, Helvetica, Lucida Sans Unicode, Lucida Grande, sans-serif";
@@ -173,6 +173,15 @@ namespace Xwt.Backends
 		/// <returns><c>true</c>, if font from file was registered, <c>false</c> otherwise.</returns>
 		/// <param name="fontPath">Font path.</param>
 		public abstract bool RegisterFontFromFile (string fontPath);
+
+		internal object WithSettings (object handle, double size, FontStyle style, FontWeight weight, FontStretch stretch)
+		{
+			var backend = SetSize (Copy (handle), size);
+			backend = SetStyle (backend, style);
+			backend = SetWeight (backend, weight);
+			backend = SetStretch (backend, stretch);
+			return backend;
+		}
 
 		public abstract object Copy (object handle);
 		

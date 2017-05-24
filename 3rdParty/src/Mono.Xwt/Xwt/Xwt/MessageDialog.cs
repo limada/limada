@@ -343,5 +343,95 @@ namespace Xwt
 			}
 		}
 	}
+
+public sealed class MessageDialogDefaults
+{
+	Drawing.Image informationIcon;
+	Drawing.Image warningIcon;
+	Drawing.Image errorIcon;
+	Drawing.Image confirmationIcon;
+	Drawing.Image questionIcon;
+
+	/// <summary>
+	/// Gets or sets the icon shown in Information dialogs.
+	/// </summary>
+	/// <value>The information icon.</value>
+	public Drawing.Image InformationIcon {
+		get {
+			if (informationIcon != null)
+				return informationIcon;
+			return StockIcons.Information;
+		}
+
+		set {
+			informationIcon = value;
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets the icon shown in Warning dialogs.
+	/// </summary>
+	/// <value>The warning icon.</value>
+	public Drawing.Image WarningIcon {
+		get {
+			if (warningIcon != null)
+				return warningIcon;
+			return StockIcons.Warning;
+		}
+
+		set {
+			warningIcon = value;
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets the icon shown in Error dialogs.
+	/// </summary>
+	/// <value>The error icon.</value>
+	public Drawing.Image ErrorIcon {
+		get {
+			if (errorIcon != null)
+				return errorIcon;
+			return StockIcons.Error;
+		}
+
+		set {
+			errorIcon = value;
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets the icon shown in Confirmation dialogs.
+	/// </summary>
+	/// <value>The confirmation icon.</value>
+	public Drawing.Image ConfirmationIcon {
+		get {
+			if (confirmationIcon != null)
+				return confirmationIcon;
+			return StockIcons.Question;
+		}
+
+		set {
+			confirmationIcon = value;
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets the icon shown in Question dialogs.
+	/// </summary>
+	/// <value>The question icon.</value>
+	public Drawing.Image QuestionIcon {
+		get {
+			if (questionIcon != null)
+				return questionIcon;
+			return StockIcons.Question;
+		}
+
+		set {
+			questionIcon = value;
+		}
+	}
+}
+
 }
 

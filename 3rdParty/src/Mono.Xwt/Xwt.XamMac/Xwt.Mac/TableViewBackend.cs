@@ -25,19 +25,10 @@
 // THE SOFTWARE.
 
 using System;
-using Xwt.Backends;
 using System.Collections.Generic;
-using System.Linq;
-
-#if MONOMAC
-using nint = System.Int32;
-using nfloat = System.Single;
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-#else
-using Foundation;
 using AppKit;
-#endif
+using Foundation;
+using Xwt.Backends;
 
 namespace Xwt.Mac
 {
@@ -57,6 +48,7 @@ namespace Xwt.Mac
 		public override void Initialize ()
 		{
 			Table = CreateView ();
+			Table.ColumnAutoresizingStyle = NSTableViewColumnAutoresizingStyle.Sequential;
 			scroll = new ScrollView ();
 			clipView = new NormalClipView ();
 			clipView.Scrolled += OnScrolled;
@@ -66,12 +58,6 @@ namespace Xwt.Mac
 			ViewObject = scroll;
 			Widget.AutoresizingMask = NSViewResizingMask.HeightSizable | NSViewResizingMask.WidthSizable;
 			Widget.AutoresizesSubviews = true;
-		}
-
-		protected override void Dispose (bool disposing)
-		{
-			base.Dispose (disposing);
-			Util.DrainObjectCopyPool ();
 		}
 		
 		public ScrollPolicy VerticalScrollPolicy {
@@ -206,6 +192,18 @@ namespace Xwt.Mac
 			var hc = new NSTableHeaderCell ();
 			hc.Title = col.Title ?? "";
 			tcol.HeaderCell = hc;
+			tcol.HeaderCell.Alignment = col.Alignment.ToNSTextAlignment();
+
+
+			if (col.CanResize)
+				tcol.ResizingMask |= NSTableColumnResizing.UserResizingMask;
+			else
+				tcol.ResizingMask &= ~NSTableColumnResizing.UserResizingMask;
+			if (col.Expands)
+				tcol.ResizingMask |= NSTableColumnResizing.Autoresizing;
+			else
+				tcol.ResizingMask &= ~NSTableColumnResizing.Autoresizing;
+			tcol.SizeToFit();
 			Widget.InvalidateIntrinsicContentSize ();
 			return tcol;
 		}
@@ -222,8 +220,34 @@ namespace Xwt.Mac
 		public void UpdateColumn (ListViewColumn col, object handle, ListViewColumnChange change)
 		{
 			NSTableColumn tcol = (NSTableColumn) handle;
-			var c = CellUtil.CreateCell (ApplicationContext, Table, this, col.Views, cols.IndexOf (tcol));
-			tcol.DataCell = c;
+
+			switch (change) {
+				case ListViewColumnChange.CanResize:
+					if (col.CanResize)
+						tcol.ResizingMask |= NSTableColumnResizing.UserResizingMask;
+					else
+						tcol.ResizingMask &= ~NSTableColumnResizing.UserResizingMask;
+					break;
+				case ListViewColumnChange.Expanding:
+					if (col.Expands)
+						tcol.ResizingMask |= NSTableColumnResizing.Autoresizing;
+					else
+						tcol.ResizingMask &= ~NSTableColumnResizing.Autoresizing;
+					break;
+				case ListViewColumnChange.Cells:
+					var c = CellUtil.CreateCell(ApplicationContext, Table, this, col.Views, cols.IndexOf(tcol));
+					c.Alignment = col.Alignment.ToNSTextAlignment();
+					tcol.DataCell = c;
+					break;
+				case ListViewColumnChange.Title:
+					tcol.HeaderCell.Title = col.Title ?? string.Empty;
+					if (!col.CanResize)
+						tcol.SizeToFit();
+					break;
+				case ListViewColumnChange.Alignment:
+					tcol.HeaderCell.Alignment = col.Alignment.ToNSTextAlignment();
+					break;
+			}
 		}
 
 		public Rectangle GetCellBounds (int row, CellView cell, bool includeMargin)
@@ -273,7 +297,12 @@ namespace Xwt.Mac
 		{
 			Table.ScrollRowToVisible (row);
 		}
-		
+
+		public void StartEditingCell (int row, CellView cell)
+		{
+			// TODO
+		}
+
 		public abstract object GetValue (object pos, int nField);
 		
 		public abstract void SetValue (object pos, int nField, object value);

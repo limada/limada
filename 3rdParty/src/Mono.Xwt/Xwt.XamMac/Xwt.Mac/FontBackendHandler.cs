@@ -25,23 +25,14 @@
 // THE SOFTWARE.
 
 using System;
-using Xwt.Backends;
-using Xwt.Drawing;
 using System.Collections.Generic;
-using System.Text;
 using System.Globalization;
-
-#if MONOMAC
-using nint = System.Int32;
-using nfloat = System.Single;
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.CoreText;
-#else
-using Foundation;
+using System.Text;
 using AppKit;
 using CoreText;
-#endif
+using Foundation;
+using Xwt.Backends;
+using Xwt.Drawing;
 
 namespace Xwt.Mac
 {
@@ -81,7 +72,7 @@ namespace Xwt.Mac
 			var names = fontName.Split (new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
 			NSFont f = null;
 			foreach (var name in names) {
-				f = NSFontManager.SharedFontManager.FontWithFamily (name.Trim (), t, GetWeightValue (weight), (float)size);
+				f = NSFontManager.SharedFontManager.FontWithFamily (name.Trim (), t, weight.ToMacValue (), (float)size);
 				if (f != null) break;
 			}
 			if (f == null) return null;
@@ -231,11 +222,7 @@ namespace Xwt.Mac
 		{
 			FontData f = (FontData) handle;
 			f = f.Copy ();
-			int w = GetWeightValue (weight);
-			var traits = NSFontManager.SharedFontManager.TraitsOfFont (f.Font);
-			traits |= weight >= FontWeight.Bold ? NSFontTraitMask.Bold : NSFontTraitMask.Unbold;
-			traits &= weight >= FontWeight.Bold ? ~NSFontTraitMask.Unbold : ~NSFontTraitMask.Bold;
-			f.Font = NSFontManager.SharedFontManager.FontWithFamily (f.Font.FamilyName, traits, w, f.Font.PointSize);
+			f.Font = f.Font.WithWeight (weight);
 			f.Weight = weight;
 			return f;
 		}
@@ -363,11 +350,11 @@ namespace Xwt.Mac
 		{
 			StringBuilder sb = new StringBuilder (Font.FamilyName);
 			if (Style != FontStyle.Normal)
-				sb.Append (' ').Append (Style);
+				sb.Append (' ').Append (Style.ToString ());
 			if (Weight != FontWeight.Normal)
-				sb.Append (' ').Append (Weight);
+				sb.Append (' ').Append (Weight.ToString ());
 			if (Stretch != FontStretch.Normal)
-				sb.Append (' ').Append (Stretch);
+				sb.Append (' ').Append (Stretch.ToString ());
 			sb.Append (' ').Append (Font.PointSize.ToString (CultureInfo.InvariantCulture));
 			return sb.ToString ();
 		}

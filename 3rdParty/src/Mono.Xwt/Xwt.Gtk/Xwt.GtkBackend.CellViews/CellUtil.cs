@@ -70,11 +70,13 @@ namespace Xwt.GtkBackend
 			else if (view is ICanvasCellViewFrontend) {
 				crd = new CustomCellRenderer ();
 			}
-			else
+			else if (view is IComboBoxCellViewFrontend) {
+				crd = new CustomCellRendererComboBox ();
+			} else
 				throw new NotSupportedException ("Unknown cell view type: " + view.GetType ());
 
 			crd.Initialize (view, col, target);
-			col.PackStart (target, crd.CellRenderer, false);
+			col.PackStart (target, crd.CellRenderer, view.Expands);
 			col.SetCellDataFunc (target, crd.CellRenderer, (cellLayout, cell, treeModel, iter) => crd.LoadData (treeModel, iter));
 			view.AttachBackend (widget, crd);
 			return crd;
@@ -85,7 +87,7 @@ namespace Xwt.GtkBackend
 			if (views.Count == 1) {
 				Gtk.HBox box = new Gtk.HBox ();
 				foreach (var v in views)
-					box.PackStart (CreateCellRenderer (actx, v), false, false, 0);
+					box.PackStart (CreateCellRenderer (actx, v), v.Expands, false, 0);
 				box.ShowAll ();
 				return box;
 			}
@@ -98,9 +100,14 @@ namespace Xwt.GtkBackend
 			if (view is TextCellView) {
 				Gtk.Label lab = new Gtk.Label ();
 				lab.Xalign = 0;
-//				lab.Text = ((TextCellView)view).TextField;
+				lab.Text = ((TextCellView)view).Text;
 				return lab;
 			}
+            if (view is CheckBoxCellView) {
+                var chkBox = new Gtk.CheckButton();
+                chkBox.Clicked += (s, e) => ((CheckBoxCellView)view).RaiseToggled ();
+                return chkBox;
+            }
 			throw new NotImplementedException ();
 		}
 
@@ -132,7 +139,7 @@ namespace Xwt.GtkBackend
 
 				TreePosition toggledItem = null;
 
-				var pathParts = path.Split (':').Select (part => int.Parse (part));
+				var pathParts = path.Split (':').Select (int.Parse);
 
 				foreach (int pathPart in pathParts) {
 					toggledItem = treeFrontend.DataSource.GetChild (toggledItem, pathPart);

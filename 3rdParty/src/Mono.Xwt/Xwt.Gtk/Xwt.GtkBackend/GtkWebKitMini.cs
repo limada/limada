@@ -83,6 +83,44 @@ namespace Xwt.GtkBackend.WebKit
 			}
 		}
 
+		[GLib.Property("self-scrolling")]
+		public bool SelfScrolling
+		{
+			get
+			{
+				using (GLib.Value property = GetProperty("self-scrolling"))
+				{
+					return (bool)property.Val;
+				}
+			}
+			set
+			{
+				using (GLib.Value val = new GLib.Value(value))
+				{
+					SetProperty("self-scrolling", val);
+				}
+			}
+		}
+
+		[GLib.Property("transparent")]
+		public bool Transparent
+		{
+			get
+			{
+				using (GLib.Value property = GetProperty("transparent"))
+				{
+					return (bool)property.Val;
+				}
+			}
+			set
+			{
+				using (GLib.Value val = new GLib.Value(value))
+				{
+					SetProperty("transparent", val);
+				}
+			}
+		}
+
 #if XWT_GTK3 // Gtk.IScrollable
 		[GLib.Property ("hadjustment")]
 		public Gtk.Adjustment Hadjustment {
@@ -97,6 +135,7 @@ namespace Xwt.GtkBackend.WebKit
 				}
 			}
 		}
+
 		[GLib.Property ("vadjustment")]
 		public Gtk.Adjustment Vadjustment {
 			get {
@@ -242,6 +281,19 @@ namespace Xwt.GtkBackend.WebKit
 			remove
 			{
 				this.RemoveSignalHandler("title-changed", value);
+			}
+		}
+
+		[GLib.Signal("context-menu")]
+		public event EventHandler<ContextMenuArgs> ContextMenu
+		{
+			add
+			{
+				this.AddSignalHandler("context-menu", value, typeof(ContextMenuArgs));
+			}
+			remove
+			{
+				this.RemoveSignalHandler("context-menu", value);
 			}
 		}
 
@@ -423,4 +475,36 @@ namespace Xwt.GtkBackend.WebKit
 			}
 		}
 	}
+
+	public class ContextMenuArgs : GLib.SignalArgs
+	{
+		public Gtk.Widget DefaultMenu
+		{
+			get
+			{
+				return Args[0] as Gtk.Widget;
+			}
+			set
+			{
+				Args[0] = value;
+			}
+		}
+
+		public GLib.Object HitTestResult
+		{
+			get
+			{
+				return Args[1] as GLib.Object;
+			}
+		}
+
+		public bool TriggeredWithKeyboard
+		{
+			get
+			{
+				return (bool)Args[2];
+			}
+		}
+	}
 }
+

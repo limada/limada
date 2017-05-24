@@ -34,7 +34,7 @@ using Xwt.Backends;
 
 namespace Xwt
 {
-	public sealed class CheckBoxCellView: CellView, ICheckBoxCellViewFrontend
+	public partial class CheckBoxCellView: CellView, ICheckBoxCellViewFrontend
 	{
 		CheckBoxState state;
 		bool editable;

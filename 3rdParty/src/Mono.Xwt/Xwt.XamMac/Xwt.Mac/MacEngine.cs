@@ -25,24 +25,12 @@
 // THE SOFTWARE.
 
 using System;
-
 using System.Collections.Generic;
-using Xwt.Backends;
-
-#if MONOMAC
-using nint = System.Int32;
-using nfloat = System.Single;
-using CGSize = System.Drawing.SizeF;
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
-using MonoMac.CoreGraphics;
-#else
-using Foundation;
 using AppKit;
-using ObjCRuntime;
 using CoreGraphics;
-#endif
+using Foundation;
+using ObjCRuntime;
+using Xwt.Backends;
 
 namespace Xwt.Mac
 {
@@ -57,7 +45,8 @@ namespace Xwt.Mac
 		
 		public override void InitializeApplication ()
 		{
-			NSApplication.Init ();
+			NSApplicationInitializer.Initialize ();
+
 			//Hijack ();
 			if (pool != null)
 				pool.Dispose ();
@@ -137,6 +126,8 @@ namespace Xwt.Mac
 			RegisterBackend <Xwt.Backends.IColorPickerBackend, ColorPickerBackend> ();
 			RegisterBackend <Xwt.Backends.ICalendarBackend,CalendarBackend> ();
 			RegisterBackend <Xwt.Backends.ISelectFontDialogBackend, SelectFontDialogBackend> ();
+			RegisterBackend <Xwt.Backends.IPopupWindowBackend, PopupWindowBackend> ();
+			RegisterBackend <Xwt.Backends.IUtilityWindowBackend, PopupWindowBackend> ();
 		}
 
 		public override void RunApplication ()
@@ -240,6 +231,17 @@ namespace Xwt.Mac
 			throw new NotImplementedException ();
 		}
 
+		public override object GetNativeWindow (IWindowFrameBackend backend)
+		{
+			if (backend == null)
+				return null;
+			if (backend.Window is NSWindow)
+				return backend.Window;
+			if (Desktop.DesktopType == DesktopType.Mac && Toolkit.NativeEngine == ApplicationContext.Toolkit)
+				return Runtime.GetNSObject (backend.NativeHandle) as NSWindow;
+			return null;
+		}
+
 		public override object GetBackendForContext (object nativeWidget, object nativeContext)
 		{
 			return new CGContextBackend {
@@ -306,11 +308,14 @@ namespace Xwt.Mac
 			launched = true;
 			foreach (var w in pendingWindows)
 				w.InternalShow ();
+		}
 
+		public override void WillFinishLaunching(NSNotification notification)
+		{
 			NSAppleEventManager eventManager = NSAppleEventManager.SharedAppleEventManager;
 			eventManager.SetEventHandler (this, new Selector ("handleGetURLEvent:withReplyEvent:"), AEEventClass.Internet, AEEventID.GetUrl);
 		}
-			
+
 		[Export("handleGetURLEvent:withReplyEvent:")]
 		void HandleGetUrlEvent(NSAppleEventDescriptor descriptor, NSAppleEventDescriptor reply)
 		{

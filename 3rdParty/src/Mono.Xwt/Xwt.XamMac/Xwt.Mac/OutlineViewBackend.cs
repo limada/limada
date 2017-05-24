@@ -25,16 +25,12 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Xwt.Backends;
 
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.CoreGraphics;
-#else
+using System;
+using System.Linq;
 using AppKit;
-using CoreGraphics;
-#endif
+using Foundation;
+using Xwt.Backends;
 
 namespace Xwt.Mac
 {
@@ -48,10 +44,127 @@ namespace Xwt.Mac
 		{
 			this.context = context;
 			this.eventSink = eventSink;
+			AllowsColumnReordering = false;
 		}
 
 		public NSOutlineView View {
 			get { return this; }
+		}
+
+		public override NSObject WeakDataSource {
+			get { return base.WeakDataSource; }
+			set {
+				base.WeakDataSource = value;
+				AutosizeColumns ();
+			}
+		}
+
+		public override void AddColumn (NSTableColumn tableColumn)
+		{
+			base.AddColumn (tableColumn);
+			AutosizeColumns ();
+		}
+
+		internal void AutosizeColumns ()
+		{
+			var columns = TableColumns ();
+			foreach (var col in columns)
+				AutosizeColumn (col);
+			if (columns.Any (c => c.ResizingMask.HasFlag (NSTableColumnResizing.Autoresizing)))
+				SizeToFit ();
+		}
+
+		void AutosizeColumn (NSTableColumn tableColumn)
+		{
+			var column = IndexOfColumn (tableColumn);
+
+			var s = tableColumn.HeaderCell.CellSize;
+			if (!tableColumn.ResizingMask.HasFlag (NSTableColumnResizing.UserResizingMask)) {
+				for (int i = 0; i < base.RowCount; i++) {
+					var cell = GetCell (column, i);
+					if (column == 0)
+					{ // first column contains expanders
+						var f = GetCellFrame (column, i);
+						s.Width = (nfloat)Math.Max (s.Width, f.X + cell.CellSize.Width);
+					}
+					else
+						s.Width = (nfloat)Math.Max (s.Width, cell.CellSize.Width);
+				}
+				if (!tableColumn.ResizingMask.HasFlag (NSTableColumnResizing.Autoresizing))
+					tableColumn.Width = s.Width;
+			}
+			tableColumn.MinWidth = s.Width;
+		}
+
+		nint IndexOfColumn (NSTableColumn tableColumn)
+		{
+			nint icol = -1;
+			foreach (var col in TableColumns ()) {
+				icol++;
+				if (col == tableColumn)
+					return icol;
+			}
+			return icol;
+		}
+
+		public override void ExpandItem (NSObject item)
+		{
+			base.ExpandItem (item);
+			QueueColumnResize ();
+		}
+
+		public override void ExpandItem (NSObject item, bool expandChildren)
+		{
+			base.ExpandItem (item, expandChildren);
+			QueueColumnResize ();
+		}
+
+		public override void CollapseItem (NSObject item)
+		{
+			base.CollapseItem (item);
+			QueueColumnResize ();
+		}
+
+		public override void CollapseItem (NSObject item, bool collapseChildren)
+		{
+			base.CollapseItem (item, collapseChildren);
+			QueueColumnResize ();
+		}
+
+		public override void ReloadData ()
+		{
+			base.ReloadData ();
+			QueueColumnResize ();
+		}
+
+		public override void ReloadData (Foundation.NSIndexSet rowIndexes, Foundation.NSIndexSet columnIndexes)
+		{
+			base.ReloadData (rowIndexes, columnIndexes);
+			QueueColumnResize ();
+		}
+
+		public override void ReloadItem (Foundation.NSObject item)
+		{
+			base.ReloadItem (item);
+			QueueColumnResize ();
+		}
+
+		public override void ReloadItem (Foundation.NSObject item, bool reloadChildren)
+		{
+			base.ReloadItem (item, reloadChildren);
+			QueueColumnResize ();
+		}
+
+		bool columnResizeQueued;
+		void QueueColumnResize ()
+		{
+			if (!columnResizeQueued) {
+				columnResizeQueued = true;
+				Application.MainLoop.QueueExitAction (delegate {
+					columnResizeQueued = false;
+					AutosizeColumns ();
+				});
+			}
 		}
 
 		public override void UpdateTrackingAreas ()

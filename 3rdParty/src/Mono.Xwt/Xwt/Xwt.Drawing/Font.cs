@@ -66,10 +66,22 @@ namespace Xwt.Drawing
 				var style = Style;
 				var weight = Weight;
 				var stretch = Stretch;
+				var oldHandler = ToolkitEngine.FontBackendHandler;
 				ToolkitEngine = tk;
 				handler = tk.FontBackendHandler;
-				var fb = handler.Create (fname, size, style, weight, stretch);
-				Backend = fb ?? handler.GetSystemDefaultFont ();
+
+				if (fname == oldHandler.SystemFont.Family)
+					Backend = handler.WithSettings (handler.SystemFont.Backend, size, style, weight, stretch);
+				else if (fname == oldHandler.SystemMonospaceFont.Family)
+					Backend = handler.WithSettings (handler.SystemMonospaceFont.Backend, size, style, weight, stretch);
+				else if (fname == oldHandler.SystemSansSerifFont.Family)
+					Backend = handler.WithSettings (handler.SystemSansSerifFont.Backend, size, style, weight, stretch);
+				else if (fname == oldHandler.SystemSerifFont.Family)
+					Backend = handler.WithSettings (handler.SystemSerifFont.Backend, size, style, weight, stretch);
+				else {
+					var fb = handler.Create (fname, size, style, weight, stretch);
+					Backend = fb ?? handler.WithSettings(handler.GetSystemDefaultFont (), size, style, weight, stretch);
+				}
 			}
 		}
 
@@ -122,7 +134,10 @@ namespace Xwt.Drawing
 		internal static Font FromName (string name, Toolkit toolkit)
 		{
 			if (string.IsNullOrWhiteSpace (name))
-				throw new ArgumentNullException (/*nameof (name)*/"name", "Font name cannot be null or empty");
+				throw new ArgumentNullException (nameof (name), "Font name cannot be null");
+			if (name.Length == 0)
+				return toolkit.FontBackendHandler.SystemFont;
+			
 			var handler = toolkit.FontBackendHandler;
 
 			double size = -1;
@@ -175,15 +190,16 @@ namespace Xwt.Drawing
 				return Font.SystemFont;
 		}
 
-		static bool IsFontSupported (string fontNames)
+		static bool IsFontSupported (string fontName)
 		{
-			LoadInstalledFonts ();
-
-			string[] names = fontNames.Split (new [] {','}, StringSplitOptions.RemoveEmptyEntries);
-			if (names.Length == 0)
-				throw new ArgumentException ("Font family name not provided");
+			if (fontName == null)
+				throw new ArgumentNullException(nameof (fontName), "Font family name not provided");
+			if (fontName == string.Empty)
+				return false;
 			
-			return names.Any (name => installedFonts.ContainsKey (name.Trim ()));
+			LoadInstalledFonts ();
+			
+			return installedFonts.ContainsKey (fontName.Trim ());
 		}
 
 		static string GetSupportedFont (string fontNames)
@@ -230,6 +246,10 @@ namespace Xwt.Drawing
 				foreach (var f in Toolkit.CurrentEngine.FontBackendHandler.GetInstalledFonts ())
 					installedFonts [f] = f;
 				installedFontsArray = new ReadOnlyCollection<string> (installedFonts.Values.ToArray ());
+				// add dummy font names for unit tests, the names are not exposed to users
+				// see the FontNameWith* tests (Testing/Tests/FontTests.cs) for details
+				installedFonts.Add("____FakeTestFont 72", "Arial");
+				installedFonts.Add("____FakeTestFont Rounded MT Bold", "Arial");
 			}
 		}
 
@@ -381,11 +401,11 @@ namespace Xwt.Drawing
 		{
 			StringBuilder sb = new StringBuilder (Family);
 			if (Style != FontStyle.Normal)
-				sb.Append (' ').Append (Style);
+				sb.Append (' ').Append (Style.ToString ());
 			if (Weight != FontWeight.Normal)
-				sb.Append (' ').Append (Weight);
+				sb.Append (' ').Append (Weight.ToString ());
 			if (Stretch != FontStretch.Normal)
-				sb.Append (' ').Append (Stretch);
+				sb.Append (' ').Append (Stretch.ToString ());
 			sb.Append (' ').Append (Size.ToString (CultureInfo.InvariantCulture));
 			return sb.ToString ();
 		}

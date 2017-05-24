@@ -9,7 +9,7 @@
     <AssemblyName>Xwt.Mac</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseMSBuildEngine>False</UseMSBuildEngine>
-    <ReleaseVersion>17.1</ReleaseVersion>
+    <ReleaseVersion>17.4</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -294,11 +294,13 @@
       <Link>Xwt.Mac\SelectFontDialogBackend.cs</Link>
     </Compile>
     <Compile Include="Xwt.Mac\NSStringAttributeKey.cs" />
+    <Compile Include="Limaki.Extended\MacClipboardBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Xwt.Mac\" />
     <Folder Include="Xwt.Mac.CellViews\" />
+    <Folder Include="Limaki.Extended\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">

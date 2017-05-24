@@ -9,8 +9,10 @@
     <AssemblyName>Xwt.Gtk</AssemblyName>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ReleaseVersion>17.4</ReleaseVersion>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <ReleaseVersion>17.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -56,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Xwt.GtkBackend\TextEntryMultiLineBackend.cs" />
     <Compile Include="Xwt.GtkBackend\LabelBackend.cs" />
     <Compile Include="Xwt.GtkBackend\PasswordEntryBackend.cs" />
     <Compile Include="Xwt.GtkBackend\WidgetBackend.cs" />
@@ -167,8 +168,12 @@
     <Compile Include="Xwt.GtkBackend\CalendarBackend.cs" />
     <Compile Include="Xwt.GtkBackend\FontSelectorBackend.cs" />
     <Compile Include="Xwt.GtkBackend\SelectFontDialogBackend.cs" />
+    <Compile Include="Xwt.GtkBackend.CellViews\CustomCellRendererComboBox.cs" />
+    <Compile Include="Xwt.GtkBackend\PopupWindowBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\UtilityWindowBackend.cs" />
     <Compile Include="Xwt.GtkBackend\TextWrapper.cs" />
-    <Compile Include="GtkClipboardBackend.cs" />
+    <Compile Include="Limaki.Extended\GtkClipboardBackend.cs" />
+    <Compile Include="Limaki.Extended\TextEntryMultiLineBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -209,5 +214,8 @@
     <EmbeddedResource Include="icons\searchbox-search-16~dark.png">
       <LogicalName>searchbox-search-16~dark.png</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Limaki.Extended\" />
   </ItemGroup>
 </Project>

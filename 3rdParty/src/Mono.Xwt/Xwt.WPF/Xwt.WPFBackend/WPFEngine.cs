@@ -121,6 +121,8 @@ namespace Xwt.WPFBackend
 			RegisterBackend<IWebViewBackend, WebViewBackend> ();
 			RegisterBackend<KeyboardHandler, WpfKeyboardHandler> ();
 			RegisterBackend<ICalendarBackend, CalendarBackend> ();
+			RegisterBackend<IPopupWindowBackend, WindowBackend>();
+			RegisterBackend<IUtilityWindowBackend, WindowBackend>();
 		}
 
 		public override void DispatchPendingEvents()
@@ -167,6 +169,11 @@ namespace Xwt.WPFBackend
 			return new WindowFrameBackend () {
 				Window = (System.Windows.Window) nativeWindow
 			};
+		}
+
+		public override object GetNativeWindow (IWindowFrameBackend backend)
+		{
+			return backend?.Window as System.Windows.Window;
 		}
 
 		public override object GetBackendForImage (object nativeImage)

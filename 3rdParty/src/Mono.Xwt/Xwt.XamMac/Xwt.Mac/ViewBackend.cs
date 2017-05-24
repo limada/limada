@@ -26,31 +26,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Xml;
-using Xwt;
-using Xwt.Backends;
-
-#if MONOMAC
-using nint = System.Int32;
-using nfloat = System.Single;
-using CGRect = System.Drawing.RectangleF;
-using CGPoint = System.Drawing.PointF;
-using CGSize = System.Drawing.SizeF;
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
-using MonoMac.CoreGraphics;
-using MonoMac.CoreAnimation;
-#else
-using Foundation;
 using AppKit;
-using ObjCRuntime;
 using CoreGraphics;
-using CoreAnimation;
-#endif
+using Foundation;
+using ObjCRuntime;
+using Xwt.Backends;
 
 
 namespace Xwt.Mac
@@ -159,20 +141,22 @@ namespace Xwt.Mac
 			get { return sensitive; }
 			set {
 				sensitive = value;
-				UpdateSensitiveStatus (Widget, sensitive && ParentIsSensitive ());
+				UpdateSensitiveStatus (Widget, sensitive && ParentIsSensitive (Widget));
 			}
 		}
 
-		bool ParentIsSensitive ()
+		static bool ParentIsSensitive (NSView view)
 		{
-			IViewObject parent = Widget.Superview as IViewObject;
+			var parent = view.Superview;
+			if ((parent as NSControl)?.Enabled == false)
+				return false;
 			if (parent == null) {
-				var wb = Widget.Window as WindowBackend;
+				var wb = view.Window as WindowBackend;
 				return wb == null || wb.Sensitive;
 			}
-			if (!parent.Backend.Sensitive)
+			if ((parent as IViewObject)?.Backend.Sensitive == false)
 				return false;
-			return parent.Backend.ParentIsSensitive ();
+			return ParentIsSensitive (parent);
 		}
 
 		internal void UpdateSensitiveStatus (NSView view, bool parentIsSensitive)
@@ -214,7 +198,12 @@ namespace Xwt.Mac
 				return Widget.ToolTip;
 			}
 			set {
-				Widget.ToolTip = value;
+				if (value != null)
+					Widget.ToolTip = value;
+				else if (Widget.ToolTip != null) {
+					Widget.ToolTip = string.Empty;
+					Widget.RemoveAllToolTips ();
+				}
 			}
 		}
 		
@@ -415,11 +404,24 @@ namespace Xwt.Mac
 		}
 		
 		#region IWidgetBackend implementation
-		
+
+		public Point ConvertToParentCoordinates (Point widgetCoordinates)
+		{
+			var location =  Widget.WidgetLocation ();
+			location.X += widgetCoordinates.X;
+			location.Y += widgetCoordinates.Y;
+			return location;
+		}
+
+		public Point ConvertToWindowCoordinates (Point widgetCoordinates)
+		{
+			return Widget.ConvertPointToView (widgetCoordinates.ToCGPoint (), null).ToXwtPoint ();
+		}
+
 		public Point ConvertToScreenCoordinates (Point widgetCoordinates)
 		{
-			var lo = Widget.ConvertPointToBase (new CGPoint ((nfloat)widgetCoordinates.X, (nfloat)widgetCoordinates.Y));
-			lo = Widget.Window.ConvertBaseToScreen (lo);
+			var lo = Widget.ConvertPointToView (new CGPoint ((nfloat)widgetCoordinates.X, (nfloat)widgetCoordinates.Y), null);
+			lo = Widget.Window.ConvertRectToScreen (new CGRect (lo, CGSize.Empty)).Location;
 			return MacDesktopBackend.ToDesktopRect (new CGRect (lo.X, lo.Y, 0, Widget.IsFlipped ? 0 : Widget.Frame.Height)).Location;
 		}
 		
@@ -493,8 +495,6 @@ namespace Xwt.Mac
 		{	var s = Frontend.Surface.GetPreferredSize ();
 			Widget.SetFrameSize (new CGSize ((nfloat)s.Width, (nfloat)s.Height));
 		}
-
-		NSObject gotFocusObserver;
 		
 		public virtual void EnableEvent (object eventId)
 		{
@@ -579,7 +579,7 @@ namespace Xwt.Mac
 		public void SetDragTarget (TransferDataType[] types, DragDropAction dragAction)
 		{
 			SetupForDragDrop (Widget.GetType ());
-			var dtypes = types.Select (t => ToNSDragType (t)).ToArray ();
+			var dtypes = types.Select (ToNSDragType).ToArray ();
 			Widget.RegisterForDraggedTypes (dtypes);
 		}
 		
@@ -596,7 +596,7 @@ namespace Xwt.Mac
 			var backend = ob.Backend;
 			
 			NSDraggingInfo di = (NSDraggingInfo) Runtime.GetNSObject (dragInfo);
-			var types = di.DraggingPasteboard.Types.Select (t => ToXwtDragType (t)).ToArray ();
+			var types = di.DraggingPasteboard.Types.Select (ToXwtDragType).ToArray ();
 			var pos = new Point (di.DraggingLocation.X, di.DraggingLocation.Y);
 			
 			if ((backend.currentEvents & WidgetEvent.DragOverCheck) != 0) {
@@ -642,7 +642,7 @@ namespace Xwt.Mac
 			var backend = ob.Backend;
 			
 			NSDraggingInfo di = (NSDraggingInfo) Runtime.GetNSObject (dragInfo);
-			var types = di.DraggingPasteboard.Types.Select (t => ToXwtDragType (t)).ToArray ();
+			var types = di.DraggingPasteboard.Types.Select (ToXwtDragType).ToArray ();
 			var pos = new Point (di.DraggingLocation.X, di.DraggingLocation.Y);
 			
 			if ((backend.currentEvents & WidgetEvent.DragDropCheck) != 0) {
