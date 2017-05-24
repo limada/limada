@@ -22,6 +22,7 @@ namespace Limaki.View.Vidgets {
     }
 
     public class ContainerItemCollection<T> : Collection<T> {
+        
         IItemContainer<T> parent;
 
         internal ContainerItemCollection (IItemContainer<T> parent) {
@@ -82,11 +83,11 @@ namespace Limaki.View.Vidgets {
             Backend.RemoveItem ((B) item.Backend);
         }
 
-        private Visibility _vsibility = Visibility.Visible;
+        private Visibility _visibility = Visibility.Visible;
         public Visibility Visibility {
-            get { return _vsibility; }
+            get { return _visibility; }
             set {
-                _vsibility = value;
+                _visibility = value;
                 Backend.SetVisibility (value);
             }
         }

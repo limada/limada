@@ -24,7 +24,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Limaki.Common {
+    
     public class Copier<T> {
+        
         public CopierOptions Option { get; protected set; }
 
         public Copier () {
@@ -111,6 +113,7 @@ namespace Limaki.Common {
             var delegateType = typeof(Action<,>).MakeGenericType(sourceType, sinkType);
 
             Delegate copyAction = null;
+
             if (!copyActionCache.TryGetValue(key, out copyAction)) {
                 var sourceExpr = Expression.Variable(sourceType, "source");
                 var destExpr = Expression.Variable(sinkType, "sink");

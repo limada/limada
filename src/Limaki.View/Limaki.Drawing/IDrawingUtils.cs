@@ -6,7 +6,7 @@ namespace Limaki.Drawing {
 
     public interface IDrawingUtils {
        
-        Size GetTextDimension(string text, IStyle style);
+        Size GetTextDimension(string text, IStyle style = null);
 
         Size GetObjectDimension (object value, IStyle style);
 

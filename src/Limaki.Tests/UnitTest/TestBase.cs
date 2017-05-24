@@ -88,7 +88,7 @@ namespace Limaki.UnitTest {
         }
 
         void TestBase_WriteMessage(object sender, string message) {
-            Trace.WriteLine(message);
+            Console.WriteLine(message);
         }
 
         [TestFixtureTearDown]

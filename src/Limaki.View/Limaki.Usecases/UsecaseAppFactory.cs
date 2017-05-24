@@ -21,6 +21,7 @@ using System.Linq;
 namespace Limaki.Usecases {
 
     public abstract class UsecaseAppFactory<T, U> : AppFactory<T>
+
         where T : ContextResourceLoader
         where U : new () {
 

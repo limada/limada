@@ -25,7 +25,7 @@ namespace Limaki.Drawing.XwtBackend  {
         private TextLayout tl = new TextLayout { Trimming = TextTrimming.Word };
         SystemFonts SystemFonts = SystemFonts.Fonts;
 
-        public virtual Size GetTextDimension (string text, IStyle style) {
+        public virtual Size GetTextDimension (string text, IStyle style = null) {
             var result = default (Size);
             if (style == null) {
                 style = new Style ("") { Font = SystemFonts.DefaultFont.WithSize(10) };

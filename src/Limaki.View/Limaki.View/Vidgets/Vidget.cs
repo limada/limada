@@ -17,6 +17,7 @@ using Xwt;
 using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
+    
     [BackendType (typeof (IVidgetBackend))]
     public abstract class Vidget : IVidget {
 

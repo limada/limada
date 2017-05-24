@@ -15,7 +15,6 @@ namespace Limada.UseCases {
         IFavoriteManager FavoriteManager { get; }
         IGraphSceneUiManager GraphSceneUiManager { get;}
         ISceneManager SceneManager { get; }
-
     }
 
 	public interface IBackendConceptUseCaseComposer : IComposer<ConceptUsecase> {

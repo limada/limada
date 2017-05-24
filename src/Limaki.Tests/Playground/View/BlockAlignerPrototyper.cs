@@ -36,9 +36,6 @@ namespace Limaki.Playground.View {
 
         protected IEnumerable<Rectangle> TrackBounds = null;
 
-        // works with walker and walker1
-        // needs depthFirst algorithm, breathFirst NOT working
-
         public virtual Rectangle AlignByPath<TItem, TEdge> (IEnumerable<LevelItem<TItem>> walk, AlignerOptions options, Aligner<TItem, TEdge> aligner, Point startPoint)
         where TEdge : IEdge<TItem>, TItem {
 
@@ -246,7 +243,7 @@ namespace Limaki.Playground.View {
                 Collisions = Collisions.None,
             };
 
-            var scene = SceneWithTestData (0, 2);
+            var scene = SceneWithTestData (3, 1);
 
             var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge> ();
             worker.Compose (scene, new VisualsRenderer ());
