@@ -40,6 +40,15 @@ namespace Limaki.Data {
 
         void Remove<T> (Expression<Func<T,bool>> where);
 
+        IQuoreTransaction BeginTransaction ();
+
+        void EndTransaction (IQuoreTransaction transaction);
+
+    }
+
+    public interface IQuoreTransaction : IDisposable {
+        void Commit ();
+        void Rollback ();
     }
 
     public static class QuoreExtensions {

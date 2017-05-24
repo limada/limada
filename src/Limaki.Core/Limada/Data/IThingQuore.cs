@@ -30,9 +30,7 @@ namespace Limada.Data {
     /// Its a short living object like <see cref="IQuore"/>
     /// It decouples model-specific queries from <see cref="IQuore"/>
     /// </summary>
-    public interface IThingQuore:IDisposable {
-
-        IQuore Quore { get; }
+    public interface IThingQuore : IDomainQuore {
 
         IQueryable<IThing> Things { get; }
 
