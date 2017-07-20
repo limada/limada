@@ -33,14 +33,11 @@ namespace Limaki.View.Visuals {
             return result;
         }
 
-
         public IEnumerable<Type> KnownClasses {
             get { yield return typeof (Visual<string>);
                   yield return typeof (VisualEdge<string>);
             }
         }
-
-
 
         public Graphs.IGraph<IVisual, IVisualEdge> Graph () {
             throw new NotImplementedException ();

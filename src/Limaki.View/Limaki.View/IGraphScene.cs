@@ -71,6 +71,9 @@ namespace Limaki.View {
         Point NoHit { get; }
         IShape ItemShape ( TItem item );
 
+        /// <summary>
+        /// sets Graph to null and clears view
+        /// </summary>
         void Clear();
         void ClearView();
 

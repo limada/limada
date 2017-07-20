@@ -26,19 +26,19 @@ namespace Limaki.View.XwtBackend {
             Application.MainLoop.DispatchPendingEvents ();
 
             if (buttons == MessageBoxButtons.None) {
-				MessageDialog.ShowMessage (title, text);
+                MessageDialog.ShowMessage (title, text);
                 return DialogResult.None;
             }
 
             if (buttons == MessageBoxButtons.Yes || buttons == MessageBoxButtons.Ok) {
-				MessageDialog.ShowMessage (title, text);
+                MessageDialog.ShowMessage (title, text);
                 if (buttons == MessageBoxButtons.Yes)
                     return DialogResult.Yes;
                 return DialogResult.Ok;
             }
 
             if ((buttons & (MessageBoxButtons.No | MessageBoxButtons.Cancel | MessageBoxButtons.Retry)) != 0) {
-				var question = MessageDialog.AskQuestion (title, text, 0, ToXwt (buttons));
+                var question = MessageDialog.AskQuestion (title, text, 0, ToXwt (buttons));
                 return ToLim (question);
             }
 

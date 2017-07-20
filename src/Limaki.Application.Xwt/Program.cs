@@ -1,5 +1,6 @@
 ﻿#define NOT_MAKEBUNLDE
 
+using Limaki.View.XwtBackend;
 using System;
 using System.Diagnostics;
 
@@ -19,7 +20,7 @@ namespace Limaki.View.XwtBackend {
 		[Conditional("MAKEBUNDLE")]
 		static void Preload(){
 			Trace.WriteLine (string.Format ("static {0}", typeof(Limaki.View.ViewContextResourceLoader)));
-			Trace.WriteLine (string.Format ("static {0}", typeof(Limaki.View.XwtBackend.XwtContextResourceLoader)));
+			Trace.WriteLine (string.Format ("static {0}", typeof(XwtContextResourceLoader)));
 			#if MAKEBUNDLE
 			Trace.WriteLine (string.Format ("static {0}", typeof(Limaki.View.GtkBackend.GtkContextResourceLoader)));
 			#endif
