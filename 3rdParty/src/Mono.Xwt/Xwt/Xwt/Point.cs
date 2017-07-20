@@ -119,7 +119,7 @@ namespace Xwt {
 		
 		public static bool operator == (Point pt_a, Point pt_b)
 		{
-			return ((pt_a.X == pt_b.X) && (pt_a.Y == pt_b.Y));
+			return ((pt_a.X.Equals(pt_b.X)) && (pt_a.Y.Equals(pt_b.Y)));
 		}
 		
 		public static bool operator != (Point pt_a, Point pt_b)

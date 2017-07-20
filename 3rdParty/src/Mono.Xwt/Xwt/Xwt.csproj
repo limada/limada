@@ -353,6 +353,7 @@
     <Compile Include="Xwt\UtilityWindow.cs" />
     <Compile Include="Xwt.Backends\IUtilityWindowBackend.cs" />
     <Compile Include="Xwt\ComboBoxCellView.cs" />
+    <Compile Include="Limaki.Extended\Distance.Extended.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
