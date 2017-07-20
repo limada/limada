@@ -460,6 +460,7 @@
     <Compile Include="Limaki.Usecases\Vidgets\IVisualGraphSceneSearch.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\SplitView0.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\XwtDrawingUtils.cs" />
+    <Compile Include="Limaki.View\Vidgets\Orientation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
