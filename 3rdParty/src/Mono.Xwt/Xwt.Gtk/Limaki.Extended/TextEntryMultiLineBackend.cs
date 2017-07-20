@@ -47,7 +47,10 @@ namespace Xwt.GtkBackend {
             get { return TextView.Buffer.Text; }
             set {
                 bufferSizeRequest = true;
-                TextView.Buffer.Text = value;
+                if (value == null)
+                    TextView.Buffer.Clear ();
+                else
+                    TextView.Buffer.Text = value;
             }
         }
 
