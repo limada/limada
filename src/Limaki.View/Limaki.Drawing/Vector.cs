@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.Globalization;
 using Xwt;
 using Xwt.Drawing;
 
@@ -21,8 +22,12 @@ namespace Limaki.Drawing {
     [Serializable]
 #endif
     public struct Vector {
+
         public Point Start;
         public Point End;
+
+        public double Dx { get => End.X - Start.X; set => End.X = Start.X + value; }
+        public double Dy { get => End.Y - Start.Y; set => End.Y = Start.Y + value; }
 
         public Vector(Point location, Size size) {
             this.Start = location;
@@ -34,22 +39,77 @@ namespace Limaki.Drawing {
             this.End = end;
         }
 
-        const double rad = 180d/Math.PI;
-        public static double Angle(Vector v) {
+        const double rad = 180d / Math.PI;
+        public static double Angle(Vector v, int precision = -1) {
             var dx = (v.End.X - v.Start.X);
             var dy = (v.End.Y - v.Start.Y);
-            return Math.Atan(dy / dx) * rad;
+            if (dx + dy == 0d)
+                return 0d;
+            var a = Math.Atan(dy / dx) * rad;
+            return precision >= 0 ? Math.Round (a, precision) : a;
         }
 
-        public static double Length(Vector v) {
+        public static Vector SetAngle (Vector v, double angle, int precision = -1) {
+            var length = Length (v);
+            var vector = new Vector (v.Start, v.Start);
+            if (angle == 0d) {
+                vector.Dx = length;
+                return vector;
+            } else if (angle == 90d) {
+                vector.Dy = length;
+                return vector;
+            } 
+            //else if (alpha == 180d) {
+            //    vector.DX = -length;
+            //    return vector;
+            //} else if (alpha == 270d) {
+            //    vector.DY = -length;
+            //    return vector;
+            //}
+
+            var beta =  angle / rad;
+            var a = length * Math.Cos (beta);
+            var b = Math.Sqrt (length * length - a * a);
+            return new Vector (v.Start, new Point (v.Start.X + a, v.Start.Y + b));
+        }
+
+        public static double Length(Vector v, int precision = -1) {
+            if ((v.Dx + v.Dy) == 0d)
+                return 0;
             var a = (v.End.X - v.Start.X);
             var b = (v.End.Y - v.Start.Y);
-            return Math.Sqrt ( a*a + b*b );
+            var l = Math.Sqrt (a * a + b * b);
+            return precision >= 0 ? Math.Round (l, precision) : l;
+        }
+
+        public static Vector SetLength (Vector v, double length, int precision = -1) {
+            if (length == 0d)
+                return new Vector (v.Start, v.Start);
+            var oldL = Length (v);
+            if (oldL == 0d)
+                return new Vector (v.Start, new Point (v.End.X + length, v.Start.Y));
+
+            var dX = (v.Dx * length) / oldL; // do not shorten this to factor; gives rounding errors
+            var dY = (v.Dy * length) / oldL; // do not shorten this to factor; gives rounding errors
+            if (precision >= 0) {
+                dX = Math.Round (dX, precision);
+                dY = Math.Round (dY, precision);
+            }
+            return new Vector (v.Start, new Point (v.Start.X + dX, v.Start.Y + dY));
+        }
+
+        public static Vector Normalize (Vector v) {
+            var length = Length (v);
+            if (length == 0d)
+                return SetLength (v, 1d);
+            var dX = v.Dx / length;
+            var dY = v.Dy / length;
+            return new Vector (v.Start, new Point (v.Start.X + dX, v.Start.Y + dY));
         }
 
         public void Transform(Matrix matrix) {
-            Point[] p = { Start, End };
             if (matrix != null && !matrix.IsIdentity) {
+                Point[] p = { Start, End };
                 matrix.Transform (p);
                 Start = p[0];
                 End = p[1];
@@ -215,5 +275,19 @@ namespace Limaki.Drawing {
         public double Orientation(Point p) {
             return Orientation (Start, End, p);
         }
+
+        public override string ToString () {
+            return $"{{Start={Start} End={End}}}";
+        }
+    }
+
+    public static class VectorExtensions {
+        
+        public static Vector Normalize (this Vector v) => Vector.Normalize (v);
+        public static double Length (this Vector v, int precision = -1) => Vector.Length (v, precision);
+        public static Vector WithLength (this Vector v, double l, int precision = -1) => Vector.SetLength (v, l, precision);
+        public static double Angle (this Vector v, int precision = -1) => Vector.Angle (v, precision);
+        public static Vector WithAngle (this Vector v, double a, int precision = -1) => Vector.SetAngle (v, a, precision);
+
     }
 }
