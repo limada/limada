@@ -39,13 +39,23 @@ namespace Limaki.Common.Linqish {
         private const int NullHashCode = 0x61E04917;
 
         protected void AddHash (object item) {
-            var member = item as MemberInfo;
-            if (member != null) {
+            
+            if (item is TypeInfo type) {
+                var h = type.Name.GetHashCode ();
+
+                var hashType = type.UnderlyingSystemType;
+                if (hashType != null && hashType.AssemblyQualifiedName != null)
+                    h = KeyMaker.AddHashCode (h, hashType.AssemblyQualifiedName.GetHashCode ());
+
+                Hash = KeyMaker.AddHashCode (Hash, h);
+            }
+
+            if (item is MemberInfo member) {
                 var h = member.Name.GetHashCode ();
 
-                var declaringType = member.DeclaringType;
-                if (declaringType != null && declaringType.AssemblyQualifiedName != null)
-                    h = KeyMaker.AddHashCode (h, declaringType.AssemblyQualifiedName.GetHashCode ());
+                var hashType = member.DeclaringType;
+                if (hashType != null && hashType.AssemblyQualifiedName != null)
+                    h = KeyMaker.AddHashCode (h, hashType.AssemblyQualifiedName.GetHashCode ());
                 Hash = KeyMaker.AddHashCode (Hash, h);
                 return;
             }
@@ -194,6 +204,5 @@ namespace Limaki.Common.Linqish {
             return base.VisitUnary (node);
         }
 
-        
     }
 }
