@@ -24,6 +24,7 @@ namespace Limaki.View.Vidgets {
         string Label { get; set; }
         string ToolTipText { get; set; }
         Size Size { get; set; }
+        bool Enabled { get; set; }
     }
 
     public class ToolbarCommand : IToolbarCommand {
@@ -45,5 +46,6 @@ namespace Limaki.View.Vidgets {
         public string Label { get; set; }
         public string ToolTipText { get; set; }
         public Size Size { get; set; }
+        public bool Enabled { get; set; } = true;
     }
 }

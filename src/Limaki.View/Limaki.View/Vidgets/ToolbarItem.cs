@@ -85,6 +85,7 @@ namespace Limaki.View.Vidgets {
         }
 
         public new Size Size { get; set; }
+        public bool Enabled { get; set; }
 
         public void SetCommand (IToolbarCommand command) {
             VidgetUtils.SetCommand (this, command); 
