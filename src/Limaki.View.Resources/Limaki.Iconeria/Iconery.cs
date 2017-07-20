@@ -64,7 +64,6 @@ namespace Limaki.Iconerias {
             OpenFile = awesome.AsImage (awesome.FaFolderOpen, size * 1.05);
             CreateFile = awesome.AsImage (awesome.FaFileO, size * 1.05);
 
-
             FontBoldIcon = awesome.AsImage (awesome.FaBold, size * .80);
             FontItalicIcon = awesome.AsImage (awesome.FaItalic, size * .80);
             FontUnderlineIcon = awesome.AsImage (awesome.FaUnderline, size * .80);
@@ -110,8 +109,6 @@ namespace Limaki.Iconerias {
             awesome.FillColor = Xwt.Drawing.Colors.Aqua.WithAlpha (1);
             awesome.StrokeColor = Colors.Black;
             awesome.LineWidth = 1;
-
-            ErpIcon = awesome.AsImage (awesome.FaPaintBrush,32);
 
         }
 
@@ -220,7 +217,5 @@ namespace Limaki.Iconerias {
         public static Image ViewState { get; set; }
         public static Image FileMenu { get; private set; }
 
-        public static Image ErpIcon { get; set; }
-
-    }
+	}
 }
