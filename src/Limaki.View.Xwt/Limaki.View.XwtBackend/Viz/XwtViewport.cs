@@ -43,7 +43,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         public override Size ClipSize {
-            get { return Backend.Bounds.Size; }
+            get { return Backend.Size; }
         }
 
         public override Size DataSize {
@@ -102,7 +102,8 @@ namespace Limaki.View.XwtBackend {
             var zoom = ZoomFactor;
             UpdateZoom ();
             var zoomChanged = zoom != ZoomFactor;
-            (Backend as IVidgetBackend).QueueDraw ();
+            Backend.QueueForReallocate ();
+            // (Backend as IVidgetBackend).QueueDraw ();
 
             reallocating = false;
             if (zoomChanged) {
@@ -114,5 +115,9 @@ namespace Limaki.View.XwtBackend {
             base.UpdateZoom ();
         }
 
+        public override void Update () {
+            base.Update ();
+            Backend.QueueDraw ();
+        }
     }
 }
