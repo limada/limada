@@ -56,7 +56,7 @@ namespace Limaki.Drawing.XwtBackend {
                             new Point (0, -h)
                         };
             Matrix.SetIdentity ();
-            var angle = Vector.Angle (v) + (v.Start.X - v.End.X > 0 ? 90d : -90d);
+            var angle = v.Angle () + (v.Start.X - v.End.X > 0 ? 90d : -90d);
             Matrix.RotateAppend (angle);
             Matrix.TranslateAppend (v.End.X, v.End.Y);
             Matrix.Transform (arrow);
