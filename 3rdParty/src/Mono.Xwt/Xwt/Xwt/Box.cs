@@ -73,7 +73,7 @@ namespace Xwt
 			get { return (IBoxBackend) BackendHost.Backend; }
 		}
 		
-		internal Box (Orientation dir)
+        protected Box (Orientation dir)
 		{
 			children = new ChildrenCollection<BoxPlacement> ((WidgetBackendHost)BackendHost);
 			direction = dir;

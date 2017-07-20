@@ -30,7 +30,7 @@ using System.Globalization;
 
 namespace Xwt
 {
-	public struct Distance : IEquatable<Distance>
+	public partial struct Distance : IEquatable<Distance>
 	{
 		double dx, dy;
 		
