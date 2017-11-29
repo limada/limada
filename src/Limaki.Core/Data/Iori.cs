@@ -16,6 +16,8 @@ using Limaki.Contents.IO;
 using System.IO;
 using System.Runtime.Serialization;
 using Limaki.Common;
+using System.Xml;
+using System.Collections.Specialized;
 
 namespace Limaki.Data {
 
@@ -61,12 +63,12 @@ namespace Limaki.Data {
             return iori;
         }
 
-        public static Iori FromIori (Iori other) {
+        public static Iori Clone (Iori other) {
             return new Copier<Iori> ().Copy (other, new Iori ());
         }
 
         public override string ToString () {
-            return this.ToFileName ();
+            return $"{this.ToFileName()} | {Provider}";
 
         }
     }
@@ -77,7 +79,7 @@ namespace Limaki.Data {
 
             var provider = iori.Provider.ToLower ();
             if (provider == "mysql") {
-                return $"Server = {iori.Server}; Database = {iori.Name}; Uid = {iori.User}; Pwd = {iori.Password}; charset = utf8; pooling=false;";
+                return $"Server = {iori.Server}; Database = {iori.Name}; Uid = {iori.User}; Pwd = {iori.Password}; charset = utf8; pooling=false;SslMode=none";
             } else if (provider == "firebird") {
                 return $"User={iori.User};Password={iori.Password};Database={iori.ToFileName ()};DataSource={iori.Server};";
             } else if (provider == "sqlite") {
@@ -105,9 +107,73 @@ namespace Limaki.Data {
         public static void FromFileName (this Iori iori, string fileName) {
             var file = new System.IO.FileInfo (fileName);
             iori.Server = "localhost";
-            iori.Path = file.DirectoryName + System.IO.Path.DirectorySeparatorChar;
-            iori.Name = System.IO.Path.GetFileNameWithoutExtension (file.FullName);
-            iori.Extension = System.IO.Path.GetExtension (file.FullName).ToLower ();
+            iori.Path = file.DirectoryName + Path.DirectorySeparatorChar;
+            iori.Name = Path.GetFileNameWithoutExtension (file.FullName);
+            iori.Extension = Path.GetExtension (file.FullName).ToLower ();
         }
+
+        public static Iori FromXmlStream (this Iori iori, string rootElement, Stream source) {
+
+            var reader = XmlDictionaryReader.CreateTextReader (source, XmlDictionaryReaderQuotas.Max);
+            var serializer = new DataContractSerializer (typeof (Iori));
+            reader.ReadStartElement (rootElement);
+            while (serializer.IsStartObject (reader)) {
+                iori.FromIori (serializer.ReadObject (reader) as Iori);
+            }
+            return iori;
+        }
+
+        public static void ToXmlStream (this Iori iori, string rootElement, Stream sink) {
+
+            var writer = XmlDictionaryWriter.CreateDictionaryWriter (XmlWriter.Create (sink, new XmlWriterSettings {
+                OmitXmlDeclaration = true,
+                ConformanceLevel = ConformanceLevel.Fragment,
+                CloseOutput = false,
+            }));
+            var serializer = new DataContractSerializer (typeof (Iori));
+            writer.WriteStartElement (rootElement);
+            serializer.WriteObject (writer, iori);
+            writer.WriteEndElement ();
+            writer.Flush ();
+        }
+
+
+        public static Iori FromAppSettings (this Iori iori, NameValueCollection appSettings) {
+
+            for (int i = 0; i < appSettings.Count; i++) {
+                string key = appSettings.GetKey (i);
+                string data = appSettings.Get (i);
+
+                if (key == "DataBaseFileName") {
+                    FromFileName (iori, data);
+                }
+
+                if (key == "DataBaseServer") {
+                    iori.Server = data;
+                }
+                if (key == "DataBaseName") {
+                    iori.Name = data;
+                }
+                if (key == "DataBasePath") {
+                    iori.Path = data;
+                }
+                if (key == "DataBaseUser") {
+                    iori.User = data;
+                }
+                if (key == "DataBasePassword") {
+                    iori.Password = data;
+                }
+                if (key == "DataBaseProvider") {
+                    iori.Provider = data;
+                }
+
+            }
+            return iori;
+
+        }
+
+		public static Iori FromIori (this Iori iori, Iori other) {
+            return new Copier<Iori> ().Copy (other, iori);
+		}
     }
 }
