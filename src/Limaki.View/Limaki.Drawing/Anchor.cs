@@ -13,6 +13,7 @@
  */
 
 namespace Limaki.Drawing {
+    
     public enum Anchor {
         LeftTop, MiddleTop,RightTop,
         LeftMiddle, RightMiddle,
@@ -21,4 +22,5 @@ namespace Limaki.Drawing {
         MostLeft,MostTop,MostRight,MostBottom,
         None
     }
+
 }

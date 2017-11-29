@@ -20,6 +20,7 @@ namespace Limaki.View.Vidgets {
     public interface IFileDialogVidget : IVidget { }
 
     public class FileDialogVidget : Vidget, IFileDialogVidget {
+        
         private bool running;
 
         protected FileDialogVidget (FileDialogMemento dialog) : base() { this._dialog = dialog; }

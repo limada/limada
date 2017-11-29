@@ -81,6 +81,7 @@ namespace Limaki.Iconerias {
     }
 
     public static class IconeriaExtensions {
+        
         public static Image AsImage (this Iconeria self, Action<Context> icon, double size) {
             var ib = new ImageBuilder (size, size);
             self.PaintIcon (ib.Context, size, 0, 0, icon);
