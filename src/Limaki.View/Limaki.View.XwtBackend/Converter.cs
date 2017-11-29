@@ -24,12 +24,12 @@ namespace Limaki.View.XwtBackend {
             var sb = widget.ScreenBounds.Location;
             var scale = 1; //Desktop.GetScreenAtLocation(ml).ScaleFactor;
 
-            return new Point(ml.X - sb.X / scale, ml.Y - sb.Y / scale);
+            return new Point (ml.X - sb.X / scale, ml.Y - sb.Y / scale);
         }
 
         public static MouseActionEventArgs ToLmk (this ButtonEventArgs args) {
             return new MouseActionEventArgs (
-                args.Button.ToLmk(),
+                args.Button.ToLmk (),
                 Keyboard.CurrentModifiers,
                 args.MultiplePress,
                 args.X,
@@ -37,6 +37,9 @@ namespace Limaki.View.XwtBackend {
                 0
                 );
         }
+
+        public static Vidgets.GridLines ToLmk (this Xwt.GridLines gridLines) => (Vidgets.GridLines)gridLines;
+        public static Xwt.GridLines ToXwt (this Vidgets.GridLines gridLines) => (Xwt.GridLines)gridLines;
 
     }
 }
