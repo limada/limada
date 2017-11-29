@@ -15,6 +15,7 @@
 using System;
 
 namespace Limaki.View.Vidgets {
+    
     [Flags]
     public enum MessageBoxButtons {
         None = 0,

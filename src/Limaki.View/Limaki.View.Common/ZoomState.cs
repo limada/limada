@@ -14,6 +14,7 @@
  */
 
 namespace Limaki.Drawing {
+    
     public enum ZoomState {
         Original,
         FitToScreen,
@@ -21,4 +22,5 @@ namespace Limaki.Drawing {
         FitToHeigth,
         Custom
     }
+
 }
