@@ -40,8 +40,7 @@ namespace Limaki.Contents.IO {
             if (sinkIo != null && sinkIo.IoMode.HasFlag(IoMode.Read)) {
                 OnClose();
                 try {
-                    if (ConfigureSinkIo != null)
-                        ConfigureSinkIo(sinkIo);
+                    ConfigureSinkIo?.Invoke (sinkIo);
                     this.AttachProgress(sinkIo as IProgress);
 
                     var uriSink = sinkIo as IPipe<Uri, TSink>;
@@ -55,12 +54,15 @@ namespace Limaki.Contents.IO {
                         var streamSink = sinkIo as IPipe<Stream,TSink>;
                         if (streamSink != null) {
                             var filename = IoUtils.UriToFileName(uri);
-                            var file = new FileStream(filename, FileMode.Open);
-                            sink = streamSink.Use(file, sink);
-                            if (sink != null && SinkIn != null) {
-                                SinkIn(sink);
+                            var file = new FileStream (filename, FileMode.Open);
+                            try {
+                                sink = streamSink.Use (file, sink);
+                                if (sink != null && SinkIn != null) {
+                                    SinkIn (sink);
+                                }
+                            } finally {
+                                file.Close ();
                             }
-                            file.Close();
                         }
                     }
                 } catch (Exception e) {
