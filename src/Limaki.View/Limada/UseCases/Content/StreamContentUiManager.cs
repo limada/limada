@@ -155,9 +155,10 @@ namespace Limada.UseCases.Contents {
                         ThingGraphCursorIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                         
                         graphCursor = ThingGraphCursorIoManager.ReadSink(uri, graphCursor);
-                        Registry.Create<ISceneViz<IVisual, IThing, IVisualEdge, ILink>> ()
-                            .SetDescription(scene, graphCursor.Cursor, OpenFileDialog.FileName);
-                        
+                        if (graphCursor != null) {
+                            Registry.Create<ISceneViz<IVisual, IThing, IVisualEdge, ILink>> ()
+                                .SetDescription (scene, graphCursor.Cursor, OpenFileDialog.FileName);
+                        }
                         OpenFileDialog.ResetFileName();
                     }
                 }
