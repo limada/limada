@@ -34,7 +34,7 @@ namespace Limada.UseCases.Cms {
                 if (key == "DataBaseFileName") {
                     if (Path.GetDirectoryName (data) == "")
                         data = ApplicationPhysicalPath + Path.DirectorySeparatorChar + data;
-                    iori = Iori.FromFileName(data);
+                    IoriExtensions.FromFileName(iori,data);
                 }
 
                 if (key == "DataBaseServer") {
