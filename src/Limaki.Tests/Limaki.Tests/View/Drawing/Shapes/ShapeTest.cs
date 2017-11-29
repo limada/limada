@@ -28,7 +28,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
     public class ShapeTest:DomainTest {
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void Setup () {
             base.Setup();
             ReportPainter.CanvasSize = new Size(1000, 3000);

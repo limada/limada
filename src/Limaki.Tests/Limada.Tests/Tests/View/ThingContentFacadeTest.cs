@@ -44,7 +44,7 @@ namespace Limada.Tests.ThingGraphs {
             var thing = thingContentFacade.CreateAndAdd (
                 graph, new Content<Stream>(stream,CompressionType.None));
 			#if !__ANDROID__
-            Assert.IsInstanceOfType (typeof (Thing), thing);
+            Assert.IsInstanceOf(typeof (Thing), thing);
 			#else
 			#endif
 			Assert.AreEqual(((IThing<Stream>)thing).Data.Length, stream.Length);

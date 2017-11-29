@@ -36,7 +36,7 @@ namespace Limada.Tests.Schemata {
         public override Schema Schema {
             get { return new DigidocSchema(); }
         }
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void Setup() {
             base.Setup();
         }

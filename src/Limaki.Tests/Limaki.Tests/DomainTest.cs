@@ -17,7 +17,7 @@ namespace Limaki.Tests {
     [TestFixture]
     public class DomainTest:TestBase {
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void Setup() {
             if (Registry.ConcreteContext == null) {
                 Registry.ConcreteContext = new ApplicationContext();

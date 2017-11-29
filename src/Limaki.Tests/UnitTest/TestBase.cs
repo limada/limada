@@ -75,7 +75,7 @@ namespace Limaki.UnitTest {
         }
 
         public bool DoDetail = true;
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public virtual void Setup() {
             summaryDone = false;
             if (DoDetail)
@@ -91,7 +91,7 @@ namespace Limaki.UnitTest {
             Console.WriteLine(message);
         }
 
-        [TestFixtureTearDown]
+        [TearDown]
         public virtual void TearDown() {
             Tickers.Stop();
             if (!summaryDone) {

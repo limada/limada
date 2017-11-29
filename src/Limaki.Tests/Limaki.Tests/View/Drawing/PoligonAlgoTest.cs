@@ -30,7 +30,7 @@ using System.Linq;
 namespace Limaki.Tests.Drawing {
 
     public class PoligonAlgoTest : DomainTest {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void Setup() {
             base.Setup();
             ReportPainter.CanvasSize = new Size(1000, 3000);
