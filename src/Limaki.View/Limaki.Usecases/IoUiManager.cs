@@ -26,8 +26,7 @@ namespace Limaki.Usecases {
 
         public virtual Action<string, int, int> Progress { get; set; }
         protected virtual void OnProgress (string m, int i, int count) {
-            if (Progress != null)
-                Progress(m, i, count);
+            Progress?.Invoke (m, i, count);
         }
     }
 }
