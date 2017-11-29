@@ -23,6 +23,7 @@ using Limaki.Common;
 using Limaki.Common.Text.HTML;
 using Limaki.Contents;
 using Limaki.Contents.Text;
+using System.Net;
 
 namespace Limaki.View.Vidgets {
 
@@ -55,11 +56,11 @@ namespace Limaki.View.Vidgets {
         void IMarkdownEditor.Save (Stream stream) {
             stream.Position = 0;
             stream.SetLength (0);
-            var writer = new StreamWriter (stream);
+            var writer = new StreamWriter (stream, Encoding.ASCII);
             writer.NewLine = "\r\n";
             var lines = Backend.Text.Split (new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             for (int i = 0; i < lines.Length; i++) {
-                var line = lines[i];
+                var line = WebUtility.HtmlEncode(lines[i]);
                 if (i < lines.Length - 1)
                     writer.WriteLine (line);
                 else
@@ -70,8 +71,8 @@ namespace Limaki.View.Vidgets {
         }
 
         void IMarkdownViewer.Load (Stream stream) {
-            var reader = new StreamReader (stream);
-            base.Text = reader.ReadToEnd ();
+            var reader = new StreamReader (stream, Encoding.ASCII);
+            base.Text = WebUtility.HtmlDecode (reader.ReadToEnd ());
             stream.Position = 0;
         }
 
