@@ -18,6 +18,7 @@ using Limaki.Common.IOC;
 using Limaki.View;
 using System.Linq;
 using System.Reflection;
+using Limaki.Data;
 
 namespace Limaki.Usecases {
 
@@ -42,6 +43,8 @@ namespace Limaki.Usecases {
 
         public string ToolKitType { get; set; }
 
+        public Iori Iori { get; set; }
+
         public string ApplicationName { get; set; }
 
         public override string ToString () {
@@ -52,6 +55,8 @@ Version: {Version}
 {Copyright}
 
 ToolKitType: {ToolKitType ?? ""}
+
+Database: {Iori?.ToString() ?? ""}
 
 Credits: 
 
