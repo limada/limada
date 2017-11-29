@@ -11,7 +11,7 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <ReleaseVersion>17.4</ReleaseVersion>
+    <ReleaseVersion>17.10</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -123,7 +123,6 @@
     <Compile Include="Limaki.View\Vidgets\ToolbarItemHost.cs" />
     <Compile Include="Limaki.View\Vidgets\VidgetUtils.cs" />
     <Compile Include="Limaki.View\Vidgets\Vindow.cs" />
-    <Compile Include="Limaki.View\Vidgets\Visibility.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropBackendHandlerBase.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropInfo.cs" />
     <Compile Include="Limaki.View\Viz\Rendering\SelectionRenderer.cs" />
@@ -151,7 +150,6 @@
     <Compile Include="Limada\View\ContentViewers\DigidocContentViewer.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingsSceneViz.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingsSceneExtensions.cs" />
-    <Compile Include="Limaki.Drawing\Dimension.cs" />
     <Compile Include="Limaki.Usecases\IoUiManager.cs" />
     <Compile Include="Limada\View\Vidgets\DigidocVidget.cs" />
     <Compile Include="Limaki.View\ContentViewers\TextContentViewer.cs" />
@@ -262,12 +260,10 @@
     <Compile Include="Limaki.Drawing\Styles\StyleNames.cs" />
     <Compile Include="Limaki.Drawing\Styles\StyleSheet.cs" />
     <Compile Include="Limaki.Drawing\Styles\StyleSheets.cs" />
-    <Compile Include="Limaki.Drawing\UiState.cs" />
     <Compile Include="Limaki.Drawing\Vector.cs" />
     <Compile Include="Limaki.Drawing\Painters\Painter.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\DefaultPainterFactory.cs" />
     <Compile Include="Limaki.Drawing\Painters\StringPainterBase.cs" />
-    <Compile Include="Limaki.Drawing\ZoomState.cs" />
     <Compile Include="Limada\View\Vidgets\FavoriteManager.cs" />
     <Compile Include="Limada\View\SheetSerializer.cs" />
     <Compile Include="Limada\View\Vidgets\DigidocViz.cs" />
@@ -299,7 +295,6 @@
     <Compile Include="Limaki.View\Vidgets\IHistoryAware.cs" />
     <Compile Include="Limaki.View\Viz\IReceiver.cs" />
     <Compile Include="Limaki.View\Viz\IViewport.cs" />
-    <Compile Include="Limaki.View\IZoomTarget.cs" />
     <Compile Include="Limaki.View\Viz\Modelling\LocateVisitBuilder.cs" />
     <Compile Include="Limaki.View\Viz\Modelling\Aligner.cs" />
     <Compile Include="Limaki.View\Viz\Modelling\AlignerOptions.cs" />
@@ -383,10 +378,8 @@
     <Compile Include="Limaki.Usecases\UsecaseFactory.cs" />
     <Compile Include="Limada\View\ContentViewers\ContentViewManager.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentViewerProvider.cs" />
-    <Compile Include="Limaki.View\Vidgets\DialogResult.cs" />
     <Compile Include="Limaki.View\Vidgets\FileDialogMemento.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\GraphScenePainter.cs" />
-    <Compile Include="Limaki.View\Vidgets\IMessageBoxShow.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\ISplitView.cs" />
     <Compile Include="Limaki.View\Vidgets\TextOkCancelBox.cs" />
     <Compile Include="Limaki.View\Vidgets\IWebBrowser.cs" />
@@ -460,7 +453,16 @@
     <Compile Include="Limaki.Usecases\Vidgets\IVisualGraphSceneSearch.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\SplitView0.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\XwtDrawingUtils.cs" />
-    <Compile Include="Limaki.View\Vidgets\Orientation.cs" />
+    <Compile Include="Limaki.View.Common\DialogResult.cs" />
+    <Compile Include="Limaki.View.Common\IMessageBoxShow.cs" />
+    <Compile Include="Limaki.View.Common\Orientation.cs" />
+    <Compile Include="Limaki.View.Common\Visibility.cs" />
+    <Compile Include="Limaki.View.Common\Dimension.cs" />
+    <Compile Include="Limaki.View.Common\UiState.cs" />
+    <Compile Include="Limaki.Drawing\IZoomTarget.cs" />
+    <Compile Include="Limaki.View.Common\ZoomState.cs" />
+    <Compile Include="Xwt\DelegateCanvas.cs" />
+    <Compile Include="Limaki.View.Common\GridLines.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
@@ -482,6 +484,12 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Limaki.View.Common\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Limaki.View.Common\Todo.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
