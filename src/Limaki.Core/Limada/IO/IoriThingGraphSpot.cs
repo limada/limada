@@ -62,36 +62,14 @@ namespace Limada.IO {
         }
 
         private const string RootElement = "Limioris";
-       
-        public virtual Iori Read(Stream source) {
-            
-            var result = new Iori();
-            var reader = XmlDictionaryReader.CreateTextReader(source, XmlDictionaryReaderQuotas.Max);
-            var serializer = new DataContractSerializer(typeof (Iori));
-            reader.ReadStartElement(RootElement);
-            while (serializer.IsStartObject(reader)) {
-                result = serializer.ReadObject(reader) as Iori;
-            }
-            return result;
-        }
 
-        public virtual void Write (Iori source, Stream sink) {
+        public virtual Iori Read (Stream source) => new Iori ().FromXmlStream (RootElement, source);
 
-            var writer = XmlDictionaryWriter.CreateDictionaryWriter(XmlWriter.Create(sink, new XmlWriterSettings {
-                    OmitXmlDeclaration = true,
-                    ConformanceLevel = ConformanceLevel.Fragment,
-                    CloseOutput = false,
-                }));
-            var serializer = new DataContractSerializer(typeof(Iori));
-            writer.WriteStartElement(RootElement);
-            serializer.WriteObject(writer, source);
-            writer.WriteEndElement();
-            writer.Flush();
-        }
+        public virtual void Write (Iori source, Stream sink) => source.ToXmlStream (RootElement, sink);
 
         public virtual void Write (Iori source, Iori sink) {
-            using (var file = File.Open(sink.ToFileName(), FileMode.Create)) {
-                Write(source, file);
+            using (var file = File.Open (sink.ToFileName (), FileMode.Create)) {
+                Write (source, file);
             }
         }
 
