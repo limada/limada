@@ -160,6 +160,8 @@ namespace Limaki.View.Viz.Mesh {
             var graph = args.Graph;
             var backItem = args.Item;
             var eventType = args.EventType;
+            if (backItem == null)
+                return;
             
             var change = Tuple.Create (graph, backItem, eventType);
             if (graphChanging.Contains (change))
