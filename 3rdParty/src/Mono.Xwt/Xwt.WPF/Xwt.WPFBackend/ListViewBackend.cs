@@ -57,7 +57,7 @@ namespace Xwt.WPFBackend
 
 		public ScrollViewer ScrollViewer {
 			get {
-	            Decorator border = System.Windows.Media.VisualTreeHelper.GetChild(ListView, 0) as Decorator;
+                Decorator border = VisualTreeHelper.GetChildrenCount(ListView) == 0 ? null : VisualTreeHelper.GetChild(ListView, 0) as Decorator;
 	            if (border != null)
 	                return border.Child as ScrollViewer;
 	            else
