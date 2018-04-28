@@ -54,8 +54,8 @@ namespace Limaki.Common.IOC {
         }
 
         public virtual void ResolveAssembly (Assembly assembly) {
-            Trace.WriteLine(string.Format("loading assembly {0}", assembly.FullName));
             try {
+                Trace.WriteLine ($"loading assembly {assembly.FullName}");
                 foreach (var type in assembly.GetTypes().Where(
                     t =>
                         t.IsClass &&
@@ -84,10 +84,11 @@ namespace Limaki.Common.IOC {
 
 			foreach (var ass in currDomain) {
 				try {
-					if (ass != null && ass.GetName ().Name.StartsWith (filter) && !assemblies.Contains (ass)) {
+					if (ass != null && ass.GetName ().Name.StartsWith (filter) && !assemblies.Contains (ass) && ass.CodeBase !=null) {
 						ResolveAssembly (ass);
 						assemblies.Add (ass);
 						var refasses = ass.GetReferencedAssemblies()
+                            .Where(a=>a.CodeBase!=null)
 							.Select(a => Assembly.Load (a.FullName))
 							.ToArray();
 
