@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4C8B39FE-F433-4C22-B5C7-FDCF33035D23}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki</RootNamespace>
+    <AssemblyName>Limaki.View.Xwt</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <PublishUrl>veröffentlichen\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <ReleaseVersion>17.10</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;xLINUX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\ComboBoxBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\MarkDownEditBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\PanedBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\PlainTextBoxBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\TextViewerBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VindowBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\WebViewBackend.cs" />
+    <Compile Include="Sandbox\ScrollDisplayBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\ToolbarBackendDummy.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DigidocViewerBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\DragDropBackendHandler.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DragDropMouseBackendHandler.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DummyBackends.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\LayoutEditor.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\PrintDialog.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\PrintDocument.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\PrintManager.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\StyleEditor.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerDummyBackend.cs" />
+    <Compile Include="[Obsolete]\TextViewerWithToolstripBackend0.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\SplitViewBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\FileDialogBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\TextOkCancelBoxBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\DisplayBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\XwtBackendRenderer.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\ImageDisplayBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\DisplayBackendComposer.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\GraphSceneDisplayBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\VisualsDisplayBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\XwtViewport.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\VisualsTextEditAction.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtMessageBoxShow.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtCursorHandlerBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtExeptionHandlerBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtMessager.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\ProgressHandler.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtSystemFontBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtSystemInformation.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtSystemColorsBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtVidgetToolkitEngineBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\MainWindowBackend.cs" />
+    <Compile Include="Sandbox\PrototypeData.cs" />
+    <Compile Include="XwtConceptUsecaseAppFactory.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtConceptUseCaseComposer.cs" />
+    <Compile Include="Sandbox\PrototypeWindow.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
+    <Compile Include="Limaki.View.XwtBackend\XwtContextResourceLoader.cs" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
+      <Project>{044E8D0A-A7F7-44B8-8F63-1F011FEBCF0F}</Project>
+      <Name>Limaki.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
+      <Name>Limaki.View.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
+      <Name>Limaki.View</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

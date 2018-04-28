@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -8,10 +8,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Limaki.Tests.View.Swf</RootNamespace>
     <AssemblyName>Limaki.Tests.View.Swf</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <ReleaseVersion>17.4</ReleaseVersion>
+    <ReleaseVersion>18.04</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,12 +94,8 @@
       <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
-      <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
+      <Project>{044E8D0A-A7F7-44B8-8F63-1F011FEBCF0F}</Project>
       <Name>Limaki.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj">
-      <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
-      <Name>Limaki.Db4o</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj">
       <Project>{B1BC3EF8-5EC7-491A-BA83-70CB38F1823F}</Project>

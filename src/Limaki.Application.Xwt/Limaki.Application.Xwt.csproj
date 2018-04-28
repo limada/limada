@@ -9,10 +9,15 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Limaki</RootNamespace>
     <AssemblyName>Limaki.Application.Xwt</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <ReleaseVersion>17.4</ReleaseVersion>
+    <ReleaseVersion>18.04</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -46,6 +51,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration.ConfigurationManager">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.4.5.0-preview1-25914-04\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -60,12 +71,8 @@
       <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
-      <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
+      <Project>{044E8D0A-A7F7-44B8-8F63-1F011FEBCF0F}</Project>
       <Name>Limaki.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj">
-      <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
-      <Name>Limaki.Db4o</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
@@ -95,12 +102,20 @@
       <Project>{0577142F-B5D1-4271-8795-FE4615C2D728}</Project>
       <Name>Limaki.View.XwtGtk</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Limaki.WCF\Limaki.WCF.csproj">
+      <Project>{200FACE5-859B-4EC8-A764-C25E0E368658}</Project>
+      <Name>Limaki.WCF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj">
+      <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
+      <Name>Limaki.Db4o</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="LogoDrop32.ico" />
   </ItemGroup>
   <PropertyGroup>
-  <!--<property name="os" value="${operating-system::get-platform(environment::get-operating-system())}"/>
+    <!--<property name="os" value="${operating-system::get-platform(environment::get-operating-system())}"/>
   <echo message="Detected : ${os}"/>-->
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -127,10 +142,11 @@
       <Link>Xwt.Gtk.dll.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Limaki.Application.Xwt.exe.config">
+    <None Include="app.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
     <None Include="makeBundle.sh" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
