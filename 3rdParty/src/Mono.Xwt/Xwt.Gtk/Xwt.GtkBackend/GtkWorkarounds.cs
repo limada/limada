@@ -30,6 +30,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Diagnostics;
 
 #if XWT_GTK3
 using GtkTreeModel = Gtk.ITreeModel;
@@ -1165,6 +1166,7 @@ namespace Xwt.GtkBackend
 		{
 		}
 
+        [DebuggerStepThrough]
 		public static double GetScaleFactor (Gtk.Widget w)
 		{
 			if (!supportsHiResIcons)
