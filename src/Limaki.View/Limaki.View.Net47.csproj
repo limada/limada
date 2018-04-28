@@ -1,0 +1,500 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3434F6BC-D6AA-4C53-B359-A1B114364025}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki</RootNamespace>
+    <AssemblyName>Limaki.View</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <ReleaseVersion>17.10</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;TraceRender</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Externalconsole>true</Externalconsole>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseDistri|AnyCPU'">
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;DISTRI</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\Limaki.View.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Limada\UseCases\Cms\AppController.cs" />
+    <Compile Include="Limada\UseCases\Cms\BackendController.cs" />
+    <Compile Include="Limada\UseCases\Cms\Models\VisualHrefContent.cs" />
+    <Compile Include="Limada\UseCases\Cms\Models\VisualHref.cs" />
+    <Compile Include="Limada\UseCases\Content\StreamContentUiManager.cs" />
+    <Compile Include="Limada\UseCases\IConceptUsecase.cs" />
+    <Compile Include="Limada\UseCases\Serializers\UsecasePersistor.cs" />
+    <Compile Include="Limada\View\ThingMeshHelper.cs" />
+    <Compile Include="Limaki.Contents\Text\HtmlDocument.cs" />
+    <Compile Include="Limaki.Contents\Text\IDocument.cs" />
+    <Compile Include="Limaki.Contents\Text\RtfImporter.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\ImagePainter.cs" />
+    <Compile Include="Limaki.Drawing\GeomExtensions.cs" />
+    <Compile Include="Limaki.Drawing\Styles\Spacing.cs" />
+    <Compile Include="Limaki.View\CommandView.cs" />
+    <Compile Include="Limaki.View\ContentViewers\MarkdownContentViewer.cs" />
+    <Compile Include="Limaki.View\Vidgets\MarkDownEdit.cs" />
+    <Compile Include="Limaki.View\Vidgets\PlainTextBox.cs" />
+    <Compile Include="Limaki.View\Vidgets\WebBrowserBackendHost.cs" />
+    <Compile Include="Limaki.View\GraphScene\IGraphSceneMesh.cs" />
+    <Compile Include="Limaki.View\GraphScene\IGraphSceneMeshBackHandler.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\Toolbars\LayoutToolbar.cs" />
+    <Compile Include="Xwt\PaintingImage.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TextViewerVidgetBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\WebBrowserVidgetBackend.cs" />
+    <Compile Include="Limaki.View\ContentViewers\TextContentViewerWithToolbar.cs" />
+    <Compile Include="Limaki.View\Vidgets\ITextViewerBackend.cs" />
+    <Compile Include="Limaki.View\Vidgets\TextAttributeVisitor.cs" />
+    <Compile Include="Limaki.View\Vidgets\TextViewerToolbar.cs" />
+    <Compile Include="Limaki.View\Vidgets\TextViewerWithToolbar.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TextViewerWithToolbarVidgetBackend.cs" />
+    <Compile Include="Xwt\FontDataAttribute.cs" />
+    <Compile Include="Xwt\IScrollContainingWidget.cs" />
+    <Compile Include="Xwt\TextViewerWidget.cs" />
+    <Compile Include="Xwt\WebBrowserWidget.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtBackendHelper.cs" />
+    <Compile Include="Limaki.View\ContentViewers\HtmlContentViewerBase.cs" />
+    <Compile Include="Limaki.Usecases\IGraphSceneUiManager.cs" />
+    <Compile Include="Limada\UseCases\Content\ThingGraphUiManager.cs" />
+    <Compile Include="Limada\UseCases\ThingGraphUseCases.cs" />
+    <Compile Include="Limaki.Contents\ImageContentDigger.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\ContextPainter.cs" />
+    <Compile Include="Limaki.Usecases\PluginLocator.cs" />
+    <Compile Include="Limaki.Usecases\UsecaseAppFactory.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Converter.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Extensions.cs" />
+    <Compile Include="Limaki.View\IToolkitAware.cs" />
+    <Compile Include="Limaki.View.XwtBackend\IXwtBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\IXwtBackendConceptUseCaseComposer.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\XwtGraphSceneLayer.cs" />
+    <Compile Include="Limaki.View\ContentViewers\ImageContentViewer.cs" />
+    <Compile Include="Limaki.View\ContentViewers\PdfContentViewer.cs" />
+    <Compile Include="Limaki.WebServers\PdfJsServer.cs" />
+    <Compile Include="Limaki.View\Vidgets\ComboBox.cs" />
+    <Compile Include="Limaki.View\Vidgets\FileDialogVidget.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolbarButton.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolbarDropDownButton.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolbarItem.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolbarItemHost.cs" />
+    <Compile Include="Limaki.View\Vidgets\VidgetUtils.cs" />
+    <Compile Include="Limaki.View\Vidgets\Vindow.cs" />
+    <Compile Include="Limaki.View\DragDrop\DragDropBackendHandlerBase.cs" />
+    <Compile Include="Limaki.View\DragDrop\DragDropInfo.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\SelectionRenderer.cs" />
+    <Compile Include="Limaki.View\Viz\UI\ICopyPasteAction.cs" />
+    <Compile Include="Limaki.View\Vidgets\Vidget.cs" />
+    <Compile Include="Limaki.View\Viz\UI\MouseCustomAction.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\ImageDisplay.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\ImageExporter.cs" />
+    <Compile Include="[Obsolete]\IGraphSceneDisplayEvents.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneDisplayMesh.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneDisplayMeshBackHandler.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneDisplayMeshVisitor.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneDisplayMeshVisitor.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneDisplayMeshBackHandler.cs" />
+    <Compile Include="Limaki.View\Vidgets\Toolbar.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\Toolbars\ArrangerToolbar.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\Toolbars\MarkerToolbar.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\Toolbars\DisplayToolbar.cs" />
+    <Compile Include="[Obsolete]\VisualGraphSceneDisplayMeshEvents.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneDisplayMesh.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\VisualsTextEditActionBase.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneDisplayMesh.cs" />
+    <Compile Include="Limaki.View\Visuals\IVisualContentViz.cs" />
+    <Compile Include="Limada\View\ContentViewers\DigidocKeyScrollAction.cs" />
+    <Compile Include="Limada\View\ContentViewers\DigidocContentViewer.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingsSceneViz.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingsSceneExtensions.cs" />
+    <Compile Include="Limaki.Usecases\IoUiManager.cs" />
+    <Compile Include="Limada\View\Vidgets\DigidocVidget.cs" />
+    <Compile Include="Limaki.View\ContentViewers\TextContentViewer.cs" />
+    <Compile Include="[Obsolete]\TextContentViewerWithToolstrip0.cs" />
+    <Compile Include="Limaki.WebServers\WebResponseBase.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\ISplitViewBackend.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\Toolbars\DisplayModeToolbar.cs" />
+    <Compile Include="Limaki.View\Vidgets\CanvasVidget.cs" />
+    <Compile Include="Limaki.View\Vidgets\ITextViewerVidgetBackend.cs" />
+    <Compile Include="[Obsolete]\TextViewer0\ITextViewerWithToolstripVidgetBackend0.cs" />
+    <Compile Include="Limaki.View\Vidgets\TextViewer.cs" />
+    <Compile Include="Limaki.View\Vidgets\TextViewerTextType.cs" />
+    <Compile Include="[Obsolete]\TextViewer0\TextViewerWithToolstrip0.cs" />
+    <Compile Include="Limaki.View\Vidgets\VidgetBorderStyle.cs" />
+    <Compile Include="Limaki.View\Vidgets\WebBrowserVidget.cs" />
+    <Compile Include="Limaki.View\DragDrop\DragDropViz.cs" />
+    <Compile Include="Limaki.View\DragDrop\DragEventArgs.cs" />
+    <Compile Include="Limaki.View\DragDrop\DragOverEventArgs.cs" />
+    <Compile Include="Limaki.View\DragDrop\IDragDropBackendHandler.cs" />
+    <Compile Include="Limaki.View\DragDrop\IDropHandler.cs" />
+    <Compile Include="Limaki.View\DragDrop\TransferDataManager.cs" />
+    <Compile Include="Limaki.View\Viz\UI\DragDropCatcher.cs" />
+    <Compile Include="Limaki.View\DragDrop\DragDropContainer.cs" />
+    <Compile Include="Limaki.View\Viz\UI\DragDropActionBase.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\VisualsDragDropAction.cs" />
+    <Compile Include="Limaki.View\IVidget.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\LocatorExtensions.cs" />
+    <Compile Include="Limaki.View\Vidgets\VidgetBackendHost.cs" />
+    <Compile Include="Limaki.View\Vidgets\VidgetToolkit.cs" />
+    <Compile Include="Limaki.View\Viz\UI\DelegatingMouseAction.cs" />
+    <Compile Include="Limaki.Contents\ViewContentResourceLoader.cs" />
+    <Compile Include="Limada\View\VisualThingsResourceLoader.cs" />
+    <Compile Include="Limaki.Usecases\VisualEntityResourceLoader.cs" />
+    <Compile Include="Xwt\Geom.cs" />
+    <Compile Include="Limaki.View\IGraphSceneLayout.cs" />
+    <Compile Include="Limaki.View\IShaper.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\ContextPainterExtensions.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\BezierExtensions.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\BezierSegment.cs" />
+    <Compile Include="Limada\UseCases\Cms\Models\ContentAndLinks.cs" />
+    <Compile Include="Limada\UseCases\Cms\Models\HtmlContent.cs" />
+    <Compile Include="Limada\UseCases\Cms\Models\Href.cs" />
+    <Compile Include="Limada\UseCases\Cms\Models\Hrefs.cs" />
+    <Compile Include="Limada\UseCases\Cms\Models\StreamContent.cs" />
+    <Compile Include="Limada\UseCases\Cms\CmsSiteSchema.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\GraphSceneContextVisualizer.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\AlignerExtensions.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\GraphSceneItemShapeLocator.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\GraphSceneContextPainter.cs" />
+    <Compile Include="Limaki.WebServers\IWebResponse.cs" />
+    <Compile Include="Limaki.WebServers\WebResponse.cs" />
+    <Compile Include="Limaki.View.XwtBackend\RenderContextEventArgs.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\SpatialIndex.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\SpatialQuadTreeIndex.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\ContextStreamWriter.cs" />
+    <Compile Include="ViewContextResourceLoader.cs" />
+    <Compile Include="Limaki.Drawing\Anchor.cs" />
+    <Compile Include="Limaki.Drawing\Camera.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\ContextSurface.cs" />
+    <Compile Include="Limaki.Drawing\DrawingExtensions.cs" />
+    <Compile Include="Limaki.Drawing\StyleXmlSerializer.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\GrahamConvexHull.cs" />
+    <Compile Include="Limaki.Drawing\ICamera.cs" />
+    <Compile Include="Limaki.Drawing\IDrawingUtils.cs" />
+    <Compile Include="Limaki.View\IGraphScene.cs" />
+    <Compile Include="Limaki.View\ILayout.cs" />
+    <Compile Include="Limaki.Drawing\Imaging\BitmapFromDibStream.cs" />
+    <Compile Include="Limaki.Drawing\Imaging\ExifReader.cs" />
+    <Compile Include="Limaki.Drawing\Imaging\ExifTags.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\CollectionVisitor.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\DoubleBits.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\HexConverter.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\IItemVisitor.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\Key.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\Node.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\NodeBase.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\Quadtree.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\QuadTrees\Root.cs" />
+    <Compile Include="Limaki.Drawing\IPainter.cs" />
+    <Compile Include="Limaki.Drawing\IPainterFactory.cs" />
+    <Compile Include="Limaki.Drawing\IShape.cs" />
+    <Compile Include="Limaki.Drawing\IShapeFactory.cs" />
+    <Compile Include="Limaki.Drawing\ISpatialIndex.cs" />
+    <Compile Include="Limaki.Drawing\IStyle.cs" />
+    <Compile Include="Limaki.Drawing\IStyleSheet.cs" />
+    <Compile Include="Limaki.Drawing\ISurface.cs" />
+    <Compile Include="Limaki.Drawing\SystemFontBackend.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\BezierPainter.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\RectanglePainter.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\RoundedRectanglePainter.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\StringPainter.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\VectorPainter.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\BezierRectangleShape.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\IRectangleShape.cs" />
+    <Compile Include="Limaki.Drawing\PointComparer.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\Polygon.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\RectangleShape.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\RectangleShapeBase.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\RoundedRectangleShape.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\Shape.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\ShapeFactory.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\ShapeFactoryBase.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\StringShape.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\VectorShape.cs" />
+    <Compile Include="Limaki.Drawing\Styles\Style.cs" />
+    <Compile Include="Limaki.Drawing\Styles\StyleGroup.cs" />
+    <Compile Include="Limaki.Drawing\Styles\StyleNames.cs" />
+    <Compile Include="Limaki.Drawing\Styles\StyleSheet.cs" />
+    <Compile Include="Limaki.Drawing\Styles\StyleSheets.cs" />
+    <Compile Include="Limaki.Drawing\Vector.cs" />
+    <Compile Include="Limaki.Drawing\Painters\Painter.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\DefaultPainterFactory.cs" />
+    <Compile Include="Limaki.Drawing\Painters\StringPainterBase.cs" />
+    <Compile Include="Limada\View\Vidgets\FavoriteManager.cs" />
+    <Compile Include="Limada\View\SheetSerializer.cs" />
+    <Compile Include="Limada\View\Vidgets\DigidocViz.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingTransformer.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingGraph.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingGraphExtension.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingMarkerFacade.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingXmlSerializer.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingsContentViz.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\BoundsClipper.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\ClipReceiver.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\IClipReceiver.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\PolygonClipper.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\BackendComposer.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\Display.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\DisplayComposer.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\DisplayFactory.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\GraphSceneDisplay.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\GraphSceneDisplayComposer.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\GraphSceneDisplayFactory.cs" />
+    <Compile Include="Limaki.View\Viz\IGraphSceneDisplay.cs" />
+    <Compile Include="Limaki.View\Viz\DisplayResourceLoader.cs" />
+    <Compile Include="Limaki.View\Viz\Viewport.cs" />
+    <Compile Include="Limaki.View\Viz\IClipper.cs" />
+    <Compile Include="Limaki.View\IVidgetBackend.cs" />
+    <Compile Include="Limaki.View\Viz\ICursorHandler.cs" />
+    <Compile Include="Limaki.View\Viz\IDisplay.cs" />
+    <Compile Include="Limaki.View\Viz\IDisplayBackend.cs" />
+    <Compile Include="Limaki.View\Vidgets\IHistoryAware.cs" />
+    <Compile Include="Limaki.View\Viz\IReceiver.cs" />
+    <Compile Include="Limaki.View\Viz\IViewport.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\LocateVisitBuilder.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\Aligner.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\AlignerOptions.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\GraphSceneLocator.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\GraphSceneLayout.cs" />
+    <Compile Include="Limaki.View\ILocator.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\IEdgeRouter.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\IGraphSceneLocator.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\Layout.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\LayoutCommand.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\NearestAnchorRouter.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\Placer.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\MeasureVisitBuilder.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\EdgeRouterBase.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\ShapeLayout.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\GraphItemModeller.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\GraphSceneModeller.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\IGraphSceneModeller.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\ContentRenderer.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\GraphItemRenderer.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\GraphSceneRenderer.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\IContentRenderer.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\IBackendRenderer.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\ILayer.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\IRenderAction.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\IRenderEventArgs.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\RenderEventArgs.cs" />
+    <Compile Include="Limaki.View\Viz\UI\ActionDispatcher.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphEdgeChangeAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemAddAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemDeleteAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemMoveResizeAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemMultiSelector.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemZoomAction.cs" />
+    <Compile Include="Limaki.View\GraphScene\GraphSceneCommands.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphSceneEventArgs.cs" />
+    <Compile Include="Limaki.View\GraphScene\GraphSceneFacade.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphSceneFocusAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphSceneFolding.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\GraphSceneLayer.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\IGraphSceneLayer.cs" />
+    <Compile Include="Limaki.View\Viz\Modelling\ShapeCommands.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\GripPainter.cs" />
+    <Compile Include="Limaki.View\Viz\UI\IDropAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\IEditAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\IActionDispatcher.cs" />
+    <Compile Include="Limaki.View\Viz\UI\IKeyAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\IMouseAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\IMoveResizeAction.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\ISelectionRenderer.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\IShapedSelectionRenderer.cs" />
+    <Compile Include="Limaki.View\IUISystemInformation.cs" />
+    <Compile Include="Limaki.View\Viz\UI\KeyActionBase.cs" />
+    <Compile Include="Limaki.View\Vidgets\KeyEventArgs.cs" />
+    <Compile Include="Limaki.View\Viz\UI\KeyScrollAction.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\Layer.cs" />
+    <Compile Include="Limaki.View\Viz\UI\MouseActionBase.cs" />
+    <Compile Include="Limaki.View\Vidgets\MouseActionEventArgs.cs" />
+    <Compile Include="Limaki.View\Viz\UI\MouseDragActionBase.cs" />
+    <Compile Include="Limaki.View\Viz\UI\MouseScrollAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\MouseTimerActionBase.cs" />
+    <Compile Include="Limaki.View\Viz\UI\MoveResizeAction.cs" />
+    <Compile Include="Limaki.View\Viz\Rendering\MoveResizeRenderer.cs" />
+    <Compile Include="Limaki.View\Viz\UI\SelectorAction.cs" />
+    <Compile Include="Limaki.View\Viz\UI\ZoomAction.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\VisualsDisplay.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\VisualsResourceLoader.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\VisualsSceneLayout.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\AddVisualEdgeAction.cs" />
+    <Compile Include="Limaki.View\Visuals\SceneExtensions.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\VisualsRenderer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
+    <Compile Include="Limaki.Usecases\IReportOptions.cs" />
+    <Compile Include="Limada\UseCases\ConceptUsecase.cs" />
+    <Compile Include="Limada\UseCases\ConceptUsecaseComposer.cs" />
+    <Compile Include="Limaki.Usecases\UsecaseFactories.cs" />
+    <Compile Include="Limaki.Usecases\UsecaseFactory.cs" />
+    <Compile Include="Limada\View\ContentViewers\ContentViewManager.cs" />
+    <Compile Include="Limaki.View\ContentViewers\ContentViewerProvider.cs" />
+    <Compile Include="Limaki.View\Vidgets\FileDialogMemento.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\GraphScenePainter.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\ISplitView.cs" />
+    <Compile Include="Limaki.View\Vidgets\TextOkCancelBox.cs" />
+    <Compile Include="Limaki.View\Vidgets\IWebBrowser.cs" />
+    <Compile Include="Limaki.View\ContentViewers\ContentStreamViewer.cs" />
+    <Compile Include="Limada\View\ContentViewers\HtmlContentViewer.cs" />
+    <Compile Include="Limaki.View\ContentViewers\SheetViewer.cs" />
+    <Compile Include="Limada\View\ContentViewers\ThingWebResponse.cs" />
+    <Compile Include="Limaki.WebServers\RequestInfo.cs" />
+    <Compile Include="Limaki.WebServers\TimeoutStream.cs" />
+    <Compile Include="Limaki.WebServers\WebContent.cs" />
+    <Compile Include="Limaki.WebServers\WebRequestContent.cs" />
+    <Compile Include="Limaki.WebServers\WebServer.cs" />
+    <Compile Include="Limaki.WebServers\WebServerBase.cs" />
+    <Compile Include="Limaki.View\ContentViewers\ContentVisualViewerProvider.cs" />
+    <Compile Include="Limaki.View\ContentViewers\ContentVisualViewer.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\Toolbars\IMarkerTool.cs" />
+    <Compile Include="Limaki.View\ContentViewers\ContentViewer.cs" />
+    <Compile Include="Limaki.View\Visuals\BruteForceIndex.cs" />
+    <Compile Include="Limaki.View\Visuals\VisualGraphEntityTransformer.cs" />
+    <Compile Include="Limaki.View\Visuals\IVisual.cs" />
+    <Compile Include="Limaki.View\Visuals\IVisualEdge.cs" />
+    <Compile Include="Limaki.View\Visuals\IVisualFactory.cs" />
+    <Compile Include="Limaki.View\Visuals\VisualsQuadTreeIndex.cs" />
+    <Compile Include="Limaki.View\Visuals\Scene.cs" />
+    <Compile Include="Limaki.View\Visuals\Visual.cs" />
+    <Compile Include="Limaki.View\Visuals\VisualComparer.cs" />
+    <Compile Include="Limaki.View\Visuals\VisualComposite.cs" />
+    <Compile Include="Limaki.View\Visuals\VisualEdge.cs" />
+    <Compile Include="Limaki.View\Visuals\VisualFactory.cs" />
+    <Compile Include="Limaki.View\Visuals\VisualGraph.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\GraphSceneContextPainterComposer.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\GraphSceneContextPainterRenderer.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\VisualSceneContextPainter.cs" />
+    <Compile Include="Xwt\SystemColorsBackend.cs" />
+    <Compile Include="Xwt\SystemColors.cs" />
+    <Compile Include="Xwt\SystemFontBackend.cs" />
+    <Compile Include="Xwt\SystemFonts.cs" />
+    <Compile Include="Xwt\XwtLExtensions.cs" />
+    <Compile Include="Xwt\XwtToChange.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemMouseScrollAction.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\FileExplorerComposer.cs" />
+    <Compile Include="Limaki.View.XwtBackend\Viz\ImageLayer.cs" />
+    <Compile Include="Limaki.View\Viz\Serializers\GraphSceneDisplayMemento.cs" />
+    <Compile Include="Limaki.View\Viz\Serializers\GraphSceneDisplayXmlSerializer.cs" />
+    <Compile Include="Limaki.View\Viz\Serializers\MeshXmlSerializer.cs" />
+    <Compile Include="Limaki.View\Viz\Serializers\SceneInfoXmlSerializer.cs" />
+    <Compile Include="Limada\UseCases\Serializers\UsecaseXmlSerializer.cs" />
+    <Compile Include="Limaki.View\GraphScene\ISceneViz.cs" />
+    <Compile Include="Limaki.View\GraphScene\GraphSceneExtensions.cs" />
+    <Compile Include="Limaki.Usecases\About.cs" />
+    <Compile Include="Limaki.Contents\Text\TextHtmlConverter.cs" />
+    <Compile Include="Limaki.Contents\Text\MarkDownHtmlConverter.cs" />
+    <Compile Include="Limaki.Contents\Text\RtfHtmlConverter.cs" />
+    <Compile Include="Limada\View\Vidgets\SceneManager.cs" />
+    <Compile Include="Limaki.View\Visuals\ISceneManager.cs" />
+    <Compile Include="Limaki.View\Visuals\SheetStore.cs" />
+    <Compile Include="Limaki.View\Viz\GraphSceneDisplayExtensions.cs" />
+    <Compile Include="Limaki.View\Visuals\ISceneManagerExtensions.cs" />
+    <Compile Include="[Obsolete]\SheetManager.cs" />
+    <Compile Include="[Obsolete]\ISheetManager.cs" />
+    <Compile Include="[Obsolete]\SheetSerializer0.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolbarPanel.cs" />
+    <Compile Include="Limaki.View\Vidgets\ItemContainerBase.cs" />
+    <Compile Include="Limaki.View.XwtBackend\ToolbarPanelBackendDummy.cs" />
+    <Compile Include="Limaki.View\ContentViewers\IContentViewManager.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\VisualsDisplayHistory.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\IFavoriteManager.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\SplitViewDumnmy.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\SplitViewToolbar.cs" />
+    <Compile Include="Limada\View\Vidgets\VisualThingSearch.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\IVisualGraphSceneSearch.cs" />
+    <Compile Include="Limaki.Usecases\Vidgets\SplitView0.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\XwtDrawingUtils.cs" />
+    <Compile Include="Limaki.View.Common\DialogResult.cs" />
+    <Compile Include="Limaki.View.Common\IMessageBoxShow.cs" />
+    <Compile Include="Limaki.View.Common\Orientation.cs" />
+    <Compile Include="Limaki.View.Common\Visibility.cs" />
+    <Compile Include="Limaki.View.Common\Dimension.cs" />
+    <Compile Include="Limaki.View.Common\UiState.cs" />
+    <Compile Include="Limaki.Drawing\IZoomTarget.cs" />
+    <Compile Include="Limaki.View.Common\ZoomState.cs" />
+    <Compile Include="Xwt\DelegateCanvas.cs" />
+    <Compile Include="Limaki.View.Common\GridLines.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
+      <Project>{044e8d0a-a7f7-44b8-8f63-1f011febcf0f}</Project>
+      <Name>Limaki.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
+      <Name>Limaki.View.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Xwt\RelatedDocs.txt" />
+    <Content Include="Xwt\XwtProblems.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Limaki.View.Common\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Limaki.View.Common\Todo.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
