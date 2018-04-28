@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using SDI = System.Drawing.Imaging;
 using XD = Xwt.Drawing;
 
 namespace Limaki.Iconerias {
@@ -16,16 +15,16 @@ namespace Limaki.Iconerias {
 		internal static XD.Image LimadaLogo { get; set; }
 		internal static XD.Image SubWinIcon { get; set; }
 
+        [DebuggerStepThrough]
 		static ConvertedResources(){
-			LimadaLogo = AsImage (global::Limaki.View.Properties.Resources.LogoDrop32);
-			SubWinIcon = AsImage (global::Limaki.View.Properties.Resources.SubWin);
+            LimadaLogo = AsImage (global::Limaki.View.Resources.Resource.LogoDrop32);
+            SubWinIcon = AsImage (global::Limaki.View.Resources.Resource.SubWin);
 		}
 
-        internal static XD.Image AsImage (System.Drawing.Image source) {
+        internal static XD.Image AsImage (byte[] source) {
             Xwt.Drawing.Image result = null;
-            using (var stream = new MemoryStream ()) {
+            using (var stream = new MemoryStream (source)) {
                 try {
-                    source.Save (stream, SDI.ImageFormat.Png);
                     stream.Position = 0;
                     result = Xwt.Drawing.Image.FromStream (stream);
                 } catch (Exception ex) {
