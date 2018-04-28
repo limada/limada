@@ -57,7 +57,7 @@ namespace Xwt.GtkBackend
 				minimum_height = natural_height = HeightRequest;
 			else {
 				minimum_height = natural_height = (Backend.Frontend.MinHeight > 0 ? (int) Backend.Frontend.MinHeight : 0);
-				foreach (var cr in children.Where (c => c.Key.Visible)) {
+                foreach (var cr in children.Where (c => c.Key.Visible).ToArray()) {
 					minimum_height = (int) Math.Max (minimum_height, cr.Value.Y + cr.Value.Height);
 					natural_height = (int) Math.Max (natural_height, cr.Value.Y + cr.Value.Height);
 				}
@@ -70,7 +70,7 @@ namespace Xwt.GtkBackend
 				minimum_width = natural_width = WidthRequest;
 			else {
 				minimum_width = natural_width = (Backend.Frontend.MinWidth > 0 ? (int)Backend.Frontend.MinWidth : 0);
-				foreach (var cr in children.Where (c => c.Key.Visible)) {
+                foreach (var cr in children.Where (c => c.Key.Visible).ToArray()) {
 					minimum_width = (int) Math.Max (minimum_width, cr.Value.X + cr.Value.Height);
 					natural_width = (int) Math.Max (natural_width, cr.Value.X + cr.Value.Height);
 				}
