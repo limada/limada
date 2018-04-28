@@ -56,7 +56,7 @@ namespace BitMiracle.LibTiff.Classic
         /// </summary>
         internal const bool CHECK_JPEG_YCBCR_SUBSAMPLING = true;
 
-#if SILVERLIGHT // was: ! SILVERLIGHT
+#if NETSTANDARD2_0 // was: ! SILVERLIGHT
         internal static readonly Encoding Latin1Encoding = Encoding.GetEncoding("Latin1");
 #else
         // Encoding.GetEncoding("Latin1") is not supported in Silverlight. Will throw exceptions at runtime.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
 // namespace System.Drawing.* is not available in Silverlight
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -55,14 +55,14 @@ namespace BitMiracle.LibJpeg
         /// </summary>
         private MemoryStream m_decompressedData;
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         /// <summary>
         /// .NET bitmap associated with this image
         /// </summary>
         private Bitmap m_bitmap;
 #endif
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         /// <summary>
         /// Creates <see cref="JpegImage"/> from <see cref="System.Drawing.Bitmap">.NET bitmap</see>
         /// </summary>
@@ -126,7 +126,7 @@ namespace BitMiracle.LibJpeg
             m_colorspace = colorspace;
         }
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         /// <summary>
         /// Creates <see cref="JpegImage"/> from <see cref="System.Drawing.Bitmap">.NET bitmap</see>
         /// </summary>
@@ -161,7 +161,7 @@ namespace BitMiracle.LibJpeg
                     if (m_decompressedData != null)
                         m_decompressedData.Dispose();
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
                     if (m_bitmap != null)
                         m_bitmap.Dispose();
 #endif
@@ -171,7 +171,7 @@ namespace BitMiracle.LibJpeg
                 m_compressionParameters = null;
                 m_compressedData = null;
                 m_decompressedData = null;
-#if !SILVERLIGHT                
+#if !NETSTANDARD2_0                
                 m_bitmap = null;
 #endif
                 m_rows = null;
@@ -299,7 +299,7 @@ namespace BitMiracle.LibJpeg
             decompressedData.WriteTo(output);
         }
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         /// <summary>
         /// Retrieves image as .NET Bitmap.
         /// </summary>
@@ -337,7 +337,7 @@ namespace BitMiracle.LibJpeg
             }
         }
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         private Bitmap bitmap
         {
             get
@@ -382,7 +382,7 @@ namespace BitMiracle.LibJpeg
             return (first == 0xFF && second == (int)JPEG_MARKER.SOI);
         }
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         private void createFromBitmap(System.Drawing.Bitmap bitmap)
         {
             initializeFromBitmap(bitmap);
@@ -402,7 +402,7 @@ namespace BitMiracle.LibJpeg
             }
             else
             {
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
                 createFromBitmap(new Bitmap(imageData));
 #else
                 throw new NotImplementedException("JpegImage.createFromStream(Stream)");
@@ -410,7 +410,7 @@ namespace BitMiracle.LibJpeg
             }
         }
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         private void initializeFromBitmap(Bitmap bitmap)
         {
             if (bitmap == null)
@@ -472,7 +472,7 @@ namespace BitMiracle.LibJpeg
             jpeg.Decompress(compressedData, dest);
         }
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         private void processPixelFormat(PixelFormat pixelFormat)
         {
             //See GdiPlusPixelFormats.h for details
@@ -509,7 +509,7 @@ namespace BitMiracle.LibJpeg
         }
 #endif
 
-#if !SILVERLIGHT
+#if !NETSTANDARD2_0
         private void fillSamplesFromBitmap()
         {
             Debug.Assert(m_bitmap != null);
