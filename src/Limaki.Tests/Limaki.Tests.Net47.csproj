@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B1BC3EF8-5EC7-491A-BA83-70CB38F1823F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki</RootNamespace>
+    <AssemblyName>Limaki.Tests</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <ReleaseVersion>17.10</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseDistri|AnyCPU'">
+    <OutputPath>bin\ReleaseDistri\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>..\bin\Release\Limaki.Tests.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FunctionPoints\FunctionPointCounter.cs" />
+    <Compile Include="FunctionPoints\FunctionPointReport.cs" />
+    <Compile Include="Limada.Tests\Tests\Basic\BasicThingGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Basic\ThingTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\DescriptionSampleFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\DigidocSampleFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\MapperTester.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\ThingFactoryTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\EntitySampleFactories.cs" />
+    <Compile Include="Limaki.Tests\View\UsecaseSerializerTest.cs" />
+    <Compile Include="Playground\View\XwtFrontend\PointerEventArgs.cs" />
+    <Compile Include="[Obsolete]\SchemaViewTestData0.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\SchemaGraph\SchemaGraphPerformanceTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\SchemaGraph\SchemaGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\StreamThingTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphDeleteItemsTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphTestBase.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\GraphEntity2ThingTransformer.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\GraphMapperTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\GraphPairTest.cs" />
+    <Compile Include="[Obsolete]\SimpleDescriptionSampleFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\ThingGraphUtilTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\ModelHelper.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\SheetTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\CommonSchemaTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\DigidocTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\SchemaTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\SchemaTest1.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\SchemaViewTestData.cs" />
+    <Compile Include="Limada.Tests\Tests\StreamSources.cs" />
+    <Compile Include="Limada.Tests\Tests\View\ThingContentFacadeTest.cs" />
+    <Compile Include="Limada.Tests\Tests\View\ThingEntityGraphFactory.cs" />
+    <Compile Include="[Obsolete]\ThingSceneFactory0.cs" />
+    <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
+    <Compile Include="Limada.Tests\Tests\View\VisualThingSceneMeshDigidocTest.cs" />
+    <Compile Include="Limada.Tests\Tests\View\BasicVisualThingGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\View\VisualThingTests.cs" />
+    <Compile Include="Limada.Tests\Tests\View\WrapperTest.cs" />
+    <Compile Include="Limaki.Tests\Common\Rtf\RtfImporterTest.cs" />
+    <Compile Include="Limaki.Tests\Common\Rtf\RtfTest.cs" />
+    <Compile Include="Limaki.Tests\Common\Rtf\RtfTestData.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\VisualEntityTests.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Samples\SampleGraphSceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\SceneMeshTestBase.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\ImageMissingStuffExtension.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\BinarySceneTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\GCJohnBostonSceneTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\ProgrammingSceneTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\SceneTestEnvironment.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\SceneFacadeTest.cs" />
+    <Compile Include="Limaki.Tests\View\Display\BenchmarkOneTests.cs" />
+    <Compile Include="Limaki.Tests\View\Display\DisplayTest.cs" />
+    <Compile Include="Limaki.Tests\View\Display\MoreVisualsDisplayTest.cs" />
+    <Compile Include="Limaki.Tests\View\Display\QuadTreeVisualizer.cs" />
+    <Compile Include="Limaki.Tests\View\Display\VisualsDisplayTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\SceneMeshTest.cs" />
+    <Compile Include="Limaki.Tests\View\TestCaseFactoryBase.cs" />
+    <Compile Include="Limaki.View.Headless\HeadlessVidgetToolkitEngineBackend.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\BezierTestData.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\PolyAlgoPrototyper.cs" />
+    <Compile Include="Limaki.View.Headless\Drawing\HeadlessDrawingUtils.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\VindowBackend.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessContextBackendHandler.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessSystemFontsBackend.cs" />
+    <Compile Include="Limaki.View.Headless\Drawing\HeadlessSystemInformation.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\DisplayBackend.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\DisplayBackendComposer.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\DragDropBackendHandler.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\VidgetBackend.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\GraphSceneDisplayBackend.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessBackendRenderer.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessConceptUseCaseComposer.cs" />
+    <Compile Include="Limaki.View.Headless\HeadlessContextResourceLoader.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessCursorHandlerBackend.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessExeptionHandlerBackend.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessGraphSceneLayer.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessMessageBoxShow.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessProgressHandler.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessViewport.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\ImageDisplayBackend.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\ImageLayer.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\VisualsDisplayBackend.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HedlessVisualsTextEditAction.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\FontData.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessConverter.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessDesktopBackend.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessEngine.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessFontBackendHandler.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessSystemColorsBackend.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessTextLayoutBackendHandler.cs" />
+    <Compile Include="Playground\Generators\ExpressionGenerators.cs" />
+    <Compile Include="Playground\Graph\GraphEvents.cs" />
+    <Compile Include="Playground\IO\IoPrototype.cs" />
+    <Compile Include="Playground\IO\IoTryout.cs" />
+    <Compile Include="Playground\Limada.Model\HyperGraph.cs" />
+    <Compile Include="Playground\Text\RichText.cs" />
+    <Compile Include="Playground\View\AllignerPrototyper.cs" />
+    <Compile Include="Playground\Limjekts\Limjekts.cs" />
+    <Compile Include="Playground\View\CollissionResolver.cs" />
+    <Compile Include="Playground\View\DrawingTests.cs" />
+    <Compile Include="Playground\View\XwtFrontend\ScrollableCanvas.cs" />
+    <Compile Include="Playground\View\ReferencePainterCanvas.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\SceneExamples.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
+    <Compile Include="TestLocations.cs" />
+    <Compile Include="Limaki.Tests\Common\IOUtilsTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\StyleTest.cs" />
+    <Compile Include="Limaki.Tests\Data\db4o\GraphTest.cs" />
+    <Compile Include="Limaki.Tests\DomainTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\GraphPair\BasicGraphPairTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\GraphPair\GraphPairTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\GraphPair\SubGraphTest.cs" />
+    <Compile Include="Limaki.Tests\View\Display\FrameTicker.cs" />
+    <Compile Include="Limaki.Tests\View\WebProxyTest.cs" />
+    <Compile Include="Limaki.Tests\Common\FactoryTest.cs" />
+    <Compile Include="Limaki.Tests\Common\HTML\HtmlNextTest.cs" />
+    <Compile Include="Limaki.Tests\Common\HTML\HtmlTestData.cs" />
+    <Compile Include="Playground\Proves\ExpressionExploration.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\PoligonAlgoTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\ViewSerialisationTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\BasicGraphTests.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\BasicGraphTestDataFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\EdgeIsItemTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\EntityBasicGraphTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\IntGraphTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\StringGraphTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\FilteredGraphTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\GraphTestUtils.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\BenchmarkOneGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\BinaryGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\BinaryTreeFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\GCJohnBostonGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\LimakiShortHelp.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\ProgrammingLanguageGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\SimpleGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\WordGameGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\SampleGraphPairFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\SampleGraphFactoryBase.cs" />
+    <Compile Include="Limaki.Tests\Graph\SampleGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\ISampleGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Item.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\TestingSomeGraphSemantics.cs" />
+    <Compile Include="Playground\Proves\FileInfoTest.cs" />
+    <Compile Include="Limaki.Tests\Common\HistoryTest.cs" />
+    <Compile Include="Playground\Proves\RegExProves.cs" />
+    <Compile Include="Playground\Schema\SchemaArchitecture.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\SceneThreadTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\VectorHulltest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\Shapes\ShapeTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\BasicVisualGraphTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\EntityBenchmarkOneSceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Samples\ISampleGraphSceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Samples\SampleSceneFactory.cs" />
+    <Compile Include="UnitTest\TestBase.cs" />
+    <Compile Include="Limaki.Tests\Mono\MonoGenericError2.cs" />
+    <Compile Include="Limaki.Tests\Mono\MonoMarshalByRefError.cs" />
+    <Compile Include="Limaki.Tests\Data\Streams\ContentPoolTest.cs" />
+    <Compile Include="Playground\Proves\CSharpLanguageFeatures.cs" />
+    <Compile Include="Playground\Text\MarkdownDocument.cs" />
+    <Compile Include="[Obsolete]\Pen.cs" />
+    <Compile Include="Playground\View\BlockAlignerPrototyper.cs" />
+    <Compile Include="Playground\View\AlignerPrototyperBase.cs" />
+    <Compile Include="Playground\View\RectangleLocator.cs" />
+    <Compile Include="Playground\View\Walker1.cs" />
+    <Compile Include="[Obsolete]\ToolStrip.cs" />
+    <Compile Include="Playground\View\Tree.cs" />
+    <Compile Include="Playground\View\TreeAlignerPrototyper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limada.PdfExporter\Limada.PdfProvider.csproj">
+      <Project>{84084423-BA27-4001-8F47-DB0D242A1255}</Project>
+      <Name>Limada.PdfProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
+      <Project>{044E8D0A-A7F7-44B8-8F63-1F011FEBCF0F}</Project>
+      <Name>Limaki.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Html5\Limaki.View.Html5.csproj">
+      <Project>{B77C5BE4-8B43-4B9D-BD73-25B7E58BC8EF}</Project>
+      <Name>Limaki.View.Html5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
+      <Name>Limaki.View.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.Hmtl5\Xwt.Hmtl5.csproj">
+      <Project>{91F963D7-B63B-4F0F-8A44-EDDEB232F37C}</Project>
+      <Name>Xwt.Hmtl5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.Tests\Xwt.Tests.csproj">
+      <Project>{4F416F8C-27E2-4D94-86D4-9E58E24AF10B}</Project>
+      <Name>Xwt.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
+      <Name>Limaki.View</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o\Db4objects.Db4o.csproj">
+      <Project>{46F51426-A56D-4706-8B6B-4353EE078B68}</Project>
+      <Name>Db4objects.Db4o</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq.csproj">
+      <Project>{E7F380C0-84BC-49DB-A87E-5182803514CC}</Project>
+      <Name>Db4objects.Db4o.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj">
+      <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
+      <Name>Limaki.Db4o</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Limada.Tests\Tests\Data\" />
+    <Folder Include="Playground\DocumentObjectModel\" />
+    <Folder Include="Playground\Limada.UseCases\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Limaki.Tests\View\Visuals\Scene\SceneTests.cd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio />
+  </ProjectExtensions>
+</Project>
