@@ -357,7 +357,7 @@ namespace Xwt
 		/// Notifies about unhandled exceptions using the UnhandledException event.
 		/// </summary>
 		/// <param name="ex">The unhandled Exception.</param>
-		internal static void NotifyException (Exception ex)
+		public static void NotifyException (Exception ex)
 		{
 			var unhandledException = UnhandledException;
 			if (unhandledException != null)
