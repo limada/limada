@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Limaki.View.XwtBackend {
 
-    class Program {
+	class Program {
 
         [STAThread]
         public static void Main (string[] args) {
