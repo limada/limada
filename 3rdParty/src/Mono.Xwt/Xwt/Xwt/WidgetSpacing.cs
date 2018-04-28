@@ -31,7 +31,6 @@ using Xwt.Backends;
 
 using Xwt.Drawing;
 using System.Reflection;
-using System.Xaml;
 using System.Linq;
 using System.Windows.Markup;
 using System.Text;
