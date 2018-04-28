@@ -197,6 +197,8 @@ namespace Xwt.GtkBackend
 					var a = new ButtonEventArgs {
 						X = args.Event.X,
 						Y = args.Event.Y,
+                        MultiplePress = args.Event.Type == Gdk.EventType.TwoButtonPress ? 2 :
+                                        args.Event.Type == Gdk.EventType.ThreeButtonPress ? 3 : 1,
 						Button = (PointerButton) args.Event.Button
 					};
 					EventSink.OnButtonReleased (a);
@@ -226,12 +228,14 @@ namespace Xwt.GtkBackend
 					}
 					ApplicationContext.InvokeUserCode (delegate {
 						LoadData (rendererTarget.Model, iter);
-						var a = new ButtonEventArgs {
-							X = args.Event.X,
-							Y = args.Event.Y,
-							Button = (PointerButton) args.Event.Button
-						};
-						EventSink.OnButtonPressed (a);
+                        var a = new ButtonEventArgs {
+                            X = args.Event.X,
+                            Y = args.Event.Y,
+                            MultiplePress = args.Event.Type == Gdk.EventType.TwoButtonPress ? 2 :
+                                            args.Event.Type == Gdk.EventType.ThreeButtonPress ? 3 : 1,
+                            Button = (PointerButton)args.Event.Button
+                        };
+                        EventSink.OnButtonPressed (a);
 						if (a.Handled)
 							args.RetVal = true;
 					});
