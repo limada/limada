@@ -42,5 +42,20 @@ namespace Limaki.Common.Linqish {
                 yield return item;
             }
         }
+
+    }
+
+    public static class Repeat { 
+        
+        public static IEnumerable<T> For<T> (this Func<T> it, int count) {
+            for (var i = 0; i < count; i++) yield return it ();
+        }
+
+        public static void Action (Action it, int count) {
+            for (var i = 0; i < count; i++) { 
+                it (); 
+            }
+        }
+
     }
 }
