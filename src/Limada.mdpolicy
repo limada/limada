@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PolicySet name="Limada">
-  <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp">
-    <IndentSwitchBody>True</IndentSwitchBody>
-    <BeforeMethodDeclarationParentheses>False</BeforeMethodDeclarationParentheses>
-    <BeforeMethodCallParentheses>False</BeforeMethodCallParentheses>
-    <BeforeConstructorDeclarationParentheses>False</BeforeConstructorDeclarationParentheses>
-    <NewLineBeforeConstructorInitializerColon>NewLine</NewLineBeforeConstructorInitializerColon>
-    <NewLineAfterConstructorInitializerColon>SameLine</NewLineAfterConstructorInitializerColon>
-    <BeforeDelegateDeclarationParentheses>False</BeforeDelegateDeclarationParentheses>
-    <NewParentheses>False</NewParentheses>
-    <SpacesBeforeBrackets>False</SpacesBeforeBrackets>
+<PolicySet name="Limada2">
+  <CSharpFormattingPolicy scope="text/x-csharp">
+    <IndentSwitchSection>False</IndentSwitchSection>
+    <NewLinesForBracesInProperties>False</NewLinesForBracesInProperties>
+    <NewLinesForBracesInAccessors>False</NewLinesForBracesInAccessors>
+    <NewLinesForBracesInAnonymousMethods>False</NewLinesForBracesInAnonymousMethods>
+    <NewLinesForBracesInControlBlocks>False</NewLinesForBracesInControlBlocks>
+    <NewLinesForBracesInAnonymousTypes>False</NewLinesForBracesInAnonymousTypes>
+    <NewLinesForBracesInObjectCollectionArrayInitializers>False</NewLinesForBracesInObjectCollectionArrayInitializers>
+    <NewLinesForBracesInLambdaExpressionBody>False</NewLinesForBracesInLambdaExpressionBody>
+    <NewLineForElse>False</NewLineForElse>
+    <NewLineForCatch>False</NewLineForCatch>
+    <NewLineForFinally>False</NewLineForFinally>
+    <NewLineForMembersInObjectInit>False</NewLineForMembersInObjectInit>
+    <NewLineForMembersInAnonymousTypes>False</NewLineForMembersInAnonymousTypes>
+    <NewLineForClausesInQuery>False</NewLineForClausesInQuery>
+    <SpacingAfterMethodDeclarationName>True</SpacingAfterMethodDeclarationName>
+    <SpaceAfterMethodCallName>True</SpaceAfterMethodCallName>
+    <SpaceBeforeOpenSquareBracket>True</SpaceBeforeOpenSquareBracket>
   </CSharpFormattingPolicy>
-  <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp">
-    <FileWidth>120</FileWidth>
-    <TabsToSpaces>False</TabsToSpaces>
+  <TextStylePolicy scope="text/x-csharp">
     <EolMarker>Unix</EolMarker>
   </TextStylePolicy>
 </PolicySet>
