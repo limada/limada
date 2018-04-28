@@ -56,19 +56,20 @@ namespace Xwt.Headless.Backend {
         }
 
         public override void InvokeAsync (Action action) {
-            throw new NotImplementedException();
+            action?.Invoke ();
         }
 
         public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan) {
-            throw new NotImplementedException();
+            action?.Invoke ();
+            return null;
         }
 
         public override void CancelTimerInvoke (object id) {
-            throw new NotImplementedException();
+            
         }
 
         public override object GetNativeWidget (Widget w) {
-            throw new NotImplementedException();
+            return w;
         }
 
         public override IWindowFrameBackend GetBackendForWindow (object nativeWindow) {
@@ -76,7 +77,7 @@ namespace Xwt.Headless.Backend {
         }
 
         public override bool HasNativeParent (Widget w) {
-            throw new NotImplementedException();
+            return false;
         }
 
         public override object GetNativeWindow (IWindowFrameBackend backend) {
