@@ -43,6 +43,20 @@ namespace Xwt.GtkBackend {
         bool showFrame = true;
         int frameMargin = 4;
 
+        public class MlTextView : Gtk.TextView 
+        {
+
+            public bool MultiLine { get; set; }
+
+            protected override bool OnKeyPressEvent (Gdk.EventKey evnt) {
+                if ((evnt.Key == Gdk.Key.Return || evnt.Key == Gdk.Key.ISO_Enter || evnt.Key == Gdk.Key.KP_Enter) && !MultiLine)
+                    return true;
+                if (evnt.Key == Gdk.Key.Tab && !MultiLine)
+                    return false;
+                return base.OnKeyPressEvent (evnt);
+            }
+        }
+
         public string Text {
             get { return TextView.Buffer.Text; }
             set {
@@ -60,9 +74,9 @@ namespace Xwt.GtkBackend {
         }
 
         public bool ReadOnly {
-            get { return TextView.Editable; }
+            get { return !TextView.Editable; }
             set {
-                TextView.Editable = value;
+                TextView.Editable = !value;
                 TextView.CursorVisible = !value;
             }
         }
@@ -72,8 +86,10 @@ namespace Xwt.GtkBackend {
             set {
                 if (value != multiLine) {
                     multiLine = value;
+                    TextView.MultiLine = value;
                     if (!value) {
                         TextView.WrapMode = Gtk.WrapMode.None;
+
                     } else {
                         TextView.WrapMode = Gtk.WrapMode.Word;
                     }
@@ -95,11 +111,11 @@ namespace Xwt.GtkBackend {
             }
         }
 
-        protected virtual Gtk.TextView TextView {
-            get { return (Gtk.TextView)base.Widget; }
+        protected virtual MlTextView TextView {
+            get { return (MlTextView)base.Widget; }
         }
 
-        protected new Gtk.TextView Widget {
+        protected new MlTextView Widget {
             get { return TextView; }
             set { base.Widget = value; }
         }
@@ -157,8 +173,6 @@ namespace Xwt.GtkBackend {
 	        }
         }
 
-
-
 		protected Pango.Layout Layout {
 			get { return layout ?? (layout = new Pango.Layout (TextView.PangoContext)); }
 		}
@@ -174,7 +188,7 @@ namespace Xwt.GtkBackend {
 
 		public override void Initialize ()
 		{
-			Widget = new Gtk.TextView ();
+			Widget = new MlTextView ();
 			Widget.Show ();
 
 			ShowFrame = true;
@@ -221,6 +235,7 @@ namespace Xwt.GtkBackend {
 			TextView.Buffer.Changed += (s, e) => {
 				bufferSizeRequest = true;
 			};
+
 		}
 
 		public override Size GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
