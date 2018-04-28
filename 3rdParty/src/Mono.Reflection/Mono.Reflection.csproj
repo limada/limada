@@ -1,58 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{97B010AB-0756-46DC-B75A-7A6C4F6FF28D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mono.Reflection</RootNamespace>
-    <AssemblyName>Mono.Reflection</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>mono.snk</AssemblyOriginatorKeyFile>
-    <ReleaseVersion>17.4</ReleaseVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ReleaseVersion>18.04</ReleaseVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Compile Remove="Resources\Resource.designer.cs" />
+    <Compile Remove="Test\Mono.Reflection\AssemblyInfo.cs" />
+    <Compile Remove="Test\Mono.Reflection\BackingFieldResolverTest.cs" />
+    <Compile Remove="Test\Mono.Reflection\BaseReflectionTest.cs" />
+    <Compile Remove="Test\Mono.Reflection\DisassemblerTest.cs" />
+    <Compile Remove="Test\Mono.Reflection\Formatter.cs" />
+    <Compile Remove="Test\Mono.Reflection\ImageTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mono.Reflection\AssemblyInfo.cs" />
-    <Compile Include="Mono.Reflection\ByteBuffer.cs" />
-    <Compile Include="Mono.Reflection\BackingFieldResolver.cs" />
-    <Compile Include="Mono.Reflection\Disassembler.cs" />
-    <Compile Include="Mono.Reflection\ILPattern.cs" />
-    <Compile Include="Mono.Reflection\Image.cs" />
-    <Compile Include="Mono.Reflection\MethodBodyReader.cs" />
-    <Compile Include="Mono.Reflection\Instruction.cs" />
+    <None Remove="Resources\AboutResources.txt" />
+    <None Remove="Resources\values\Strings.xml" />
+    <None Remove="Test\.gitignore" />
+    <None Remove="Test\target.dll" />
+    <None Remove="Test\target.il" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="mono.snk" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
