@@ -12,9 +12,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Limaki.Common;
 
 namespace Limaki.Actions {
 
@@ -34,23 +31,19 @@ namespace Limaki.Actions {
     }
 
     public class Command<T> : Command,ICommand<T> {
-        private T _subject = default(T);
-        public T Subject {
-            get { return _subject; }
-            set { _subject = value; }
-        }
+        
+        public T Subject { get; set; }
+
         public Command(T subject) { this.Subject = subject;}
+
         protected override void Dispose(bool disposing) {
             Subject = default( T );
         }
     }
 
     public class Command<T,P> :Command<T>, ICommand<T,P> {
-        private P _parameter = default(P);
-        public P Parameter {
-            get { return _parameter; }
-            set { _parameter = value; }
-        }
+        
+        public P Parameter { get; set; }
 
         public Command(T subject, P parameter):base(subject) {
             this.Parameter = parameter;
@@ -66,11 +59,8 @@ namespace Limaki.Actions {
 	}
 
     public class Command<T, P, P2> : Command<T, P>, ICommand<T, P, P2> {
-        private P2 _parameter2 = default(P2);
-        public P2 Parameter2 {
-            get { return _parameter2; }
-            set { _parameter2 = value; }
-        }
+        
+        public P2 Parameter2 { get; set; }
 
         public Command(T subject, P parameter, P2 parameter2): base(subject,parameter) {
             this.Parameter2 = parameter2;
@@ -78,18 +68,13 @@ namespace Limaki.Actions {
     }
 
     public class ActionCommand<T, P> : Command<T,P> {
+        
         public ActionCommand(T subject, P parameter, Action<T, P> action) : base(subject, parameter) { this.Action = action; }
 
-        private Action<T,P> _act = null;
-        public Action<T,P> Action {
-            get { return _act; }
-            set { _act = value; }
-        }
+        public Action<T, P> Action { get; set; }
 
         public override void Execute() {
-            if (Action != null) {
-                Action (Subject, Parameter);
-            }
+            Action?.Invoke (Subject, Parameter);
         }
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);

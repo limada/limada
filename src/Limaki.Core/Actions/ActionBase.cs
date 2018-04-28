@@ -18,13 +18,9 @@ using System.ComponentModel;
 namespace Limaki.Actions {
 
     public abstract class ActionBase : IAction {
-        protected bool _resolved = false;
-
-        [Browsable(false)]
-        public virtual bool Resolved {
-            get { return _resolved; }
-            protected set { _resolved = value; }
-        }
+        
+        [Browsable (false)]
+        public virtual bool Resolved { get; protected set; } = false;
 
         [Browsable(false)]
         public virtual bool Exclusive {
@@ -32,18 +28,9 @@ namespace Limaki.Actions {
             protected set { Resolved = value; }
         }
 
-        private bool _enabled = true;
+        public virtual bool Enabled { get; set; } = true;
 
-        public virtual bool Enabled {
-            get { return _enabled; }
-            set { _enabled = value; }
-        }
-
-        private int _priority = 0;
-        public int Priority {
-            get { return _priority; }
-            set { _priority = value; }
-        }
+        public int Priority { get; set; } = 0;
 
 
         public virtual void Dispose() {

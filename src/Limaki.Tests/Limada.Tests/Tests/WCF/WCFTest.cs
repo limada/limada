@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET47
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,7 @@ using Limaki.Tests.Graph.Model;
 using Limaki.WCF.Client;
 
 namespace Limaki.Test.WCF {
+
     public class WCFClientTest : ThingGraphClientHost {
         protected ThingFactory Factory = new ThingFactory();
 
@@ -31,9 +33,6 @@ namespace Limaki.Test.WCF {
             //var clientThread = new Thread(new ThreadStart(clientTest.TestClient));
             //clientThread.Start();
         }
-
-
-
 
         void ReportThing(IThing clThing) {
             if (clThing != null)
@@ -132,3 +131,5 @@ namespace Limaki.Test.WCF {
         }
     }
 }
+
+#endif

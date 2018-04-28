@@ -19,6 +19,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Limaki.Common.Linqish {
+    
     /// <summary>
     /// Builds Expressions and extends IQuerables
     /// where the Member-Type of an entity is unknown 

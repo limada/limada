@@ -25,12 +25,13 @@ namespace Limaki.Common.Reflections {
         }
 
         public static Set<Tuple<Type, Type>> _implements = new Set<Tuple<Type, Type>>();
+
         public static bool Implements (Type clazz, Type interfaze) {
             if (clazz.IsClass) {
                 var key = Tuple.Create(clazz, interfaze);
                 if (_implements.Contains(key))
                     return true;
-                bool result = (interfaze.IsAssignableFrom(clazz));
+                var result = (interfaze.IsAssignableFrom(clazz));
                 if (!result && interfaze.IsInterface) {
                     foreach (Type t in clazz.GetInterfaces()) {
                         if (t == interfaze) {

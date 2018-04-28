@@ -26,7 +26,6 @@ namespace Limaki.Common.Collections {
             Current = item;
         }
 
-
         public T Current = default( T );
 
         public T Forward() {

@@ -39,9 +39,8 @@ namespace Limada.Usecases {
 			if (Applied)
 				return;
 
-            if (ResourceLoader != null)
-                ResourceLoader.ApplyResources (context);
-            
+            ResourceLoader?.ApplyResources (context);
+
             context.Factory.Add<IThingFactory, ThingFactory> ();
             context.Factory.Add<IGraphModelFactory<IThing, ILink>, ThingFactory> ();
 

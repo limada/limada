@@ -110,11 +110,12 @@ namespace Limaki.Common {
             var sinkType = sink.GetType();
 
             var key = KeyMaker.GetHashCode(clazz, sourceType, sinkType);
-            var delegateType = typeof(Action<,>).MakeGenericType(sourceType, sinkType);
+            //var delegateType = typeof(Action<,>).MakeGenericType(sourceType, sinkType);
 
             Delegate copyAction = null;
 
             if (!copyActionCache.TryGetValue(key, out copyAction)) {
+                var delegateType = typeof (Action<,>).MakeGenericType (sourceType, sinkType);
                 var sourceExpr = Expression.Variable(sourceType, "source");
                 var destExpr = Expression.Variable(sinkType, "sink");
 
@@ -144,10 +145,11 @@ namespace Limaki.Common {
                 }
                 copyActionCache.Add(key, copyAction);
             }
-
-            delegateType.InvokeMember("Invoke",
-             BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod,
-             null, copyAction, new object[] { source, sink });
+            copyAction.DynamicInvoke (new object[] { source, sink });
+            // this is slower:
+            //delegateType.InvokeMember("Invoke",
+             //BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod,
+             //null, copyAction, new object[] { source, sink });
 
             return sink;
         }
