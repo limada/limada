@@ -36,6 +36,10 @@ namespace Xwt.GtkBackend
 		{
 			Widget = new Gtk.Notebook ();
 			Widget.Scrollable = true;
+            Widget.BorderWidth = 0;
+            Widget.TabHborder = 0;
+            Widget.TabVborder = 0;
+            Widget.ShowBorder = false;
 			Widget.Show ();
 		}
 		
