@@ -16,6 +16,8 @@ using System;
 using System.Diagnostics;
 using Limaki.View.Vidgets;
 using Limaki.Common.Linqish;
+using Limaki.View.Common;
+using Xwt.Backends;
 
 namespace Limaki.View.GtkBackend {
 
@@ -89,5 +91,17 @@ namespace Limaki.View.GtkBackend {
             else
                 Widget.Visible = false;
         }
+
+        public void AddToWindow (IVindow vindow) {
+            var xwtWindow = vindow.Backend as Xwt.Window;
+            var windowBackend = xwtWindow.GetBackend () as Xwt.GtkBackend.WindowBackend;
+            var toolbarBackend = this.ToGtk ();
+            var mainBox = windowBackend.MainBox;
+            mainBox.PackStart (toolbarBackend, false, false, 0);
+
+            ((Gtk.Box.BoxChild)mainBox[toolbarBackend]).Position = 1;
+            mainBox.ShowAll ();
+        }
+
     }
 }

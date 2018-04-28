@@ -32,8 +32,7 @@ namespace Limaki.View.GtkBackend {
 
             var xwtWindow = backendComposer.MainWindow.Backend as Xwt.Window;
             ComposeWindow (xwtWindow);
-            AddToolbar (xwtWindow, useCase.Toolbar);
-
+            (useCase.Toolbar.Backend as Vidgets.IToolbarPanelBackend).AddToWindow (backendComposer.MainWindow);
         }
 
         protected void ComposeWindow (Xwt.Window xwtWindow) {
@@ -57,14 +56,8 @@ namespace Limaki.View.GtkBackend {
 
             if (toolbar == null)
                 return;
-            
-            var windowBackend = xwtWindow.GetBackend () as Xwt.GtkBackend.WindowBackend;
-            var toolbarBackend = toolbar.Backend.ToGtk ();
-            var mainBox = windowBackend.MainBox;
-            mainBox.PackStart (toolbarBackend, false, false, 0);
 
-            ((Gtk.Box.BoxChild)mainBox [toolbarBackend]).Position = 1;
-            mainBox.ShowAll ();
+           
 
         }
     }

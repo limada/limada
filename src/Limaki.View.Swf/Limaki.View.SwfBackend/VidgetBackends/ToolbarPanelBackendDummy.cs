@@ -12,6 +12,7 @@
  * 
  */
 
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Xwt;
 using SWF = System.Windows.Forms;
@@ -29,5 +30,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         public void RemoveItem (IToolbarBackend backend) { }
 
         public void SetVisibility (Visibility value) { }
+
+        public void AddToWindow (IVindow vindow) {
+
+        }
+
     }
 }

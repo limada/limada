@@ -65,5 +65,9 @@ namespace Limaki.View.WpfBackend {
 
         }
 
+        public class WpfToolbarPanelBackend : VidgetBackend<ToolBarTray> , Vidgets.IToolbarPanelBackend { 
+            // TODO: 
+        }
+
     }
 }

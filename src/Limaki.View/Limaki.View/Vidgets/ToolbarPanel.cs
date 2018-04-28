@@ -23,5 +23,7 @@ namespace Limaki.View.Vidgets {
     public class ToolbarPanel : ContainerVidget<Toolbar, IToolbarBackend> {
     }
 
-    public interface IToolbarPanelBackend : IVidgetBackend, IContainerVidgetBackend<IToolbarBackend> { }
+    public interface IToolbarPanelBackend : IVidgetBackend, IContainerVidgetBackend<IToolbarBackend> {
+        void AddToWindow (IVindow vindow);
+    }
 }
