@@ -24,6 +24,7 @@ using Xwt.Drawing;
 using Limada.View.ContentViewers;
 using Limaki.Usecases;
 using System.Linq;
+using Limaki.View.Common;
 
 namespace Limaki.View.XwtBackend {
    

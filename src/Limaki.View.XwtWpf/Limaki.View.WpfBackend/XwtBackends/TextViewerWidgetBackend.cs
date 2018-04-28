@@ -28,6 +28,7 @@ using SWM = System.Windows.Media;
 using SW = System.Windows;
 using System.Linq;
 using System.Text;
+using Limaki.View.Common;
 
 namespace Limaki.View.WpfBackend {
 

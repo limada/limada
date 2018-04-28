@@ -12,11 +12,9 @@
  */
 
 
-using Limaki.Drawing;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
-using Limaki.View;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
 using Limaki.Common;
@@ -25,7 +23,8 @@ using Limaki.Common.Text;
 using XD = Xwt.Drawing;
 using System.Collections.Generic;
 using System;
-using Xwt;
+using LRTF = Limaki.Common.Text.RTF;
+using Limaki.View.Common;
 
 // this control uses ideas from RicherTextBox by ???
 
@@ -134,7 +133,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         public void SetAttribute (XD.TextAttribute a) {
 
-            var rtfHelper = new Limaki.Common.Text.RTF.RTFHelper ();
+            var rtfHelper = new LRTF.RTFHelper ();
 
             var visit = new TextAttributeVisitor {
 
@@ -165,7 +164,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 StrikethroughTextAttribute = attribute => {
                     if (attribute.Strikethrough) {
                         Controller.SetEditorSelectedRTF (
-                            source => rtfHelper.SetAttributes (source, Common.Text.RTF.FontStyle.Strikeout));
+                            source => rtfHelper.SetAttributes (source, LRTF.FontStyle.Strikeout));
                     }
 
                 },
@@ -173,7 +172,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 UnderlineTextAttribute = attribute => {
                     if (attribute.Underline) {
                         Controller.SetEditorSelectedRTF (
-                            source => rtfHelper.SetAttributes (source, Common.Text.RTF.FontStyle.Underline));
+                            source => rtfHelper.SetAttributes (source, LRTF.FontStyle.Underline));
                     }
 
                 },
@@ -185,16 +184,16 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         
-        private Common.Text.RTF.FontStyle Convert (XD.FontWeight fontWeight) {
+        private LRTF.FontStyle Convert (XD.FontWeight fontWeight) {
             if (fontWeight == XD.FontWeight.Bold)
-                return Common.Text.RTF.FontStyle.Bold;
-            return Common.Text.RTF.FontStyle.Normal;
+                return LRTF.FontStyle.Bold;
+            return LRTF.FontStyle.Normal;
         }
 
-        private Common.Text.RTF.FontStyle Convert (XD.FontStyle fontStyle) {
+        private LRTF.FontStyle Convert (XD.FontStyle fontStyle) {
             if (fontStyle == XD.FontStyle.Italic || fontStyle == XD.FontStyle.Oblique)
-                return Common.Text.RTF.FontStyle.Italic;
-            return Common.Text.RTF.FontStyle.Normal;
+                return LRTF.FontStyle.Italic;
+            return LRTF.FontStyle.Normal;
         }
 
         public IEnumerable<XD.TextAttribute> GetAttributes () {

@@ -25,6 +25,7 @@ using NUnit.Framework;
 using Xwt;
 using System.Linq;
 using Limaki.Common.Linqish;
+using Limaki.View.Common;
 
 namespace Limaki.Tests.View.Display {
 

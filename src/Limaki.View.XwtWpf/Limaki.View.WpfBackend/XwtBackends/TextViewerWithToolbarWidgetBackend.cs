@@ -13,6 +13,7 @@
  */
 
 using System.Windows.Controls;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Limaki.View.XwtBackend;
 
@@ -44,7 +45,7 @@ namespace Limaki.View.WpfBackend {
             var backend = toolbar.Backend.ToWpf () as ToolBar;
             if (backend != null) {
                 var toolBarTray = new ToolBarTray ();
-                toolBarTray.Orientation = Orientation.Horizontal;
+                toolBarTray.Orientation = System.Windows.Controls.Orientation.Horizontal;
 
                 DockPanel.SetDock (toolBarTray, Dock.Top);
                 this.Box.Children.Add (toolBarTray);

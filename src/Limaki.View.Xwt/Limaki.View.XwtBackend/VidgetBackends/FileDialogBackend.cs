@@ -52,6 +52,7 @@ namespace Limaki.View.XwtBackend {
             target.InitialFileName = IoUtils.NiceFileName(source.FileName);
             target.CurrentFolder = source.InitialDirectory;
             var filters = source.Filter.Split('|');
+
             for (int i = 0; i < filters.Length; i += 2) {
                 var exts = filters[i + 1].Split(';');
                 target.Filters.Add(new FileDialogFilter(filters[i], exts));
@@ -129,13 +130,11 @@ namespace Limaki.View.XwtBackend {
 
     public class OpenFileDialogBackend : FileDialogBackend, IOpenfileDialogBackend {
 
-        public override bool Run (IVidget parent) { return base.Run<OpenFileDialog>(parent); }
-
+        public override bool Run (IVidget parent) => base.Run<OpenFileDialog> (parent);
     }
 
     public class SaveFileDialogBackend : FileDialogBackend, ISavefileDialogBackend {
 
-        public override bool Run (IVidget parent) { return base.Run<SaveFileDialog>(parent); }
-
+        public override bool Run (IVidget parent) => base.Run<SaveFileDialog> (parent);
     }
 }

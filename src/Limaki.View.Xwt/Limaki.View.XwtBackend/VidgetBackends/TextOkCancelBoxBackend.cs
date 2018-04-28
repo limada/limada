@@ -20,6 +20,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Iconerias;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Xwt;
 

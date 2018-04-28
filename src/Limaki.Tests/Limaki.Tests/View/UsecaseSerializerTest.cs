@@ -10,6 +10,7 @@ using Limaki.View.Vidgets;
 using Xwt;
 using Limaki.Usecases;
 using System.Xml.Linq;
+using Limaki.View.Common;
 
 namespace Limaki.Tests.View {
 

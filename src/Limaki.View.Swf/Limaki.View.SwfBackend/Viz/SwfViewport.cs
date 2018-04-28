@@ -16,6 +16,7 @@ using System;
 using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.View.Common;
 using Limaki.View.Viz;
 using Xwt;
 using Xwt.GdiBackend;

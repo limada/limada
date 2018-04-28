@@ -18,7 +18,7 @@ using Limaki.View;
 using Limaki.View.Vidgets;
 using Xwt;
 using Xwt.GdiBackend;
-using DialogResult = Limaki.View.Vidgets.DialogResult;
+using DialogResult = Limaki.View.Common.DialogResult;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using SWF = System.Windows.Forms;
 using SD = System.Drawing;

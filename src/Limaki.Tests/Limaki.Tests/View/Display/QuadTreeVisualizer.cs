@@ -4,6 +4,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.Indexing.QuadTrees;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
+using Limaki.View.Common;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Visualizers;
 using Xwt;
@@ -91,7 +92,7 @@ namespace Limaki.Tests.View {
                 NodeItems(node, result, itemsDone);
 
                 if (node.HasSubNodes) {
-                    var subRoot = factory.CreateItem(" ° ");
+                    var subRoot = factory.CreateItem(" ï¿½ ");
                     this.VisualsDisplay.Data.Add(
                         factory.CreateEdge(result, subRoot, string.Empty));
 

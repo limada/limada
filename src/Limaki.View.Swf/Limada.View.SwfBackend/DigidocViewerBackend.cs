@@ -18,6 +18,7 @@ using Limada.View.Vidgets;
 using Limaki.View;
 using Limaki.View.Vidgets;
 using System.Drawing;
+using Limaki.View.Common;
 using Limaki.View.SwfBackend.VidgetBackends;
 
 namespace Limada.View.SwfBackend {

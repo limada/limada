@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 
 namespace Limaki.View.XwtBackend {

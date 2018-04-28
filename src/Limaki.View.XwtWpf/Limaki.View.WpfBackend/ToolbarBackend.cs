@@ -17,6 +17,7 @@ using System.Text;
 using Limaki.View.Vidgets;
 using System.Windows;
 using System;
+using Limaki.View.Common;
 using LVV = Limaki.View.Vidgets;
 using SW = System.Windows;
 using SWC = System.Windows.Controls;
@@ -71,13 +72,15 @@ namespace Limaki.View.WpfBackend {
             Control.Items.Remove (item.ToWpf ());
         }
 
-        public void SetVisibility (LVV.Visibility value) {
-            if (value == LVV.Visibility.Visible)
+        public void SetVisibility (Common.Visibility value) {
+            if (value == Common.Visibility.Visible)
                 Control.Visibility = SW.Visibility.Visible;
-            else if (value == LVV.Visibility.Hidden)
+            else if (value == Common.Visibility.Hidden)
                 Control.Visibility = SW.Visibility.Hidden;
-            else if (value == LVV.Visibility.Collapsed)
+            else if (value == Common.Visibility.Collapsed)
                 Control.Visibility = SW.Visibility.Collapsed;
         }
+
+
     }
 }

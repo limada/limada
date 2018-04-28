@@ -38,6 +38,7 @@ using Xwt.Backends;
 using Limaki.View.Viz.Visualizers;
 using Limada.UseCases;
 using Limada.Usecases;
+using Limaki.View.Common;
 
 namespace Limaki.View.SwfBackend {
 

@@ -12,16 +12,14 @@
  * 
  */
 
-using Limada.View.Vidgets;
-using Limaki.Usecases.Vidgets;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
-using Limaki.View.Visuals;
 using Limaki.View.Viz.Visualizers.Toolbars;
 
 namespace Limaki.View.XwtBackend {
 
     public class ToolbarBackendDummy : VidgetBackend<Xwt.HBox>, IToolbarBackend {
-        
+
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
         }

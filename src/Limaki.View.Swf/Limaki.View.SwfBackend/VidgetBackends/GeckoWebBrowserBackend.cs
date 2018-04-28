@@ -30,6 +30,7 @@ using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
 using Application = System.Windows.Forms.Application;
 using Limaki.Common.Text.HTML;
+using Limaki.View.Common;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 

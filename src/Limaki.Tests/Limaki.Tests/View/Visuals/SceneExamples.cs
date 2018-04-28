@@ -8,6 +8,7 @@ using Limaki.Tests.View.Visuals;
 using Limaki.View;
 using Limaki.View.Vidgets;
 using System.Collections.Generic;
+using Limaki.View.Common;
 using Limaki.View.Visuals;
 
 namespace Limaki.Tests.View {

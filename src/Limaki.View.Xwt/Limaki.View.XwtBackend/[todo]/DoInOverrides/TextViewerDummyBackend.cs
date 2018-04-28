@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Xwt;
 using Xwt.Drawing;
@@ -23,7 +24,7 @@ namespace Limaki.View.XwtBackend {
 
         public void Load (System.IO.Stream stream, TextViewerTextType textType) { }
 
-        public Drawing.ZoomState ZoomState { get; set; }
+        public ZoomState ZoomState { get; set; }
 
         public double ZoomFactor { get; set; }
         public void UpdateZoom () { }

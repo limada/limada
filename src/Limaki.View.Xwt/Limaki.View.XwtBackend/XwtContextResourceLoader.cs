@@ -30,6 +30,7 @@ using Xwt.Backends;
 using System.Diagnostics;
 using Limada.UseCases;
 using Limaki.Contents.IO;
+using Limaki.View.Common;
 
 namespace Limaki.View.XwtBackend {
 

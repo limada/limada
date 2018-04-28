@@ -6,7 +6,6 @@ using Xwt.Backends;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 using Xwt.Drawing;
-using Limaki.View.Properties;
 
 namespace Limaki.View.XwtBackend {
 

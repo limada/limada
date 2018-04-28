@@ -8,6 +8,7 @@ using System.Text;
 using Limaki.Common;
 using Limaki.Contents;
 using Limaki.Common.Text;
+using Limaki.View.Common;
 
 namespace Limaki.View.XwtBackend {
 

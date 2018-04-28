@@ -23,6 +23,7 @@ using Limaki.View;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
 using System.IO;
+using Limaki.View.Common;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 

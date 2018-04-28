@@ -217,93 +217,93 @@ namespace Limaki.View.SwfBackend {
             return result;
         }
 
-        public static View.Vidgets.DialogResult Convert(DialogResult value) {
-            var result = View.Vidgets.DialogResult.None;
+        public static Common.DialogResult Convert(DialogResult value) {
+            var result = Common.DialogResult.None;
             if (value == DialogResult.OK) {
-                result = View.Vidgets.DialogResult.Ok;
+                result = Common.DialogResult.Ok;
             }
             if (value == DialogResult.Cancel) {
-                result = View.Vidgets.DialogResult.Cancel;
+                result = Common.DialogResult.Cancel;
             }
             if (value == DialogResult.Abort) {
-                result = View.Vidgets.DialogResult.Abort;
+                result = Common.DialogResult.Abort;
             }
             if (value == DialogResult.Retry) {
-                result = View.Vidgets.DialogResult.Retry;
+                result = Common.DialogResult.Retry;
             }
             if (value == DialogResult.Ignore) {
-                result = View.Vidgets.DialogResult.Ignore;
+                result = Common.DialogResult.Ignore;
             }
             if (value == DialogResult.Yes) {
-                result = View.Vidgets.DialogResult.Yes;
+                result = Common.DialogResult.Yes;
             }
             if (value == DialogResult.No) {
-                result = View.Vidgets.DialogResult.No;
+                result = Common.DialogResult.No;
             }
 
             return result;
         }
 
-        public static DialogResult Convert(View.Vidgets.DialogResult value) {
+        public static DialogResult Convert(Common.DialogResult value) {
             var result = DialogResult.None;
             if (value == null)
                 return result;
-            if ( value == View.Vidgets.DialogResult.Ok ) {
+            if ( value == Common.DialogResult.Ok ) {
                 result = DialogResult.OK;
             }
-            if ( value == View.Vidgets.DialogResult.Cancel ) {
+            if ( value == Common.DialogResult.Cancel ) {
                 result = DialogResult.Cancel;
             }
-            if ( value == View.Vidgets.DialogResult.Abort ) {
+            if ( value == Common.DialogResult.Abort ) {
                 result = DialogResult.Abort;
             }
-            if ( value == View.Vidgets.DialogResult.Retry ) {
+            if ( value == Common.DialogResult.Retry ) {
                 result = DialogResult.Retry;
             }
-            if ( value == View.Vidgets.DialogResult.Ignore ) {
+            if ( value == Common.DialogResult.Ignore ) {
                 result = DialogResult.Ignore;
             }
-            if ( value == View.Vidgets.DialogResult.Yes ) {
+            if ( value == Common.DialogResult.Yes ) {
                 result = DialogResult.Yes;
             }
-            if ( value == View.Vidgets.DialogResult.No ) {
+            if ( value == Common.DialogResult.No ) {
                 result = DialogResult.No;
             }
 
             return result;
         }
 
-        public static MessageBoxButtons Convert(View.Vidgets.MessageBoxButtons value) {
+        public static MessageBoxButtons Convert(Common.MessageBoxButtons value) {
             var result = MessageBoxButtons.OK;
             if (value == null)
                 return result;
-            if (value == View.Vidgets.MessageBoxButtons.OkCancel)
+            if (value == Common.MessageBoxButtons.OkCancel)
                 return MessageBoxButtons.OKCancel;
-            if (value == View.Vidgets.MessageBoxButtons.AbortRetryIgnore)
+            if (value == Common.MessageBoxButtons.AbortRetryIgnore)
                 return MessageBoxButtons.AbortRetryIgnore;
-            if (value == View.Vidgets.MessageBoxButtons.YesNoCancel)
+            if (value == Common.MessageBoxButtons.YesNoCancel)
                 return MessageBoxButtons.YesNoCancel;
-            if (value == View.Vidgets.MessageBoxButtons.YesNo)
+            if (value == Common.MessageBoxButtons.YesNo)
                 return MessageBoxButtons.YesNo;
-            if (value == View.Vidgets.MessageBoxButtons.RetryCancel)
+            if (value == Common.MessageBoxButtons.RetryCancel)
                 return MessageBoxButtons.RetryCancel;
             return result;
         }
 
-        public static View.Vidgets.MessageBoxButtons Convert(MessageBoxButtons value) {
-            var result = View.Vidgets.MessageBoxButtons.Ok;
+        public static Common.MessageBoxButtons Convert(MessageBoxButtons value) {
+            var result = Common.MessageBoxButtons.Ok;
             if (value == null)
                 return result;
             if (value == MessageBoxButtons.OKCancel)
-                return View.Vidgets.MessageBoxButtons.OkCancel;
+                return Common.MessageBoxButtons.OkCancel;
             if (value == MessageBoxButtons.AbortRetryIgnore)
-                return View.Vidgets.MessageBoxButtons.AbortRetryIgnore;
+                return Common.MessageBoxButtons.AbortRetryIgnore;
             if (value == MessageBoxButtons.YesNoCancel)
-                return View.Vidgets.MessageBoxButtons.YesNoCancel;
+                return Common.MessageBoxButtons.YesNoCancel;
             if (value == MessageBoxButtons.YesNo)
-                return View.Vidgets.MessageBoxButtons.YesNo;
+                return Common.MessageBoxButtons.YesNo;
             if (value == MessageBoxButtons.RetryCancel)
-                return View.Vidgets.MessageBoxButtons.RetryCancel;
+                return Common.MessageBoxButtons.RetryCancel;
             return result;
         }
 

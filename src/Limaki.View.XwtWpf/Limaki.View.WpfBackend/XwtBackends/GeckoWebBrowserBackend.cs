@@ -20,6 +20,7 @@ using Limaki.Common;
 using Limaki.Contents;
 using Limaki.Contents.IO;
 using Limaki.Drawing;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Xwt;
 using Xwt.WPFBackend;

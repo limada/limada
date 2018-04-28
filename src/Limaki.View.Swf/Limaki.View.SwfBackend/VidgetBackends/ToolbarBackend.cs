@@ -15,6 +15,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using Limaki.View;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
 using SWF = System.Windows.Forms;

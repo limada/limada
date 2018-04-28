@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Xwt.GdiBackend;
-using DialogResult = Limaki.View.Vidgets.DialogResult;
+using DialogResult = Limaki.View.Common.DialogResult;
 using System.Collections.Generic;
 
 namespace Limada.View.SwfBackend {

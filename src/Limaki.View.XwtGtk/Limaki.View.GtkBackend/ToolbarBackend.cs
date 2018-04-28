@@ -13,6 +13,7 @@
  */
 
 using System;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
