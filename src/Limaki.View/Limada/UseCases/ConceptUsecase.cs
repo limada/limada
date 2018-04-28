@@ -29,6 +29,7 @@ using System;
 using System.Linq;
 using Xwt;
 using Limaki.Usecases.Vidgets;
+using Limaki.View.Common;
 using Limaki.View.Viz.Mesh;
 using Limaki.View.Viz.Visualizers.Toolbars;
 using Limaki.View.Viz.Visualizers;

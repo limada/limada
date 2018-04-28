@@ -6,6 +6,7 @@ using Limaki.View.Viz.Modelling;
 using Limaki.Drawing.XwtBackend;
 using Limaki.Common;
 using Limaki.Drawing.Styles;
+using Limaki.View.Common;
 
 namespace Limaki.View.XwtBackend {
 

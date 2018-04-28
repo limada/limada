@@ -16,6 +16,7 @@
 using Limaki.Drawing;
 using Xwt;
 using System;
+using Limaki.View.Common;
 
 namespace Limaki.View.Viz {
     /// <summary>

@@ -18,7 +18,7 @@ using Xwt;
 
 namespace Limaki.Drawing {
 
-    public static class Geom {
+    public static class GeomExtensions {
 
         #region Rectangle
 

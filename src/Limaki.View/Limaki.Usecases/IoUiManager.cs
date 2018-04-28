@@ -4,6 +4,7 @@ using Limaki.Contents.IO;
 using Limaki.View.Vidgets;
 using System;
 using System.IO;
+using Limaki.View.Common;
 
 namespace Limaki.Usecases {
 

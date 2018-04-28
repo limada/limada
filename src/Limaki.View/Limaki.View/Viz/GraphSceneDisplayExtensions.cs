@@ -13,6 +13,7 @@
 
 using System;
 using Limaki.Graphs;
+using Limaki.View.Common;
 using Xwt;
 using Xwt.Drawing;
 
@@ -34,7 +35,7 @@ namespace Limaki.View.Viz {
             var zoomState = display.ZoomState;
             var zoomFactor = display.Viewport.ZoomFactor;
 
-            Action<Color, Drawing.ZoomState, double> setDispay = (c, s, f) => {
+            Action<Color, ZoomState, double> setDispay = (c, s, f) => {
                 display.BackColor = c;
                 display.ZoomState = s;
                 display.Viewport.ZoomFactor = f;
@@ -43,7 +44,7 @@ namespace Limaki.View.Viz {
             };
 
             Application.MainLoop.QueueExitAction (() => {
-                setDispay (Colors.AliceBlue, Drawing.ZoomState.Custom, zoomFactor + 0.1);
+                setDispay (Colors.AliceBlue, ZoomState.Custom, zoomFactor + 0.1);
                 Application.TimeoutInvoke (10, () => { setDispay (color, zoomState, zoomFactor); display.QueueDraw ();return false;});
 
             });

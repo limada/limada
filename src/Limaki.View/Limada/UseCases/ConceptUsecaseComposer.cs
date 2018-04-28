@@ -26,6 +26,7 @@ using Limaki.View.GraphScene;
 using Limaki.View.Viz.Visualizers.Toolbars;
 using Xwt;
 using System.Linq;
+using Limaki.View.Common;
 
 namespace Limada.UseCases {
 

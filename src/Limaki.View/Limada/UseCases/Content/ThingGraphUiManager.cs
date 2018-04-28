@@ -24,6 +24,7 @@ using Limaki.Contents.IO;
 using Limaki.Data;
 using Limaki.Usecases;
 using Limaki.View;
+using Limaki.View.Common;
 using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;

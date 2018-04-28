@@ -15,6 +15,7 @@
 
 
 using Limaki.Drawing;
+using Limaki.View.Common;
 
 namespace Limaki.View {
     public interface IZoomTarget {

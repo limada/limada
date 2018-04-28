@@ -18,6 +18,7 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing {
+    
     public interface ICamera:IDisposable {
         /// <summary>
         /// The transformation matrix
@@ -48,7 +49,6 @@ namespace Limaki.Drawing {
         /// <param name="s"></param>
         /// <returns></returns>
         Rectangle FromSource(Rectangle s);
-
 
         Size FromSource ( Size s );
         Size ToSource ( Size s );

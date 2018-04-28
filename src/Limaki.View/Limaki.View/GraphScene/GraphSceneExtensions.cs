@@ -7,6 +7,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Viz.Modelling;
 using Limaki.Actions;
+using Limaki.View.Common;
 
 namespace Limaki.View.GraphScene {
 

@@ -14,6 +14,7 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Rendering;
 using Limaki.View.Viz.UI;

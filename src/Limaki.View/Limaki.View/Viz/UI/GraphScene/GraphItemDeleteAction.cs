@@ -22,6 +22,7 @@ using Limaki.View.Vidgets;
 using Limaki.View.Viz.Rendering;
 using Xwt;
 using System;
+using Limaki.View.Common;
 
 namespace Limaki.View.Viz.UI.GraphScene {
     /// <summary>

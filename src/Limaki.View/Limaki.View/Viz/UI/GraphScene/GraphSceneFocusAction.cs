@@ -21,6 +21,7 @@ using Limaki.Graphs;
 using Limaki.View.Vidgets;
 using Xwt;
 using System;
+using Limaki.View.Common;
 using Limaki.View.GraphScene;
 
 namespace Limaki.View.Viz.UI.GraphScene {

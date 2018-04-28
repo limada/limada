@@ -1,0 +1,17 @@
+﻿TODO: 
+
+move this classes to Limaki.View-namespace or Limaki.Core.View ? in Limaki.Core ? Limaki.Geom ?:
+Dimension
+Orientation
+
+move this classes to Limaki.View-namespace or Limaki.Core.View ? in Core?:
+UiState
+Visibility
+ZoomState
+
+message: move to another namespace; maybe Limaki.Messaging?:
+
+rename DialogResult -> MessageResponse
+rename MessageBoxButtons -> MessageRequest
+rename IMessageBoxShow = IMessage ?
+rename IMessageBoxShow.Show -> ? IMessage.Request ?

@@ -15,6 +15,7 @@
 
 using System.IO;
 using Limaki.Contents;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 
 namespace Limaki.View.ContentViewers {

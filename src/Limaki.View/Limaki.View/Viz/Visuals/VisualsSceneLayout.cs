@@ -21,6 +21,7 @@ using Limaki.View.Viz.Modelling;
 using Xwt;
 using Xwt.Drawing;
 using System;
+using Limaki.View.Common;
 
 namespace Limaki.View.Viz.Visuals {
 

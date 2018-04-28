@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Xwt;
 using Xwt.Drawing;
@@ -71,7 +72,7 @@ namespace Limaki.View.XwtBackend {
 
         public VidgetBorderStyle BorderStyle { get; set; }
 
-        public Drawing.ZoomState ZoomState { get; set; }
+        public ZoomState ZoomState { get; set; }
 
         public double ZoomFactor { get; set; }
 

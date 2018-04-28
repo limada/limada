@@ -1,4 +1,5 @@
-namespace Limaki.View.Vidgets {
+namespace Limaki.View.Common {
+    
     /// <summary>
     /// Specifies the display state of an element.
     /// </summary>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Limaki.View.Vidgets {
+namespace Limaki.View.Common {
     
     public interface IMessageBoxShow  {
         DialogResult Show(string title, string text, MessageBoxButtons buttons);

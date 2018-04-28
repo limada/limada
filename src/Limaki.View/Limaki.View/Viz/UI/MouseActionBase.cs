@@ -28,7 +28,7 @@ namespace Limaki.View.Viz.UI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public virtual void OnMouseDown(MouseActionEventArgs e) {
-            _resolved = false;    
+            Resolved = false;    
         }
 
         public virtual void OnMouseHover(MouseActionEventArgs e) { }
@@ -43,8 +43,8 @@ namespace Limaki.View.Viz.UI {
         public virtual Action AfterActionEnd { get; set; }
 
         protected virtual void EndAction() {
-            if (_resolved) {
-                _resolved = false;
+            if (Resolved) {
+                Resolved = false;
             }
             if (AfterActionEnd != null)
                 AfterActionEnd ();

@@ -22,12 +22,12 @@ using Limaki.View.Visuals;
 using Limaki.View.Viz.UI;
 using Xwt;
 using Xwt.Backends;
-using Limaki.View.Properties;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 using Limaki.Common;
 using Limaki.View.Viz.Mesh;
 using System.Diagnostics;
+using Limaki.View.Common;
 
 namespace Limaki.View.Viz.Visuals {
     /// <summary>

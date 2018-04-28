@@ -16,6 +16,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using System;
+using Limaki.View.Common;
 using Xwt;
 using Xwt.Drawing;
 

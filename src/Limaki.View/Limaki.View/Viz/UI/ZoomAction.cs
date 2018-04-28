@@ -18,6 +18,7 @@ using Limaki.Drawing;
 using Limaki.View.Vidgets;
 using Xwt;
 using System;
+using Limaki.View.Common;
 
 namespace Limaki.View.Viz.UI {
     /// <summary>

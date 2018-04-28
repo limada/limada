@@ -40,6 +40,7 @@ using Xwt.Backends;
 using Xwt.Drawing;
 using Limaki.View.GraphScene;
 using Limaki.Contents.IO;
+using Limaki.View.Common;
 
 namespace Limada.View.Vidgets {
 

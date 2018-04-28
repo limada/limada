@@ -14,6 +14,7 @@
 
 
 using Limaki.Common.Linqish;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Xwt.Backends;

@@ -21,6 +21,7 @@ using System.IO;
 using Limaki.Contents;
 using Limaki.Drawing.Styles;
 using System.Diagnostics;
+using Limaki.View.Common;
 
 namespace Limada.UseCases {
 

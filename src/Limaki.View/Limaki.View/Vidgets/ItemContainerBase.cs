@@ -13,6 +13,7 @@
  */
 
 using System.Collections.ObjectModel;
+using Limaki.View.Common;
 
 namespace Limaki.View.Vidgets {
 

@@ -27,6 +27,7 @@ using Xwt;
 using System.Net;
 using Limaki.Contents.IO;
 using System.Text;
+using Limaki.View.Common;
 
 namespace Limaki.View.DragDrop {
 

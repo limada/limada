@@ -1,4 +1,4 @@
-namespace Limaki.Drawing {
+namespace Limaki.View.Common {
     
     public enum UiState {
         None,

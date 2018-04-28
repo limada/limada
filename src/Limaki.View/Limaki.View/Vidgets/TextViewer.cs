@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Limaki.Drawing;
+using Limaki.View.Common;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Drawing;

@@ -209,7 +209,7 @@ namespace Limaki.Usecases.Vidgets {
 
                 try {
                     if (!OS.Mono)
-                        Directory.GetAccessControl (path);
+                        Directory.EnumerateFiles(path);
                 } catch (UnauthorizedAccessException) {
                     CurrentPath = oldPath;
                     return;

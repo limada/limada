@@ -5,6 +5,7 @@ using Limaki.Common.Linqish;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Drawing.Styles;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.XwtBackend;

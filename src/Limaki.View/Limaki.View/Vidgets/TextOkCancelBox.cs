@@ -13,6 +13,7 @@
  */
 
 using System;
+using Limaki.View.Common;
 using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
