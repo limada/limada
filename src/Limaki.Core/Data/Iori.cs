@@ -63,6 +63,29 @@ namespace Limaki.Data {
             return iori;
         }
 
+        public override int GetHashCode () {
+            int h = (Path?.GetHashCode () ?? 1);
+            h = (h << 5) - h + (Name?.GetHashCode () ?? 1);
+            h = (h << 5) - h + (Extension?.GetHashCode () ?? 1);
+            h = (h << 5) - h + (Server?.GetHashCode () ?? 1);
+            h = (h << 5) - h + Port.GetHashCode ();
+            h = (h << 5) - h + (User?.GetHashCode () ?? 1);
+            h = (h << 5) - h + (Password?.GetHashCode () ?? 1);
+            h = (h << 5) - h + (Provider?.GetHashCode () ?? 1);
+            h = (h << 5) - h + AccessMode.GetHashCode ();
+            return h;
+        }
+
+        public override bool Equals (object obj) {
+            if (base.Equals (obj))
+                return true;
+            if (obj is Iori other) {
+                return other.Path == Path && other.Name == Name && other.Extension == Extension && other.Server == Server && other.Port == Port &&
+                            other.User == User && other.Password == Password && other.Provider == Provider && other.AccessMode == AccessMode;
+            }
+            return false;
+        }
+
         public static Iori Clone (Iori other) {
             return new Copier<Iori> ().Copy (other, new Iori ());
         }
