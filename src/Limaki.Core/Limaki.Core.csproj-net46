@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki</RootNamespace>
+    <AssemblyName>Limaki.Core</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <ReleaseVersion>17.10</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="3rdParty\CommonMark\CommonMarkAdditionalFeatures.cs" />
+    <Compile Include="3rdParty\CommonMark\CommonMarkConverter.cs" />
+    <Compile Include="3rdParty\CommonMark\CommonMarkException.cs" />
+    <Compile Include="3rdParty\CommonMark\CommonMarkSettings.cs" />
+    <Compile Include="3rdParty\CommonMark\Formatters\HtmlFormatter.cs" />
+    <Compile Include="3rdParty\CommonMark\Formatters\HtmlFormatterSlim.cs" />
+    <Compile Include="3rdParty\CommonMark\Formatters\HtmlTextWriter.cs" />
+    <Compile Include="3rdParty\CommonMark\Formatters\Printer.cs" />
+    <Compile Include="3rdParty\CommonMark\OutputFormat.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\BlockMethods.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\EntityDecoder.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\InlineMethods.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\InlineStack.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\LineInfo.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\PositionOffset.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\PositionTracker.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\Scanner.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\ScannerCharacterMatcher.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\ScannerHtmlTag.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\Subject.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\TabTextReader.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\Block.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\BlockTag.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\Enumerable.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\EnumeratorEntry.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\FencedCodeData.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\Inline.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\InlineContentLinkable.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\InlineTag.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\ListData.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\ListDelimeter.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\ListType.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\Reference.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\StringContent.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\StringContentPart.cs" />
+    <Compile Include="3rdParty\CommonMark\Utilities.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\CombineExtensions.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\CSharp.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\CSharpWriter.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\DelegateConstraintAttribute.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\ExpressionExtensions.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\ExpressionWriter.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\FluentExtensions.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\IExpressionWriter.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\IFormatter.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\PredicateBuilder.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\TextFormatter.cs" />
+    <Compile Include="3rdParty\Options.cs" />
+    <Compile Include="3rdParty\RLinq\EvaluatingExpressionVisitor.cs" />
+    <Compile Include="Actions\ActionBase.cs" />
+    <Compile Include="Actions\ActionPriorities.cs" />
+    <Compile Include="Actions\Command.cs" />
+    <Compile Include="Actions\IAction.cs" />
+    <Compile Include="Actions\ICommand.cs" />
+    <Compile Include="Common\IComposer.cs" />
+    <Compile Include="Common\IOC\AppFactory.cs" />
+    <Compile Include="Common\IOC\ApplicationContext.cs" />
+    <Compile Include="Common\IOC\AppResourceLoader.cs" />
+    <Compile Include="Common\IOC\ContextProcessor.cs" />
+    <Compile Include="Common\IOC\ContextResourceLoader.cs" />
+    <Compile Include="Common\Collections\CollectionWrapper.cs" />
+    <Compile Include="Common\Collections\DictionaryAdapter.cs" />
+    <Compile Include="Common\Collections\EmptyCollection.cs" />
+    <Compile Include="Common\Collections\FilteredCollection.cs" />
+    <Compile Include="Common\Collections\History.cs" />
+    <Compile Include="Common\Collections\IMultiDictionary.cs" />
+    <Compile Include="Common\Collections\MultiDictionary.cs" />
+    <Compile Include="Common\Collections\MultiDictionaryBase.cs" />
+    <Compile Include="Common\Collections\Set.cs" />
+    <Compile Include="Common\IProgressHandler.cs" />
+    <Compile Include="Common\KeyMaker.cs" />
+    <Compile Include="Common\Linqish\CompareExpressionBuilder.cs" />
+    <Compile Include="Common\Linqish\EnumerableExtensions.cs" />
+    <Compile Include="Common\Linqish\ExpressionCache.cs" />
+    <Compile Include="Common\Linqish\ExpressionChanger.cs" />
+    <Compile Include="Common\Linqish\ExpressionVisitVisitor.cs" />
+    <Compile Include="Common\Linqish\MethodExtractor.cs" />
+    <Compile Include="Contents\Handlers\MarkdownContent.cs" />
+    <Compile Include="Graphs\HollowGraphPair.cs" />
+    <Compile Include="Limada\Model\[ModelVersions].cs" />
+    <Compile Include="Limada\Model\NodeThing.cs" />
+    <Compile Include="Limada\Model\ThingExtensions.cs" />
+    <Compile Include="[Obsolete]\ExpressionChangerBase.cs" />
+    <Compile Include="Common\Linqish\ExpressionChangerVisit.cs" />
+    <Compile Include="[Obsolete]\ExpressionChanger_S_T.cs" />
+    <Compile Include="Common\Linqish\ExpressionConstantBuilder.cs" />
+    <Compile Include="Common\Linqish\ExpressionHashVisitor.cs" />
+    <Compile Include="Common\Linqish\ExpressionProjector.cs" />
+    <Compile Include="Common\Linqish\ExpressionUtils.cs" />
+    <Compile Include="Common\Linqish\MemberByNameExpressionBuilder.cs" />
+    <Compile Include="Common\Linqish\PropertyExtractor.cs" />
+    <Compile Include="Common\Reflections\MemberReflectionCache.cs" />
+    <Compile Include="Common\Localizer.cs" />
+    <Compile Include="Common\OS.cs" />
+    <Compile Include="Common\Copier.cs" />
+    <Compile Include="Common\Empty.cs" />
+    <Compile Include="Common\EventArgs_T.cs" />
+    <Compile Include="Common\Factory.cs" />
+    <Compile Include="Common\IOC\IApplicationContext.cs" />
+    <Compile Include="Common\ICheckable.cs" />
+    <Compile Include="Common\IComposite.cs" />
+    <Compile Include="Common\IExceptionHandler.cs" />
+    <Compile Include="Common\IFactory.cs" />
+    <Compile Include="Common\IOC\IContextResourceLoader.cs" />
+    <Compile Include="Common\IOC\IBackendContextResourceLoader.cs" />
+    <Compile Include="Common\IPool.cs" />
+    <Compile Include="Common\Message.cs" />
+    <Compile Include="Common\Pair.cs" />
+    <Compile Include="Common\Pool.cs" />
+    <Compile Include="Common\Progress.cs" />
+    <Compile Include="Common\Reflections\Reflector.cs" />
+    <Compile Include="Common\Registry.cs" />
+    <Compile Include="Common\State.cs" />
+    <Compile Include="Common\StreamExtensions.cs" />
+    <Compile Include="Common\Text\HTML\HTMLCleaner.cs" />
+    <Compile Include="Common\Text\HTML\HTMLHelper.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Attribute.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Entry.cs" />
+    <Compile Include="Common\Text\HTML\Parser\ParserBase.cs" />
+    <Compile Include="Common\Text\HTML\Parser\State.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Stuff.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Style.cs" />
+    <Compile Include="Common\Text\HTML\Parser\StyleParser.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Tag.cs" />
+    <Compile Include="Common\Text\HTML\Parser\TagEnder.cs" />
+    <Compile Include="Common\Text\HTML\Parser\TagModifier.cs" />
+    <Compile Include="Common\Text\HTML\Parser\TagParser.cs" />
+    <Compile Include="Common\Text\RTF\AdobeRTFFilter.cs" />
+    <Compile Include="Common\Text\RTF\RTFFilter.cs" />
+    <Compile Include="Common\Text\RTF\RTFHelper.cs" />
+    <Compile Include="3rdParty\MonoRTF\Charcode.cs" />
+    <Compile Include="3rdParty\MonoRTF\Charset.cs" />
+    <Compile Include="3rdParty\MonoRTF\CharsetFlags.cs" />
+    <Compile Include="3rdParty\MonoRTF\CharsetType.cs" />
+    <Compile Include="3rdParty\MonoRTF\ClassDelegate.cs" />
+    <Compile Include="3rdParty\MonoRTF\Color.cs" />
+    <Compile Include="3rdParty\MonoRTF\DestinationDelegate.cs" />
+    <Compile Include="3rdParty\MonoRTF\Font.cs" />
+    <Compile Include="3rdParty\MonoRTF\KeysInit.cs" />
+    <Compile Include="3rdParty\MonoRTF\KeyStruct.cs" />
+    <Compile Include="3rdParty\MonoRTF\Major.cs" />
+    <Compile Include="3rdParty\MonoRTF\Minor.cs" />
+    <Compile Include="3rdParty\MonoRTF\Picture.cs" />
+    <Compile Include="3rdParty\MonoRTF\RTF.cs" />
+    <Compile Include="3rdParty\MonoRTF\RTFException.cs" />
+    <Compile Include="3rdParty\MonoRTF\StandardCharCode.cs" />
+    <Compile Include="3rdParty\MonoRTF\StandardCharName.cs" />
+    <Compile Include="3rdParty\MonoRTF\Style.cs" />
+    <Compile Include="3rdParty\MonoRTF\StyleElement.cs" />
+    <Compile Include="3rdParty\MonoRTF\StyleType.cs" />
+    <Compile Include="3rdParty\MonoRTF\TextMap.cs" />
+    <Compile Include="3rdParty\MonoRTF\TokenClass.cs" />
+    <Compile Include="Common\Text\TextHelper.cs" />
+    <Compile Include="Common\TODOAttribute.cs" />
+    <Compile Include="Common\Transient.cs" />
+    <Compile Include="Contents\CompressionWorker.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2Constants.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2Exception.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2InputStream.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2OutputStream.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Checksums\Adler32.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Checksums\CRC32.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Checksums\IChecksum.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Checksums\StrangeCRC.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\SharpZipBaseException.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Deflater.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterConstants.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterEngine.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterHuffman.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterPending.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Inflater.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\InflaterDynHeader.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\InflaterHuffmanTree.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\PendingBuffer.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Streams\DeflaterOutputStream.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Streams\InflaterInputStream.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Streams\OutputWindow.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Streams\StreamManipulator.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\ZipConstants.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\ZipException.cs" />
+    <Compile Include="Contents\ContentConverter.cs" />
+    <Compile Include="Contents\Handlers\TextContent.cs" />
+    <Compile Include="Contents\IO\StreamContentIoPool.cs" />
+    <Compile Include="Contents\MimeFingerPrints.cs" />
+    <Compile Include="Data\IQuore.cs" />
+    <Compile Include="Limada\Data\IThingQuore.cs" />
+    <Compile Include="LimakiCoreContextResourceLoader.cs" />
+    <Compile Include="Data\Iori.cs" />
+    <Compile Include="Data\DbGraph.cs" />
+    <Compile Include="Data\GatewayBase.cs" />
+    <Compile Include="Contents\IContentContainer.cs" />
+    <Compile Include="Data\IGateway.cs" />
+    <Compile Include="Data\IGatewayConnection.cs" />
+    <Compile Include="Graphs\CorruptedLinkException.cs" />
+    <Compile Include="Graphs\EdgeComparer.cs" />
+    <Compile Include="Graphs\GraphPairExtension.cs" />
+    <Compile Include="Graphs\SubGraphWorker.cs" />
+    <Compile Include="Graphs\IMarkerFacade.cs" />
+    <Compile Include="Graphs\LevelItem.cs" />
+    <Compile Include="Graphs\MarkerFacade.cs" />
+    <Compile Include="Graphs\SubGraphWorker1.cs" />
+    <Compile Include="Graphs\WalkerWorker.cs" />
+    <Compile Include="Graphs\Walker.cs" />
+    <Compile Include="Graphs\WalkerBase.cs" />
+    <Compile Include="Graphs\WalkerWorker1.cs" />
+    <Compile Include="Graphs\FilteredGraph.cs" />
+    <Compile Include="Graphs\Graph.cs" />
+    <Compile Include="Graphs\GraphBase.cs" />
+    <Compile Include="Graphs\GraphEventType.cs" />
+    <Compile Include="Graphs\GraphCursor.cs" />
+    <Compile Include="Graphs\GraphDepencencies.cs" />
+    <Compile Include="Graphs\GraphMapper.cs" />
+    <Compile Include="Graphs\GraphSourceSinkMapper.cs" />
+    <Compile Include="Graphs\GraphItemTransformer.cs" />
+    <Compile Include="Graphs\GraphPair.cs" />
+    <Compile Include="Graphs\GraphExtensions.cs" />
+    <Compile Include="Graphs\IGraphModelPropertyChanger.cs" />
+    <Compile Include="Graphs\SubGraph.cs" />
+    <Compile Include="Graphs\IEdge.cs" />
+    <Compile Include="Graphs\IGraph.cs" />
+    <Compile Include="Data\IGraphContext.cs" />
+    <Compile Include="Graphs\IGraphModelFactory.cs" />
+    <Compile Include="Graphs\IGraphPair.cs" />
+    <Compile Include="Graphs\MultiDictionaryGraph.cs" />
+    <Compile Include="Limada\LimadaResourceLoader.cs" />
+    <Compile Include="Common\Isaac.cs" />
+    <Compile Include="Limada\IO\IoriThingGraphSpot.cs" />
+    <Compile Include="Limada\IO\IThingGraphRepair.cs" />
+    <Compile Include="Limada\IO\MemoryThingGraphSpot.cs" />
+    <Compile Include="Limada\IO\MemoryThingGraphIo.cs" />
+    <Compile Include="Limada\IO\ThingGraphContent.cs" />
+    <Compile Include="Limada\IO\ThingGraphExporter.cs" />
+    <Compile Include="Limada\IO\ThingGraphIo.cs" />
+    <Compile Include="Limada\IO\ThingGraphMaintenance.cs" />
+    <Compile Include="Limada\IO\ThingGraphMerger.cs" />
+    <Compile Include="Limada\IO\XmlThingGraphSpot.cs" />
+    <Compile Include="Limada\IO\XmlThingGraphIo.cs" />
+    <Compile Include="Contents\ByteStreamWrapper.cs" />
+    <Compile Include="Common\DataComparer.cs" />
+    <Compile Include="Limada\Model\ILink.cs" />
+    <Compile Include="Limada\Model\IStreamThing.cs" />
+    <Compile Include="Limada\Model\IThing.cs" />
+    <Compile Include="Limada\Model\IThingFactory.cs" />
+    <Compile Include="Limada\Model\IThingGraph.cs" />
+    <Compile Include="Limada\Model\Link.cs" />
+    <Compile Include="Limada\Model\NumberThing.cs" />
+    <Compile Include="Limada\Model\RealData.cs" />
+    <Compile Include="Common\XmlSerializerBase.cs" />
+    <Compile Include="Limada\Model\StreamThing.cs" />
+    <Compile Include="Limada\Model\StringThing.cs" />
+    <Compile Include="Limada\Model\Thing.cs" />
+    <Compile Include="Limada\Model\ThingComparer.cs" />
+    <Compile Include="Limada\Model\ThingFactory.cs" />
+    <Compile Include="Limada\Model\ThingGraph.cs" />
+    <Compile Include="Limada\Model\ThingGraphExtensions.cs" />
+    <Compile Include="Limada\Model\ThingXmlIdSerializer.cs" />
+    <Compile Include="Limada\Model\ThingXmlSerializer.cs" />
+    <Compile Include="Limada\Model\ThingXmlSerializerBase.cs" />
+    <Compile Include="Limada\Model\ThingContentFacade.cs" />
+    <Compile Include="Limada\Model\Thing_T.cs" />
+    <Compile Include="Limada\Schemata\CommonSchema.cs" />
+    <Compile Include="Limada\Schemata\DigidocSchema.cs" />
+    <Compile Include="Limada\Schemata\MetaSchema.cs" />
+    <Compile Include="Limada\Schemata\Schema.cs" />
+    <Compile Include="Limada\Schemata\SchemaFacade.cs" />
+    <Compile Include="Limada\Schemata\SchemaThingGraph.cs" />
+    <Compile Include="Limada\Schemata\TopicSchema.cs" />
+    <Compile Include="Limada\Schemata\UniqueThingAttribute.cs" />
+    <Compile Include="Limada\Schemata\ViewMetaSchema.cs" />
+    <Compile Include="Contents\Handlers\HtmlContentDigger.cs" />
+    <Compile Include="Contents\ContentDigger.cs" />
+    <Compile Include="Contents\ContentDetector.cs" />
+    <Compile Include="Contents\IO\StreamContentIo.cs" />
+    <Compile Include="Contents\ContentSpec.cs" />
+    <Compile Include="Contents\IO\IoManager.cs" />
+    <Compile Include="Contents\IO\ContentIoPool.cs" />
+    <Compile Include="Contents\IO\StreamIo.cs" />
+    <Compile Include="Contents\Handlers\HtmlContent.cs" />
+    <Compile Include="Contents\Handlers\ImageContent.cs" />
+    <Compile Include="Contents\IO\IoMode.cs" />
+    <Compile Include="Contents\IO\IoUriManager.cs" />
+    <Compile Include="Contents\IPipe.cs" />
+    <Compile Include="Contents\IO\ContentIo.cs" />
+    <Compile Include="Contents\Handlers\PdfContent.cs" />
+    <Compile Include="Contents\Handlers\RtfContent.cs" />
+    <Compile Include="Contents\PipeExtensions.cs" />
+    <Compile Include="Model\Edge.cs" />
+    <Compile Include="Model\GraphEntity.cs" />
+    <Compile Include="Contents\CompressionType.cs" />
+    <Compile Include="Contents\ICompressionWorker.cs" />
+    <Compile Include="Contents\IProxy.cs" />
+    <Compile Include="Contents\IIdContent.cs" />
+    <Compile Include="Contents\Magic.cs" />
+    <Compile Include="Contents\Content.cs" />
+    <Compile Include="Contents\ContentInfo.cs" />
+    <Compile Include="Contents\ContentTypes.cs" />
+    <Compile Include="Contents\PipePool.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
+    <Compile Include="Common\IOUtils.cs" />
+    <Compile Include="Common\ByteUtils.cs" />
+    <Compile Include="Contents\Handlers\HtmlConverterBase.cs" />
+    <Compile Include="Data\IDomainQuore.cs" />
+    <Compile Include="Common\Linqish\CallCache.cs" />
+    <Compile Include="Actions\ICommandModeller.cs" />
+    <Compile Include="Data\DomainQuoreExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="3rdParty\CommonMark\LICENSE.md" />
+    <None Include="3rdParty\CommonMark\README.md" />
+    <None Include="3rdParty\MonoRTF\ChangeLog" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
