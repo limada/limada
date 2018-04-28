@@ -32,20 +32,20 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
     [BackendType (typeof (IArrangerToolbarBackend))]
     public class ArrangerToolbar : DisplayToolbar<IGraphSceneDisplay<IVisual, IVisualEdge>> {
 
-        public IToolbarCommand LogicalLayoutCommand { get; set; }
-        public IToolbarCommand LogicalLayoutLeafCommand { get; set; }
-        public IToolbarCommand FullLayoutCommand { get; set; }
-        public IToolbarCommand ColumnsCommand { get; set; }
-        public IToolbarCommand OneColumnCommand { get; set; }
-        public IToolbarCommand ArrangeLeftCommand { get; set; }
-        public IToolbarCommand ArrangeCenterCommand { get; set; }
-        public IToolbarCommand ArrangeRightCommand { get; set; }
-        public IToolbarCommand ArrangeTopCommand { get; set; }
-        public IToolbarCommand ArrangeCenterVCommand { get; set; }
-        public IToolbarCommand ArrangeBottomCommand { get; set; }
-        public IToolbarCommand DimensionXCommand { get; set; }
-        public IToolbarCommand DimensionYCommand { get; set; }
-        public IToolbarCommand UndoCommand { get; set; }
+        public ICommandView LogicalLayoutCommand { get; set; }
+        public ICommandView LogicalLayoutLeafCommand { get; set; }
+        public ICommandView FullLayoutCommand { get; set; }
+        public ICommandView ColumnsCommand { get; set; }
+        public ICommandView OneColumnCommand { get; set; }
+        public ICommandView ArrangeLeftCommand { get; set; }
+        public ICommandView ArrangeCenterCommand { get; set; }
+        public ICommandView ArrangeRightCommand { get; set; }
+        public ICommandView ArrangeTopCommand { get; set; }
+        public ICommandView ArrangeCenterVCommand { get; set; }
+        public ICommandView ArrangeBottomCommand { get; set; }
+        public ICommandView DimensionXCommand { get; set; }
+        public ICommandView DimensionYCommand { get; set; }
+        public ICommandView UndoCommand { get; set; }
 
         public ArrangerToolbar () {
             Compose ();
@@ -194,7 +194,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
 
             Action action = () => Columns (options);
 
-            LogicalLayoutLeafCommand = new ToolbarCommand {
+            LogicalLayoutLeafCommand = new CommandView {
                 Action = (s) => {
                     action = () => LogicalLayoutLeaf (options);
                     action ();
@@ -204,7 +204,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "arrange leaf of selected"
             };
 
-            LogicalLayoutCommand = new ToolbarCommand {
+            LogicalLayoutCommand = new CommandView {
                 Action = (s) => {
                     action = () => LogicalLayout (options);
                     action ();
@@ -214,7 +214,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "arrange siblings of selected"
             };
 
-            FullLayoutCommand = new ToolbarCommand {
+            FullLayoutCommand = new CommandView {
                 Action = (s) => {
                     action = () => FullLayout (options);
                     action ();
@@ -224,7 +224,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "arrange all"
             };
 
-            ColumnsCommand = new ToolbarCommand {
+            ColumnsCommand = new CommandView {
                 Action = (s) => {
                     action = () => Columns (options);
                     action ();
@@ -235,7 +235,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
 
             };
 
-            OneColumnCommand = new ToolbarCommand {
+            OneColumnCommand = new CommandView {
                 Action = (s) => {
                     action = () => OneColumn (options);
                     action ();
@@ -245,7 +245,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "arrange in one column"
             };
 
-            ArrangeLeftCommand = new ToolbarCommand {
+            ArrangeLeftCommand = new CommandView {
                 Action = (s) => {
                     options.AlignX = Alignment.Start;
                     action ();
@@ -255,7 +255,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "align left"
             };
 
-            ArrangeCenterCommand = new ToolbarCommand {
+            ArrangeCenterCommand = new CommandView {
                 Action = (s) => {
                     options.AlignX = Alignment.Center;
                     action ();
@@ -265,7 +265,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "align center"
             };
 
-            ArrangeRightCommand = new ToolbarCommand {
+            ArrangeRightCommand = new CommandView {
                 Action = (s) => {
                     options.AlignX = Alignment.End;
                     action ();
@@ -275,7 +275,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "align rigth"
             };
 
-            ArrangeTopCommand = new ToolbarCommand {
+            ArrangeTopCommand = new CommandView {
                 Action = (s) => {
                     options.AlignY = Alignment.Start;
                     action ();
@@ -285,7 +285,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "align top"
             };
 
-            ArrangeCenterVCommand = new ToolbarCommand {
+            ArrangeCenterVCommand = new CommandView {
                 Action = (s) => {
                     options.AlignY = Alignment.Center;
                     action ();
@@ -295,7 +295,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "align middle"
             };
 
-            ArrangeBottomCommand = new ToolbarCommand {
+            ArrangeBottomCommand = new CommandView {
                 Action = (s) => {
                     options.AlignY = Alignment.End;
                     action ();
@@ -305,7 +305,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "align bottom"
             };
 
-            DimensionXCommand = new ToolbarCommand {
+            DimensionXCommand = new CommandView {
                 Action = (s) => {
                     options.Dimension = Dimension.X;
                     action ();
@@ -315,7 +315,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "arrange left to right"
             };
 
-            DimensionYCommand = new ToolbarCommand {
+            DimensionYCommand = new CommandView {
                 Action = (s) => {
                     options.Dimension = Dimension.Y;
                     action ();
@@ -325,7 +325,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "arrange top to bottom"
             };
 
-            UndoCommand = new ToolbarCommand {
+            UndoCommand = new CommandView {
                 Action = (s) => Undo (),
                 Size = DefaultSize,
                 Image = Iconery.Undo,

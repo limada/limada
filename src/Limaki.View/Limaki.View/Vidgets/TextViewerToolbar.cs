@@ -31,10 +31,10 @@ namespace Limaki.View.Vidgets {
         public ToolbarButton UnderlineButton { get; protected set; }
         public ToolbarButton StrikeThroughButton { get; protected set; }
         
-        public IToolbarCommand BoldCommand { get; set; }
-        public IToolbarCommand ItalicCommand { get; set; }
-        public IToolbarCommand UnderlineCommand { get; set; }
-        public IToolbarCommand StrikeThroughCommand { get; set; }
+        public ICommandView BoldCommand { get; set; }
+        public ICommandView ItalicCommand { get; set; }
+        public ICommandView UnderlineCommand { get; set; }
+        public ICommandView StrikeThroughCommand { get; set; }
 
         public TextViewerToolbar () {
             Compose ();
@@ -43,7 +43,7 @@ namespace Limaki.View.Vidgets {
         protected virtual void Compose () {
 
             BoldButton = new ToolbarButton { IsCheckable = true };
-            BoldCommand = new ToolbarCommand {
+            BoldCommand = new CommandView {
                 Action = s => ToggleAttribute<FontWeightTextAttribute> (
                     (a, bold) => a.Weight = (bold ? FontWeight.Bold : FontWeight.Normal), BoldButton),
                 Image = Iconery.FontBoldIcon,
@@ -53,7 +53,7 @@ namespace Limaki.View.Vidgets {
             BoldButton.SetCommand (BoldCommand);
 
             ItalicButton = new ToolbarButton { IsCheckable = true };
-            ItalicCommand = new ToolbarCommand {
+            ItalicCommand = new CommandView {
                 Action = s => ToggleAttribute<FontStyleTextAttribute> (
                     (a, italic) => a.Style = (italic ? FontStyle.Italic : FontStyle.Normal), ItalicButton),
                 Image = Iconery.FontItalicIcon,
@@ -63,7 +63,7 @@ namespace Limaki.View.Vidgets {
             ItalicButton.SetCommand (ItalicCommand);
 
             StrikeThroughButton = new ToolbarButton { IsCheckable = true };
-            StrikeThroughCommand = new ToolbarCommand {
+            StrikeThroughCommand = new CommandView {
                 Action = s => ToggleAttribute<StrikethroughTextAttribute> (
                     (a, value) => a.Strikethrough = value, StrikeThroughButton),
                 Image = Iconery.FontStrikeThroughIcon,
@@ -73,7 +73,7 @@ namespace Limaki.View.Vidgets {
             StrikeThroughButton.SetCommand (StrikeThroughCommand);
 
             UnderlineButton = new ToolbarButton { IsCheckable = true };
-            UnderlineCommand = new ToolbarCommand {
+            UnderlineCommand = new CommandView {
                 Action = s => ToggleAttribute<UnderlineTextAttribute> (
                     (a, value) => a.Underline = value, UnderlineButton),
                 Image = Iconery.FontUnderlineIcon,

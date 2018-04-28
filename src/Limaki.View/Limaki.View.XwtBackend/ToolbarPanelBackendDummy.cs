@@ -12,6 +12,7 @@
  * 
  */
 
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Xwt;
 
@@ -28,5 +29,9 @@ namespace Limaki.View.XwtBackend {
         public void RemoveItem (IToolbarBackend backend) { }
 
         public void SetVisibility (Visibility value) { }
+
+        public void AddToWindow (IVindow vindow) {
+           
+        }
     }
 }

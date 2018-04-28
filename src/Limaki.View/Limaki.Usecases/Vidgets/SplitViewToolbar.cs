@@ -28,19 +28,19 @@ namespace Limaki.View.Vidgets {
     [BackendType (typeof (ISplitViewToolbarBackend))]
     public class SplitViewToolbar : DisplayToolbar<IGraphSceneDisplay<IVisual, IVisualEdge>> {
 
-        public IToolbarCommand GraphStreamViewCommand { get; set; }
-        public IToolbarCommand GraphGraphViewCommand { get; set; }
-        public IToolbarCommand ToggleViewCommand { get; set; }
+        public ICommandView GraphStreamViewCommand { get; set; }
+        public ICommandView GraphGraphViewCommand { get; set; }
+        public ICommandView ToggleViewCommand { get; set; }
 
-        public IToolbarCommand OpenNewWindowCommand { get; set; }
+        public ICommandView OpenNewWindowCommand { get; set; }
 
-        public IToolbarCommand GoBackCommand { get; set; }
-        public IToolbarCommand GoForwardCommand { get; set; }
-        public IToolbarCommand GoHomeCommand { get; set; }
+        public ICommandView GoBackCommand { get; set; }
+        public ICommandView GoForwardCommand { get; set; }
+        public ICommandView GoHomeCommand { get; set; }
 
-        public IToolbarCommand NewSheetCommand { get; set; }
-        public IToolbarCommand NewNoteCommand { get; set; }
-        public IToolbarCommand SaveSheetCommand { get; set; }
+        public ICommandView NewSheetCommand { get; set; }
+        public ICommandView NewNoteCommand { get; set; }
+        public ICommandView SaveSheetCommand { get; set; }
 
         protected ToolbarButton GraphStreamViewButton { get; set; }
         protected ToolbarButton GraphGraphViewButton { get; set; }
@@ -57,27 +57,27 @@ namespace Limaki.View.Vidgets {
         protected virtual void Compose () {
             var size = new Xwt.Size (36, 36);
 
-            GraphStreamViewCommand = new ToolbarCommand {
+            GraphStreamViewCommand = new CommandView {
                 Action = s => ViewMode = SplitView.ViewMode = SplitViewMode.GraphContent,
                 Image = Iconery.GraphContentView,
                 Size = size,
                 ToolTipText = "show contents"
             };
-            GraphGraphViewCommand = new ToolbarCommand {
+            GraphGraphViewCommand = new CommandView {
                 Action = s => ViewMode = SplitView.ViewMode = SplitViewMode.GraphGraph,
                 Image = Iconery.GraphGraphView,
                 Size = size,
                 ToolTipText = "show tiled graph"
             };
 
-            ToggleViewCommand = new ToolbarCommand {
+            ToggleViewCommand = new CommandView {
                 Action = s => SplitView.ToggleView (),
                 Image = Iconery.ToggleView,
                 Size = size,
                 ToolTipText = "toogle view"
             };
 
-            OpenNewWindowCommand = new ToolbarCommand {
+            OpenNewWindowCommand = new CommandView {
                 Action = s => SplitView.ShowInNewWindow (),
                 Image = Iconery.NewViewVisualNote,
                 Size = size,
@@ -91,42 +91,42 @@ namespace Limaki.View.Vidgets {
                 }
             };
 
-            GoBackCommand = new ToolbarCommand {
+            GoBackCommand = new CommandView {
                 Action = s => goBackOrForward (false),
                 Image = Iconery.GoPrevious,
                 Size = size,
                 ToolTipText = "navigate back"
             };
 
-            GoForwardCommand = new ToolbarCommand {
+            GoForwardCommand = new CommandView {
                 Action = s => goBackOrForward (true),
                 Image = Iconery.GoNext,
                 Size = size,
                 ToolTipText = "navigate forward"
             };
 
-            GoHomeCommand = new ToolbarCommand {
+            GoHomeCommand = new CommandView {
                 Action = s => SplitView.GoHome (),
                 Image = Iconery.GoHome,
                 Size = size,
                 ToolTipText = "go to favorites"
             };
 
-            NewSheetCommand = new ToolbarCommand {
+            NewSheetCommand = new CommandView {
                 Action = s => SplitView.NewSheet (),
                 Image = Iconery.NewSheet,
                 Size = size,
                 ToolTipText = "new sheet"
             };
 
-            NewNoteCommand = new ToolbarCommand {
+            NewNoteCommand = new CommandView {
                 Action = s => SplitView.NewNote (),
                 Image = Iconery.NewNote,
                 Size = size,
                 ToolTipText = "new note"
             };
 
-            SaveSheetCommand = new ToolbarCommand {
+            SaveSheetCommand = new CommandView {
                 Action = s => SplitView.SaveDocument (),
                 Image = Iconery.SaveContent,
                 Size = size,

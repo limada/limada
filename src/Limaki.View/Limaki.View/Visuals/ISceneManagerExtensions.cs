@@ -27,6 +27,7 @@ using Limaki.View.Viz;
 using Limaki.View.Viz.Mesh;
 using System.Linq;
 using System.Diagnostics;
+using Limaki.View.Common;
 using Xwt.Drawing;
 
 namespace Limaki.View.Visuals {

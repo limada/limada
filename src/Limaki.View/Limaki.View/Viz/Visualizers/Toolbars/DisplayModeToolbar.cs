@@ -14,8 +14,8 @@
 
 using System;
 using System.Collections.Generic;
-using Limaki.Drawing;
 using Limaki.Iconerias;
+using Limaki.View.Common;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.UI;
 using Xwt.Backends;
@@ -25,14 +25,14 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
     [BackendType (typeof (IDisplayModeToolbarBackend))]
     public class DisplayModeToolbar : DisplayToolbar<object> {
 
-        public IToolbarCommand EditCommand { get; set; }
-        public IToolbarCommand PanningCommand { get; set; }
+        public ICommandView EditCommand { get; set; }
+        public ICommandView PanningCommand { get; set; }
 
-        public IToolbarCommand ZoomInOutCommand { get; set; }
-        public IToolbarCommand FitToWidthCommand { get; set; }
-        public IToolbarCommand FitToHeigthCommand { get; set; }
-        public IToolbarCommand FitToScreenCommand { get; set; }
-        public IToolbarCommand OriginalSizeCommand { get; set; }
+        public ICommandView ZoomInOutCommand { get; set; }
+        public ICommandView FitToWidthCommand { get; set; }
+        public ICommandView FitToHeigthCommand { get; set; }
+        public ICommandView FitToScreenCommand { get; set; }
+        public ICommandView OriginalSizeCommand { get; set; }
 
 
         public DisplayModeToolbar () {
@@ -88,7 +88,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                     if (ga == a) DisplayAction (d => a (d, value)); else DisplayAction (d => a (d, !value));
             };
 
-            EditCommand = new ToolbarCommand {
+            EditCommand = new CommandView {
                 Action = s => {
                     if (SplitView != null && SplitView.ContentVidget != null) {
                         SplitView.ContentVidget.SetFocus ();
@@ -108,41 +108,41 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
                 ToolTipText = "Edit"
             };
 
-            PanningCommand = new ToolbarCommand {
+            PanningCommand = new CommandView {
                 Action = s => toogleAction (panningAction, true),
                 Image = Iconery.Panning,
                 Size = DefaultSize,
                 ToolTipText = "Move"
             };
 
-            ZoomInOutCommand = new ToolbarCommand {
+            ZoomInOutCommand = new CommandView {
                 Image = Iconery.Zoom,
                 Size = DefaultSize,
                 ToolTipText = "Zoom"
             };
 
-            FitToWidthCommand = new ToolbarCommand {
+            FitToWidthCommand = new CommandView {
                 Action = s => ZoomAction (d => d.ZoomState = ZoomState.FitToWidth),
                 Image = Iconery.FitToWidth,
                 Size = DefaultSize,
                 Label = "Fit to Width"
             };
 
-            FitToHeigthCommand = new ToolbarCommand {
+            FitToHeigthCommand = new CommandView {
                 Action = s => ZoomAction (d => d.ZoomState = ZoomState.FitToHeigth),
                 Image = Iconery.FitToHeigth,
                 Size = DefaultSize,
                 Label = "Fit to Heigth",
             };
 
-            FitToScreenCommand = new ToolbarCommand {
+            FitToScreenCommand = new CommandView {
                 Action = s => ZoomAction (d => d.ZoomState = ZoomState.FitToScreen),
                 Image = Iconery.FitToScreen,
                 Size = DefaultSize,
                 Label = "Fit to Screen"
             };
 
-            OriginalSizeCommand = new ToolbarCommand {
+            OriginalSizeCommand = new CommandView {
                 Action = s => ZoomAction (d => d.ZoomState = ZoomState.Original),
                 Image = Iconery.OriginalSize,
                 Size = DefaultSize,
@@ -193,7 +193,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
             }
             var zoomTarget = this.CurrentDisplay as IZoomTarget;
             if (zoomTarget != null) {
-                zoomTarget.ZoomState = Drawing.ZoomState.Custom;
+                zoomTarget.ZoomState = ZoomState.Custom;
                 if (zoomIn)
                     zoomTarget.ZoomFactor = zoomTarget.ZoomFactor * 1.1f;
                 else

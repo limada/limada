@@ -27,7 +27,7 @@ namespace Limaki.View.Vidgets {
 
         public ToolbarButton () { }
 
-        public ToolbarButton (IToolbarCommand command) : base (command) { }
+        public ToolbarButton (ICommandView command) : base (command) { }
 
         private IToolbarButtonBackend _backend = null;
         public new virtual IToolbarButtonBackend Backend {
@@ -35,7 +35,7 @@ namespace Limaki.View.Vidgets {
             set { _backend = value; }
         }
 
-        public IToolbarCommand ToggleOnClick { get; set; }
+        public ICommandView ToggleOnClick { get; set; }
 
         protected override void SetBackendAction (Action<object> value) {
             base.SetBackendAction (o => {

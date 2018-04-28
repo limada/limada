@@ -23,6 +23,7 @@ using Limaki.View.Viz.Visualizers;
 using Xwt.Drawing;
 using Limaki.Common;
 using System.Linq;
+using Limaki.View.Common;
 
 namespace Limaki.View.ContentViewers {
 

@@ -20,11 +20,11 @@ using Xwt.Drawing;
 namespace Limaki.View.Vidgets {
 
     [BackendType (typeof (IToolbarItemBackend))]
-    public class ToolbarItem : Vidget, IToolbarCommand {
+    public class ToolbarItem : Vidget, ICommandView {
 
         public ToolbarItem () { }
 
-        public ToolbarItem (IToolbarCommand command) {
+        public ToolbarItem (ICommandView command) {
             this.SetCommand (command);
         }
 
@@ -87,7 +87,7 @@ namespace Limaki.View.Vidgets {
         public new Size Size { get; set; }
         public bool Enabled { get; set; }
 
-        public void SetCommand (IToolbarCommand command) {
+        public void SetCommand (ICommandView command) {
             VidgetUtils.SetCommand (this, command); 
         }
     }

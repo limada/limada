@@ -16,9 +16,9 @@ using System;
 using Xwt;
 using Xwt.Drawing;
 
-namespace Limaki.View.Vidgets {
+namespace Limaki.View {
 
-    public interface IToolbarCommand {
+    public interface ICommandView {
         Action<object> Action { get; set; }
         Image Image { get; set; }
         string Label { get; set; }
@@ -27,11 +27,11 @@ namespace Limaki.View.Vidgets {
         bool Enabled { get; set; }
     }
 
-    public class ToolbarCommand : IToolbarCommand {
+    public class CommandView : ICommandView {
 
-        public ToolbarCommand () { }
+        public CommandView () { }
 
-        public ToolbarCommand (IToolbarCommand value) {
+        public CommandView (ICommandView value) {
             if (value != null) {
                 this.Image = value.Image;
                 this.Label = value.Label;
@@ -48,4 +48,5 @@ namespace Limaki.View.Vidgets {
         public Size Size { get; set; }
         public bool Enabled { get; set; } = true;
     }
+
 }

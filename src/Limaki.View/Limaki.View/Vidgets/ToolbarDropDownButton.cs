@@ -21,7 +21,7 @@ namespace Limaki.View.Vidgets {
 
         public ToolbarDropDownButton () { } 
 
-        public ToolbarDropDownButton (IToolbarCommand command) : base (command) { }
+        public ToolbarDropDownButton (ICommandView command) : base (command) { }
 
         private IToolbarDropDownButtonBackend _backend = null;
 

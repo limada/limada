@@ -16,7 +16,7 @@ namespace Limaki.View.Vidgets {
 
     public class VidgetUtils {
         
-        public static void SetCommand (IToolbarCommand command, IToolbarCommand value) {
+        public static void SetCommand (ICommandView command, ICommandView value) {
             if (command != null && value != null) {
                 command.Image = value.Image;
                 command.Label = value.Label;
@@ -26,8 +26,8 @@ namespace Limaki.View.Vidgets {
             }
         }
 
-        public static void ToggleCommand (IToolbarCommand a, IToolbarCommand b) {
-            var c = new ToolbarCommand (a);
+        public static void ToggleCommand (ICommandView a, ICommandView b) {
+            var c = new CommandView (a);
             SetCommand (a, b);
             SetCommand (b, c);
         }
