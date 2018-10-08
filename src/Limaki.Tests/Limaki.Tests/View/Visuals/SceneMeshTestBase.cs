@@ -18,25 +18,25 @@ using Limaki.Common;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 
 namespace Limaki.Tests.View.Visuals {
 
     public class SceneMeshTestBase<TItem, TEdge> : DomainTest where TEdge : IEdge<TItem>, TItem {
         
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        protected IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+        protected IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return _organizer ?? (Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); } }
 
         public IEnumerable<SceneTestEnvironment<TItem, TEdge>> MeshTests (params SceneTestEnvironment<TItem, TEdge>[] sources) {
 
             var source = sources[0];
-            Mesh.AddDisplay (source.Display);
+            Organizer.AddDisplay (source.Display);
 
             foreach (var sink in sources.Skip (1)) {
 
-                sink.Scene = Mesh.CreateSinkScene (source.Scene.Graph);
+                sink.Scene = Organizer.CreateSinkScene (source.Scene.Graph);
 
-                Mesh.AddDisplay (sink.Display);
+                Organizer.AddDisplay (sink.Display);
 
                 ((SampleGraphPairFactory<IVisual, TItem, IVisualEdge, TEdge>)
                  sink.SampleFactory).GraphPair =

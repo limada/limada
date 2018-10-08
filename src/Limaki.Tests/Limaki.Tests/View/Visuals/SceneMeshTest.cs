@@ -136,8 +136,8 @@ namespace Limaki.Tests.View.Visuals {
                 Assert.AreSame (sink.Scene, sink.Display.Data);
                 Assert.AreSame (source.Source.Source, sink.Source.Source);
 
-                Assert.IsTrue (Mesh.Scenes.Contains (source.Scene));
-                Assert.IsTrue (Mesh.Scenes.Contains (sink.Scene));
+                Assert.IsTrue (Organizer.Scenes.Contains (source.Scene));
+                Assert.IsTrue (Organizer.Scenes.Contains (sink.Scene));
 
                 Assert.AreEqual (source.Nodes.Count, sink.Nodes.Count);
                 Assert.AreEqual (source.Edges.Count, sink.Edges.Count);

@@ -29,7 +29,7 @@ using Limaki.View.ContentViewers;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.Modelling;
 using Limaki.View.Viz.UI;
 using Limaki.View.Viz.UI.GraphScene;
@@ -60,7 +60,7 @@ namespace Limada.View.Vidgets {
             get {
                 if (_pagesDisplay == null) {
                     _pagesDisplay = new VisualsDisplay ();
-                    Mesh.AddDisplay (_pagesDisplay);
+                    Organizer.AddDisplay (_pagesDisplay);
                 }
                 return _pagesDisplay;
             }
@@ -204,9 +204,9 @@ namespace Limada.View.Vidgets {
 
         public virtual IVisual DocumentVisual { get; set; }
 
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
 
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); } }
 
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 
@@ -219,11 +219,11 @@ namespace Limada.View.Vidgets {
 
             var doc = source.Graph.ThingOf (source.Cursor);
             IGraph<IVisual, IVisualEdge> targetGraph = null;
-            targetGraph = Mesh.CreateSinkGraph (source.Graph);
+            targetGraph = Organizer.CreateSinkGraph (source.Graph);
 
             pageScene.Graph = targetGraph;
 
-            Mesh.AddScene (pageScene);
+            Organizer.AddScene (pageScene);
 
             var targetDocument = targetGraph.VisualOf (doc);
             this.DocumentVisual = targetDocument;

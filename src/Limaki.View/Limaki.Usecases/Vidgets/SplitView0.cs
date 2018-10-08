@@ -27,7 +27,7 @@ using Limaki.View.Common;
 using Limaki.View.ContentViewers;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.UI.GraphScene;
 using Limaki.View.Viz.Visuals;
 using Xwt;
@@ -56,8 +56,8 @@ namespace Limaki.View.Vidgets {
             CurrentDisplay = Display1;
         }
 
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>>()); } }
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+        public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>>()); } }
 
         public void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
 			
@@ -75,7 +75,7 @@ namespace Limaki.View.Vidgets {
             
             AttachVidget (display);
 
-            Mesh.AddDisplay (display);
+            Organizer.AddDisplay (display);
 
         }
 
@@ -252,12 +252,12 @@ namespace Limaki.View.Vidgets {
             // TODO: see above; for now we take always a VisualsDisplay
             {
                 var display = new VisualsDisplay();
-                onClose += () => Mesh.RemoveDisplay (display);
+                onClose += () => Organizer.RemoveDisplay (display);
 
-                Mesh.CopyDisplayProperties (source, display);
-                display.Data = Mesh.CreateSinkScene (graph);
+                Organizer.CopyDisplayProperties (source, display);
+                display.Data = Organizer.CreateSinkScene (graph);
 
-                Mesh.AddDisplay (display);
+                Organizer.AddDisplay (display);
 				vidget = display;
             }
 
@@ -275,7 +275,7 @@ namespace Limaki.View.Vidgets {
             displays
                 .Where (d => d != Display1)
                 .ForEach (d => {
-                    Mesh.CopyDisplayProperties (Display1, d);
+                    Organizer.CopyDisplayProperties (Display1, d);
                 });
 
             FavoriteManager.GoHome (Display1, true);
@@ -305,7 +305,7 @@ namespace Limaki.View.Vidgets {
                 };
                 _contentViewManager.DetachCurrentViewer = v => DetachVidget (v.Frontend);
 
-                _contentViewManager.SceneManager = this.SceneManager;
+                _contentViewManager.StoreInteractor = this.SceneManager;
 
                 return _contentViewManager;
             }
@@ -346,7 +346,7 @@ namespace Limaki.View.Vidgets {
 
         #region SheetManagement
 
-        public ISceneManager SceneManager { get; set; }
+        public IVisualSceneStoreInteractor SceneManager { get; set; }
 
         public void SaveDocument() {
             if (CurrentVidget == CurrentDisplay) {
@@ -561,9 +561,9 @@ namespace Limaki.View.Vidgets {
 
             if (root == null) {
                 var pt = new Point(layout.Border.Width, scene.Shape.BoundsRect.Bottom);
-                SceneExtensions.AddItem(scene, visual, layout, pt);
+                VisualSceneExtensions.AddItem(scene, visual, layout, pt);
             } else {
-                SceneExtensions.PlaceVisual(scene, root, visual, layout);
+                VisualSceneExtensions.PlaceVisual(scene, root, visual, layout);
             }
             scene.Selected.Clear();
             scene.Focused = visual;
@@ -592,8 +592,8 @@ namespace Limaki.View.Vidgets {
             if (_contentViewManager != null) {
                 this.ContentViewManager.Dispose ();
             }
-            Mesh.RemoveDisplay (Display1);
-            Mesh.RemoveDisplay (Display2);
+            Organizer.RemoveDisplay (Display1);
+            Organizer.RemoveDisplay (Display2);
 
             Display1.Dispose();
             Display1 = null;
@@ -609,7 +609,7 @@ namespace Limaki.View.Vidgets {
             }
 
             if (this.SceneManager == null) {
-                throw new CheckFailedException (this.GetType (), typeof (ISceneManager));
+                throw new CheckFailedException (this.GetType (), typeof (IVisualSceneStoreInteractor));
             }
             if (this.Display1 == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IGraphSceneDisplay<IVisual, IVisualEdge>));

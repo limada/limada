@@ -35,7 +35,7 @@ namespace Limaki.Usecases.Vidgets {
         SplitViewMode ViewMode { get; set; }
 
         VisualsDisplayHistory VisualsDisplayHistory { get; set; }
-        ISceneManager SceneManager { get; set; }
+        IVisualSceneStoreInteractor SceneManager { get; set; }
         IFavoriteManager FavoriteManager { get; set; }
 
         IContentViewManager ContentViewManager { get; set; }

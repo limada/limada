@@ -7,14 +7,14 @@ using Limaki.View.Visuals;
 using Xwt;
 using System;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 	
     public interface IConceptUsecase {
         ISplitView SplitView { get;}
         VisualsDisplayHistory VisualsDisplayHistory { get;  }
         IFavoriteManager FavoriteManager { get; }
         IGraphSceneUiManager GraphSceneUiManager { get;}
-        ISceneManager SceneManager { get; }
+        IVisualSceneStoreInteractor SceneManager { get; }
     }
 
 	public interface IBackendConceptUseCaseComposer : IComposer<ConceptUsecase> {

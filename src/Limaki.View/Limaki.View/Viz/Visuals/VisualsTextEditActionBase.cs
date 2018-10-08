@@ -251,9 +251,9 @@ namespace Limaki.View.Viz.Visuals {
 
             if (root == null) {
                 var pt = Camera.ToSource (cursorPosition) - Layout.Distance;
-                SceneExtensions.AddItem (scene, Current, Layout, pt);
+                VisualSceneExtensions.AddItem (scene, Current, Layout, pt);
             } else {
-                SceneExtensions.PlaceVisual (scene, root, Current, Layout);
+                VisualSceneExtensions.PlaceVisual (scene, root, Current, Layout);
             }
 
             Display.Perform ();

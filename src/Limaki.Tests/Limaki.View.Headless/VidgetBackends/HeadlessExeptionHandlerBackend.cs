@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 
 namespace Limaki.View.Headless.VidgetBackends {
-    public class HeadlessExeptionHandlerBackend:IExceptionHandler {
+
+    public class HeadlessExeptionHandlerBackend : IExceptionHandler {
+
         public void Catch (Exception e) {
             throw e;
         }

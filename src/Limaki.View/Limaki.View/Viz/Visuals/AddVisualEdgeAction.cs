@@ -53,7 +53,7 @@ namespace Limaki.View.Viz.Visuals {
         }
 
         protected virtual IVisualEdge NewVisual(Point p) {
-            var result = SceneExtensions.CreateEdge(this.Scene);
+            var result = VisualSceneExtensions.CreateEdge(this.Scene);
             newCounter++;
             result.Root = Current;
             result.Leaf = Current;

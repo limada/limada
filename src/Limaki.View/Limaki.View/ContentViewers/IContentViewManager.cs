@@ -24,7 +24,7 @@ namespace Limaki.View.ContentViewers {
         
         ContentViewer CurrentViewer { get; set; }
         IGraphSceneDisplay<IVisual, IVisualEdge> SheetViewer { get; set; }
-        ISceneManager SceneManager { get; set; }
+        IVisualSceneStoreInteractor StoreInteractor { get; set; }
         Color BackColor { get; set; }
 
         Action<ContentViewer> AttachCurrentViewer { get; set; }

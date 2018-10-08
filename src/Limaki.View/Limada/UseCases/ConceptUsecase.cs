@@ -13,7 +13,7 @@
  */
 
 using Limada.IO;
-using Limada.UseCases.Contents;
+using Limada.Usecases.Contents;
 using Limada.View.VisualThings;
 using Limaki.Common;
 using Limaki.Drawing;
@@ -30,12 +30,12 @@ using System.Linq;
 using Xwt;
 using Limaki.Usecases.Vidgets;
 using Limaki.View.Common;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.Visualizers.Toolbars;
 using Limaki.View.Viz.Visualizers;
 using Xwt.Drawing;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 	
     public class ConceptUsecase : IDisposable, IProgress, IConceptUsecase {
 
@@ -48,7 +48,7 @@ namespace Limada.UseCases {
         public ISplitView SplitView { get; set; }
 
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
-        public ISceneManager SceneManager { get; set; }
+        public IVisualSceneStoreInteractor SceneManager { get; set; }
         public IFavoriteManager FavoriteManager { get; set; }
 
         public ToolbarPanel Toolbar { get; set; }
@@ -59,7 +59,7 @@ namespace Limada.UseCases {
         public LayoutToolbar LayoutToolbar { get; set; }
         public MarkerToolbar MarkerToolbar { get; set; }
 
-        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>>(); }}
+        public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>>(); }}
 
 		public Func<IVidget> GetCurrentVidget { get; set; }
         
@@ -134,7 +134,7 @@ namespace Limada.UseCases {
         public bool AskForVisualsDisplayHistorySaveChanges { get; set; }
 
         public virtual void SaveChanges () {
-			var displays = Mesh.Displays;
+			var displays = Organizer.Displays;
             VisualsDisplayHistory.SaveChanges (displays, SceneManager, AskForVisualsDisplayHistorySaveChanges);
             FavoriteManager.SaveChanges (displays);
         }
@@ -200,7 +200,7 @@ namespace Limada.UseCases {
                 var display = GetCurrentDisplay ();
                 if (display != null) {
                     if (MessageBoxShow ("Are you shure?", "Merge", MessageBoxButtons.OkCancel) == DialogResult.Ok) {
-                        Registry.Create<ISceneViz<IVisual, IVisualEdge>> ().MergeVisual (display.Data);
+                        Registry.Create<ISceneInteractor<IVisual, IVisualEdge>> ().MergeVisual (display.Data);
                         display.Perform ();
                     }
                 }
@@ -215,7 +215,7 @@ namespace Limada.UseCases {
                 var display = GetCurrentDisplay ();
                 if (display != null) {
                     
-                    Registry.Create<ISceneViz<IVisual, IVisualEdge>> ().RevertEdges (display.Data);
+                    Registry.Create<ISceneInteractor<IVisual, IVisualEdge>> ().RevertEdges (display.Data);
                     display.Perform ();
 
                 }
@@ -249,9 +249,9 @@ namespace Limada.UseCases {
                 var display = view.AdjacentDisplay (view.CurrentDisplay);
                 var oldScene = display.Data;
 
-                Mesh.RemoveScene (oldScene);
+                Organizer.RemoveScene (oldScene);
 
-                var scene = Mesh.CreateSinkScene (oldScene.Graph);
+                var scene = Organizer.CreateSinkScene (oldScene.Graph);
                 display.Data = scene;
 
                 var visuals = new ThingGraphUseCases ()
@@ -261,7 +261,7 @@ namespace Limada.UseCases {
                 new GraphSceneFacade<IVisual, IVisualEdge> (() => scene, display.Layout)
                     .Add (visuals, true, false);
 
-                Mesh.AddScene (scene);
+                Organizer.AddScene (scene);
 
                 var aligner = new Aligner<IVisual, IVisualEdge> (scene, display.Layout);
                 aligner.OneColumn (visuals, (Point) display.Layout.Border, display.Layout.Options ());

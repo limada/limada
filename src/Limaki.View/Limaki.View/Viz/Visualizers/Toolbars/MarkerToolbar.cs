@@ -75,7 +75,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
             if (display != null) {
                 var scene = display.Data;
                 if (scene.Markers != null) {
-                    SceneExtensions.ChangeMarkers (scene, scene.Selected.Elements, marker);
+                    VisualSceneExtensions.ChangeMarkers (scene, scene.Selected.Elements, marker);
                 }
                 display.Perform ();
             }

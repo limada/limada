@@ -18,7 +18,7 @@ using Limaki.Common.IOC;
 using System;
 using Limada.Model;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.GraphScene;
 
 namespace Limaki.View.Viz.Visuals {
@@ -40,10 +40,10 @@ namespace Limaki.View.Viz.Visuals {
                 args => new VisualsSceneLayout<IVisual, IVisualEdge> (args[0] as Func<IGraphScene<IVisual, IVisualEdge>>, args[1] as IStyleSheet)
                 );
 
-            context.Factory.Add<IGraphSceneMesh<IVisual, IVisualEdge>, VisualGraphSceneDisplayMesh> ();
-            context.Factory.Add<IGraphSceneDisplayMesh<IVisual, IVisualEdge>, VisualGraphSceneDisplayMesh> ();
+            context.Factory.Add<IGraphSceneMapOrganizer<IVisual, IVisualEdge>, VisualGraphSceneMapDisplayOrganizer> ();
+            context.Factory.Add<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>, VisualGraphSceneMapDisplayOrganizer> ();
 
-            context.Pool.Register<IGraphSceneMesh<IVisual, IVisualEdge>> (context.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ());
+            context.Pool.Register<IGraphSceneMapOrganizer<IVisual, IVisualEdge>> (context.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ());
 
             var dependencies = context.Pooled<GraphDepencencies<IVisual, IVisualEdge>> ();
             dependencies.Visitor += (c, a, t) => GraphDepencencyExtension

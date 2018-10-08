@@ -8,7 +8,7 @@ using Limaki.View;
 using Limaki.View.ContentViewers;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Xwt;
 using System.Xml.Linq;
 using Limada.Model;
@@ -23,7 +23,7 @@ using Limaki.Drawing.Styles;
 using System.Diagnostics;
 using Limaki.View.Common;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
     public class GraphSceneDisplayXmlSerializer : DrawingXmlSerializer {
 		
@@ -48,11 +48,11 @@ namespace Limada.UseCases {
             // selected, focused
         }
 
-        private IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        private IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
 
-		public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh {
-			get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); }
-			set { _mesh = value; }
+		public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer {
+			get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); }
+			set { _organizer = value; }
 		}
 
 		public virtual XElement Write (GraphSceneDisplayMemento display) {
@@ -108,9 +108,9 @@ namespace Limada.UseCases {
             memento.ZoomState = Read<ZoomState> (vp, NodeNames.ZoomState);
             memento.Zoom = Read<double> (vp, NodeNames.Zoom);
 
-			var thingGraph = Mesh.BackGraph(memento.Iori);
+			var thingGraph = Organizer.MappedGraph(memento.Iori);
 
-			memento.Scene = Mesh.BackHandler<IThing,ILink>().CreateScene (thingGraph);
+			memento.Scene = Organizer.MapInteractor<IThing,ILink>().CreateScene (thingGraph);
 
 			var layout = ReadElement (node, NodeNames.Layout);
 			memento.StyleSheetName = Read<string> (layout, NodeNames.StyleSheet);

@@ -51,8 +51,8 @@ namespace Limaki.View.Viz.UI {
         public override bool Exclusive { get; protected set; }
         public virtual bool Dragging { get; set; }
 
-        DragDropViz _dragDropViz = null;
-        protected virtual DragDropViz DragDropViz { get { return _dragDropViz ?? (_dragDropViz = new DragDropViz()); } }
+        DragDropInteractor _dragDropViz = null;
+        protected virtual DragDropInteractor DragDropViz { get { return _dragDropViz ?? (_dragDropViz = new DragDropInteractor()); } }
 
         public abstract void Dropped (DragEventArgs e);
         public abstract TransferDataSource GetTransferData ();

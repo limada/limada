@@ -22,11 +22,11 @@ namespace Limada.View {
             context.Factory.Add<GraphItemTransformer<IVisual, IThing, IVisualEdge, ILink>, VisualThingTransformer> ();
             context.Factory.Add<GraphItemTransformer<IThing, IVisual, ILink, IVisualEdge>> (t => new VisualThingTransformer ().Reverted ());
 
-            context.Factory.Add<IVisualContentViz, VisualThingsContentViz> ();
-            context.Factory.Add<IVisualContentViz<IThing>, VisualThingsContentViz> ();
-			context.Factory.Add<ISceneViz<IVisual,IThing,IVisualEdge,ILink>, VisualThingsSceneVizImpl> ();
-            context.Factory.Add<ISceneViz<IVisual, IVisualEdge>, VisualThingsSceneVizImpl> ();
-            context.Factory.Add<ISceneManager, SceneManager> ();
+            context.Factory.Add<IVisualContentInteractor, VisualThingsContentInteractor> ();
+            context.Factory.Add<IVisualContentInteractor<IThing>, VisualThingsContentInteractor> ();
+			context.Factory.Add<ISceneInteractor<IVisual,IThing,IVisualEdge,ILink>, VisualThingsSceneInteractor> ();
+            context.Factory.Add<ISceneInteractor<IVisual, IVisualEdge>, VisualThingsSceneInteractor> ();
+            context.Factory.Add<IVisualSceneStoreInteractor, VisualSceneStoreInteractor> ();
             context.Factory.Add<IVisualGraphSceneSearch, VisualThingSearch> ();
             context.Factory.Add<IContentViewManager, ContentViewManager> ();
 

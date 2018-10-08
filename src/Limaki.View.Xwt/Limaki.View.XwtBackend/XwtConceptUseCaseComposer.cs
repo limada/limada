@@ -15,7 +15,7 @@
 using System;
 using Limada.Usecases;
 using Limaki.Common;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.View.ContentViewers;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers;

@@ -15,7 +15,7 @@
 using System;
 using Limaki.Graphs;
 
-namespace Limaki.View.Viz.Mesh {
+namespace Limaki.View.Viz.Mapping {
 
     /// <summary>
     /// events handling the changes of the 

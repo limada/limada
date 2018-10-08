@@ -8,7 +8,7 @@ using Limaki.View;
 using Limaki.View.ContentViewers;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Xwt;
 using System.Xml.Linq;
 using Limada.Model;
@@ -23,7 +23,7 @@ using Limaki.Drawing.Styles;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
 	public class UsecaseXmlSerializer : XmlSerializerBase {
 
@@ -45,17 +45,17 @@ namespace Limada.UseCases {
         public Action<IGraphSceneDisplay<IVisual, IVisualEdge>, string> BeforeSave { get; set; }
         public Action<IGraphSceneDisplay<IVisual, IVisualEdge>, string> AfterRestore { get; set; }
 
-        private IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh {
-			get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); }
-			set { _mesh = value; }
+        private IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+        public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer {
+			get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); }
+			set { _organizer = value; }
 		}
 
 		public virtual XElement Write (IConceptUsecase usecase) {
 
 			var result = new XElement (NodeNames.Usecase);
 
-			result.Add (new MeshXmlSerializer ().Write (Mesh));
+			result.Add (new GraphSceneDisplayOrganizerXmlSerializer ().Write (Organizer));
 
 			var splitView = new XElement (NodeNames.SplitView);
 			var displays = new XElement (NodeNames.Displays);
@@ -84,16 +84,16 @@ namespace Limada.UseCases {
 		public IEnumerable<string> FileNames { get; protected set;}
 	    public virtual void Read (XElement node, IConceptUsecase usecase) {
 
-	        var ms = new MeshXmlSerializer ();
-	        ms.Read (node, Mesh);
+	        var ms = new GraphSceneDisplayOrganizerXmlSerializer ();
+	        ms.Read (node, Organizer);
 
 			FileNames = ms.FileNames;
 
-            var backHandler = Mesh.BackHandler<IThing, ILink> ();
+            var backHandler = Organizer.MapInteractor<IThing, ILink> ();
             var filesOpen = backHandler
-                .BackGraphs
+                .MappedGraphs
                 .Select (g => new {
-                    Iori = ThingMeshHelper.GetIori (g),
+                    Iori = ThingMapHelper.GetIori (g),
                     Graph = g
                 })
                 .Where (i => i.Iori != null)
@@ -109,7 +109,7 @@ namespace Limada.UseCases {
                     try {
                         var content = io.Open (Iori.FromFileName (file));
                         var g = backHandler.WrapGraph (content.Data);
-                        backHandler.RegisterBackGraph (g);
+                        backHandler.RegisterMappedGraph (g);
                     } catch (Exception e) {
 
                     }
@@ -121,7 +121,7 @@ namespace Limada.UseCases {
 	        foreach (var display in ReadElements (displays, GraphSceneDisplayXmlSerializer.NodeNames.Display)) {
 	            var name = Read<string> (display, NodeNames.Name);
 	            var id = Read<long> (display, SceneInfoXmlSerializer.NodeNames.Id);
-	            var d = Mesh.Displays.Where (disp => disp.DataId == id).FirstOrDefault ();
+	            var d = Organizer.Displays.Where (disp => disp.DataId == id).FirstOrDefault ();
 	            if (d == null) {
 	                var dm = ms.Displays.Where (disp => disp.Info.Id == id).FirstOrDefault ();
 	                if (name == NodeNames.SplitViewDisplay1 && dm != null) {

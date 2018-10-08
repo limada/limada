@@ -85,7 +85,7 @@ namespace Limaki.View.Vidgets {
         }
 
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
-        public ISceneManager SceneManager { get; set; }
+        public IVisualSceneStoreInteractor SceneManager { get; set; }
         public IFavoriteManager FavoriteManager { get; set; }
 
     }

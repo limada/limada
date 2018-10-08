@@ -15,7 +15,7 @@
 using System;
 using Limaki.Graphs;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.Visualizers;
 using System.Collections.Generic;
 

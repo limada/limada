@@ -28,10 +28,10 @@ using Limaki.View.Common;
 using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Mono.Options;
 
-namespace Limada.UseCases.Contents {
+namespace Limada.Usecases.Contents {
 
     public class ThingGraphUiManager : IoUiManager, IGraphSceneUiManager {
 
@@ -71,10 +71,10 @@ namespace Limada.UseCases.Contents {
             }
         }
 
-		private IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-		public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh {
-			get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); }
-			set { _mesh = value; }
+		private IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+		public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer {
+			get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); }
+			set { _organizer = value; }
 		}
 
         #region Open
@@ -137,7 +137,7 @@ namespace Limada.UseCases.Contents {
 
 			ThingGraphIn?.Invoke (source);
 
-		    Mesh.ApplyBackGraph (source.Data);
+		    Organizer.ApplyBackGraph (source.Data);
 		    
             DataBound?.Invoke ();
 
@@ -215,7 +215,7 @@ namespace Limada.UseCases.Contents {
             if (scene.HasThingGraph()) {
                 var sinkIo = ThingGraphIoManager.GetSinkIO(iori, IoMode.Write) as ThingGraphIo;
                 if (sinkIo != null) {
-                    var source = Registry.Create<ISceneViz<IVisual, IThing, IVisualEdge, ILink>> ()
+                    var source = Registry.Create<ISceneInteractor<IVisual, IThing, IVisualEdge, ILink>> ()
                         .CreateThingsView(scene);
                     var sink = sinkIo.Open(iori);
                     new ThingGraphExporter { Progress = this.Progress }.Use(source, sink.Data);
@@ -239,8 +239,8 @@ namespace Limada.UseCases.Contents {
             if (data == null)
                 return;
 
-            Mesh.RemoveBackGraph (data.Data);
-            Mesh.ClearDisplays ();
+            Organizer.RemoveMappedGraph (data.Data);
+            Organizer.ClearDisplays ();
 
             var sink = ThingGraphIoManager.GetSinkIO(data.ContentType, IoMode.Write) as ThingGraphIo;
             if (sink != null) {

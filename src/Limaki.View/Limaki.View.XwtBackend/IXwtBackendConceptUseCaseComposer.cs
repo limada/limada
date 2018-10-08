@@ -1,5 +1,5 @@
 using Limada.Usecases;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.Common;
 using Limaki.View.Vidgets;
 using System;

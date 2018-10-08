@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 using Limada.Schemata;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limada.View.VisualThings;
 using Limaki.Common;
 using Limaki.Common.Linqish;
@@ -13,7 +13,7 @@ using Limaki.View;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.Rendering;
 using Limaki.View.Viz.Visuals;
 using Xwt;
@@ -152,7 +152,7 @@ namespace Limaki.Tests.UseCases {
         protected virtual void SetExampleScene (ConceptUsecase useCase, IGraphScene<IVisual, IVisualEdge> scene) {
             useCase.Close ();
 
-            var mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ();
+            var mesh = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ();
             mesh.AddScene (scene);
 
             mesh.Displays.ForEach (d => {
@@ -170,8 +170,11 @@ namespace Limaki.Tests.UseCases {
                 //var test = new WebProxyTest ();
                 //test.TestInfinitLoopIfHtmlContentIsFocused (usecase.GetCurrentDisplay ());
 
-                var test = new UsecaseSerializerTest ();
-                test.WriteUsecase (usecase);
+                //var test = new UsecaseSerializerTest ();
+                //test.WriteUsecase (usecase);
+
+                var test = new Common.Rtf.RtfImporterTest ();
+                test.TestParseHtml ();
 
             } catch (Exception e) {
                 Registry.Pooled<IExceptionHandler> ().Catch (e, MessageType.OK);

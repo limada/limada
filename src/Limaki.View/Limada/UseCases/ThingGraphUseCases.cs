@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
     public class ThingGraphUseCases {
 

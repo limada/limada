@@ -111,7 +111,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 foreach (var visual in currentDisplay.Data.Selected.Elements) {
-                    SceneExtensions.ChangeStyle (currentDisplay.Data, visual, style);
+                    VisualSceneExtensions.ChangeStyle (currentDisplay.Data, visual, style);
                 }
                 currentDisplay.Perform ();
                 currentDisplay.Backend.QueueDraw ();
@@ -123,7 +123,7 @@ namespace Limaki.View.Viz.Visualizers.Toolbars {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 foreach (var visual in currentDisplay.Data.Selected.Elements) {
-                    SceneExtensions.ChangeShape (currentDisplay.Data, visual, shape);
+                    VisualSceneExtensions.ChangeShape (currentDisplay.Data, visual, shape);
                 }
                 currentDisplay.Perform ();
             }

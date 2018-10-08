@@ -218,7 +218,7 @@ namespace Limaki.View.Vidgets {
 
         protected virtual void ViewChanged (object sender, EventArgs e) { Attach (sender); }
 
-        public ISceneManager SceneManager { get; set; }
+        public IVisualSceneStoreInteractor SceneManager { get; set; }
 
         public override void Detach (object sender) { }
 
@@ -250,7 +250,7 @@ namespace Limaki.View.Vidgets {
 
     public class SheetComboComposer { 
 
-        public ISceneManager SceneManager { get; set; }
+        public IVisualSceneStoreInteractor SceneManager { get; set; }
 
         public ComboBox SheetCombo { get; set; }
 

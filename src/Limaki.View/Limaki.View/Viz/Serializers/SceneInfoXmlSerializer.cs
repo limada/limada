@@ -8,7 +8,7 @@ using Limaki.View;
 using Limaki.View.ContentViewers;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Xwt;
 using System.Xml.Linq;
 using Limada.Model;
@@ -22,7 +22,7 @@ using Limaki.Contents;
 using Limaki.Drawing.Styles;
 using System.Diagnostics;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
 	public class SceneInfoXmlSerializer : XmlSerializerBase {
 		public static class NodeNames {

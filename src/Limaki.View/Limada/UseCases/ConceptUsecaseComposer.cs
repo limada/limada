@@ -12,7 +12,7 @@
  * 
  */
 
-using Limada.UseCases.Contents;
+using Limada.Usecases.Contents;
 using Limada.View.Vidgets;
 using Limaki.Common;
 using Limaki.View;
@@ -20,7 +20,7 @@ using Limaki.View.ContentViewers;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Visualizers;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limada.Model;
 using Limaki.View.GraphScene;
 using Limaki.View.Viz.Visualizers.Toolbars;
@@ -28,27 +28,27 @@ using Xwt;
 using System.Linq;
 using Limaki.View.Common;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
     public class ConceptUsecaseComposer : IComposer<ConceptUsecase> {
 
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+        public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); } }
 
         public void Factor(ConceptUsecase useCase) {
 
             useCase.SplitView = new SplitView0();
 
-            useCase.SceneManager = Registry.Factory.Create<ISceneManager> ();
+            useCase.SceneManager = Registry.Factory.Create<IVisualSceneStoreInteractor> ();
             useCase.VisualsDisplayHistory = new VisualsDisplayHistory ();
 
             useCase.GraphSceneUiManager = new ThingGraphUiManager {
                 OpenFileDialog = new FileDialogMemento(),
                 SaveFileDialog = new FileDialogMemento(),
                 ThingGraphClosed = c => {
-                    var h = Mesh.BackHandler<IThing, ILink> ();
+                    var h = Organizer.MapInteractor<IThing, ILink> ();
                     if (h != null) {
-                        h.UnregisterBackGraph (c.Data, true);
+                        h.UnregisterMappedGraph (c.Data, true);
                     }
                 }
             };

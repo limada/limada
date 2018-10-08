@@ -325,7 +325,7 @@ namespace Limada.Tests.Model {
             var thingGraph = scene.Graph.ThingGraph();
 
             var info = new SceneInfo { Name = "TestFavoriteManagerAddToSheets" };
-			var sceneManager = new SceneManager();
+			var sceneManager = new VisualSceneStoreInteractor();
 			sceneManager.SaveInGraph(scene, layout, info);
             Assert.IsTrue(info.State.Clean);
             var sheetThing = thingGraph.GetById(info.Id);

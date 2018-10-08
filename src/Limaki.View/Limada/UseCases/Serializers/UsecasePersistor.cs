@@ -7,7 +7,7 @@ using Limaki.View;
 using Limaki.View.ContentViewers;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using System.Xml.Linq;
 using Limada.Model;
 using Limaki.Graphs;
@@ -19,16 +19,16 @@ using System.IO;
 using Limaki.Contents;
 using System.Diagnostics;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
     public class UsecasePersistor {
 
         public XElement XmlUsecase { get; set; }
 
-        private IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        private IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
 
-        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh {
-            get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); }
+        public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer {
+            get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); }
         }
 
         public Action<IGraphSceneDisplay<IVisual, IVisualEdge>, string> BeforeSave { get; set; }
@@ -39,7 +39,7 @@ namespace Limada.UseCases {
             if (usecase.SplitView == null || usecase.GraphSceneUiManager == null)
                 return;
 
-            var displays = Mesh.Displays;
+            var displays = Organizer.Displays;
             usecase.VisualsDisplayHistory.SaveChanges (displays, usecase.SceneManager, false);
             usecase.FavoriteManager.SaveChanges (displays);
             usecase.GraphSceneUiManager.Save ();
@@ -77,10 +77,10 @@ namespace Limada.UseCases {
             
             ComposeContentViewers ();
 
-            Mesh.ClearDisplays ();
+            Organizer.ClearDisplays ();
 
-			var backHandler = Mesh.BackHandler<IThing, ILink>();
-			var backGraphs = backHandler.BackGraphs.ToArray();
+			var backHandler = Organizer.MapInteractor<IThing, ILink>();
+			var backGraphs = backHandler.MappedGraphs.ToArray();
 
             var ser = new UsecaseXmlSerializer ();
             ser.Read (XmlUsecase, usecase);
@@ -88,16 +88,16 @@ namespace Limada.UseCases {
 			var graphChanged = backGraphs.Distinct().Any();
             
 			// close others
-            foreach (var g in backHandler.BackGraphs
+            foreach (var g in backHandler.MappedGraphs
                 //.Where(g=>backGraphs.Contains(g)
-                .Select (g => new {iori = ThingMeshHelper.GetIori (g), graph = g})
+                .Select (g => new {iori = ThingMapHelper.GetIori (g), graph = g})
                 .Where (g => g.iori == null || !ser.FileNames.Contains (g.iori.ToString ()))
                 .Select (j => j.graph)
                 .ToArray ()) {
 
-                backHandler.UnregisterBackGraph (g);
+                backHandler.UnregisterMappedGraph (g);
 
-                usecase.GraphSceneUiManager.SetContent (ThingMeshHelper.GetContent (g));
+                usecase.GraphSceneUiManager.SetContent (ThingMapHelper.GetContent (g));
                 usecase.GraphSceneUiManager.Close ();
             }
 
@@ -107,14 +107,14 @@ namespace Limada.UseCases {
                 usecase.SceneManager.Clear();
 				usecase.VisualsDisplayHistory.Clear();
 
-                foreach (var d in Mesh.Displays) {
+                foreach (var d in Organizer.Displays) {
                     if (d.Info.Id != usecase.FavoriteManager.HomeId)
                         usecase.VisualsDisplayHistory.Store (d, usecase.SceneManager);
                 }
 			}
-			var thingGraph = backHandler.BackGraphs.FirstOrDefault() as IThingGraph;
+			var thingGraph = backHandler.MappedGraphs.FirstOrDefault() as IThingGraph;
             if (thingGraph != null) {
-				usecase.GraphSceneUiManager.SetContent (ThingMeshHelper.GetContent(thingGraph));
+				usecase.GraphSceneUiManager.SetContent (ThingMapHelper.GetContent(thingGraph));
             }
 
             var focused = usecase.SplitView.Display1.Data.Focused;
@@ -129,10 +129,10 @@ namespace Limada.UseCases {
 
 		private Dictionary<string, GraphSceneDisplayMemento> SavedDisps = new Dictionary<string, GraphSceneDisplayMemento> ();
 
-		private IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+		private IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
 
-		public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh {
-			get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); }
+		public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer {
+			get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); }
 		}
 
 		private Int64 HomeId = 0;
@@ -140,12 +140,12 @@ namespace Limada.UseCases {
 		public virtual void Save (string tag, IGraphSceneDisplay<IVisual, IVisualEdge> display) {
 			SavedDisps[tag] = new GraphSceneDisplayMemento (display);
 			display.Data = null;
-			Mesh.RemoveDisplay (display);
+			Organizer.RemoveDisplay (display);
 		}
 
 		public virtual void Restore (string tag, IGraphSceneDisplay<IVisual, IVisualEdge> display) {
 			SavedDisps[tag].Restore (display);
-			Mesh.AddDisplay (display);
+			Organizer.AddDisplay (display);
 		}
 
 		public void Save (IConceptUsecase usecase) {
@@ -154,7 +154,7 @@ namespace Limada.UseCases {
 				return;
 
 			HomeId = usecase.FavoriteManager.HomeId;
-			var displays = Mesh.Displays;
+			var displays = Organizer.Displays;
             usecase.VisualsDisplayHistory.SaveChanges (displays, usecase.SceneManager, false);
 			usecase.FavoriteManager.SaveChanges (displays);
 			usecase.GraphSceneUiManager.Save ();

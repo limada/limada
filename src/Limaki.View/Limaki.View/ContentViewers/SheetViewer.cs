@@ -20,7 +20,7 @@ using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.Visualizers;
 using System.Linq;
 
@@ -40,7 +40,7 @@ namespace Limaki.View.ContentViewers {
             }
         }
 
-        public ISceneManager SceneManager { get; set; }
+        public IVisualSceneStoreInteractor SceneManager { get; set; }
 
         public override IVidgetBackend Backend {
             get { return SheetDisplay.Backend; }

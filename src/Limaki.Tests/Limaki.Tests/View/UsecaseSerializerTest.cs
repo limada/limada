@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.Common;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Visuals;
 using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
@@ -57,13 +57,13 @@ namespace Limaki.Tests.View {
         public void WriteUsecase0 (ConceptUsecase usecase) {
 
 			try {
-                var mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ();
+                var interactor = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ();
                 //TODO:move this to another test
                 if (true) {
 					
-					var mesh2 = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ();
+                    var interactor2 = Registry.Pooled<IGraphSceneMapOrganizer<IVisual, IVisualEdge>> ();
 
-					if (mesh2 != mesh)
+					if (interactor2 != interactor)
 						throw new Exception ();
 				}
 
@@ -105,7 +105,7 @@ namespace Limaki.Tests.View {
 
 			    if (dmx != null) {
 
-                    mesh.Clear ();
+                    interactor.Clear ();
 
 			        new UsecaseXmlSerializer ()
 			            .Read (dmx, usecase1);

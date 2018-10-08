@@ -44,17 +44,17 @@ namespace Limaki.View.Vidgets {
             History.Add (info.Id);
         }
 
-        public void Store (IGraphSceneDisplay<IVisual, IVisualEdge> display, ISceneManager sceneManager) {
+        public void Store (IGraphSceneDisplay<IVisual, IVisualEdge> display, IVisualSceneStoreInteractor sceneManager) {
             sceneManager.Store (display);
             History.Add (display.DataId);
         }
 
 
-        protected void Load (IGraphSceneDisplay<IVisual, IVisualEdge> display, ISceneManager sceneManager, Int64 id) {
+        protected void Load (IGraphSceneDisplay<IVisual, IVisualEdge> display, IVisualSceneStoreInteractor sceneManager, Int64 id) {
             sceneManager.Load (display, id);
         }
 
-        public void Navigate (IGraphSceneDisplay<IVisual, IVisualEdge> display, ISceneManager sceneManager, bool forward) {
+        public void Navigate (IGraphSceneDisplay<IVisual, IVisualEdge> display, IVisualSceneStoreInteractor sceneManager, bool forward) {
             
             Store (display, sceneManager);
 
@@ -72,7 +72,7 @@ namespace Limaki.View.Vidgets {
             
         }
 
-        public void SaveChanges (IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, ISceneManager sceneManager, bool ask) {
+        public void SaveChanges (IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, IVisualSceneStoreInteractor sceneManager, bool ask) {
             sceneManager.SaveChanges (displays, ask);
         }
     }

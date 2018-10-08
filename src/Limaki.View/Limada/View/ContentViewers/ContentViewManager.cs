@@ -24,7 +24,7 @@ using Limaki.View;
 using Limaki.View.ContentViewers;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.UI.GraphScene;
 using Xwt;
 using Xwt.Drawing;
@@ -39,7 +39,7 @@ namespace Limada.View.ContentViewers {
         }
 
         public IGraphSceneDisplay<IVisual, IVisualEdge> SheetViewer { get; set; }
-        public ISceneManager SceneManager { get; set; }
+        public IVisualSceneStoreInteractor StoreInteractor { get; set; }
 
         public Color BackColor { get; set; } = SystemColors.Background;
 
@@ -150,7 +150,7 @@ namespace Limada.View.ContentViewers {
             if (viewer is SheetViewer) {
                 var sheetViewer = viewer as SheetViewer;
                 sheetViewer.SheetDisplay = this.SheetViewer;
-                sheetViewer.SceneManager = this.SceneManager;
+                sheetViewer.SceneManager = this.StoreInteractor;
             }
 
             viewer.BackColor = this.BackColor;
@@ -212,13 +212,13 @@ namespace Limada.View.ContentViewers {
 			SaveStream(graph.ThingGraph(), viewer);
 		}
 
-        private IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        protected IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh {
-            get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); }
+        private IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+        protected IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer {
+            get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); }
         }
 
         public void SaveContentOfViewers() {
-            var graph = Mesh.Displays.Select (d => d.Data.Graph.ThingGraph ()).FirstOrDefault (t => t != null);
+            var graph = Organizer.Displays.Select (d => d.Data.Graph.ThingGraph ()).FirstOrDefault (t => t != null);
             if (graph == null)
                 return;
 

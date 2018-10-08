@@ -28,7 +28,7 @@ using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.Visualizers;
 
 namespace Limada.View.Vidgets {
@@ -39,7 +39,7 @@ namespace Limada.View.Vidgets {
 			ResetHomeId();
         }
 
-        public ISceneManager SceneManager { get; set; }
+        public IVisualSceneStoreInteractor SceneManager { get; set; }
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
 
         public void AddToFavorites(IGraphScene<IVisual, IVisualEdge> scene) {
@@ -127,8 +127,8 @@ namespace Limada.View.Vidgets {
 			HomeId = Isaac.Long;
 		}
 
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+        public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); } }
 
         public virtual void GoHome (IGraphSceneDisplay<IVisual, IVisualEdge> display, bool initialize) {
             if (display == null || display.Data == null)
@@ -141,7 +141,7 @@ namespace Limada.View.Vidgets {
                 homeInfo.Id = HomeId;
             }
 
-            var scene = Mesh.CreateSinkScene (display.Data.Graph);
+            var scene = Organizer.CreateSinkScene (display.Data.Graph);
 
             Action showScene = () => {
                 SceneManager.AssignScene (display, scene, homeInfo);

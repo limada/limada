@@ -23,7 +23,7 @@ namespace Limaki.View.Vidgets {
 
     public interface IFavoriteManager {
         Int64 HomeId { get; set; }
-        ISceneManager SceneManager { get; set; }
+        IVisualSceneStoreInteractor SceneManager { get; set; }
         VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         void AddToFavorites (IGraphScene<IVisual, IVisualEdge> scene);
         void SetAutoView (IGraphScene<IVisual, IVisualEdge> scene);

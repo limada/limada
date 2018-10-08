@@ -27,7 +27,7 @@ using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.GraphScene;
 
-namespace Limada.UseCases.Contents {
+namespace Limada.Usecases.Contents {
 
     public class StreamContentUiManager : IoUiManager {
 
@@ -133,7 +133,7 @@ namespace Limada.UseCases.Contents {
                 if (scene != null && scene.HasThingGraph()) {
                     SaveFileDialog.DefaultExt = "pdf";
                     if (FileDialogShow(SaveFileDialog, false) == DialogResult.Ok) {
-                        ThingsStreamIoManager.SinkOut = () => Registry.Create<ISceneViz<IVisual, IThing, IVisualEdge, ILink>> ()
+                        ThingsStreamIoManager.SinkOut = () => Registry.Create<ISceneInteractor<IVisual, IThing, IVisualEdge, ILink>> ()
                             .SelectedThings(scene);
                         ThingsStreamIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                         ThingsStreamIoManager.WriteSink(IoUtils.UriFromFileName(SaveFileDialog.FileName));
@@ -157,7 +157,7 @@ namespace Limada.UseCases.Contents {
                         
                         graphCursor = ThingGraphCursorIoManager.ReadSink(uri, graphCursor);
                         if (graphCursor != null) {
-                            Registry.Create<ISceneViz<IVisual, IThing, IVisualEdge, ILink>> ()
+                            Registry.Create<ISceneInteractor<IVisual, IThing, IVisualEdge, ILink>> ()
                                 .SetDescription (scene, graphCursor.Cursor, OpenFileDialog.FileName);
                         }
                         OpenFileDialog.ResetFileName();

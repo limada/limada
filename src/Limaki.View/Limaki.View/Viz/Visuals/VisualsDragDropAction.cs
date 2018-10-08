@@ -25,7 +25,7 @@ using Xwt.Backends;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 using Limaki.Common;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using System.Diagnostics;
 using Limaki.View.Common;
 
@@ -112,8 +112,8 @@ namespace Limaki.View.Viz.Visuals {
                 e.AllowedAction = DragDropAction.All;
         }
 
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); } }
 
         public override void Dropped (DragEventArgs e) {
             var pt = Camera.ToSource(e.Position);
@@ -126,7 +126,7 @@ namespace Limaki.View.Viz.Visuals {
                 // the current Drop has started in this instance
                 // so we make a link
                 if (target != null && Source != target) {
-                    SceneExtensions.CreateEdge(scene, Source, target);
+                    VisualSceneExtensions.CreateEdge(scene, Source, target);
                 }
                 e.Success = true;
                 return;
@@ -135,7 +135,7 @@ namespace Limaki.View.Viz.Visuals {
             if (InprocDragDrop.Dragging) {
                 var source = InprocDragDrop.Data as GraphCursor<IVisual, IVisualEdge>;
                 if (source != null && source.Cursor != target) {
-                    item = Mesh.LookUp(source.Graph, scene.Graph, source.Cursor);
+                    item = Organizer.LookUp(source.Graph, scene.Graph, source.Cursor);
                     if (item == null) {
                         //TODO: error here
                         //return;
@@ -150,9 +150,9 @@ namespace Limaki.View.Viz.Visuals {
             }
 
             if (item != null) {
-                SceneExtensions.AddItem (scene, item, Layout, pt);
+                VisualSceneExtensions.AddItem (scene, item, Layout, pt);
                 if (target != null && !scene.Graph.Edges (target).Any (edge => edge.Leaf == item || edge.Root == item))
-                    SceneExtensions.CreateEdge (scene, target, item);
+                    VisualSceneExtensions.CreateEdge (scene, target, item);
             } else {
                 // no known type found to import
                 string dt = "not found:\t";
@@ -176,7 +176,7 @@ namespace Limaki.View.Viz.Visuals {
                 // TODO: refactor to use same code as above
                 var source = InprocDragDrop.ClipboardData as GraphCursor<IVisual, IVisualEdge>;
                 if (source != null && source.Cursor != item) {
-                    item = Mesh.LookUp(source.Graph, scene.Graph, source.Cursor);
+                    item = Organizer.LookUp(source.Graph, scene.Graph, source.Cursor);
                     if (item == null) {
                         //TODO: error here
                         //return;
@@ -188,7 +188,7 @@ namespace Limaki.View.Viz.Visuals {
                 item = DragDropViz.VisualOfTransferData(scene.Graph, Clipboard.GetTransferData(Clipboard.GetTypesAvailable ()));//DragDropViz.DataManager.DataTypes));
             }
             if (item != null) {
-                SceneExtensions.PlaceVisual(scene, scene.Focused, item, Layout);
+                VisualSceneExtensions.PlaceVisual(scene, scene.Focused, item, Layout);
             }
 
         }
