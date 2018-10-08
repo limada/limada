@@ -15,7 +15,7 @@ namespace Limaki.Common.Text.RTF {
 
         public Stream RemoveAdobeParagraphTags(Stream stream) {
             stream.Position = 0;
-            Parser.RTF rtf = new Parser.RTF(stream);
+            Parser.Rtf rtf = new Parser.Rtf(stream);
 
             bool newPara = false;
             int adobeTagPos = -1;

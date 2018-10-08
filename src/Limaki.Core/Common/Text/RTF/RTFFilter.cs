@@ -75,7 +75,7 @@ namespace Limaki.Common.Text.RTF {
 
         public string GetDoccom(Stream stream) {
             stream.Position = 0;
-            Parser.RTF rtf = new Parser.RTF(stream);
+            Parser.Rtf rtf = new Parser.Rtf(stream);
 
             bool infoStarted = false;
             bool doccomStarted = false;
@@ -119,7 +119,7 @@ namespace Limaki.Common.Text.RTF {
 
         public Stream SetDoccom(Stream stream, string infoText) {
             stream.Position = 0;
-            Parser.RTF rtf = new Parser.RTF(stream);
+            Parser.Rtf rtf = new Parser.Rtf(stream);
 
             int infoPos = -1;
             

@@ -19,7 +19,7 @@ namespace Limaki.Common.Text.RTF {
     public class RTFHelper : RTFFilter {
         public Stream SetToSameSize(Stream stream, int size) {
             stream.Position = 0;
-            Parser.RTF rtf = new Parser.RTF(stream);
+            Parser.Rtf rtf = new Parser.Rtf(stream);
 
             var replaceList = new List<Record<int, int, byte[]>>();
 
@@ -48,7 +48,7 @@ namespace Limaki.Common.Text.RTF {
         public Stream SetToSameFont(Stream stream, string fontName) {
 
             stream.Position = 0;
-            Parser.RTF rtf = new Parser.RTF(stream);
+            Parser.Rtf rtf = new Parser.Rtf(stream);
             var replaceList = new List<Record<int, int, byte[]>>();
             bool isInFontTbl = false;
             bool isInFontDef = false;
@@ -157,7 +157,7 @@ namespace Limaki.Common.Text.RTF {
 
         public Stream SetAttributes(Stream stream, FontStyle style) {
             stream.Position = 0;
-            Parser.RTF rtf = new Parser.RTF(stream);
+            Parser.Rtf rtf = new Parser.Rtf(stream);
 
             var replaceList = new List<Record<int, int, byte[]>>();
 
@@ -181,7 +181,7 @@ namespace Limaki.Common.Text.RTF {
             int stylePos = 0;
             bool firstPara = true;
 
-            Action<FontStyle, Parser.RTF> remove = (fstyle, r) => {
+            Action<FontStyle, Parser.Rtf> remove = (fstyle, r) => {
                 if (textRun && (paraStyle & fstyle) != 0) {
                     var len = r.Text.Length;
                     replaceList.Add(new Record<int, int, byte[]>(
