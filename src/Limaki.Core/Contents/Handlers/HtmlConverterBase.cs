@@ -25,6 +25,7 @@ namespace Limaki.Contents.Text {
     public interface IHtmlConverter : IContentConverter<Stream> {
         string ToHtml (Stream source);
         string WithHmtlHeaderTags (Stream s);
+        bool UseHtmlHeaderTags { get; set; }
     }
 
 
@@ -35,10 +36,11 @@ namespace Limaki.Contents.Text {
         public abstract long ConversionType (long contentType);
 
         public virtual string WithHmtlHeaderTags (Stream s) => $"{HtmlHelper.HtmUtf8Begin}<body>{ToHtml (s)}</body></html>";
+        public virtual bool UseHtmlHeaderTags { get; set; } = true;
 
         public override Content<Stream> Use (Content<Stream> source, Content<Stream> sink) {
             if (ProveTypes (source, ConversionType(source.ContentType), sink, ContentTypes.HTML)) {
-                var s = WithHmtlHeaderTags (source.Data);
+                var s = UseHtmlHeaderTags ? WithHmtlHeaderTags (source.Data) : ToHtml (source.Data);
                 return new Content<Stream> (s.AsAsciiStream (), CompressionType.None, ContentTypes.HTML);
             }
             return null;
