@@ -27,6 +27,7 @@
 // COMPLETE
 
 namespace Limaki.Common.Text.RTF.Parser {
+	
 	internal class KeysInit {
 		public static KeyStruct[] Init() {
 			return new KeyStruct[] {
@@ -124,6 +125,8 @@ namespace Limaki.Common.Text.RTF.Parser {
 					new KeyStruct(Major.CharAttr, Minor.CharCharSet, "cchs"),
 					new KeyStruct(Major.CharAttr, Minor.Language, "lang"),
 					new KeyStruct(Major.CharAttr, Minor.Gray, "gray"),
+					new KeyStruct(Major.CharAttr, Minor.ACAccNone, "accnone"),
+
 					new KeyStruct(Major.ParAttr, Minor.ParDef, "pard"),
 					new KeyStruct(Major.ParAttr, Minor.StyleNum, "s"),
 					new KeyStruct(Major.ParAttr, Minor.Hyphenate, "hyphpar"),
@@ -391,7 +394,7 @@ namespace Limaki.Common.Text.RTF.Parser {
 					new KeyStruct(Major.PictAttr, Minor.PicBinary, "bin"),
 					new KeyStruct(Major.NeXTGrAttr, Minor.NeXTGWidth, "width"),
 					new KeyStruct(Major.NeXTGrAttr, Minor.NeXTGHeight, "height"),
-					new KeyStruct(Major.Destination, Minor.OptDest, "*"),
+					//new KeyStruct(Major.Destination, Minor.OptDest, "*"),
 					new KeyStruct(Major.Destination, Minor.FontTbl, "fonttbl"),
 					new KeyStruct(Major.Destination, Minor.FontAltName, "falt"),
 					new KeyStruct(Major.Destination, Minor.EmbeddedFont, "fonteb"),
