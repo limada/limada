@@ -27,14 +27,13 @@
 using System.IO;
 
 namespace Limaki.Common.Text.RTF.Parser {
+	
     internal class Image {
         public float Width { get; set; }
         public float Height { get; set; }
     }
 
 	public class Picture {
-
-		private Minor image_type;
 		private Image image;
 		private MemoryStream data;
 		private float width = -1;
@@ -52,27 +51,17 @@ namespace Limaki.Common.Text.RTF.Parser {
 			
 		}
 
-		public Minor ImageType {
-			get { return image_type; }
-			set { image_type = value; }
-		}
+		public Minor ImageType { get; set; }
 
-		public MemoryStream Data {
-			get {
-				if (data == null)
-					data = new MemoryStream ();
-				return data;
-			}
-		}
+		public MemoryStream Data => data ?? (data = new MemoryStream ());
 
 		public float Width {
 			get {
-				float w = width;
-				if (w == -1) {
-					if (image == null)
-						image = ToImage ();
-					w = image.Width;
-				}
+				var w = width;
+				if (w != -1) return w;
+				if (image == null)
+					image = ToImage ();
+				w = image.Width;
 				return w;
 				
 			}
@@ -84,12 +73,11 @@ namespace Limaki.Common.Text.RTF.Parser {
 
 		public float Height {
 			get {
-				float h = height;
-				if (h == -1) {
-					if (image == null)
-						image = ToImage ();
-					h = image.Height;
-				}
+				var h = height;
+				if (h != -1) return h;
+				if (image == null)
+					image = ToImage ();
+				h = image.Height;
 				return h;
 			}
 		}
@@ -112,15 +100,7 @@ namespace Limaki.Common.Text.RTF.Parser {
 		{
 			if  (data == null)
 				return false;
-			switch (image_type) {
-			case Minor.PngBlip:
-			case Minor.WinMetafile:
-				break;
-			default:
-				return false;
-			}
-
-			return true;
+			return ImageType == Minor.PngBlip || ImageType == Minor.WinMetafile;
 		}
 
 

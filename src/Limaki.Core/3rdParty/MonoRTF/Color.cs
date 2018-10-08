@@ -28,101 +28,69 @@
 
 namespace Limaki.Common.Text.RTF.Parser {
 
-	public class Color {
-		#region	Local Variables
-		private int		red;
-		private int		green;
-		private int		blue;
-		private int		num;
-		private Color		next;
-		#endregion	// Local Variables
+    public class Color {
+        #region Constructors
 
-		#region Constructors
-		public Color(Parser.RTF rtf) {
-			red = -1;
-			green = -1;
-			blue = -1;
-			num = -1;
+        public Color (Rtf rtf) {
+            Red = -1;
+            Green = -1;
+            Blue = -1;
+            Num = -1;
 
-			lock (rtf) {
-				if (rtf.Colors == null) {
-					rtf.Colors = this;
-				} else {
-					Color c = rtf.Colors;
-					while (c.next != null)
-						c = c.next;
-					c.next = this;
-				}
-			}
-		}
-		#endregion	// Constructors
+            lock (rtf) {
+                if (rtf.Colors == null) {
+                    rtf.Colors = this;
+                } else {
+                    var c = rtf.Colors;
+                    while (c._next != null)
+                        c = c._next;
+                    c._next = this;
+                }
+            }
+        }
 
-		#region Properties
-		public int Red {
-			get {
-				return red;
-			}
+        #endregion	// Constructors
 
-			set {
-				red = value;
-			}
-		}
+        #region	Local Variables
 
-		public int Green {
-			get {
-				return green;
-			}
+        private Color _next;
 
-			set {
-				green = value;
-			}
-		}
+        #endregion	// Local Variables
 
-		public int Blue {
-			get {
-				return blue;
-			}
+        #region Properties
 
-			set {
-				blue = value;
-			}
-		}
+        public int Red { get; set; }
 
-		public int Num {
-			get {
-				return num;
-			}
+        public int Green { get; set; }
 
-			set {
-				num = value;
-			}
-		}
-		#endregion	// Properties
+        public int Blue { get; set; }
 
-		#region Methods
-		static public Color GetColor(Parser.RTF rtf, int color_number) {
-			Color	c;
+        public int Num { get; set; }
 
-			lock (rtf) {
-				c = GetColor(rtf.Colors, color_number);
-			}
-			return c;
-		}
+        #endregion	// Properties
 
-		static private Color GetColor(Color start, int color_number) {
-			Color	c;
+        #region Methods
 
-			if (color_number == -1) {
-				return start;
-			}
+        public static Color GetColor (Rtf rtf, int colorNumber) {
+            Color c;
 
-			c = start;
+            lock (rtf) {
+                c = GetColor (rtf.Colors, colorNumber);
+            }
 
-			while ((c != null) && (c.num != color_number)) {
-				c = c.next;
-			}
-			return c;
-		}
-		#endregion	// Methods
-	}
+            return c;
+        }
+
+        public static Color GetColor (Color start, int colorNumber) {
+            if (colorNumber == -1) return start;
+
+            var c = start;
+
+            while (c != null && c.Num != colorNumber) c = c._next;
+            return c;
+        }
+
+        #endregion	// Methods
+    }
+
 }

@@ -28,7 +28,6 @@
 
 namespace Limaki.Common.Text.RTF.Parser {
 
-
 	public enum StandardCharCode {
 		nothing			= 0,
 		space			= 1,

@@ -649,6 +649,7 @@ namespace Limaki.Common.Text.RTF.Parser {
 		ACNoUnderline,
 		ACWordUnderline,
 		ACSuperScript,
+		ACAccNone,
 
 		// Major.FontAttr
 		FontCharSet,

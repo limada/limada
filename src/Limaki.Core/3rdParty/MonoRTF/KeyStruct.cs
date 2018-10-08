@@ -39,8 +39,8 @@ namespace Limaki.Common.Text.RTF.Parser {
 			Minor = minor;
 			Symbol = symbol;
 		}
-		public Major	Major;
-		public Minor	Minor;
-		public string	Symbol;
+		public readonly Major	Major;
+		public readonly Minor	Minor;
+		public readonly string	Symbol;
 	}
 }

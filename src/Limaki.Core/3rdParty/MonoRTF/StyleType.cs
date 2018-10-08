@@ -28,10 +28,7 @@
 
 namespace Limaki.Common.Text.RTF.Parser {
 
-
-	public
-
-	enum StyleType {
+	public enum StyleType {
 		Paragraph	= 0,
 		Character	= 1,
 		Section		= 2

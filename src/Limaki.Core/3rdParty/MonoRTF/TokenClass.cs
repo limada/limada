@@ -26,16 +26,9 @@
 
 // COMPLETE
 
-#define RTF_LIB
-
 namespace Limaki.Common.Text.RTF.Parser {
 
-#if RTF_LIB
-	public
-#else
-	internal
-#endif
-	enum TokenClass {
+	public enum TokenClass {
 		None		= -1,
 		Unknown		= 0,
 		Group		= 1,

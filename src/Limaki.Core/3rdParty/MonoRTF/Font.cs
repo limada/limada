@@ -26,183 +26,114 @@
 
 // COMPLETE
 
-using System;
-
 namespace Limaki.Common.Text.RTF.Parser {
 
+    public
+    class Font {
+        #region Constructors
 
-	public
+        public Font (Rtf rtf) {
+            _rtf = rtf;
+            _num = -1;
+            Name = string.Empty;
 
-	class Font {
-		#region	Local Variables
-		private string		name;
-		private string		alt_name;
-		private int		num;
-		private int		family;
-		private CharsetType	charset;
-		private int		pitch;
-		private int		type;
-		private int		codepage;
-		private Font		next;
-		private Parser.RTF		rtf;
-		#endregion	// Local Variables
+            lock (rtf) {
+                if (rtf.Fonts == null) {
+                    rtf.Fonts = this;
+                } else {
+                    var f = rtf.Fonts;
+                    while (f._next != null)
+                        f = f._next;
+                    f._next = this;
+                }
+            }
+        }
 
-		#region Constructors
-		public Font(Parser.RTF rtf) {
-			this.rtf = rtf;
-			num = -1;
-			name = String.Empty;
+        #endregion	// Constructors
 
-			lock (rtf) {
-				if (rtf.Fonts == null)
-					rtf.Fonts = this;
-				else {
-					Font f = rtf.Fonts;
-					while (f.next != null)
-						f = f.next;
-					f.next = this;
-				}
-			}
-		}
-		#endregion	// Constructors
+        #region	Local Variables
 
-		#region Properties
-		public string Name {
-			get {
-				return name;
-			}
+        private int _num;
+        private Font _next;
+        private readonly Rtf _rtf;
 
-			set {
-				name = value;
-			}
-		}
+        #endregion	// Local Variables
 
-		public string AltName {
-			get {
-				return alt_name;
-			}
+        #region Properties
 
-			set {
-				alt_name = value;
-			}
-		}
+        public string Name { get; set; }
 
-		public int Num {
-			get {
-				return num;
-			}
+        public string AltName { get; set; }
 
-			set {
-				// Whack any previous font with the same number
-				DeleteFont(rtf, value);
-				num = value;
-			}
-		}
+        public int Num {
+            get => _num;
+            set {
+                // Whack any previous font with the same number
+                DeleteFont (_rtf, value);
+                _num = value;
+            }
+        }
 
-		public int Family {
-			get {
-				return family;
-			}
+        public int Family { get; set; }
 
-			set {
-				family = value;
-			}
-		}
+        public CharsetType Charset { get; set; }
 
-		public CharsetType Charset {
-			get {
-				return charset;
-			}
+        public int Pitch { get; set; }
 
-			set {
-				charset = value;
-			}
-		}
+        public int Type { get; set; }
 
+        public int Codepage { get; set; }
 
-		public int Pitch {
-			get {
-				return pitch;
-			}
+        #endregion	// Properties
 
-			set {
-				pitch = value;
-			}
-		}
+        #region Methods
 
-		public int Type {
-			get {
-				return type;
-			}
+        public static bool DeleteFont (Rtf rtf, int fontNumber) {
+            lock (rtf) {
+                var f = rtf.Fonts;
+                Font prev = null;
+                while (f != null && f._num != fontNumber) {
+                    prev = f;
+                    f = f._next;
+                }
 
-			set {
-				type = value;
-			}
-		}
+                if (f != null) {
+                    if (f == rtf.Fonts) {
+                        rtf.Fonts = f._next;
+                    } else {
+                        if (prev != null)
+                            prev._next = f._next;
+                        else
+                            rtf.Fonts = f._next;
+                    }
 
-		public int Codepage {
-			get {
-				return codepage;
-			}
+                    return true;
+                }
+            }
 
-			set {
-				codepage = value;
-			}
-		}
-		#endregion	// Properties
+            return false;
+        }
 
-		#region Methods
-		static public bool DeleteFont(Parser.RTF rtf, int font_number) {
-			Font	f;
-			Font	prev;
+        public static Font GetFont (Rtf rtf, int fontNumber) {
+            Font f;
 
-			lock (rtf) {
-				f = rtf.Fonts;
-				prev = null;
-				while ((f != null) && (f.num != font_number)) {
-					prev = f;
-					f = f.next;
-				}
+            lock (rtf) {
+                f = GetFont (rtf.Fonts, fontNumber);
+            }
 
-				if (f != null) {
-					if (f == rtf.Fonts) {
-						rtf.Fonts = f.next;
-					} else {
-						if (prev != null) {
-							prev.next = f.next;
-						} else {
-							rtf.Fonts = f.next;
-						}
-					}
-					return true;
-				}
-			}
-			return false;
-		}
+            return f;
+        }
 
-		static public Font GetFont(Parser.RTF rtf, int font_number) {
-			Font	f;
+        public static Font GetFont (Font start, int fontNumber) {
+            if (fontNumber == -1) return start;
 
-			lock (rtf) {
-				f = GetFont(rtf.Fonts, font_number);
-			}
-			return f;
-		}
+            var f = start;
 
-		static public Font GetFont(Font start, int font_number) {
-			Font	f;
+            while (f != null && f._num != fontNumber) f = f._next;
+            return f;
+        }
 
-			if (font_number == -1) {
-				return start;
-			}
+        #endregion	// Methods
+    }
 
-			f = start;
-
-			while ((f != null) && (f.num != font_number)) {
-				f = f.next;
-			}
-			return f;
-		}
-		#endregion	// Methods
-	}
 }

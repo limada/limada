@@ -30,23 +30,15 @@ using System;
 
 namespace Limaki.Common.Text.RTF.Parser {
 
-	public delegate void DestinationDelegate(Parser.RTF Sender);
+    public delegate void DestinationDelegate (Rtf sender);
 
-	public class DestinationCallback {
-		DestinationDelegate[]	callbacks;
+    public class DestinationCallback {
 
-		public DestinationCallback() {
-			callbacks = new DestinationDelegate[Enum.GetValues(typeof(Minor)).Length];
-		}
+        private readonly DestinationDelegate[] _callbacks;
 
-		public DestinationDelegate this[Minor c] {
-			get {
-				return callbacks[(int)c];
-			}
+        public DestinationCallback () { _callbacks = new DestinationDelegate[Enum.GetValues (typeof(Minor)).Length]; }
 
-			set {
-				callbacks[(int)c] = value;
-			}
-		}
-	}
+        public DestinationDelegate this [Minor c] { get => _callbacks[(int)c]; set => _callbacks[(int)c] = value; }
+    }
+
 }

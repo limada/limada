@@ -24,7 +24,7 @@
 //
 //
 
-using System;
+
 
 // COMPLETE
 
@@ -33,125 +33,103 @@ namespace Limaki.Common.Text.RTF.Parser {
 #if RTF_LIB
 	public
 #else
-	internal
+    internal
 #endif
-	class Charset {
-		#region Local Variables
-		private CharsetType	id;
-		private CharsetFlags	flags;
-		private Charcode	code;
-		private string		file;
-		#endregion	// Local Variables
+    class Charset {
+        #region Public Constructors
 
-		#region Public Constructors
-		public Charset() {
-			flags = CharsetFlags.Read | CharsetFlags.Switch;
-			id = CharsetType.General;
-			file = string.Empty;
-			this.ReadMap();
-		}
-		#endregion	// Public Constructors
+        public Charset () {
+            Flags = CharsetFlags.Read | CharsetFlags.Switch;
+            _id = CharsetType.General;
+            _file = string.Empty;
+            ReadMap ();
+        }
 
-		#region Public Instance Properties
-		public Charcode Code {
-			get {
-				return code;
-			}
+        #endregion	// Public Constructors
 
-			set {
-				code = value;
-			}
-		}
+        #region Local Variables
 
-		public CharsetFlags Flags {
-			get {
-				return flags;
-			}
+        private CharsetType _id;
+        private string _file;
 
-			set {
-				flags = value;
-			}
-		}
+        #endregion	// Local Variables
 
-		public CharsetType ID {
-			get {
-				return id;
-			}
+        #region Public Instance Properties
 
-			set {
-				switch(value) {
-					case CharsetType.Symbol: {
-						id = CharsetType.Symbol;
-						return;
-					}
+        public Charcode Code { get; set; }
 
-					default:
-					case CharsetType.General: {
-						id = CharsetType.General;
-						return;
-					}
-				}
-			}
-		}
+        public CharsetFlags Flags { get; set; }
 
-		public string File {
-			get {
-				return file;
-			}
+        public CharsetType ID {
+            get => _id;
+            set {
+                switch (value) {
+                    case CharsetType.Symbol: {
+                        _id = CharsetType.Symbol;
+                        return;
+                    }
 
-			set {
-				if (file != value) {
-					file = value;
-				}
-			}
-		}
+                    default:
+                    case CharsetType.General: {
+                        _id = CharsetType.General;
+                        return;
+                    }
+                }
+            }
+        }
 
-		public StandardCharCode this[int c] {
-			get {
-				return code[c];
-			}
-		}
+        public string File {
+            get => _file;
+            set {
+                if (_file != value) _file = value;
+            }
+        }
 
-		#endregion	// Public Instance Properties
+        public StandardCharCode this [int c] => Code[c];
 
-		#region Public Instance Methods
-		public bool ReadMap() {
-			switch (id) {
-				case CharsetType.General: {
-					if (file == string.Empty) {
-						code = Charcode.AnsiGeneric;
-						return true;
-					}
-					// FIXME - implement reading charmap from file...
-					return true;
-				}
+        #endregion	// Public Instance Properties
 
-				case CharsetType.Symbol: {
-					if (file == string.Empty) {
-						code = Charcode.AnsiSymbol;
-						return true;
-					}
+        #region Public Instance Methods
 
-					// FIXME - implement reading charmap from file...
-					return true;
-				}
+        public bool ReadMap () {
+            switch (_id) {
+                case CharsetType.General: {
+                    if (_file == string.Empty) {
+                        Code = Charcode.AnsiGeneric;
+                        return true;
+                    }
 
-				default: {
-					return false;
-				}
-			}
-		}
+                    // FIXME - implement reading charmap from file...
+                    return true;
+                }
 
-		public char StdCharCode(string name) {
-			// FIXME - finish this
-			return ' ';
-			
-		}
+                case CharsetType.Symbol: {
+                    if (_file == string.Empty) {
+                        Code = Charcode.AnsiSymbol;
+                        return true;
+                    }
 
-		public string StdCharName(char code) {
-			// FIXME - finish this
-			return String.Empty;
-		}
-		#endregion	// Public Instance Methods
-	}
+                    // FIXME - implement reading charmap from file...
+                    return true;
+                }
+
+                default: {
+                    return false;
+                }
+            }
+        }
+
+        public char StdCharCode (string name) {
+            // FIXME - finish this
+            return ' ';
+        }
+
+        public string StdCharName (char code) {
+            // FIXME - finish this
+            return string.Empty;
+        }
+
+        #endregion	// Public Instance Methods
+    }
+
 }

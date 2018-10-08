@@ -30,183 +30,108 @@ using System;
 
 namespace Limaki.Common.Text.RTF.Parser {
 
+    public class Style {
+        #region Constructors
 
-	public
+        public Style (Rtf rtf) {
+            Num = -1;
+            Type = StyleType.Paragraph;
+            BasedOn = NoStyleNum;
+            NextPar = -1;
 
-	class Style {
-		#region Local Variables
-		public const int	NoStyleNum = 222;
-		public const int	NormalStyleNum = 0;
+            lock (rtf) {
+                if (rtf.Styles == null) {
+                    rtf.Styles = this;
+                } else {
+                    var s = rtf.Styles;
+                    while (s.next != null)
+                        s = s.next;
+                    s.next = this;
+                }
+            }
+        }
 
-		private string		internalName;
-		private StyleType	type;
-		private bool		additive;
-		private int		num;
-		private int		based_on;
-		private int		next_par;
-		private bool		expanding;
-		private StyleElement	elements;
-		private Style		next;
-		#endregion Local Variables
+        #endregion	// Constructors
 
-		#region Constructors
-		public Style(Parser.RTF rtf) {
-			num = -1;
-			type = StyleType.Paragraph;
-			based_on = NoStyleNum;
-			next_par = -1;
+        #region Local Variables
 
-			lock (rtf) {
-				if (rtf.Styles == null) {
-					rtf.Styles = this;
-				} else {
-					Style s = rtf.Styles;
-					while (s.next != null)
-						s = s.next;
-					s.next = this;
-				}
-			}
-		}
-		#endregion	// Constructors
+        public const int NoStyleNum = 222;
+        public const int NormalStyleNum = 0;
 
-		#region Properties
-		public string InternalName {
-			get {
-				return internalName;
-			}
+        private Style next;
 
-			set {
-				internalName = value;
-			}
-		}
+        #endregion Local Variables
+
+        #region Properties
+
+        public string InternalName { get; set; }
 
         public string Name { get; set; }
 
-		public StyleType Type {
-			get {
-				return type;
-			}
+        public StyleType Type { get; set; }
 
-			set {
-				type = value;
-			}
-		}
+        public bool Additive { get; set; }
 
-		public bool Additive {
-			get {
-				return additive;
-			}
+        public int BasedOn { get; set; }
 
-			set {
-				additive = value;
-			}
-		}
+        public StyleElement Elements { get; set; }
 
-		public int BasedOn {
-			get {
-				return based_on;
-			}
+        public bool Expanding { get; set; }
 
-			set {
-				based_on = value;
-			}
-		}
+        public int NextPar { get; set; }
 
-		public StyleElement Elements {
-			get {
-				return elements;
-			}
+        public int Num { get; set; }
 
-			set {
-				elements = value;
-			}
-		}
+        #endregion	// Properties
 
-		public bool Expanding {
-			get {
-				return expanding;
-			}
+        #region Methods
 
-			set {
-				expanding = value;
-			}
-		}
+        public void Expand (Rtf rtf) {
+            if (Num == -1) return;
 
-		public int NextPar {
-			get {
-				return next_par;
-			}
+            if (Expanding) throw new Exception ("Recursive style expansion");
+            Expanding = true;
 
-			set {
-				next_par = value;
-			}
-		}
+            if (Num != BasedOn) {
+                rtf.SetToken (TokenClass.Control, Major.ParAttr, Minor.StyleNum, BasedOn, "\\s");
+                rtf.RouteToken ();
+            }
 
-		public int Num {
-			get {
-				return num;
-			}
+            var se = Elements;
+            while (se != null) {
+                rtf.TokenClass = se.TokenClass;
+                rtf.Major = se.Major;
+                rtf.Minor = se.Minor;
+                rtf.Param = se.Param;
+                rtf.Text = se.Text;
+                rtf.RouteToken ();
+            }
 
-			set {
-				num = value;
-			}
-		}
-		#endregion	// Properties
+            Expanding = false;
+        }
 
-		#region Methods
-		public void Expand(Parser.RTF rtf) {
-			StyleElement	se;
+        public static Style GetStyle (Rtf rtf, int styleNumber) {
+            Style s;
 
-			if (num == -1) {
-				return;
-			}
+            lock (rtf) {
+                s = GetStyle (rtf.Styles, styleNumber);
+            }
 
-			if (expanding) {
-				throw new Exception("Recursive style expansion");
-			}
-			expanding = true;
+            return s;
+        }
 
-			if (num != based_on) {
-				rtf.SetToken(TokenClass.Control, Major.ParAttr, Minor.StyleNum, based_on, "\\s");
-				rtf.RouteToken();
-			}
+        public static Style GetStyle (Style start, int styleNumber) {
+            Style s;
 
-			se = elements;
-			while (se != null) {
-				rtf.TokenClass = se.TokenClass;
-				rtf.Major = se.Major;
-				rtf.Minor = se.Minor;
-				rtf.Param = se.Param;
-				rtf.Text = se.Text;
-				rtf.RouteToken();
-			}
+            if (styleNumber == -1) return start;
 
-			expanding = false;
-		}
+            s = start;
 
-		static public Style GetStyle(Parser.RTF rtf, int style_number) {
-			Style s;
+            while (s != null && s.Num != styleNumber) s = s.next;
+            return s;
+        }
 
-			lock (rtf) {
-				s = GetStyle(rtf.Styles, style_number);
-			}
-			return s;
-		}
+        #endregion	// Methods
+    }
 
-		static public Style GetStyle(Style start, int style_number) {
-			Style	s;
-
-			if (style_number == -1) {
-				return start;
-			}
-
-			s = start;
-
-			while ((s != null) && (s.num != style_number)) {
-				s = s.next;
-			}
-			return s;
-		}
-		#endregion	// Methods
-	}
 }

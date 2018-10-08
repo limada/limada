@@ -32,23 +32,14 @@ using System;
 
 namespace Limaki.Common.Text.RTF.Parser {
 
-	public delegate void ClassDelegate(Parser.RTF sender);
+    public delegate void ClassDelegate (Rtf sender);
 
-	public class ClassCallback {
-		ClassDelegate[]	callbacks;
+    public class ClassCallback {
+        private readonly ClassDelegate[] _callbacks;
 
-		public ClassCallback() {
-			callbacks = new ClassDelegate[Enum.GetValues(typeof(Major)).Length];
-		}
+        public ClassCallback () { _callbacks = new ClassDelegate[Enum.GetValues (typeof(Major)).Length]; }
 
-		public ClassDelegate this[TokenClass c] {
-			get {
-				return callbacks[(int)c];
-			}
+        public ClassDelegate this [TokenClass c] { get => _callbacks[(int)c]; set => _callbacks[(int)c] = value; }
+    }
 
-			set {
-				callbacks[(int)c] = value;
-			}
-		}
-	}
 }

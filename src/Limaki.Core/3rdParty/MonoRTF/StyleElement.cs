@@ -28,93 +28,40 @@
 
 namespace Limaki.Common.Text.RTF.Parser {
 
+    public class StyleElement {
 
-	public
+        public StyleElement (Style s, TokenClass tokenClass, Major major, Minor minor, int param, string text) {
+            TokenClass = tokenClass;
+            Major = major;
+            Minor = minor;
+            Param = param;
+            Text = text;
 
-	class StyleElement {
-		#region Local Variables
-		private TokenClass	token_class;
-		private Major		major;
-		private Minor		minor;
-		private int		param;
-		private string		text;
-		private StyleElement	next;
-		#endregion Local Variables
+            lock (s) {
+                if (s.Elements == null) {
+                    s.Elements = this;
+                } else {
+                    var se = s.Elements;
+                    while (se._next != null)
+                        se = se._next;
+                    se._next = this;
+                }
+            }
+        }
 
-		#region Constructors
-		public StyleElement(Style s, TokenClass token_class, Major major, Minor minor, int param, string text) {
-			this.token_class = token_class;
-			this.major = major;
-			this.minor = minor;
-			this.param = param;
-			this.text = text;
+        private StyleElement _next;
 
-			lock (s) {
-				if (s.Elements == null) {
-					s.Elements = this;
-				} else {
-					StyleElement se = s.Elements;
-					while (se.next != null)
-						se = se.next;
-					se.next = this;
-				}
-			}
-		}
-		#endregion	// Constructors
+        public TokenClass TokenClass { get; set; }
 
-		#region Properties
-		public TokenClass TokenClass {
-			get {
-				return token_class;
-			}
+        public Major Major { get; set; }
 
-			set {
-				token_class = value;
-			}
-		}
+        public Minor Minor { get; set; }
 
-		public Major Major {
-			get {
-				return major;
-			}
+        public int Param { get; set; }
 
-			set {
-				major = value;
-			}
-		}
+        public string Text { get; set; }
 
-		public Minor Minor {
-			get {
-				return minor;
-			}
 
-			set {
-				minor = value;
-			}
-		}
+    }
 
-		public int Param {
-			get {
-				return param;
-			}
-
-			set {
-				param = value;
-			}
-		}
-
-		public string Text {
-			get {
-				return text;
-			}
-
-			set {
-				text = value;
-			}
-		}
-		#endregion	// Properties
-
-		#region	Methods
-		#endregion	// Methods
-	}
 }
