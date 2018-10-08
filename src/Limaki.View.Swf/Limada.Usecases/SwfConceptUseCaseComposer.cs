@@ -19,7 +19,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limada.View.ContentViewers;
 using Limaki.View.ContentViewers;
 using Limaki.View.SwfBackend;

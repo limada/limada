@@ -36,7 +36,7 @@ using System.Windows.Forms;
 using Xwt;
 using Xwt.Backends;
 using Limaki.View.Viz.Visualizers;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limada.Usecases;
 using Limaki.View.Common;
 

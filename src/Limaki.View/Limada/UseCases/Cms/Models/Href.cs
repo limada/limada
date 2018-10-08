@@ -1,4 +1,4 @@
-﻿namespace Limada.UseCases.Cms.Models {
+﻿namespace Limada.Usecases.Cms.Models {
 
     public class Href {
 

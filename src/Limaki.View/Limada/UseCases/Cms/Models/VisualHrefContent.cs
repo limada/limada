@@ -2,7 +2,7 @@
 using Limaki.View.Visuals;
 using System.Collections.Generic;
 
-namespace Limada.UseCases.Cms.Models {
+namespace Limada.Usecases.Cms.Models {
 
     public class VisualHrefContent {
 

@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 using Limada.Usecases;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.Tests.View.Winform;
 
 namespace Limaki.Tests.UseCases {

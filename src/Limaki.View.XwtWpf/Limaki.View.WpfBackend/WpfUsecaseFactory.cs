@@ -20,7 +20,7 @@ using System.Windows.Controls;
 using Xwt.Backends;
 using System.Linq;
 using System.Windows;
-using Limada.UseCases;
+using Limada.Usecases;
 
 namespace Limaki.View.WpfBackend {
 

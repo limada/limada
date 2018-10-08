@@ -14,7 +14,7 @@
 
 using Limada.Usecases;
 using Limaki.Common.IOC;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.Tests.UseCases;
 using Limaki.Usecases;
 using Limaki.View;

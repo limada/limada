@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System;
 using System.IO;
 
-namespace Limada.UseCases.Cms {
+namespace Limada.Usecases.Cms {
 
     public class AppController {
 

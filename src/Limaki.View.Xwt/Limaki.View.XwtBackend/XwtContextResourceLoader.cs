@@ -28,7 +28,7 @@ using Limaki.View.XwtBackend;
 using Xwt;
 using Xwt.Backends;
 using System.Diagnostics;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.Contents.IO;
 using Limaki.View.Common;
 

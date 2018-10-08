@@ -12,7 +12,7 @@
  * 
  */
 
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.Usecases;
 using System.Linq;
 using Limaki.View.XwtBackend;

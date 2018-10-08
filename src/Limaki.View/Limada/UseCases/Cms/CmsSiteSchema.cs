@@ -1,7 +1,7 @@
 ﻿using Limada.Model;
 using Limada.Schemata;
 
-namespace Limada.UseCases.Cms {
+namespace Limada.Usecases.Cms {
 
     public class CmsSiteSchema : Schema {
         public static readonly IThing ChannelRoot = Thing<string> ("Channels", 0x235e97a79cdd3716);

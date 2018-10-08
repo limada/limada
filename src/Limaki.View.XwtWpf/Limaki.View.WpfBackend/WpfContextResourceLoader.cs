@@ -16,7 +16,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limada.View.Vidgets;
 using Limaki.Common;
 using Limaki.Common.IOC;

@@ -1,7 +1,7 @@
 ﻿using Limaki.Contents;
 using System.Collections.Generic;
 
-namespace Limada.UseCases.Cms.Models {
+namespace Limada.Usecases.Cms.Models {
 
     public class ContentAndLinks {
         public Content Content { get; set; }
