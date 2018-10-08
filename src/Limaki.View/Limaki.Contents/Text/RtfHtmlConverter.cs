@@ -19,10 +19,15 @@ using System.Linq;
 using System.Text;
 using Limaki.Common;
 using Limaki.Common.Text.HTML;
+using Limaki.Common.Text.RTF;
 
 namespace Limaki.Contents.Text {
 
-    public class RtfHtmlConverter : HtmlConverterBase {
+    public interface IAdobeRtfFilterConverter { 
+        bool UseAdobeFilter { get; set; }
+    }
+
+    public class RtfHtmlConverter : HtmlConverterBase, IAdobeRtfFilterConverter {
 
         public override IEnumerable<Tuple<long, long>> SupportedTypes { get { yield return Tuple.Create (ContentTypes.RTF, ContentTypes.HTML); } }
 
@@ -32,10 +37,21 @@ namespace Limaki.Contents.Text {
             return -1;
         }
 
+        public bool UseAdobeFilter { get; set; } = false;
+
         public override string ToHtml (Stream source) {
+            var stream = source;
             var doc = new HtmlDocument ();
-            var importer = new RtfImporter (source, doc);
+            if (UseAdobeFilter) {
+                var filter = new AdobeRTFFilter ();
+                if (filter.IsAdobeRTF (source)) {
+                    stream = filter.RemoveAdobeParagraphTags (source);
+                }
+            }
+            var importer = new RtfImporter (stream, doc);
             importer.Import ();
+            if (stream != source)
+                stream.Dispose ();
             return doc.Body;
         }
 
