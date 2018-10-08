@@ -315,6 +315,15 @@ namespace Db4objects.Db4o.Internal
             return null != Type.GetType("System.MonoType, mscorlib");
         }
 
+        private static bool? _isnetcore;
+
+        public static bool IsNetCore () {
+            if (_isnetcore == null) {
+                _isnetcore = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToLower ().Contains ("core");
+            }
+            return _isnetcore.Value;
+        }
+
         public static Object GetTypeForClass(Object obj)
         {
             return obj;

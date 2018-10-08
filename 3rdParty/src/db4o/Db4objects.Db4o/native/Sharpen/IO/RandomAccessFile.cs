@@ -81,7 +81,7 @@ namespace Sharpen.IO
 		    _stream.Flush();
 
 #if !CF && !MONO && !SILVERLIGHT
-            if (!Platform4.IsMono())
+            if (!Platform4.IsMono() && ! Platform4.IsNetCore ())
 		        FlushFileBuffers(_stream.SafeFileHandle);
 		
 #endif
