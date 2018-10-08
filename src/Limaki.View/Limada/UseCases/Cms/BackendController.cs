@@ -15,7 +15,7 @@
 using Limada.IO;
 using Limada.Model;
 using Limada.Schemata;
-using Limada.UseCases.Cms.Models;
+using Limada.Usecases.Cms.Models;
 using Limada.View;
 using Limada.View.VisualThings;
 using Limaki.Common;
@@ -32,10 +32,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Limaki.Drawing.Styles;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using System.Net;
+using Limaki.Contents.Text;
 
-namespace Limada.UseCases.Cms {
+namespace Limada.Usecases.Cms {
 
     public class BackendController {
 
@@ -301,8 +302,17 @@ namespace Limada.UseCases.Cms {
                             .Find (thing.StreamType, sinkType);
                     if (converter != null) {
                         var source = thing.ContentOf ();
-                        using (var reader = new StreamReader (converter.Use (source, sinkType).Data))
-                            result.Data = reader.ReadToEnd ();
+                        if (converter is IAdobeRtfFilterConverter adbC) {
+                            adbC.UseAdobeFilter = true;
+                        }
+                        if (converter is IHtmlConverter htmlConverter) {
+                            htmlConverter.UseHtmlHeaderTags = false;
+                            result.Data = htmlConverter.ToHtml (source.Data);
+                        } else {
+                            using (var reader = new StreamReader (converter.Use (source, sinkType).Data))
+                                result.Data = reader.ReadToEnd ();
+                        }
+
                         source.Data.Dispose ();
                     }
                 }
