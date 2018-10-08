@@ -14,7 +14,7 @@ namespace Limaki.Tests.Common.Rtf {
         [Test]
         public void TestParse () {
 
-            var rtf = new RTF (ByteUtils.AsAsciiStream (RtfTestData.WordGame));
+            var rtf = new Limaki.Common.Text.RTF.Parser.Rtf (ByteUtils.AsAsciiStream (RtfTestData.WordGame));
 
             rtf.ClassCallback[TokenClass.Control] = r => {
                 if (r.Major == Major.CharAttr) {

@@ -4,12 +4,18 @@ using Limaki.UnitTest;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Common.Rtf {
+    
     [TestFixture]
     public class RtfImporterTest : DomainTest {
         [Test]
         public void TestParseHtml () {
             var doc = new HtmlDocument ();
-            var importer = new RtfImporter (ByteUtils.AsAsciiStream (RtfTestData.WordGameUmlaut), doc);
+            var importer = new RtfImporter (ByteUtils.AsAsciiStream (RtfTestData.TocAndPmTags), doc);
+            importer.Import ();
+            ReportDetail (doc.Body);
+
+            doc = new HtmlDocument ();
+            importer = new RtfImporter (ByteUtils.AsAsciiStream (RtfTestData.WordGameUmlaut), doc);
             importer.Import ();
             ReportDetail (doc.Body);
         }
