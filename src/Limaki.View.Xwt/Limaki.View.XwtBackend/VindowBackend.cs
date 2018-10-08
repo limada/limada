@@ -17,7 +17,7 @@ namespace Limaki.View.XwtBackend {
 
         void IVidgetBackend.QueueDraw () { }
 
-        void IVidgetBackend.QueueDraw(Rectangle rect) { }
+        void IVidgetBackend.QueueDraw (Rectangle rect) { }
 
         void IVidgetBackend.SetFocus () { }
 
@@ -30,14 +30,22 @@ namespace Limaki.View.XwtBackend {
         IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
 
         void IVindowBackend.SetContent (IVidget value) {
-			this.SetContent (value);
+            this.SetContent (value);
         }
 
         IVidgetEventSink EventSink { get; set; }
         public void InitializeEvents (IVidgetEventSink eventSink) {
-            EventSink = eventSink;    
+            EventSink = eventSink;
         }
 
         public string ToolTipText { get; set; }
+        // TODO:
+        CursorType IVindowBackend.Cursor {
+            get => Content?.Cursor ?? CursorType.Arrow;
+            set {
+                if (Content != null)
+                    Content.Cursor = value;
+            }
+        }
     }
 }

@@ -12,17 +12,22 @@
  * 
  */
 
+using Xwt;
 using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
 
     public interface IVindow : IVidget {
         IVidget Content { get; set; }
+        string Title { get; set; }
+        Xwt.CursorType Cursor { get; set; }
         void Show();
     }
 
     public interface IVindowBackend : IVidgetBackend {
         void SetContent (IVidget value);
+        string Title { get; set; }
+        Xwt.CursorType Cursor { get; set; }
         new Xwt.Size Size { get; set; }
         void Show ();
     }
@@ -48,6 +53,10 @@ namespace Limaki.View.Vidgets {
         public override void Dispose() { }
 
         public new Xwt.Size Size { get { return Backend.Size; } set { Backend.Size = value; } }
+
+        public string Title { get => Backend.Title; set => Backend.Title = value; }
+
+        public CursorType Cursor { get => Backend.Cursor; set => Backend.Cursor = value; }
 
         public void Show () {
             Backend.Show();

@@ -1,4 +1,5 @@
 using Limaki.View.Vidgets;
+using Xwt;
 
 namespace Limaki.View.Headless.VidgetBackends {
 
@@ -11,6 +12,10 @@ namespace Limaki.View.Headless.VidgetBackends {
         }
 
         public new IVindow Frontend { get; protected set; }
+
+        public string Title { get; set; }
+
+        public CursorType Cursor { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = frontend as IVindow;

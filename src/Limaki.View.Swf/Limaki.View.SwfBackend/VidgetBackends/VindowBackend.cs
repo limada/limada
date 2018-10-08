@@ -15,10 +15,15 @@
 using System;
 using System.Windows.Forms;
 using Limaki.View.Vidgets;
+using Xwt;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
     public class VindowBackend : VidgetBackend<Form>, IVindowBackend {
+        
+        public string Title { get => Control.Text; set => Control.Text = value; }
+        // TODO:
+        public CursorType Cursor { get; set; } = CursorType.Arrow;
 
         public void SetContent (IVidget value) {
             var backend = value.Backend.ToSwf ();
