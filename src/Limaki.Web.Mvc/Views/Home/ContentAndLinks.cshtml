@@ -1,25 +1,25 @@
-﻿@model Limada.UseCases.Cms.Models.ContentAndLinks
-@using Limada.UseCases.Cms.Models
+﻿@model Limada.Usecases.Cms.Models.ContentAndLinks
+@using Limada.Usecases.Cms.Models
 @{
     <!-- example for special behavior of custom data: -->
     if (Model.Content.Source.ToString () == "customSource") {
         Model.Leafs = Model.Leafs.OrderByDescending (l => l.Text);
     }
 
-    if (Model.Content is HtmlContent) {
+    if (Model.Content is HtmlContent content) {
         @:<div>
         Html.RenderPartial ("HeaderWithHrefs", Model.Roots);
         @:</div>
 
 
         @:<div>
-            @(Html.Raw (((HtmlContent) Model.Content).Data));
+        @(Html.Raw (content.Data));
         @:</div>
 
 
         @:<div class="link-box">
         foreach (var link in Model.Leafs) {
-            @(Html.ActionLink (link.Text, "Index", link.Id));
+            @(Html.ActionLink (link.Text, "Index", new {Id=link.Id}));
             <text>&nbsp;</text>
         }
         @:</div>
@@ -35,7 +35,7 @@
 
         foreach (var link in Model.Leafs) {
             <div>
-                @(Html.ActionLink (link.Text, "Index", link.Id))
+                @(Html.ActionLink (link.Text, "Index", new {Id=link.Id}))
             </div>
 
         }

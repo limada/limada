@@ -1,14 +1,16 @@
 ﻿using System.IO;
+using System.Text;
 using Limada.IO;
 using Limaki;
 using Limaki.Common.IOC;
 using Limaki.Contents;
 using Limaki.Contents.IO;
 using Limaki.Data;
-using Limada.UseCases.Cms;
+using Limada.Usecases.Cms;
 using Limaki.View;
 using Limaki.View.Html5;
 using Limaki.ImageLibs;
+using Microsoft.Extensions.Configuration;
 
 namespace Limada.Usecases.Cms {
 
@@ -21,6 +23,8 @@ namespace Limada.Usecases.Cms {
 			if (Applied)
 				return;
 
+	        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+	        
             new LimakiCoreContextResourceLoader ().ApplyResources (context);
             new Html5ContextResourceLoader().ApplyHtml5Resources (context);
             new ViewContextResourceLoader ().ApplyResources (context);
@@ -29,8 +33,6 @@ namespace Limada.Usecases.Cms {
             thingGraphContentPool.Add(new Db4oThingGraphIo());
             thingGraphContentPool.Add(new XmlThingGraphIo());
 
-            context.Pooled<AppController>()
-                .AppSettingsGetter = () => System.Web.Configuration.WebConfigurationManager.AppSettings;
 
 			Applied = true;
         }
