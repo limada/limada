@@ -38,11 +38,11 @@ namespace Limaki.Contents.Text {
 
     public class RtfImporter {
         IDocument document = null;
-        Common.Text.RTF.Parser.RTF rtfParser = null;
+        Common.Text.RTF.Parser.Rtf rtfParser = null;
         Stream stream = null;
         public RtfImporter (Stream stream, IDocument document) {
             this.stream = stream;
-            this.rtfParser = new Common.Text.RTF.Parser.RTF (stream);
+            this.rtfParser = new Common.Text.RTF.Parser.Rtf (stream);
             this.document = document;
             _style = new RtfSectionStyle ();
         }
@@ -91,7 +91,7 @@ namespace Limaki.Contents.Text {
                 rtfParser.Read ();    // That's it
                 FlushText (rtfParser, false);
 
-            } catch (RTFException e) {
+            } catch (RtfException e) {
 #if DEBUG
                 throw e;
 #endif
@@ -143,7 +143,7 @@ namespace Limaki.Contents.Text {
                 _line.Append (str);
         }
 
-        private void FlushText (RTF rtf, bool newline) {
+        private void FlushText (Rtf rtf, bool newline) {
             var length = _line.Length;
             if (!newline && (length == 0)) {
                 document.Add (null, null, 0, newline);
@@ -164,7 +164,7 @@ namespace Limaki.Contents.Text {
                 if ((color == null) || (color.Red == -1 && color.Green == -1 && color.Blue == -1)) {
                     _style.Color = SystemColors.WindowText;
                 } else {
-                    _style.Color = XD.Color.FromBytes ((byte) color.Red, (byte) color.Green, (byte) color.Blue);
+                    _style.Color = XD.Color.FromBytes ((byte)color.Red, (byte)color.Green, (byte)color.Blue);
                 }
 
             }
@@ -184,7 +184,7 @@ namespace Limaki.Contents.Text {
 
         // To allow us to keep track of the sections and revert formatting
         // as we go in and out of sections of the document.
-        private void HandleGroup (Common.Text.RTF.Parser.RTF rtf) {
+        private void HandleGroup (Common.Text.RTF.Parser.Rtf rtf) {
             //start group - save the current formatting on to a stack
             //end group - go back to the formatting at the current group
             if (_sectionStack == null) {
@@ -200,7 +200,7 @@ namespace Limaki.Contents.Text {
                 if (_sectionStack.Count > 0) {
                     FlushText (rtf, false);
 
-                    _style = (RtfSectionStyle) _sectionStack.Pop ();
+                    _style = (RtfSectionStyle)_sectionStack.Pop ();
                 }
             }
         }
@@ -208,7 +208,7 @@ namespace Limaki.Contents.Text {
         private XD.Color ForeColor = SystemColors.WindowText;
         private int DpiX = 100;
 
-        private void HandleControl (Common.Text.RTF.Parser.RTF rtf) {
+        private void HandleControl (Common.Text.RTF.Parser.Rtf rtf) {
             switch (rtf.Major) {
                 case Major.Unicode: {
                         switch (rtf.Minor) {
@@ -220,7 +220,7 @@ namespace Limaki.Contents.Text {
                             case Minor.UnicodeChar: {
                                     FlushText (rtf, false);
                                     _skipCount += _style.SkipWidth;
-                                    _line.Append ((char) rtf.Param);
+                                    _line.Append ((char)rtf.Param);
                                     break;
                                 }
                         }
@@ -264,7 +264,7 @@ namespace Limaki.Contents.Text {
                                         if (color.Red == -1 && color.Green == -1 && color.Blue == -1) {
                                             this._style.Color = ForeColor;
                                         } else {
-                                            this._style.Color = XD.Color.FromBytes ((byte) color.Red, (byte) color.Green, (byte) color.Blue);
+                                            this._style.Color = XD.Color.FromBytes ((byte)color.Red, (byte)color.Green, (byte)color.Blue);
                                         }
                                     }
 
@@ -291,7 +291,7 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.Bold: {
-                                    if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
+                                    if (rtf.Param == Common.Text.RTF.Parser.Rtf.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Bold;
                                     } else {
                                         _style.SectionAttribute &= ~SectionAttribute.Bold;
@@ -300,7 +300,7 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.Italic: {
-                                    if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
+                                    if (rtf.Param == Common.Text.RTF.Parser.Rtf.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Italic;
                                     } else {
                                         _style.SectionAttribute &= ~SectionAttribute.Italic;
@@ -309,7 +309,7 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.StrikeThru: {
-                                    if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
+                                    if (rtf.Param == Common.Text.RTF.Parser.Rtf.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Strikeout;
                                     } else {
                                         _style.SectionAttribute &= ~SectionAttribute.Strikeout;
@@ -318,7 +318,7 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.Underline: {
-                                    if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
+                                    if (rtf.Param == Common.Text.RTF.Parser.Rtf.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Underline;
                                     } else {
                                         _style.SectionAttribute &= ~SectionAttribute.Underline;
@@ -327,7 +327,7 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.SubScrShrink: {
-                                    if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
+                                    if (rtf.Param == Common.Text.RTF.Parser.Rtf.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Subscript;
                                     } else {
                                         _style.SectionAttribute &= ~SectionAttribute.Subscript;
@@ -336,7 +336,7 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.SuperScrShrink: {
-                                    if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
+                                    if (rtf.Param == Common.Text.RTF.Parser.Rtf.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Superscript;
                                     } else {
                                         _style.SectionAttribute &= ~SectionAttribute.Superscript;
@@ -368,7 +368,7 @@ namespace Limaki.Contents.Text {
 
                             case Minor.LeftIndent:
                                 _style.ParLineLeftIndent =
-                                    (int) (((float) rtf.Param / 1440.0F) * DpiX + 0.5F);
+                                    (int)(((float)rtf.Param / 1440.0F) * DpiX + 0.5F);
                                 break;
 
                             case Minor.QuadCenter:
