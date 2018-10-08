@@ -53,8 +53,7 @@ namespace Limaki.View.XwtBackend {
 
             if (textType == TextViewerTextType.RichText) {
                 var converterPool = Registry.Pooled<ConverterPool<Stream>> ();
-                var converter = converterPool.Find (ContentTypes.RTF, ContentTypes.HTML) as IHtmlConverter;
-                if (converter != null) {
+                if (converterPool.Find (ContentTypes.RTF, ContentTypes.HTML) is IHtmlConverter converter) {
                     html = converter.WithHmtlHeaderTags (stream);
                 }
             }
