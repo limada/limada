@@ -88,7 +88,7 @@ namespace Limaki.Contents.Text {
             TextMap.SetupStandardTable (_textMap.Table);
 
             try {
-                rtfParser.Read ();	// That's it
+                rtfParser.Read ();    // That's it
                 FlushText (rtfParser, false);
 
             } catch (RTFException e) {
@@ -108,10 +108,16 @@ namespace Limaki.Contents.Text {
                 _sectionStack.Clear ();
 
         }
-
-        private void HandleText (Common.Text.RTF.Parser.RTF rtf) {
+#if DEBUG
+        StringBuilder allchars = new StringBuilder();
+#endif        
+        private void HandleText (Common.Text.RTF.Parser.Rtf rtf) {
             var str = rtf.EncodedText;
-
+#if DEBUG
+            if (rtf.EncodedText != null)
+                allchars.Append (rtf.EncodedText);
+#endif            
+            
             //todo - simplistically skips characters, should skip bytes?
             if (_skipCount > 0 && str.Length > 0) {
                 int iToRemove = Math.Min (_skipCount, str.Length);
@@ -150,7 +156,7 @@ namespace Limaki.Contents.Text {
             }
 
             var font = XD.Font.FromName (_style.FontName + " " + _style.FontSize.ToString ());
-                
+
             if (_style.Color == XD.Colors.Black) {
                 // First color in table is default
                 var color = Color.GetColor (rtf, 0);
@@ -165,7 +171,7 @@ namespace Limaki.Contents.Text {
 
             _charCount += _line.Length;
 
-             document.Add (_line.ToString (), _style, _cursorX, newline);
+            document.Add (_line.ToString (), _style, _cursorX, newline);
 
             if (newline) {
                 _cursorX = 0;
@@ -173,7 +179,7 @@ namespace Limaki.Contents.Text {
             } else {
                 _cursorX += length;
             }
-            _line.Length = 0;	// Empty line
+            _line.Length = 0;    // Empty line
         }
 
         // To allow us to keep track of the sections and revert formatting
@@ -222,8 +228,19 @@ namespace Limaki.Contents.Text {
                     }
 
                 case Major.Destination: {
-                        //					Console.Write("[Got Destination control {0}]", rtf.Minor);
-                        rtf.SkipGroup ();
+                        //                    Console.Write("[Got Destination control {0}]", rtf.Minor);
+                        switch (rtf.Minor) {
+                            case Minor.TOC: {
+                                    break;
+                                }
+                            case Minor.OptDest: {
+                                break;
+                            }
+                            default: {
+                                    rtf.SkipGroup ();
+                                    break;
+                                }
+                        }
                         break;
                     }
 
@@ -250,7 +267,7 @@ namespace Limaki.Contents.Text {
                                             this._style.Color = XD.Color.FromBytes ((byte) color.Red, (byte) color.Green, (byte) color.Blue);
                                         }
                                     }
-                                    
+
                                     break;
                                 }
 
@@ -261,7 +278,7 @@ namespace Limaki.Contents.Text {
 
                             case Minor.FontNum: {
                                     var font = Font.GetFont (rtf, rtf.Param);
-                                   
+
                                     if (font != null) {
                                         this._style.FontName = font.Name;
                                     }
@@ -376,16 +393,17 @@ namespace Limaki.Contents.Text {
                         }
                         break;
                     }
-
+                case Major.TOCAttr: {
+                        break;
+                    }
                 case Major.SpecialChar: {
-                        //Console.Write("[Got SpecialChar control {0}]", rtf.Minor);
                         SpecialChar (rtf);
                         break;
                     }
             }
         }
 
-        private void SpecialChar (Common.Text.RTF.Parser.RTF rtf) {
+        private void SpecialChar (Common.Text.RTF.Parser.Rtf rtf) {
             switch (rtf.Minor) {
                 case Minor.Page:
                 case Minor.Sect:
@@ -401,21 +419,23 @@ namespace Limaki.Contents.Text {
                         break;
                     }
 
+                case Minor.EnSpace:
+                case Minor.EmSpace:
                 case Minor.NoBrkSpace: {
-                        Trace.Write (" ");
+                        _line.Append (" ");
                         break;
                     }
 
                 case Minor.Tab: {
                         _line.Append ("\t");
-                        //					FlushText (rtf, false);
+                        //                    FlushText (rtf, false);
                         break;
                     }
 
                 case Minor.NoReqHyphen:
                 case Minor.NoBrkHyphen: {
-                        _line.Append ("-");
-                        //					FlushText (rtf, false);
+                        _line.Append ("\u00AD");
+                        //                    FlushText (rtf, false);
                         break;
                     }
 
@@ -436,30 +456,30 @@ namespace Limaki.Contents.Text {
                         _line.Append ("\u2013");
                         break;
                     }
-                /*
-                                case RTF.Minor.LQuote: {
-                                    Console.Write("\u2018");
-                                    break;
-                                }
 
-                                case RTF.Minor.RQuote: {
-                                    Console.Write("\u2019");
-                                    break;
-                                }
+                case Minor.LQuote: {
+                        _line.Append ("\u2018");
+                        break;
+                    }
 
-                                case RTF.Minor.LDblQuote: {
-                                    Console.Write("\u201C");
-                                    break;
-                                }
+                case Minor.RQuote: {
+                        _line.Append ("\u2019");
+                        break;
+                    }
 
-                                case RTF.Minor.RDblQuote: {
-                                    Console.Write("\u201D");
-                                    break;
-                                }
-                */
+                case Minor.LDblQuote: {
+                        _line.Append ("\u201C");
+                        break;
+                    }
+
+                case Minor.RDblQuote: {
+                        _line.Append ("\u201D");
+                        break;
+                    }
+
                 default: {
-                        //					Console.WriteLine ("skipped special char:   {0}", rtf.Minor);
-                        //					rtf.SkipGroup();
+                        //                    Console.WriteLine ("skipped special char:   {0}", rtf.Minor);
+                        //                    rtf.SkipGroup();
                         break;
                     }
             }
