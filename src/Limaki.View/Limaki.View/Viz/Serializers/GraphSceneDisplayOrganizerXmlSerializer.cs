@@ -4,15 +4,15 @@ using System.Linq;
 using Limaki.Common;
 using Limaki.Common.Linqish;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using System.Xml.Linq;
 using Limada.Model;
 using Limada.View.VisualThings;
 
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
-	public class MeshXmlSerializer : XmlSerializerBase {
+	public class GraphSceneDisplayOrganizerXmlSerializer : XmlSerializerBase {
 		
 		public static class NodeNames {
 			public const string Mesh = "mesh";
@@ -24,15 +24,15 @@ namespace Limada.UseCases {
 			public const string Displays = "displays";
 		}
 		
-		public virtual XElement Write (IGraphSceneDisplayMesh<IVisual, IVisualEdge> mesh) {
+		public virtual XElement Write (IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> organizer) {
 
 			var result = new XElement (NodeNames.Mesh);
 
-			var backHandler = mesh.BackHandler<IThing,ILink>();
+            var interactor = organizer.MapInteractor<IThing,ILink>();
 
 			var thingGraphs = new XElement (NodeNames.Files,
-				backHandler.BackGraphs
-					.Select (g => ThingMeshHelper.GetIori (g))
+				interactor.MappedGraphs
+					.Select (g => ThingMapHelper.GetIori (g))
 					.Where (i => i != null)
 					.Select (i => new XElement (NodeNames.File, Write (NodeNames.Name, i.ToString ()))));
 			result.Add (thingGraphs);
@@ -40,8 +40,8 @@ namespace Limada.UseCases {
 			var displaySerializer = new GraphSceneDisplayXmlSerializer ();
 			var displays = new XElement (NodeNames.Displays);
 
-			foreach (var disp in mesh.Displays.Where(d=>d.Data!=null)) {
-				var iori = ThingMeshHelper.GetIori (backHandler.BackGraphOf (disp.Data.Graph));
+			foreach (var disp in organizer.Displays.Where(d=>d.Data!=null)) {
+				var iori = ThingMapHelper.GetIori (interactor.MappedGraphOf (disp.Data.Graph));
 				if (disp.DataId == 0) {
 					disp.DataId = Isaac.Long;
 				}
@@ -55,7 +55,7 @@ namespace Limada.UseCases {
 	    public IList<GraphSceneDisplayMemento> Displays { get; set; }
 	    public IList<string> FileNames { get; set; }
 
-	    public virtual void Read (XElement parent, IGraphSceneDisplayMesh<IVisual, IVisualEdge> mesh) {
+	    public virtual void Read (XElement parent, IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> organizer) {
 			
 			var node = ReadElement (parent, NodeNames.Mesh);
 			if (node == null)
@@ -67,7 +67,7 @@ namespace Limada.UseCases {
 
             Displays = new List<GraphSceneDisplayMemento> ();
 
-            var displaySerializer = new GraphSceneDisplayXmlSerializer { Mesh = mesh };
+            var displaySerializer = new GraphSceneDisplayXmlSerializer { Organizer = organizer };
 			foreach (var dnode in ReadElements (ReadElement (node, NodeNames.Displays), GraphSceneDisplayXmlSerializer.NodeNames.Display)){
 				var displayMemento = displaySerializer.ReadDisplay (dnode);
 			    Displays.Add (displayMemento);

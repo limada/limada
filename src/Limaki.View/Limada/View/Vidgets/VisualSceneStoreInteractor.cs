@@ -22,20 +22,18 @@ using Limaki.Graphs;
 using Limaki.View;
 using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 
 namespace Limada.View.Vidgets {
 
     /// <summary>
-    /// Scene manager.
-    /// replaces SheetManager
-    /// </summary>
-    public class SceneManager : ISceneManager {
+     /// </summary>
+    public class VisualSceneStoreInteractor : IVisualSceneStoreInteractor {
 
         public SheetStore SheetStore { get; set; } = new SheetStore ();
 
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> _organizer = null;
+        public IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); } }
 
         protected IThingGraph GetThingGraph (IGraph<IVisual, IVisualEdge> graph) {
             var thingGraph = graph.ThingGraph ();
@@ -146,7 +144,7 @@ namespace Limada.View.Vidgets {
                 content.Data.Position = 0;
                 content.Description = name;
 
-                thing = new VisualThingsContentViz ().AssignContent (scene.Graph, thing, content);
+                thing = new VisualThingsContentInteractor ().AssignContent (scene.Graph, thing, content);
 
                 result = SheetStore.RegisterSceneInfo (thing.Id, name);
                 result.State.Hollow = false;
@@ -211,7 +209,7 @@ namespace Limada.View.Vidgets {
 
                 source.Position = 0;
 
-                var scene = Mesh.CreateSinkScene (sourceGraph);
+                var scene = Organizer.CreateSinkScene (sourceGraph);
                 layout = scene.CloneLayout (layout);
 
                 var visuals = new SheetSerializer ().Read (source, scene.Graph, layout);

@@ -18,16 +18,16 @@ using System.Linq;
 using Limaki.Graphs;
 using Limaki.View;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 
-namespace Limaki.View.GraphScene {
+namespace Limaki.View.Viz.Mapping {
 
-    public class GraphSceneDisplayMeshVisitor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneDisplayMeshVisitor<TSinkItem, TSinkEdge>
+    public class GraphSceneDisplayMapVisitor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneDisplayMapVisitor<TSinkItem, TSinkEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public IGraphSceneDisplayMesh<TSinkItem, TSinkEdge> Mesh { get; private set; }
-        public GraphSceneDisplayMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> BackHandler { get; private set; }
+        public IGraphSceneMapDisplayOrganizer<TSinkItem, TSinkEdge> Organizer { get; private set; }
+        public GraphSceneDisplayMapInteractor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> BackHandler { get; private set; }
         public IGraph<TSinkItem, TSinkEdge> SourceGraph { get; private set; }
         public TSinkItem SourceItem { get; private set; }
 
@@ -36,19 +36,19 @@ namespace Limaki.View.GraphScene {
         protected IGraph<TSourceItem, TSourceEdge> BackGraph { get; private set; }
         protected TSourceItem BackItem { get; private set; }
 
-        public GraphSceneDisplayMeshVisitor (
-                IGraphSceneDisplayMesh<TSinkItem, TSinkEdge> mesh, 
-                IGraphSceneDisplayMeshBackHandler<TSinkItem, TSinkEdge> backHandler,
+        public GraphSceneDisplayMapVisitor (
+                IGraphSceneMapDisplayOrganizer<TSinkItem, TSinkEdge> organizer, 
+                IGraphSceneDisplayMapInteractor<TSinkItem, TSinkEdge> backHandler,
                 IGraph<TSinkItem, TSinkEdge> graph, 
                 TSinkItem item) {
 
-            this.Mesh = mesh;
-            this.BackHandler = backHandler as GraphSceneDisplayMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>;
+            this.Organizer = organizer;
+            this.BackHandler = backHandler as GraphSceneDisplayMapInteractor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>;
             this.SourceGraph = graph;
             this.SourceItem = item;
 
-            this.SourceDisplay = Mesh.Displays.FirstOrDefault (d => d.Data.Graph == SourceGraph);
-            this.SourceScene = Mesh.Scenes.FirstOrDefault (s => s.Graph == SourceGraph);
+            this.SourceDisplay = Organizer.Displays.FirstOrDefault (d => d.Data.Graph == SourceGraph);
+            this.SourceScene = Organizer.Scenes.FirstOrDefault (s => s.Graph == SourceGraph);
             this.BackGraph = BackGraphOf (SourceGraph);
             this.BackItem =  BackItemOf (SourceGraph,item);
 
@@ -58,7 +58,7 @@ namespace Limaki.View.GraphScene {
             get {
                 if (BackGraph == null)
                     return new IGraphScene<TSinkItem, TSinkEdge>[0];
-                return Mesh.Scenes.Where (s => s.Graph != SourceGraph && BackGraphOf (s.Graph) == BackGraph);
+                return Organizer.Scenes.Where (s => s.Graph != SourceGraph && BackGraphOf (s.Graph) == BackGraph);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Limaki.View.GraphScene {
                 var sinkGraph = sinkScene.Graph;
                 if (ContainsSinkOf (sinkGraph, BackItem)) {
                     var sinkItem = SinkOf (sinkGraph, BackItem);
-                    var sinkDisplay = Mesh.Displays.FirstOrDefault (d => d != SourceDisplay && d.Data == sinkScene);
+                    var sinkDisplay = Organizer.Displays.FirstOrDefault (d => d != SourceDisplay && d.Data == sinkScene);
 
                     visit (SourceItem, sinkItem, sinkScene, sinkDisplay);
                 }
@@ -90,7 +90,7 @@ namespace Limaki.View.GraphScene {
                     if (sinkItem == null)
                         continue;
 
-                    var sinkDisplay = Mesh.Displays.FirstOrDefault (d => d != SourceDisplay && d.Data == sinkScene);
+                    var sinkDisplay = Organizer.Displays.FirstOrDefault (d => d != SourceDisplay && d.Data == sinkScene);
 
                     visit (sender, args, sinkItem, sinkScene, sinkDisplay);
                 }

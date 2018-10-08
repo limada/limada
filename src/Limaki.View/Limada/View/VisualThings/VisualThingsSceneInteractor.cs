@@ -24,14 +24,14 @@ using Limaki.Common;
 using Limaki.View;
 using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.View.Viz.Modelling;
 
 namespace Limada.View.VisualThings {
 
-	public class VisualThingsSceneVizImpl : ISceneViz<IVisual, IThing, IVisualEdge, ILink> { 
+	public class VisualThingsSceneInteractor : ISceneInteractor<IVisual, IThing, IVisualEdge, ILink> { 
 		
-		public VisualThingsSceneVizImpl () {
+		public VisualThingsSceneInteractor () {
 			UseSchema = true;
 		}
 
@@ -59,15 +59,15 @@ namespace Limada.View.VisualThings {
 			return result;
 		}
 
-		IGraph<IThing, ILink> ISceneViz<IVisual, IThing, IVisualEdge, ILink>.WrapGraph (IGraph<IThing, ILink> source) {
+		IGraph<IThing, ILink> ISceneInteractor<IVisual, IThing, IVisualEdge, ILink>.WrapGraph (IGraph<IThing, ILink> source) {
 			return this.WrapGraph (source as IThingGraph);
 		}
 
-		IGraph<IVisual, IVisualEdge> ISceneViz<IVisual, IThing, IVisualEdge, ILink>.CreateSinkGraph (IGraph<IThing, ILink> source) {
+		IGraph<IVisual, IVisualEdge> ISceneInteractor<IVisual, IThing, IVisualEdge, ILink>.CreateSinkGraph (IGraph<IThing, ILink> source) {
 			return this.CreateVisualGraph (source as IThingGraph);
 		}
 
-		IGraphScene<IVisual, IVisualEdge> ISceneViz<IVisual, IThing, IVisualEdge, ILink>.CreateScene (IGraph<IThing, ILink> source) {
+		IGraphScene<IVisual, IVisualEdge> ISceneInteractor<IVisual, IThing, IVisualEdge, ILink>.CreateScene (IGraph<IThing, ILink> source) {
 			return this.CreateScene (source as IThingGraph);
 		}
 
@@ -164,7 +164,7 @@ namespace Limada.View.VisualThings {
             if (thingGraph == null)
                 throw new NotSupportedException ("Currently only merges of Thing-Backed graphs are supported");
 
-            var meshed = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()
+            var meshed = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()
                 .Scenes.Any (s => s == scene);
 
             var sweepThing = scene.Graph.ThingOf (sweep);

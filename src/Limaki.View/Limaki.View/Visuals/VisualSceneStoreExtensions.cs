@@ -24,7 +24,7 @@ using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using System.Linq;
 using System.Diagnostics;
 using Limaki.View.Common;
@@ -32,30 +32,30 @@ using Xwt.Drawing;
 
 namespace Limaki.View.Visuals {
 
-    public static class SceneManagerExtensions {
+    public static class VisualSceneStoreExtensions {
 
-        static IGraphSceneDisplayMesh<IVisual, IVisualEdge>  _mesh = null;
-        static IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
+        static IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>  _organizer = null;
+        static IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> Organizer { get { return _organizer ?? (_organizer = Registry.Pooled<IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge>> ()); } }
 
-        public static long IdOf (this ISceneManager sceneManager, Content<Stream> content) {
+        public static long IdOf (this IVisualSceneStoreInteractor interactor, Content<Stream> content) {
             return content.Source is Int64 ? (Int64)content.Source : 0;
         }
 
-        public static void Store (this ISceneManager sceneManager, IGraphSceneDisplay<IVisual, IVisualEdge> display) {
+        public static void Store (this IVisualSceneStoreInteractor interactor, IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             if (display != null && display.Data != null && display.Data.Count > 0) {
                 if (display.DataId == 0)
                     display.DataId = Isaac.Long;
 
                 display.Perform ();
-                if (sceneManager.SaveInStore (display.Data, display.Layout, display.DataId)) {
-                    sceneManager.SheetStore.RegisterSceneInfo (display.Info);
+                if (interactor.SaveInStore (display.Data, display.Layout, display.DataId)) {
+                    interactor.SheetStore.RegisterSceneInfo (display.Info);
                 }
             }
         }
 
-        public static bool IsSceneOpen (this ISceneManager sceneManager, long id, bool showMessage = false, bool activateOpenDisplay = false) {
+        public static bool IsSceneOpen (this IVisualSceneStoreInteractor interactor, long id, bool showMessage = false, bool activateOpenDisplay = false) {
 
-            var display = Mesh.Displays.Where (d => d.DataId == id).FirstOrDefault ();
+            var display = Organizer.Displays.Where (d => d.DataId == id).FirstOrDefault ();
             if (display == null)
                 return false;
             var result = true;
@@ -65,7 +65,7 @@ namespace Limaki.View.Visuals {
                 }
 
                 if (showMessage) {
-                    var name = sceneManager.SheetStore.GetSheetInfo (id)?.Name;
+                    var name = interactor.SheetStore.GetSheetInfo (id)?.Name;
                     Xwt.Application.MainLoop.QueueExitAction (() => {
                         Registry.Factory.Create<IMessageBoxShow> ().Show ("Warning", $"Sheet {name ?? ""} is already in use", MessageBoxButtons.None);
                     });
@@ -77,12 +77,12 @@ namespace Limaki.View.Visuals {
 
         }
 
-        public static bool DoLoadDirtyScene (this ISceneManager sceneManager, long id, bool showMessage = false) {
+        public static bool DoLoadDirtyScene (this IVisualSceneStoreInteractor interactor, long id, bool showMessage = false) {
 
             if (id == 0)
                 return false;
             
-            var stored = sceneManager.SheetStore.GetSheetInfo (id);
+            var stored = interactor.SheetStore.GetSheetInfo (id);
             var dirty = stored != null && !stored.State.Clean;
             if (dirty && showMessage) {
                 var dialog = Registry.Factory.Create<IMessageBoxShow> ();
@@ -100,10 +100,10 @@ namespace Limaki.View.Visuals {
         public static void AssignScene (this IGraphSceneDisplay<IVisual, IVisualEdge> display, IGraphScene<IVisual, IVisualEdge> scene, SceneInfo info) {
             if (scene == null || display == null || scene == display.Data)
                 return;
-            Trace.WriteLine ($"{nameof (SceneManagerExtensions)}.{nameof (AssignScene)}:{display.Info} => {info}");
+            Trace.WriteLine ($"{nameof (VisualSceneStoreExtensions)}.{nameof (AssignScene)}:{display.Info} => {info}");
 
-            Mesh.RemoveScene (display.Data);
-            Mesh.AddScene (scene);
+            Organizer.RemoveScene (display.Data);
+            Organizer.AddScene (scene);
 
             display.Data = scene;
             display.Info = info;
@@ -111,45 +111,45 @@ namespace Limaki.View.Visuals {
             display.QueueDraw ();
         }
 
-        public static void AssignScene (this ISceneManager sceneManager, IGraphSceneDisplay<IVisual, IVisualEdge> display, IGraphScene<IVisual, IVisualEdge> scene, SceneInfo info) {
+        public static void AssignScene (this IVisualSceneStoreInteractor interactor, IGraphSceneDisplay<IVisual, IVisualEdge> display, IGraphScene<IVisual, IVisualEdge> scene, SceneInfo info) {
             if (display == null || scene == null)
                 return;
 
             AssignScene (display, scene, info);
-            sceneManager.SheetStore.RegisterSceneInfo (info);
+            interactor.SheetStore.RegisterSceneInfo (info);
         }
 
-        public static void Load (this ISceneManager sceneManager, IGraphSceneDisplay<IVisual, IVisualEdge> display, Int64 id, bool checkOpen = true) {
+        public static void Load (this IVisualSceneStoreInteractor interactor, IGraphSceneDisplay<IVisual, IVisualEdge> display, Int64 id, bool checkOpen = true) {
             
             if (id == 0)
                 return;
 
-            if (checkOpen && sceneManager.IsSceneOpen (id, true, true))
+            if (checkOpen && interactor.IsSceneOpen (id, true, true))
                 return;
             
-            var scene = sceneManager.Load (display.Data.Graph, display.Layout, id);
-            var info = sceneManager.SheetStore.GetSheetInfo (id);
+            var scene = interactor.Load (display.Data.Graph, display.Layout, id);
+            var info = interactor.SheetStore.GetSheetInfo (id);
 
             display.AssignScene (scene, info);
         }
 
-        public static void Load (this ISceneManager sceneManager, IGraphSceneDisplay<IVisual, IVisualEdge> display, Content<Stream> content, bool checkOpen = true) {
+        public static void Load (this IVisualSceneStoreInteractor interactor, IGraphSceneDisplay<IVisual, IVisualEdge> display, Content<Stream> content, bool checkOpen = true) {
 
             if (content == null)
                 return;
 
-            var id = sceneManager.IdOf (content);
+            var id = interactor.IdOf (content);
 
-            if (checkOpen && sceneManager.IsSceneOpen (id, true, true))
+            if (checkOpen && interactor.IsSceneOpen (id, true, true))
                 return;
             
-            var scene = sceneManager.LoadFromContent (content, display.Data.Graph, display.Layout);
-            var info = sceneManager.SheetStore.GetSheetInfo (id);
+            var scene = interactor.LoadFromContent (content, display.Data.Graph, display.Layout);
+            var info = interactor.SheetStore.GetSheetInfo (id);
 
             display.AssignScene (scene, info);
         }
 
-        public static void SaveChanges (this ISceneManager sceneManager, IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, bool ask) {
+        public static void SaveChanges (this IVisualSceneStoreInteractor interactor, IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, bool ask) {
 
             // TODO: use mesh instead of displays
 
@@ -160,8 +160,8 @@ namespace Limaki.View.Visuals {
                     graph = display.Data.Graph;
                 
                 if (display.State.Dirty && !display.State.Hollow && display.Data != null) {
-                    var info = sceneManager.SheetStore.GetSheetInfo (display.DataId) ?? display.Info;
-                    sceneManager.SaveInStore (display.Data, display.Layout, info.Id);
+                    var info = interactor.SheetStore.GetSheetInfo (display.DataId) ?? display.Info;
+                    interactor.SaveInStore (display.Data, display.Layout, info.Id);
                     display.State.CopyTo (info.State);
                 }
             }
@@ -170,9 +170,9 @@ namespace Limaki.View.Visuals {
                 if (info.State.Dirty && !info.State.Hollow) {
                     var saveSheet = !ask || Registry.Pooled<IMessageBoxShow> ().Show ("This sheet has been changed. Do you want to save it?", "Sheet " + info.Name, MessageBoxButtons.YesNo) == DialogResult.Yes;
                     if (saveSheet) {
-                        var sheet = sceneManager.StreamFromStore (info.Id);
+                        var sheet = interactor.StreamFromStore (info.Id);
                         if (sheet != null) {
-                            sceneManager.SaveStreamInGraph (sheet, graph, info);
+                            interactor.SaveStreamInGraph (sheet, graph, info);
                             var display = displays.FirstOrDefault (d => d.DataId == info.Id);
                             if (display != null)
                                 info.State.CopyTo (display.State);
@@ -182,7 +182,7 @@ namespace Limaki.View.Visuals {
             };
 
             if (graph != null)
-                sceneManager.SheetStore.VisitRegisteredSheetInfos (sheetVisitor);
+                interactor.SheetStore.VisitRegisteredSheetInfos (sheetVisitor);
         }
     }
 }

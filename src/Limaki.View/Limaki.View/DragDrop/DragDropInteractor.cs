@@ -31,7 +31,7 @@ using Limaki.View.Common;
 
 namespace Limaki.View.DragDrop {
 
-    public class DragDropViz {
+    public class DragDropInteractor {
 
         TransferDataManager _transferDataManager = null;
         public virtual TransferDataManager DataManager { get { return _transferDataManager ?? (_transferDataManager = Registry.Pooled<TransferDataManager>()); } }
@@ -39,8 +39,8 @@ namespace Limaki.View.DragDrop {
         ContentDiggPool _contentDiggPool = null;
         public virtual ContentDiggPool ContentDiggPool { get { return _contentDiggPool ?? (_contentDiggPool = Registry.Pooled<ContentDiggPool>()); } }
 
-        IVisualContentViz _visualContentViz = null;
-        public IVisualContentViz VisualContentViz { get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentViz>()); } }
+        IVisualContentInteractor _visualContentViz = null;
+        public IVisualContentInteractor VisualContentViz { get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentInteractor>()); } }
 
         public virtual IVisual VisualOfTransferData (IGraph<IVisual, IVisualEdge> graph, ITransferData data) {
             var value = data.GetValue (TransferDataType.FromType (typeof (IVisual)));
@@ -51,7 +51,7 @@ namespace Limaki.View.DragDrop {
 #if TRACE
             var dt = "";
             data.DataTypes.ForEach (d => dt += d.Id + " | ");
-            Trace.WriteLine ($"{nameof(DragDropViz)}.{nameof (VisualOfTransferData)}\t{dt}");
+            Trace.WriteLine ($"{nameof(DragDropInteractor)}.{nameof (VisualOfTransferData)}\t{dt}");
 #endif
             Stream stream = null;
             Content<Stream> content = null;

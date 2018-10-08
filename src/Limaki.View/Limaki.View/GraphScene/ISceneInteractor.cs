@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Limaki.View.GraphScene {
 
-    public interface ISceneViz<TSinkItem, TSinkEdge>
+    public interface ISceneInteractor<TSinkItem, TSinkEdge>
         where TSinkEdge : TSinkItem, IEdge<TSinkItem> {
         
         void Flush (IGraphScene<TSinkItem, TSinkEdge> scene);
@@ -27,7 +27,7 @@ namespace Limaki.View.GraphScene {
         void RevertEdges (IGraphScene<TSinkItem, TSinkEdge> scene);
     }
 
-    public interface ISceneViz<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>: ISceneViz<TSinkItem, TSinkEdge>
+    public interface ISceneInteractor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>: ISceneInteractor<TSinkItem, TSinkEdge>
         where TSinkEdge : TSinkItem, IEdge<TSinkItem>
 		where TSourceEdge : TSourceItem, IEdge<TSourceItem> 
 	{

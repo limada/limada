@@ -9,13 +9,13 @@ using Limaki.Data;
 using Limaki.Graphs;
 using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 using Limaki.Common.Linqish;
 using Limaki.Contents.IO;
 
 namespace Limada.View.VisualThings {
 
-    public static class ThingMeshHelper {
+    public static class ThingMapHelper {
 
         public static Iori GetIori (IGraph<IThing, ILink> g) {
             var graphContent = new ThingGraphContent {Data = g.UnWrapped () as IThingGraph};
@@ -57,36 +57,36 @@ namespace Limada.View.VisualThings {
 
         }
 
-        public static bool HasBackGraph (this IGraphSceneMesh<IVisual, IVisualEdge> mesh) {
-            var backHandler = mesh.BackHandler<IThing, ILink> ();
-            return backHandler.BackGraphs.Any ();
+        public static bool HasMappedGraph (this IGraphSceneMapOrganizer<IVisual, IVisualEdge> mapOrganizer) {
+            var mapInteractor = mapOrganizer.MapInteractor<IThing, ILink> ();
+            return mapInteractor.MappedGraphs.Any ();
         }
 
-        public static IThingGraph BackGraph (this IGraphSceneMesh<IVisual, IVisualEdge> mesh, Iori iori) {
+        public static IThingGraph MappedGraph (this IGraphSceneMapOrganizer<IVisual, IVisualEdge> mapOrganizer, Iori iori) {
 
             IThingGraph thingGraph = null;
 
-            var backHandler = mesh.BackHandler<IThing, ILink> ();
+            var mapInteractor = mapOrganizer.MapInteractor<IThing, ILink> ();
 
             Func<IThingGraph, IThingGraph> register = s => {
                 if (s == null)
                     return null;
-                var g = backHandler.WrapGraph (s) as IThingGraph;
-                backHandler.RegisterBackGraph (g);
+                var g = mapInteractor.WrapGraph (s) as IThingGraph;
+                mapInteractor.RegisterMappedGraph (g);
                 return g;
             };
 
             if (iori != null) {
 
-                thingGraph = backHandler
-                    .BackGraphs
+                thingGraph = mapInteractor
+                    .MappedGraphs
                     .Select (g => new {Iori = GetIori (g), Graph = g})
                     .Where (i => i.Iori != null && i.Iori.ToString () == iori.ToString ())
                     .Select (i => i.Graph as IThingGraph)
                     .FirstOrDefault ();
 
                 if (thingGraph == null) {
-                    thingGraph = register (ThingMeshHelper.OpenGraph (iori));
+                    thingGraph = register (ThingMapHelper.OpenGraph (iori));
                 }
             }
 
@@ -97,49 +97,49 @@ namespace Limada.View.VisualThings {
             return thingGraph;
         }
 
-        public static void ClearDisplays (this IGraphSceneDisplayMesh<IVisual, IVisualEdge> mesh) {
+        public static void ClearDisplays (this IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> organizer) {
 
-            mesh.Displays
+            organizer.Displays
                 .Where (d => d.Data != null)
                 .ToArray ()
                 .ForEach (d => {
-                    mesh.ClearDisplaysOf (d.Data);
-                    mesh.RemoveScene (d.Data);
+                    organizer.ClearDisplaysOf (d.Data);
+                    organizer.RemoveScene (d.Data);
                 });
 
 
-            mesh.Scenes.ToArray ().ForEach (s => mesh.RemoveScene (s));
+            organizer.Scenes.ToArray ().ForEach (s => organizer.RemoveScene (s));
         }
 
-        public static void RemoveBackGraph (this IGraphSceneDisplayMesh<IVisual, IVisualEdge> mesh, IThingGraph backGraph) {
+        public static void RemoveMappedGraph (this IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> organizer, IThingGraph backGraph) {
 
-            var backMesh = mesh.BackHandler<IThing, ILink> ();
-            mesh.Displays
-                .Join (backMesh.ScenesOfBackGraph (backGraph),
+            var mapInteractor = organizer.MapInteractor<IThing, ILink> ();
+            organizer.Displays
+                .Join (mapInteractor.ScenesOfMappedGraph (backGraph),
                     d => d.Data,
                     s => s, (d, s) => d)
                 .ForEach (d => {
-                    mesh.ClearDisplaysOf (d.Data);
-                    mesh.RemoveScene (d.Data);
+                    organizer.ClearDisplaysOf (d.Data);
+                    organizer.RemoveScene (d.Data);
                 });
 
-            backMesh.ScenesOfBackGraph (backGraph).ToArray ().ForEach (s=>mesh.RemoveScene (s));
-            backMesh.UnregisterBackGraph (backGraph);
+            mapInteractor.ScenesOfMappedGraph (backGraph).ToArray ().ForEach (s=>organizer.RemoveScene (s));
+            mapInteractor.UnregisterMappedGraph (backGraph);
 
         }
 
-        public static void ApplyBackGraph (this IGraphSceneDisplayMesh<IVisual, IVisualEdge> mesh, IThingGraph root) {
+        public static void ApplyBackGraph (this IGraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> organizer, IThingGraph root) {
 
-            var backMesh = mesh.BackHandler<IThing, ILink> ();
+            var mapInteractor = organizer.MapInteractor<IThing, ILink> ();
 
-            var g = backMesh.WrapGraph (root);
-            backMesh.RegisterBackGraph (g);
+            var g = mapInteractor.WrapGraph (root);
+            mapInteractor.RegisterMappedGraph (g);
 
-            var displays = mesh.Displays;
+            var displays = organizer.Displays;
 
             displays.ForEach (d => {
-                var scene = backMesh.CreateScene (g);
-                mesh.AddScene (scene);
+                var scene = mapInteractor.CreateScene (g);
+                organizer.AddScene (scene);
                 d.Data = scene;
             });
         }

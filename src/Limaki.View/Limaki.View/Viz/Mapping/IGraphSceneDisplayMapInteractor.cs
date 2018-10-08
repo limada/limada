@@ -18,9 +18,9 @@ using Limaki.Graphs;
 using Limaki.View;
 using Limaki.View.GraphScene;
 
-namespace Limaki.View.Viz.Mesh {
+namespace Limaki.View.Viz.Mapping {
 	
-    public interface IGraphSceneDisplayMeshBackHandler<TSinkItem, TSinkEdge>: IGraphSceneMeshBackHandler<TSinkItem, TSinkEdge>
+    public interface IGraphSceneDisplayMapInteractor<TSinkItem, TSinkEdge>: IGraphSceneMapInteractor<TSinkItem, TSinkEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
 
         Func<ICollection<IGraphSceneDisplay<TSinkItem, TSinkEdge>>> Displays { get; set; }

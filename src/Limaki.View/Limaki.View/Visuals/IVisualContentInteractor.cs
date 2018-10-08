@@ -4,7 +4,7 @@ using Limaki.Graphs;
 
 namespace Limaki.View.Visuals {
 
-    public interface IVisualContentViz {
+    public interface IVisualContentInteractor {
         /// <summary>
         /// creates a visual, created and assigned with content
         /// </summary>
@@ -25,7 +25,7 @@ namespace Limaki.View.Visuals {
 
     }
 
-    public interface IVisualContentViz<TStore>:IVisualContentViz {
+    public interface IVisualContentInteractor<TStore>:IVisualContentInteractor {
         TStore AssignContent(IGraph<IVisual, IVisualEdge> graph, TStore store, Content<Stream> content);
     }
 }

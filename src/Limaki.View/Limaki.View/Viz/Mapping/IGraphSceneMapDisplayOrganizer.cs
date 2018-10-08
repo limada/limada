@@ -17,24 +17,24 @@ using System.Collections.Generic;
 using Limaki.Graphs;
 using Limaki.View.GraphScene;
 
-namespace Limaki.View.Viz.Mesh {
+namespace Limaki.View.Viz.Mapping {
     /// <summary>
     /// a central place to register Displays and Scenes
     /// registered scenes and their backing 
     /// Graphs are notified of changes
     /// </summary>
-    public interface IGraphSceneDisplayMesh<TItem, TEdge> : IGraphSceneMesh<TItem, TEdge>
+    public interface IGraphSceneMapDisplayOrganizer<TItem, TEdge> : IGraphSceneMapOrganizer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-        new IGraphSceneDisplayMeshBackHandler<TItem, TEdge> BackHandler (IGraph<TItem, TEdge> graph);
-		new IGraphSceneMeshBackHandler<TItem, TSourceItem, TEdge, TSourceEdge> BackHandler<TSourceItem, TSourceEdge> () where TSourceEdge : TSourceItem, IEdge<TSourceItem>; 
+        new IGraphSceneDisplayMapInteractor<TItem, TEdge> MapInteractor (IGraph<TItem, TEdge> graph);
+		new IGraphSceneMapInteractor<TItem, TSourceItem, TEdge, TSourceEdge> MapInteractor<TSourceItem, TSourceEdge> () where TSourceEdge : TSourceItem, IEdge<TSourceItem>; 
 
         void AddDisplay (IGraphSceneDisplay<TItem, TEdge> display);
         void RemoveDisplay (IGraphSceneDisplay<TItem, TEdge> display);
 
         ICollection<IGraphSceneDisplay<TItem, TEdge>> Displays { get; }
 
-        void CopyDisplayProperties (IGraphSceneDisplay<TItem, TEdge> sourceDisplay, IGraphSceneDisplay<TItem, TEdge> targetDisplay);
+        void CopyDisplayProperties (IGraphSceneDisplay<TItem, TEdge> sourceDisplay, IGraphSceneDisplay<TItem, TEdge> sinkDisplay);
 
         void Clear ();
     }

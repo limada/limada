@@ -1,11 +1,11 @@
 using Limaki.Graphs;
 using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
-using Limaki.View.Viz.Mesh;
+using Limaki.View.Viz.Mapping;
 
 namespace Limaki.View.Viz.Visuals {
 
-    public class VisualGraphSceneDisplayMesh : GraphSceneDisplayMesh<IVisual, IVisualEdge> {
+    public class VisualGraphSceneMapDisplayOrganizer : GraphSceneMapDisplayOrganizer<IVisual, IVisualEdge> {
 
         public override IGraphScene<IVisual, IVisualEdge> CreateSinkScene (IGraph<IVisual, IVisualEdge> sourceGraph) {
             var result = new Scene ();

@@ -27,7 +27,7 @@ using System.IO;
 
 namespace Limaki.View.Visuals {
 
-    public static class SceneExtensions {
+    public static class VisualSceneExtensions {
 
         public static void ChangeShape (IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IShape newShape) {
             if (visual == null || (visual is IVisualEdge))
@@ -161,9 +161,9 @@ namespace Limaki.View.Visuals {
             }
         }
 
-        static IVisualContentViz _visualContentViz = null;
-        public static IVisualContentViz VisualContentViz {
-            get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentViz> ()); }
+        static IVisualContentInteractor _visualContentViz = null;
+        public static IVisualContentInteractor VisualContentViz {
+            get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentInteractor> ()); }
         }
 
         /// <summary>

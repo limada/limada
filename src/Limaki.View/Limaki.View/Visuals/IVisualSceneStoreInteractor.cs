@@ -20,10 +20,10 @@ using Limaki.Graphs;
 namespace Limaki.View.Visuals {
     
     /// <summary>
-    /// replaces ISheetManager
-    /// replaces all methods where to load and save scenes
+    /// loads and saves <see cref="IGraph{IVisual, IVisualEdge}"/>
+    /// in <see cref="SheetStore"/>
     /// </summary>
-    public interface ISceneManager {
+    public interface IVisualSceneStoreInteractor {
 
         SheetStore SheetStore { get; set; }
 

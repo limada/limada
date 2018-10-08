@@ -25,7 +25,7 @@ namespace Limada.View.VisualThings {
     /// <summary>
     /// helper class to manage VisualGraphs backed by StreamThings
     /// </summary>
-    public class VisualThingsContentViz : IVisualContentViz<IThing> {
+    public class VisualThingsContentInteractor : IVisualContentInteractor<IThing> {
 
 
 		/// <summary>
