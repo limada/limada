@@ -18,7 +18,6 @@
     <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
     <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
     <SccProvider>Mercurial Source Control Package</SccProvider>
-    <ReleaseVersion>18.04</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

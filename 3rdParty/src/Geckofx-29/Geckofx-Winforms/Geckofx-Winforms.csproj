@@ -14,7 +14,6 @@
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>GeckoFX.snk</AssemblyOriginatorKeyFile>
-    <ReleaseVersion>18.04</ReleaseVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
