@@ -12,6 +12,6 @@
     <None Remove="Xwt.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\trunk\Xwt.DummyLibs\Xwt.Xaml.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Xwt.DummyLibs\Xwt.Xaml.csproj" />
   </ItemGroup>
 </Project>
