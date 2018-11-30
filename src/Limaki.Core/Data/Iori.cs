@@ -108,7 +108,8 @@ namespace Limaki.Data {
             } else if (provider == "sqlite") {
                 return $"Data Source = {iori.ToFileName ()}; Version = 3;";
             } else if (provider.StartsWith ("postgres")) {
-                return $"User ID={iori.User};Password={iori.Password};Database={iori.ToFileName ()};Host={iori.Server};";
+                var port = iori.Port == 0 ? "" : $"Port={iori.Port};";
+                return $"User ID={iori.User};Password={iori.Password};Database={iori.ToFileName ()};Host={iori.Server};{port}";
             } else if (provider.StartsWith ("sqlserver")) {
                 return $"User Id={iori.User};Password={iori.Password};Initial Catalog={iori.Name};Data Source={iori.Server};";
             }
