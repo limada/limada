@@ -60,7 +60,7 @@ namespace Limaki.View.XwtBackend {
             TitleLabel = new Label {
                 WidthRequest = 80,
                 TextColor = SystemColors.GrayText,
-                TextAlignment = Alignment.Start,
+                TextAlignment = Xwt.Alignment.Start,
                 Font = TextEntry.Font.WithSize (TextEntry.Font.Size * .80),
                 Margin = margin
             };

@@ -5,5 +5,4 @@ namespace Limaki.View.Common {
         Horizontal,
         Vertical
     }
-
 }

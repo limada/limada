@@ -239,8 +239,8 @@ namespace Limada.View.Vidgets {
             var dd = this.Border.Height;
             var options = new AlignerOptions {
                 Distance = new Size (dd, dd),
-                AlignX = Alignment.End,
-                AlignY = Alignment.Start,
+                AlignX = Xwt.Alignment.End,
+                AlignY = Xwt.Alignment.Start,
                 Dimension = Dimension.X,
                 PointOrderDelta = 1
             };

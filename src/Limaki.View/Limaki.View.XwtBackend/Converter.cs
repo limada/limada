@@ -1,6 +1,7 @@
 using Limaki.View.Vidgets;
 using Xwt;
 using GridLines = Limaki.View.Common.GridLines;
+using Alignment = Limaki.View.Common.Alignment;
 
 namespace Limaki.View.XwtBackend {
 
@@ -39,8 +40,10 @@ namespace Limaki.View.XwtBackend {
                 );
         }
 
-        public static GridLines ToLmk (this Xwt.GridLines gridLines) => (GridLines)gridLines;
-        public static Xwt.GridLines ToXwt (this GridLines gridLines) => (Xwt.GridLines)gridLines;
+        public static GridLines ToLmk (this Xwt.GridLines it) => (GridLines)it;
+        public static Xwt.GridLines ToXwt (this GridLines it) => (Xwt.GridLines)it;
 
+        public static Alignment ToLmk (this Xwt.Alignment it) => (Alignment)it;
+        public static Xwt.Alignment ToXwt (this Alignment it) => (Xwt.Alignment)it;
     }
 }

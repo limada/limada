@@ -51,7 +51,7 @@ namespace Limaki.View.XwtBackend {
                 HeightRequest = 20,
                 Text = "starting...",
                 TextColor = Colors.Black,
-                TextAlignment = Alignment.Start,
+                TextAlignment = Xwt.Alignment.Start,
             };
 
             var box = new VBox {
@@ -150,7 +150,7 @@ namespace Limaki.View.XwtBackend {
                 Name = nameof(aboutLabel),
                 Text = About.ToString(),
                 TextColor = Colors.Black,
-                TextAlignment = Alignment.Start,
+                TextAlignment = Xwt.Alignment.Start,
             };
 
             box = new VBox {
