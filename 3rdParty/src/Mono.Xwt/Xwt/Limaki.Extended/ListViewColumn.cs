@@ -99,4 +99,39 @@ namespace Xwt
 			}
 		}
 	}
+
+    public static class CellViewExtensions {
+        
+        public static CellView SetDataField (this CellView cellView, IDataField field) {
+            
+            if (field.Index == -1)
+                throw new InvalidOperationException ("Field must be bound to a data source");
+            if (cellView is CheckBoxCellView checkBox) {
+                if (field.FieldType == typeof (bool))
+                    checkBox.ActiveField = (IDataField<bool>)field;
+                if (field.FieldType == typeof (CheckBoxState))
+                    checkBox.StateField = (IDataField<CheckBoxState>)field;
+                return cellView;
+            }  
+            if (cellView is ImageCellView imageCellView && field.FieldType == typeof (Image)) {
+                imageCellView.ImageField = (IDataField<Image>)field;
+                return cellView;
+            }  
+            if (cellView is ComboBoxCellView comboBoxCellView && field.FieldType == typeof (string)) {
+                comboBoxCellView.SelectedTextField = (IDataField<string>)field;
+                return cellView;
+            }  
+            if (cellView is TextCellView textCellView && field.FieldType == typeof (string)) {
+                textCellView.TextField = field;
+                return cellView;
+            }  
+            if (cellView is CanvasCellView) { 
+                // canvascellview has no datafield
+                return cellView;
+            }
+
+            throw new NotSupportedException ();
+
+        }
+    }
 }
