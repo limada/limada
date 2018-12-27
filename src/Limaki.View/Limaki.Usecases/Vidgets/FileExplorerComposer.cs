@@ -69,7 +69,7 @@ namespace Limaki.Usecases.Vidgets {
                         ctx => {
                             SetDefault (Ic);
                             Ic.FillColor = this.IconStrokeColor;
-                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaLevelUp);
+                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaLevelUpAlt);
                         }
                         ));
             }
@@ -98,7 +98,7 @@ namespace Limaki.Usecases.Vidgets {
                         ctx => {
                             SetDefault (Ic);
                             Ic.FillColor = IconStrokeColor;
-                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaHddO);
+                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaHdd);
                         }
                         ));
             }
