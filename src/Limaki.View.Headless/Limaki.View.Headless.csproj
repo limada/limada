@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj" />
+    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj" />
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Limaki.View.Headless\" />
+  </ItemGroup>
+</Project>
