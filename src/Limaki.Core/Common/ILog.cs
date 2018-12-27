@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Limaki.Common.Reflections;
 
 namespace Limaki.Common {
 
@@ -70,10 +71,10 @@ namespace Limaki.Common {
 
         public Type Type { get; set; }
 
-        protected string ErrorMsg (string msg, Exception ex) => $"Error<{Type.Name}> {msg} Exception {ex.Message} | {DateTime.Now}";
-        protected string ErrorMsg (string msg) => $"Error<{Type.Name}> {msg} | {DateTime.Now}";
-        protected string DebugMsg (string msg) => $"Debug<{Type.Name}> {msg} | {DateTime.Now}";
-        protected string InfoMsg (string msg) => $"Info<{Type.Name}> {msg} | {DateTime.Now}";
+        protected string ErrorMsg (string msg, Exception ex) => $"Error<{Type.FriendlyClassName()}> {msg} Exception {ex.Message} | {DateTime.Now}";
+        protected string ErrorMsg (string msg) => $"Error<{Type.FriendlyClassName ()}> {msg} | {DateTime.Now}";
+        protected string DebugMsg (string msg) => $"Debug<{Type.FriendlyClassName ()}> {msg} | {DateTime.Now}";
+        protected string InfoMsg (string msg) => $"Info<{Type.FriendlyClassName ()}> {msg} | {DateTime.Now}";
 
     }
 
