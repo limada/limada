@@ -24,7 +24,7 @@ namespace Limaki.View.XwtBackend {
     public class XwtExeptionHandlerBackend : XwtMessager, IExceptionHandler {
 
         protected bool ShowRetryCancel (Exception e) {
-            var msg = new ConfirmationMessage(e.Message, XwtMessager.Retry);
+            var msg = new ConfirmationMessage(e?.Message??"", XwtMessager.Retry);
             msg.Buttons.Clear();
             msg.Buttons.Add(XwtMessager.Abort);
             msg.ConfirmButton = XwtMessager.Retry;
