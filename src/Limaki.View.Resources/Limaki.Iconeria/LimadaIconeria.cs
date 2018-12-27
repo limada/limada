@@ -1,9 +1,46 @@
+using System;
 using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Iconerias {
 
     public partial class LimadaIconeria : Iconeria {
+
+        public override void PaintIcon (Context c, double size, double x, double y, Action<Context> icon) {
+            c.Save ();
+
+            // settings needs to be adjusted from the SVG path values, those works well for FontAwesome
+            var border = size / 10;
+            c.Translate (border + x, size * .8 + y);
+            // c.Translate(border + x, size - border + y);
+            var scale = 2500;
+            c.Scale (size / scale, -size / scale);
+
+            icon (c);
+            var lw = LineWidth == 0 ? (size / 50) : (LineWidth / size * scale);
+
+            c.SetLineWidth (lw);
+
+            if (Stroke && StrokeFirst && Fill) {
+                c.SetColor (StrokeColor);
+                c.StrokePreserve ();
+            }
+
+            if (Fill) {
+                c.SetColor (FillColor);
+                if (Stroke && !StrokeFirst)
+                    c.FillPreserve ();
+                else
+                    c.Fill ();
+            }
+
+            if (Stroke && !StrokeFirst) {
+                c.SetColor (StrokeColor);
+                c.Stroke ();
+            }
+
+            c.Restore ();
+        }
 
         public virtual void GraphContent (Context c) {
             c.MoveTo(0d, 115d);

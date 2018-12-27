@@ -28,80 +28,81 @@ namespace Limaki.Iconerias {
 
             //strokeColor = fillColor.WithAlpha(.3);
             var awesome = Create<AwesomeIconeria> ();
+            awesome.Stroke = false;
             var limadaIcons = Create<LimadaIconeria> ();
             var size = awesome.DefaultSize.Width;
 
-            Arrange = awesome.AsImage (awesome.FaSitemap, size);
-            ArrangeLeft = awesome.AsImage (awesome.FaAlignLeft, size);
-            ArrangeCenter = awesome.AsImage (awesome.FaAlignCenter, size);
-            ArrangeRight = awesome.AsImage (awesome.FaAlignRight, size);
+            Arrange = awesome.AsImage (a => a.FaSitemap);
+            ArrangeLeft = awesome.AsImage (a => a.FaAlignLeft);
+            ArrangeCenter = awesome.AsImage (a => a.FaAlignCenter);
+            ArrangeRight = awesome.AsImage (a => a.FaAlignRight);
 
-            ArrangeMiddle = limadaIcons.AsImage (limadaIcons.VerticalAlignCenter, size);
-            ArrangeTop = limadaIcons.AsImage (limadaIcons.VerticalAlignTop, size);
-            ArrangeBottom = limadaIcons.AsImage (limadaIcons.VerticalAlignBottom, size);
+            ArrangeMiddle = limadaIcons.AsImage (a => a.VerticalAlignCenter);
+            ArrangeTop = limadaIcons.AsImage (a => a.VerticalAlignTop);
+            ArrangeBottom = limadaIcons.AsImage (a => a.VerticalAlignBottom);
 
-            ArrageRows = awesome.AsImage (awesome.FaTh, size);
-            ArrangeOneRow = awesome.AsImage (awesome.FaBars, size);
+            ArrageRows = awesome.AsImage (a => a.FaTh);
+            ArrangeOneRow = awesome.AsImage (a => a.FaBars);
 
-            DimensionX = limadaIcons.AsImage (limadaIcons.DimensionX, size * 1.05);
-            DimensionY = limadaIcons.AsImage (limadaIcons.DimensionY, size * 1.05);
+            DimensionX = limadaIcons.AsImage (a => a.DimensionX, size * 1.05);
+            DimensionY = limadaIcons.AsImage (a => a.DimensionY, size * 1.05);
 
-            LogicalLayout = limadaIcons.AsImage (limadaIcons.LogicalLayoutSelected, size);
-            FullLayout = awesome.AsImage (limadaIcons.FullLayout, size);
+            LogicalLayout = limadaIcons.AsImage (a => a.LogicalLayoutSelected);
+            FullLayout = limadaIcons.AsImage (a => a.FullLayout);
 
-            LogicalLayoutLeaf = limadaIcons.AsImage (limadaIcons.LogicalLayoutSelectedLeaf, size);
+            LogicalLayoutLeaf = limadaIcons.AsImage (a => a.LogicalLayoutSelectedLeaf);
 
-            Undo = awesome.AsImage (awesome.FaUndo, size);
+            Undo = awesome.AsImage (a => a.FaUndo);
 
-            Cancel = awesome.AsImage (awesome.FaTimes, size);
-            OK = awesome.AsImage (awesome.FaCheck, size);
+            Cancel = awesome.AsImage (a => a.FaTimes);
+            OK = awesome.AsImage (a => a.FaCheck);
 
-            NewSheet = awesome.AsImage (limadaIcons.NewSheet, size * 1.15);
-            NewNote = awesome.AsImage (awesome.FaPencilSquareO, size * 1.15);
+            NewSheet = limadaIcons.AsImage (a => a.NewSheet, size * 1.15);
+            NewNote = awesome.AsImage (a => a.FaPenSquare, size * 1.15);
 
-            FileMenu = awesome.AsImage (awesome.FaNewspaperO, size * 1.05);
-            SaveContent = awesome.AsImage (awesome.FaDownload, size * 1.05);
-            OpenFile = awesome.AsImage (awesome.FaFolderOpen, size * 1.05);
-            CreateFile = awesome.AsImage (awesome.FaFileO, size * 1.05);
+            FileMenu = awesome.AsImage (a => a.FaNewspaper, size * 1.05);
+            SaveContent = awesome.AsImage (a => a.FaDownload, size * 1.05);
+            OpenFile = awesome.AsImage (a => a.FaFolderOpen, size * 1.05);
+            CreateFile = awesome.AsImage (a => a.FaFileImport, size * 1.05);
 
-            FontBoldIcon = awesome.AsImage (awesome.FaBold, size * .80);
-            FontItalicIcon = awesome.AsImage (awesome.FaItalic, size * .80);
-            FontUnderlineIcon = awesome.AsImage (awesome.FaUnderline, size * .80);
-            FontStrikeThroughIcon = awesome.AsImage (awesome.FaStrikethrough, size * .80);
+            FontBoldIcon = awesome.AsImage (a => a.FaBold, size * .80);
+            FontItalicIcon = awesome.AsImage (a => a.FaItalic, size * .80);
+            FontUnderlineIcon = awesome.AsImage (a => a.FaUnderline, size * .80);
+            FontStrikeThroughIcon = awesome.AsImage (a => a.FaStrikethrough, size * .80);
 
-            GoNext = awesome.AsImage (awesome.FaChevronRight, size);
-            GoPrevious = awesome.AsImage (awesome.FaChevronLeft, size);
-            GoHome = awesome.AsImage (awesome.FaHome, size * 1.15);
+            GoNext = awesome.AsImage (a => a.FaChevronRight);
+            GoPrevious = awesome.AsImage (a => a.FaChevronLeft);
+            GoHome = awesome.AsImage (a => a.FaHome, size * 1.15);
 
-            Search = awesome.AsImage (awesome.FaSearch, size);
+            Search = awesome.AsImage (a => a.FaSearch);
 
-            GraphGraphView = limadaIcons.AsImage (limadaIcons.GraphGraph, size * 1.15);
-            GraphContentView = limadaIcons.AsImage (limadaIcons.GraphContent, size * 1.15);
-            ToggleView = limadaIcons.AsImage (limadaIcons.ToggleView, size * 1.15);
-            NewViewVisualNote = limadaIcons.AsImage (awesome.FaShare, size * 1.15);
+            GraphGraphView = limadaIcons.AsImage (a => a.GraphGraph, size * 1.15);
+            GraphContentView = limadaIcons.AsImage (a => a.GraphContent, size * 1.15);
+            ToggleView = limadaIcons.AsImage (a => a.ToggleView, size * 1.15);
+            NewViewVisualNote = awesome.AsImage (a => a.FaShare, size * 1.15);
 
-            Panning = awesome.AsImage (awesome.FaArrows, size);
-            Zoom = awesome.AsImage (awesome.FaSearchPlus, size);
-            FitToWidth = awesome.AsImage (awesome.FaArrowsH, size);
-            FitToHeigth = awesome.AsImage (awesome.FaArrowsV, size);
-            FitToScreen = awesome.AsImage (awesome.FaExpand, size);
-            OriginalSize = awesome.AsImage (awesome.FaCompress, size);
+            Panning = awesome.AsImage (a => a.FaArrowsAlt);
+            Zoom = awesome.AsImage (a => a.FaSearchPlus);
+            FitToWidth = awesome.AsImage (a => a.FaArrowsAltH);
+            FitToHeigth = awesome.AsImage (a => a.FaArrowsAltV);
+            FitToScreen = awesome.AsImage (a => a.FaExpand);
+            OriginalSize = awesome.AsImage (a => a.FaCompress);
 
-            Select = awesome.AsImage (awesome.FaPencil, size);
+            Select = awesome.AsImage (a => a.FaPencilAlt);
 
-            ToggleVisual = awesome.AsImage (awesome.FaExpand, size);
-            HideVisual = awesome.AsImage (awesome.FaEyeSlash, size);
-            AddVisual = awesome.AsImage (awesome.FaPlus, size);
-            AddLink = awesome.AsImage (awesome.FaLink, size);
-            CopyItemToAdjacent = awesome.AsImage (awesome.FaCaretSquareORight, size);
+            ToggleVisual = awesome.AsImage (a => a.FaExpand);
+            HideVisual = awesome.AsImage (a => a.FaEyeSlash);
+            AddVisual = awesome.AsImage (a => a.FaPlus);
+            AddLink = awesome.AsImage (a => a.FaLink);
+            CopyItemToAdjacent = awesome.AsImage (a => a.FaCaretLeft);
 
-            Delete = awesome.AsImage (awesome.FaTrashO, size);
+            Delete = awesome.AsImage (a => a.FaTrash);
 
-            ViewState = awesome.AsImage (awesome.FaNewspaperO, size); 
+            ViewState = awesome.AsImage (a => a.FaNewspaper); 
 
             awesome.FillColor = Xwt.Drawing.Colors.Red.WithAlpha (.7);
 
-            StyleItem = awesome.AsImage (awesome.FaTint, size);
+            StyleItem = awesome.AsImage (a => a.FaTint);
 
             LimadaLogo = ConvertedResources.LimadaLogo;
             SubWinIcon = ConvertedResources.SubWinIcon;

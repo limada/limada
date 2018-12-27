@@ -37,12 +37,13 @@ namespace Limaki.Iconerias {
             var border = size / 10;
             c.Translate(border + x, size * .8 + y);
             // c.Translate(border + x, size - border + y);
-            var scale = 2500;
+            var scale = 680;
             c.Scale(size / scale, -size / scale);
 
-            icon(c);
-            var lw = LineWidth == 0 ? (size / 50) : (LineWidth / size * scale);
+           
+            var lw = LineWidth == 0 ? (2 / size * scale) : (LineWidth / size * scale);
             c.SetLineWidth (lw);
+            icon (c);
 
             if (Stroke && StrokeFirst && Fill) {
                 c.SetColor(StrokeColor);
@@ -85,6 +86,16 @@ namespace Limaki.Iconerias {
         public static Image AsImage (this Iconeria self, Action<Context> icon, double size) {
             var ib = new ImageBuilder (size, size);
             self.PaintIcon (ib.Context, size, 0, 0, icon);
+            var img = ib.ToBitmap (ImageFormat.ARGB32);
+            return img;
+        }
+
+        public static Image AsImage<T> (this T self, Func<T, Action<Context>> icon, double size = default) where T : Iconeria {
+            if (size == default)
+                size = self.DefaultSize.Width;
+            var ib = new ImageBuilder (size, size);
+            var action = icon (self);
+            self.PaintIcon (ib.Context, size, 0, 0, action);
             var img = ib.ToBitmap (ImageFormat.ARGB32);
             return img;
         }
