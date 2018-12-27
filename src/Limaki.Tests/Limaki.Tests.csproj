@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj" />
     <ProjectReference Include="..\Xwt.Hmtl5\Xwt.Hmtl5.csproj" />
     <ProjectReference Include="..\Xwt.Tests\Xwt.Tests.csproj" />
+    <ProjectReference Include="..\Limaki.View.Headless\Limaki.View.Headless.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Limaki.Drawing\Indexing\QuadTree01.rar" />
