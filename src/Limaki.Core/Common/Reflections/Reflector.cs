@@ -15,6 +15,9 @@
 using System;
 using Limaki.Common.Collections;
 using System.Reflection;
+using System.Text;
+using System.Linq;
+using Limaki.Common.Text;
 
 namespace Limaki.Common.Reflections {
 
@@ -47,32 +50,68 @@ namespace Limaki.Common.Reflections {
             }
         }
 
-        public static string ClassName (Type type) {
-            var result = type.Name;
+        /// <summary>
+        /// gives back the name of integral types
+        /// </summary>
+        /// <returns>The integral type name.</returns>
+        /// <param name="type">Type.</param>
+        public static string FriendlyIntegralTypeName (Type type) {
+            switch (type) {
+                case Type t when t == typeof (Int16):
+                    return "short";
+                case Type t when t == typeof (Int32):
+                    return "int";
+                case Type t when t == typeof (Int64):
+                    return "long";
+                case Type t when t == typeof (UInt16):
+                    return "ushort";
+                case Type t when t == typeof (UInt32):
+                    return "uint";
+                case Type t when t == typeof (UInt64):
+                    return "ulong";
+                case Type t when t == typeof (Single):
+                    return "float";
+                case Type t when
+                        t == typeof (Object) ||
+                        t == typeof (String) ||
+                        t == typeof (Byte) ||
+                        t == typeof (Char) ||
+                        t == typeof (Decimal) ||
+                        t == typeof (SByte) ||
+                        t == typeof (Double)
+                        :
+                    return t.Name.ToLower ();
+                default:
+                    return type.Name;
+            }
+        }
+
+        public static string FriendlyClassName (this Type type) {
+            var result = new StringBuilder();
             if (type.IsNested && !type.IsGenericParameter) {
-                result = type.FullName.Replace(type.DeclaringType.FullName + "+", ClassName(type.DeclaringType));
+                result.Append (type.FullName.Replace (type.DeclaringType.FullName + "+", FriendlyClassName (type.DeclaringType)));
+            } else {
+                result.Append (FriendlyIntegralTypeName (type));
             }
             if (type.IsGenericType) {
 
-                var genPos = result.IndexOf('`');
+                var genPos = result.IndexOf ("`");
                 if (genPos > 0)
-                    result = result.Substring(0, genPos);
-                else
-                    result = result + "";
-                bool isNullable = result == "Nullable";
-                if (!isNullable)
-                    result += "<";
-                else
-                    result = "";
-                foreach (var item in type.GetGenericArguments())
-                    result += ClassName(item) + ",";
-                result = result.Remove(result.Length - 1, 1);
+                    result = result.Remove (genPos,result.Length-genPos);
+
+                bool isNullable = Nullable.GetUnderlyingType (type) != null;
+                if (isNullable) {
+                    result.Clear ();
+                } else
+                    result.Append ("<");
+
+                result.Append (string.Join(",", type.GetGenericArguments ().Select(t=>t.FriendlyClassName())));
                 if (isNullable)
-                    result += "?";
+                    result.Append ("?");
                 else
-                    result += ">";
+                    result.Append (">");
             }
-            return result;
+            return result.ToString();
         }
 
         private static A GetSingleAttribute<A>(object[] attributes)
