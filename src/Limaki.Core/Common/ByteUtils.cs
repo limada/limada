@@ -49,11 +49,19 @@ namespace Limaki.Common {
 
         public static String AsUnicodeSting (this byte[] source) => Encoding.Unicode.GetString (source);
 
-        public static byte[] GetBuffer (this Stream stream, int buflen) {
-            var oldPos = stream.Position;
-            buflen = Math.Min (buflen, (int)stream.Length);
-            var buffer = new byte[buflen];
+        public static byte[] GetBuffer (this Stream stream, int buflen = -1) {
+            if (stream == null)
+                return new byte[0];
 
+            if (buflen >= 0)
+                buflen = Math.Min (buflen, (int)stream.Length);
+            else
+                buflen = (int)stream.Length;
+            if (stream is MemoryStream memory && buflen == (int)stream.Length) {
+                return memory.ToArray ();
+            }
+            var buffer = new byte[buflen];
+            var oldPos = stream.Position;
             stream.Read (buffer, 0, buflen);
             stream.Position = oldPos;
             return buffer;

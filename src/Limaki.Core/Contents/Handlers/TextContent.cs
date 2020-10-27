@@ -46,7 +46,7 @@ namespace Limaki.Contents.IO {
         public override ContentInfo Use (Stream source) {
             ContentInfo result = null;
 
-            var buffer = ByteUtils.GetBuffer (source, (int)source.Length);
+            var buffer = source.GetBuffer ();
             var isUnicode = TextHelper.IsUnicode(buffer); 
             if (isUnicode)
                return ContentSpecs.First(t => t.ContentType == ContentTypes.Text);
@@ -74,7 +74,7 @@ namespace Limaki.Contents.IO {
         protected virtual Content<Stream> Digg (Content<Stream> source, Content<Stream> sink) {
             if (!_spot.Supports(source.ContentType) || source.Data == null)
                 return sink;
-            var buffer = ByteUtils.GetBuffer(source.Data, 2048);
+            var buffer = source.Data.GetBuffer (2048);
             var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer));
 
             // find lines

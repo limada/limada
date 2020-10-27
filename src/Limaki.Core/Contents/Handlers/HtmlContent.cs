@@ -60,7 +60,7 @@ namespace Limaki.Contents.IO {
 
             ContentInfo result = null;
 
-            var buffer = ByteUtils.GetBuffer (stream, 2048);
+            var buffer = stream.GetBuffer (2048);
             
             var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer)).ToLower();
             if (

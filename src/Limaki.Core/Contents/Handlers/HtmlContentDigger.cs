@@ -36,7 +36,7 @@ namespace Limaki.Contents.IO {
 			if (!_spot.Supports(source.ContentType) || source.Data == null)
                 return sink;
             
-            var buffer = ByteUtils.GetBuffer(source.Data, (int)source.Data.Length); 
+            var buffer = source.Data.GetBuffer (); 
             if (sink.ContentType == HtmlContentSpot.MOZURL) {
                 if (buffer != null) {
                     var desc = Encoding.Unicode.GetString (buffer);
@@ -49,7 +49,7 @@ namespace Limaki.Contents.IO {
                 Encoding.Unicode.GetString(buffer) :
                 Encoding.UTF8.GetString (buffer)); 
             if (Fragment2Html (s, sink)) {
-                buffer = ByteUtils.GetBuffer (sink.Data, (int) sink.Data.Length);
+                buffer = sink.Data.GetBuffer ();
                 s = Encoding.Default.GetString (buffer);
             } else {
                 // TODO: find sink.Source

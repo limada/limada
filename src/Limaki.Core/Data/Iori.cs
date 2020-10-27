@@ -86,14 +86,9 @@ namespace Limaki.Data {
             return false;
         }
 
-        public static Iori Clone (Iori other) {
-            return new Copier<Iori> ().Copy (other, new Iori ());
-        }
+        public static Iori Clone (Iori other) => new Copier<Iori> ().Copy (other, new Iori ());
 
-        public override string ToString () {
-            return $"{this.ToFileName()} | {Provider}";
-
-        }
+        public override string ToString () => $"{this.ToFileName ()} | {Provider}";
     }
 
     public static class IoriExtensions {
@@ -129,7 +124,7 @@ namespace Limaki.Data {
         }
 
         public static void FromFileName (this Iori iori, string fileName) {
-            var file = new System.IO.FileInfo (fileName);
+            var file = new FileInfo (fileName);
             iori.Server = "localhost";
             iori.Path = file.DirectoryName + Path.DirectorySeparatorChar;
             iori.Name = Path.GetFileNameWithoutExtension (file.FullName);
@@ -196,8 +191,6 @@ namespace Limaki.Data {
 
         }
 
-		public static Iori FromIori (this Iori iori, Iori other) {
-            return new Copier<Iori> ().Copy (other, iori);
-		}
+        public static Iori FromIori (this Iori iori, Iori other) => new Copier<Iori> ().Copy (other, iori);
     }
 }

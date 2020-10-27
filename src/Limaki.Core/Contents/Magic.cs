@@ -1,4 +1,5 @@
 ﻿namespace Limaki.Contents {
+
     public class Magic {
         public Magic(){}
         public Magic(byte[] magic, int offset){

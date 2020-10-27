@@ -43,6 +43,7 @@ namespace Limaki.Common.Text.RTF.Parser {
 
         private Encoding _encoding;
         private int _encodingCodePage = 1252;
+        private static bool CodePagesEncodingProviderRegistered = false;
         private StringBuilder _textBuffer;
 
         private char _pushedChar;
@@ -70,13 +71,22 @@ namespace Limaki.Common.Text.RTF.Parser {
 
         #region Constructors
 
+        static void EnsureCodePages () {
+            if (!CodePagesEncodingProviderRegistered) {
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                CodePagesEncodingProviderRegistered = true;
+            }
+        }
+
         static Rtf () {
+            EnsureCodePages ();
             foreach (var key in Keys) {
                 KeyTable[key.Symbol] = key;
             }
         }
 
         public Rtf (Stream stream) {
+            EnsureCodePages ();
             _source = new StreamReader (stream);
 
             _textBuffer = new StringBuilder (1024);
