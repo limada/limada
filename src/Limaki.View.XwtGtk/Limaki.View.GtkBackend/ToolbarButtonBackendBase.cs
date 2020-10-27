@@ -41,7 +41,11 @@ namespace Limaki.View.GtkBackend {
         protected override void Compose () {
             base.Compose ();
             SetContent (Xwt.ContentPosition.Bottom);
+#if XWT_GTKSHARP3
+            Notifycolor = Xwt.GtkBackend.GtkSharpWorkarounds.Background (Widget.Style, Gtk.StateType.Prelight);
+#else
             Notifycolor = Widget.Style.Background (Gtk.StateType.Prelight);
+#endif
         }
 
         protected virtual Gtk.Widget ContentWidget {
@@ -65,7 +69,6 @@ namespace Limaki.View.GtkBackend {
         }
 
         private Xwt.GtkBackend.ImageBox _imageWidget = null;
-        private Color _notifycolor;
 
         protected Gtk.Widget ImageWidget {
             get {
@@ -115,6 +118,7 @@ namespace Limaki.View.GtkBackend {
                 contentWidget.ButtonPressEvent -= this.ButtonPressed;
                 contentWidget.ButtonPressEvent += this.ButtonPressed;
                 Gdk.Color? background = null;
+
                 contentWidget.FocusInEvent += (s, e) => {
                     var w = s as Gtk.Widget;
                 };
@@ -122,13 +126,22 @@ namespace Limaki.View.GtkBackend {
                     var w = s as Gtk.Widget;
                     if (background == null)
                         background = w.Style.Background (Gtk.StateType.Normal);
-                    w.ModifyBg (Gtk.StateType.Normal, Notifycolor);
-                    w.QueueDraw ();
+#if XWT_GTKSHARP3
+                   
+#else
+                     w.ModifyBg (Gtk.StateType.Normal, Notifycolor);
+                     w.QueueDraw ();
+#endif
+                   
                 };
                 contentWidget.LeaveNotifyEvent += (s, e) => {
                     var w = s as Gtk.Widget;
+#if XWT_GTKSHARP3
+                   
+#else                    
                     w.ModifyBg (Gtk.StateType.Normal, background.Value);
                     w.QueueDraw ();
+#endif
                 };
                 
                
@@ -153,7 +166,11 @@ namespace Limaki.View.GtkBackend {
                 dropDownArrow = AllocEventBox (dropDownArrow);
                 dropDownArrow.AddEvents ((int) Gdk.EventMask.ButtonPressMask);
                 dropDownArrow.ButtonPressEvent += this.DropDownPressed;
+#if XWT_GTKSHARP3
+                   
+#else                   
                 dropDownArrow.ModifyBg(Gtk.StateType.Normal, Widget.Style.Background (Gtk.StateType.Normal));
+#endif
                 if (contentWidget != null) {
                     var box = new Gtk.HBox (false, 3);
                     box.PackStart (contentWidget, true, true, 3);

@@ -30,19 +30,14 @@ using Xwt.Backends;
 using System.Diagnostics;
 using Limada.Usecases;
 using Limaki.Contents.IO;
+using Limaki.Usecases;
 using Limaki.View.Common;
 
 namespace Limaki.View.XwtBackend {
 
     public class XwtContextResourceLoader : IBackendContextResourceLoader, IToolkitAware {
 
-        public static readonly Guid ToolkitGuid = new Guid ("312266D8-76FA-4C3B-B4C9-39F7B04EEE3F");
-        public static readonly Guid GtkToolkitGuid = new Guid ("36FB195F-4AAA-4353-8A06-E792360EE63C");
-        public static readonly Guid WpfToolkitGuid = new Guid ("594AACED-2959-4192-AE9C-0A7ED9D45793");
-
-        public virtual Guid ToolkitType {
-            get { return ToolkitGuid; }
-        }
+	    public virtual Guid ToolkitType => LimakiViewGuids.ToolkitGuid;
 
         public virtual void ApplyXwtResources (IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;

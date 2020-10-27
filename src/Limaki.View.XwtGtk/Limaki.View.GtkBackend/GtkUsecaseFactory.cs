@@ -42,6 +42,9 @@ namespace Limaki.View.GtkBackend {
             // set minimum size:
             var minSize = Registry.Pooled<Limaki.Drawing.IDrawingUtils> ().GetTextDimension ("File Edit Style", null);
 
+#if XWT_GTKSHARP3
+            windowBackend.SetMinSize (minSize);
+#else            
             windowBackend.Window.SizeRequested += (s, e) => {
                 var req = e.Requisition;
                 var size = new Xwt.Size (e.Requisition.Width, e.Requisition.Height);
@@ -49,7 +52,7 @@ namespace Limaki.View.GtkBackend {
                 req.Width = (int)minSize.Width;
                 e.Requisition = req;
             };
-
+#endif           
         }
 
         protected void AddToolbar (Xwt.Window xwtWindow, Vidgets.ToolbarPanel toolbar) {

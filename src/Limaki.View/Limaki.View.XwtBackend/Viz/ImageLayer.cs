@@ -62,11 +62,11 @@ namespace Limaki.View.XwtBackend {
         /// <returns></returns>
         [TODO]
         public Image OptimizedImage (Image source) {
-            var bitmap = source as BitmapImage;
-            if (bitmap == null || bitmap.Format == ImageFormat.ARGB32)
-                return source;
-
-            // TODO: make a ARGB32-Image here
+            // var bitmap = source as BitmapImage;
+            // if (bitmap == null || bitmap.Format == ImageFormat.ARGB32)
+            //     return source;
+            //
+            // // TODO: make a ARGB32-Image here
             return source;
 
         }

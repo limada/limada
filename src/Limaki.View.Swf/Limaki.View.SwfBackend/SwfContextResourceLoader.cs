@@ -64,7 +64,7 @@ namespace Limaki.View.SwfBackend {
             Toolkit.RegisterBackend<SystemFontBackend, GdiSystemFontBackend> ();
 
             Toolkit.SetActive();
-            Xwt.Application.Initialize(Toolkit);
+            Xwt.Application.Initialize (Toolkit.Type, Toolkit.Backend);
 
             context.Factory.Add<IExceptionHandler,SwfExeptionHandlerBackend>();
             context.Factory.Add<IProgressHandler, ProgressHandler>();

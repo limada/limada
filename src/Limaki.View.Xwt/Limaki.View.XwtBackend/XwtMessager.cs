@@ -21,27 +21,23 @@ namespace Limaki.View.XwtBackend {
 
     public class XwtMessager {
 
-        public static Command Ok = new Command("Ok");
-        public static Command Cancel = new Command("Cancel");
-        public static Command Yes = new Command("Yes");
-        public static Command No = new Command("No");
-        public static Command Abort = new Command("Abort");
-        public static Command Retry = new Command("Retry");
-        public static Command Ignore = new Command("Ignore");
+        public static Command Abort = new Command("Abort", Application.TranslationCatalog.GetString ("Abort"));
+        public static Command Retry = new Command("Retry", Application.TranslationCatalog.GetString ("Retry"));
+        public static Command Ignore = new Command("Ignore", Application.TranslationCatalog.GetString ("Ignore"));
 
         protected virtual Command[] ToXwt (MessageBoxButtons buttons) {
             var result = new List<Command>();
             if (buttons.HasFlag(MessageBoxButtons.Ok)) {
-                result.Add(Ok);
+                result.Add(Command.Ok);
             }
             if (buttons.HasFlag(MessageBoxButtons.Cancel)) {
-                result.Add(Cancel);
+                result.Add(Command.Cancel);
             }
             if (buttons.HasFlag(MessageBoxButtons.Yes)) {
-                result.Add(Yes);
+                result.Add(Command.Yes);
             }
             if (buttons.HasFlag(MessageBoxButtons.No)) {
-                result.Add(No);
+                result.Add(Command.No);
             }
             if (buttons.HasFlag(MessageBoxButtons.Abort)) {
                 result.Add(Abort);
@@ -57,16 +53,16 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected virtual DialogResult ToLim (Command command) {
-            if (command == Ok) {
+            if (command == Command.Ok) {
                 return DialogResult.Ok;
             }
-            if (command == Cancel) {
+            if (command == Command.Cancel) {
                 return DialogResult.Cancel;
             }
-            if (command == Yes) {
+            if (command == Command.Yes) {
                 return DialogResult.Yes;
             }
-            if (command == No) {
+            if (command == Command.No) {
                 return DialogResult.No;
             }
             if (command == Abort) {

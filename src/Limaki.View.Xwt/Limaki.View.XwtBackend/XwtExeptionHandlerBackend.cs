@@ -42,7 +42,7 @@ namespace Limaki.View.XwtBackend {
                 if (ShowRetryCancel(e))
                     throw e;
             } else {
-                MessageDialog.ShowMessage(StockIcons.Error, e.Message, null);
+                MessageDialog.ShowMessage(e.Message, null, StockIcons.Error);
             }
         }
 

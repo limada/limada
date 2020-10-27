@@ -30,9 +30,12 @@ namespace Limaki.View.GtkBackend {
 
     public class GtkContextResourceLoader : ContextResourceLoader, IToolkitAware {
 
-        public Xwt.ToolkitType ToolkitType0 { get { return Xwt.ToolkitType.Gtk; } }
-
-        public static readonly Guid ToolkitGuid = new Guid ("36FB195F-4AAA-4353-8A06-E792360EE63C");
+        public static readonly Guid ToolkitGuid =
+#if XWT_GTK3
+        LimakiViewGuids.Gtk3ToolkitGuid;
+#else
+        LimakiViewGuids.GtkToolkitGuid;
+#endif
        
         public virtual Guid ToolkitType {
             get { return ToolkitGuid; }

@@ -44,6 +44,11 @@ namespace Xwt.Html5.Backend {
             tl.WrapMode = value;
         }
 
+        public override void SetAlignment (object backend, Alignment alignment) {
+            var tl = (HtmlTextLayoutBackend)backend;
+            tl.Alignment = alignment;
+        }
+
         public override Size GetSize (object backend) {
             var tl = (HtmlTextLayoutBackend) backend;
             return tl.Size;

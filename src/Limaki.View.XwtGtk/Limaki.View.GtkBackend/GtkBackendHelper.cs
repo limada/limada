@@ -14,6 +14,7 @@
 
 using Atk;
 using Gtk;
+using Limaki.View.XwtBackend;
 using Xwt;
 using Box = Gtk.Box;
 using Rectangle = Gdk.Rectangle;
@@ -31,8 +32,13 @@ namespace Limaki.View.GtkBackend {
         }
 
         public static void VidgetBackendSize (this Widget widget, Size size) {
-            var re = widget.Allocation;
-            widget.Allocation = new Rectangle (re.X, re.Y, (int)size.Width, (int)size.Height);
+            var allocation = widget.Allocation;
+            allocation = new Rectangle (allocation.X, allocation.Y, (int)size.Width, (int)size.Height);
+#if XWT_GTKSHARP3
+            widget.SizeAllocate (allocation);
+#else
+            widget.Allocation = allocation;
+#endif
         }
 
         public static void VidgetBackendUpdate (this Widget widget) {
@@ -56,11 +62,9 @@ namespace Limaki.View.GtkBackend {
         }
 
         public static Widget ToGtk (this IVidgetBackend backend) {
-            var vb = backend as IGtkBackend;
-            if (vb != null)
+            if (backend is IGtkBackend vb)
                 return vb.Widget;
-            var xb = backend as Limaki.View.XwtBackend.IXwtBackend;
-            if (xb != null && ((Xwt.Backends.IFrontend)xb.Widget).Backend is Xwt.GtkBackend.WidgetBackend)
+            if (backend is IXwtBackend xb && ((Xwt.Backends.IFrontend)xb.Widget).Backend is Xwt.GtkBackend.WidgetBackend)
                 return ((Xwt.GtkBackend.WidgetBackend)((Xwt.Backends.IFrontend)xb.Widget).Backend).Widget;
 
             return backend as Widget;
@@ -68,8 +72,7 @@ namespace Limaki.View.GtkBackend {
         }
 
         public static Gtk.ToolItem ToGtk (this LVV.IToolbarItemBackend backend) {
-            var vb = backend as IGtkBackend;
-            if (vb != null)
+            if (backend is IGtkBackend vb)
                 return (Gtk.ToolItem) vb.Widget;
             return backend as Gtk.ToolItem;
 
@@ -87,10 +90,7 @@ namespace Limaki.View.GtkBackend {
 
             var items = new ChildPacking[box.Children.Length];
             for (int i = 0; i < items.Length; i++) {
-                bool expand, fill;
-                uint padding;
-                PackType packType;
-                box.QueryChildPacking (box.Children[i], out expand, out fill, out padding, out packType);
+                box.QueryChildPacking (box.Children[i], out var expand, out var fill, out var padding, out var packType);
                 items[i] = new ChildPacking { Expand = expand, Fill = fill, Padding = padding, PackType = packType, Widget = box.Children[i] };
             }
 
@@ -100,7 +100,7 @@ namespace Limaki.View.GtkBackend {
 
             foreach (var item in items) {
 
-                box.PackEnd (item.Widget);
+                box.PackEnd (item.Widget, item.Expand, item.Fill, item.Padding);
                 box.SetChildPacking (item.Widget, item.Expand, item.Fill, item.Padding, item.PackType);
             }
         }
@@ -132,7 +132,11 @@ namespace Limaki.View.GtkBackend {
                 return widget;
             }
 
+#if XWT_GTK3
+            if (!widget.HasWindow) {
+#else
             if (widget.IsNoWindow) {
+#endif
 
                 var eventBox = new Gtk.EventBox ();
                 eventBox.Visible = widget.Visible;

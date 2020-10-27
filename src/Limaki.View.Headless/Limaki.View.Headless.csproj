@@ -7,9 +7,23 @@
   <ItemGroup>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj" />
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
+    <ProjectReference Include="..\3rdParty\Mono.Xwt\Xwt\Xwt.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Limaki.UnitsOfWork.HeadlessView" />
     <Folder Include="Limaki.View.Headless\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\Toolbar.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\Notebook.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\NavigationTool.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\HeadlessViewComponentFactory.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\HView.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\HMemberEdit.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\HLabel.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\HBackend.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\HActionView.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\EntityView.cs" />
+    <Compile Remove="Limaki.UnitsOfWork.HeadlessView\EntityListView.cs" />
   </ItemGroup>
 </Project>

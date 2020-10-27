@@ -14,6 +14,8 @@
 
 
 using System.Collections.Generic;
+using Cairo;
+using Gtk;
 using Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
@@ -50,7 +52,19 @@ namespace Limaki.View.GtkBackend {
 
         protected virtual void ShowDropDown () {
             if (HasChildren) {
+
                 PopupWindow = PopupWindow.Show (this.ContentWidget, Xwt.Rectangle.Zero, ChildBox);
+#if XWT_GTKSHARP3
+                PopupWindow.Drawn += (s, e) => {
+                    var w = s as PopupWindow;
+                    w.StyleContext.Save ();
+                    w.StyleContext.AddClass ("background");
+                    w.StyleContext.RenderBackground  (e.Cr,w.Clip.X,w.Clip.Y, w.Clip.Width,w.Clip.Height);
+                    w.StyleContext.RemoveClass ("background");
+                    w.StyleContext.Restore ();
+                    w.PropagateDraw (w.Child,e.Cr);
+                };
+#endif                
 				var tr = this.Size.Width - PopupWindow.SizeRequest ().Width;
 				PopupWindow.Tolerance = new Xwt.WidgetSpacing (0, 0, tr, 0);
                 PopupWindow.Hidden += (s, e) =>
@@ -74,6 +88,7 @@ namespace Limaki.View.GtkBackend {
             get {
                 if (_childBox == null) {
                     _childBox = new Gtk.VBox (false, 3);
+ 
                     foreach (var w in Children) {
                         _childBox.PackStart (w.ToGtk(), false, false, 3);
                         var b = w as IGtkToolbarItemBackend;

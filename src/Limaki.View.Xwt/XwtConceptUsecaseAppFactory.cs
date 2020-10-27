@@ -23,48 +23,56 @@ using Limaki.Usecases;
 using Limaki.View.XwtBackend;
 using Xwt;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
 using Limaki.View.Vidgets;
 
 namespace Limaki.View.XwtBackend {
     
     public class XwtConceptUsecaseAppFactory : UsecaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
-        ToolkitType? _toolkitType = null;
-        public override ToolkitType XwtToolkitType {
-            get {
-                if (_toolkitType.HasValue)
-                    return _toolkitType.Value;
-				return OS.Unix ? Xwt.ToolkitType.Gtk : Xwt.ToolkitType.Wpf;
-            }
-            protected set { _toolkitType = value; }
-        }
-
         public XwtConceptUsecaseAppFactory () : base () { }
 
         public override bool TakeToolkit (IToolkitAware loader) {
-            return base.TakeToolkit (loader) || loader.ToolkitType == XwtContextResourceLoader.ToolkitGuid;
+            return base.TakeToolkit (loader) || loader.ToolkitType == LimakiViewGuids.ToolkitGuid;
         }
 
-        public override Guid ToolkitType {
-            get {
-                if (XwtToolkitType == Xwt.ToolkitType.Wpf)
-                    return XwtContextResourceLoader.WpfToolkitGuid;
-                if (XwtToolkitType == Xwt.ToolkitType.Gtk)
-                    return XwtContextResourceLoader.GtkToolkitGuid;
-                return base.ToolkitType;
-            }
-            protected set {
-                base.ToolkitType = value;
-            }
+        Guid DefaultGtkToolkitType () {
+            var fw = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+            var isCore = fw.Contains ("Core");
+            return isCore ? LimakiViewGuids.Gtk3ToolkitGuid : LimakiViewGuids.GtkToolkitGuid;
         }
 
+        string GetGtkWinDir () {
+            string Probe (string basepath) {
+                var binPath = Path.Combine (basepath, Path.Combine ("gtk3-win", "bin"));
+                return Directory.Exists (binPath) ? binPath : default;
+            }
+
+            return Probe (AppDomain.CurrentDomain.BaseDirectory) ?? Probe (Environment.GetFolderPath (Environment.SpecialFolder.ProgramFiles)) ?? default;
+        }
+        
         public override void Run () {
-
+            
+            ToolkitType = DefaultGtkToolkitType();
+            
+            if (ToolkitType == LimakiViewGuids.Gtk3ToolkitGuid && RuntimeInformation.IsOSPlatform (OSPlatform.Windows)) {
+                var systemPath = Environment.GetEnvironmentVariable ("Path", EnvironmentVariableTarget.Machine);
+                var binPath = GetGtkWinDir ();
+                Trace.WriteLine ($"\n{nameof(GetGtkWinDir)} on {binPath}");
+                if (binPath != default) {
+                    Environment.SetEnvironmentVariable ("Path", $"{binPath};{systemPath}");
+                }
+            }
+            
             var tkts = ConfigurationManager.AppSettings["ToolkitType"];
             if (!string.IsNullOrEmpty (tkts)) {
-                var tk = this.XwtToolkitType;
-                if (Enum.TryParse<Xwt.ToolkitType> (tkts, out tk))
-                    this.XwtToolkitType = tk;
+                if (Enum.TryParse<Xwt.ToolkitType> (tkts, out var tk)) {
+                    XwtToolkitType = tk;
+                    ToolkitType = Converter.ToLmk (XwtToolkitType);
+                }
+            } else {
+                XwtToolkitType = Converter.ToXwtToolkitType (ToolkitType);
             }
 
             Application.Initialize (this.XwtToolkitType);

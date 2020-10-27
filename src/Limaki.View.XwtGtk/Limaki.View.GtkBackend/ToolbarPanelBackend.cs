@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Limaki.View.Vidgets;
 using Limaki.Common.Linqish;
 using Limaki.View.Common;
@@ -44,19 +45,23 @@ namespace Limaki.View.GtkBackend {
                     //TODO
                 });
             };
+#if ! XWT_GTK3            
             Widget.SizeRequested += (s, e) => {
                 Trace.WriteLine ($"{nameof (ToolbarPanelBackend)}.{nameof (Widget.SizeRequested)}:\t{new Xwt.Size (e.Requisition.Width, e.Requisition.Height)}");
                 Widget.Children.ForEach (c => {
                     //TODO
                 });
             };
-        }
+#endif                
 
+        }
+#if ! XWT_GTK3
         Action<object, Gtk.SizeRequestedArgs> toolbarSizeRequested = (s, e) => {
             //TODO
             Trace.WriteLine ($"{nameof (toolbarSizeRequested)}:\t{new Xwt.Size (e.Requisition.Width, e.Requisition.Height)}");
         };
-
+#endif
+        
         public void InsertItem (int index, IToolbarBackend item) {
             
             var toolStrip = item.ToGtk() as Gtk.Toolbar;
@@ -75,9 +80,11 @@ namespace Limaki.View.GtkBackend {
             // on cinnamon 8 is needed
             // otherwise 5
             toolStrip.WidthRequest = w + 8;
+#if ! XWT_GTK3            
             toolStrip.SizeRequested += (s, e) => {
                 toolbarSizeRequested (s, e);
             };
+#endif
             Widget.PackStart (toolStrip, false, false, 0);
         }
 
@@ -98,8 +105,11 @@ namespace Limaki.View.GtkBackend {
             var toolbarBackend = this.ToGtk ();
             var mainBox = windowBackend.MainBox;
             mainBox.PackStart (toolbarBackend, false, false, 0);
-
+#if XWT_GTK3
+            mainBox.ReorderChild(toolbarBackend,1);
+#else
             ((Gtk.Box.BoxChild)mainBox[toolbarBackend]).Position = 1;
+#endif
             mainBox.ShowAll ();
         }
 

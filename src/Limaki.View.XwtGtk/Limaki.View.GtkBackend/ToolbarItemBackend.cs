@@ -69,9 +69,11 @@ namespace Limaki.View.GtkBackend {
                 ((Gtk.EventBox)widget).VisibleWindow = true;
                 return widget;
             }
-
+#if XWT_GTK3
+            if (!widget.HasWindow) {
+#else
             if (widget.IsNoWindow) {
-
+#endif
                 var eventBox = new Gtk.EventBox ();
                 eventBox.Visible = widget.Visible;
                 eventBox.Sensitive = widget.Sensitive;

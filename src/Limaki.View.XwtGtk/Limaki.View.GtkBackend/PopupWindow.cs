@@ -42,7 +42,11 @@ namespace Limaki.View.GtkBackend {
 
             AddEvents ((int) Gdk.EventMask.FocusChangeMask);
             DefaultHeight = DefaultWidth = 1;
-            var _frame = new Frame () { Shadow = ShadowType.EtchedIn };
+            var _frame = new Frame {
+#if !XWT_GTK3                
+                Shadow = ShadowType.EtchedIn
+#endif                
+            };
 
             _alignment = new Gtk.Alignment (0, 0, 1, 1);
             _frame.Add (_alignment);
@@ -67,7 +71,11 @@ namespace Limaki.View.GtkBackend {
         void HandleFocusOutEvent (object o, FocusOutEventArgs args) {
             this.HideAll ();
         }
-
+#if XWT_GTKSHARP3
+        public void HideAll () {
+            this.Hide ();
+        }
+#endif
         public void SetPadding (Xwt.WidgetSpacing spacing) {
             _alignment.LeftPadding = (uint) spacing.Left;
             _alignment.RightPadding = (uint) spacing.Right;
@@ -78,6 +86,7 @@ namespace Limaki.View.GtkBackend {
         }
 
         protected override void OnScreenChanged (Gdk.Screen previous_screen) {
+#if ! XWT_GTK3            
             // To check if the display supports alpha channels, get the colormap
             var colormap = this.Screen.RgbaColormap;
             if (colormap == null) {
@@ -87,6 +96,7 @@ namespace Limaki.View.GtkBackend {
                 supportAlpha = true;
             }
             this.Colormap = colormap;
+#endif
             base.OnScreenChanged (previous_screen);
         }
 

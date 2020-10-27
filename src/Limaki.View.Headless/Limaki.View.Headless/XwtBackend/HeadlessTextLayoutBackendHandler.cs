@@ -41,6 +41,10 @@ namespace Xwt.Headless.Backend {
             TextTrimming = value;
         }
 
+        public override void SetAlignment (object backend, Alignment alignment) {
+            
+        }
+
         public override void SetWrapMode (object backend, WrapMode value) {
             WrapMode = value;
         }

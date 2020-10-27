@@ -1,3 +1,5 @@
+using System;
+using Limaki.Usecases;
 using Limaki.View.Vidgets;
 using Xwt;
 using GridLines = Limaki.View.Common.GridLines;
@@ -6,6 +8,37 @@ using Alignment = Limaki.View.Common.Alignment;
 namespace Limaki.View.XwtBackend {
 
     public static class Converter {
+
+        public static ToolkitType ToXwtToolkitType (Guid toolkitType) {
+            if (toolkitType == LimakiViewGuids.WpfToolkitGuid)
+                return Xwt.ToolkitType.Wpf;
+
+            if (toolkitType == LimakiViewGuids.GtkToolkitGuid)
+                return Xwt.ToolkitType.Gtk;
+                
+            if (toolkitType == LimakiViewGuids.Gtk3ToolkitGuid)
+                return Xwt.ToolkitType.Gtk3;
+            if (toolkitType == LimakiViewGuids.MacOsToolkitGuid)
+                return Xwt.ToolkitType.XamMac;
+            
+            return ToolkitType.Other;
+        }
+
+        public static Guid ToLmk (ToolkitType toolkitType) {
+
+            if (toolkitType == Xwt.ToolkitType.Wpf)
+                return LimakiViewGuids.WpfToolkitGuid;
+
+            if (toolkitType == Xwt.ToolkitType.Gtk)
+                return LimakiViewGuids.GtkToolkitGuid;
+
+            if (toolkitType == Xwt.ToolkitType.Gtk3)
+                return LimakiViewGuids.Gtk3ToolkitGuid;
+            if (toolkitType == Xwt.ToolkitType.XamMac)
+                return LimakiViewGuids.MacOsToolkitGuid;
+
+            return default;
+        }
 
         public static MouseActionButtons ToLmk (this PointerButton button) {
             if (button == PointerButton.Left)

@@ -17,5 +17,7 @@ namespace Limaki.View.SwfBackend.Controls {
             var result = Show (title, text, buttons);
             onResult (result);
         }
+
+        public void ShowError (string title, string text) => Show (title, text, MessageBoxButtons.Ok);
     }
 }

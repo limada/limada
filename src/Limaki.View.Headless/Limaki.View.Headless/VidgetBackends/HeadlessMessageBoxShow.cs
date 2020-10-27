@@ -19,5 +19,7 @@ namespace Limaki.View.Headless.VidgetBackends {
             var result = Show (title, text, buttons);
             onResult (result);
         }
+
+        public void ShowError (string title, string text) => Show (title, text, MessageBoxButtons.Ok);
     }
 }

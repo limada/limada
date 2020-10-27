@@ -38,7 +38,7 @@ namespace Limaki.View.Headless {
             if (Toolkit.CurrentEngine == null) {
                 tk = Toolkit.CreateToolkit<HeadlessEngine> (false);
                 tk.SetActive();
-                Xwt.Application.Initialize (tk.Type);
+                Xwt.Application.Initialize (tk.Type,tk.Backend);
             }
 
             if (tk.Backend is HeadlessEngine) {
