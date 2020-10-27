@@ -1,4 +1,4 @@
-﻿// 
+// 
 // BoxBackend.cs
 //  
 // Author:
@@ -33,6 +33,7 @@ using SWC = System.Windows.Controls;
 
 using Xwt.Backends;
 using Xwt.Drawing;
+using System.Windows.Automation.Peers;
 
 namespace Xwt.WPFBackend
 {
@@ -120,7 +121,7 @@ namespace Xwt.WPFBackend
 			// Use the 'widgets' field so we can easily map a control position by looking at 'rects'.
 			for (int i = 0; i < widgets.Length; i++) {
 				var element = WidgetBackend.GetFrameworkElement (widgets [i]);
-				if (!element.IsArrangeValid || force) {
+				if (!element.IsArrangeValid || !element.IsMeasureValid || force) {
 					// Measure the widget again using the allocation constraints. This is necessary
 					// because WPF widgets my cache some measurement information based on the
 					// constraints provided in the last Measure call (which when calculating the
@@ -135,6 +136,27 @@ namespace Xwt.WPFBackend
 					element.Arrange (r.ToWpfRect ());
 				//	element.UpdateLayout ();
 				}
+			}
+		}
+
+		public AutomationPeer AutomationPeerOverride { get; set; }
+
+		protected override AutomationPeer OnCreateAutomationPeer ()
+		{
+			if (AutomationPeerOverride != null)
+				return AutomationPeerOverride;
+			else return new CustomPanelAutomationPeer (this);
+		}
+
+		class CustomPanelAutomationPeer : FrameworkElementAutomationPeer
+		{
+			public CustomPanelAutomationPeer (CustomPanel panel) : base (panel)
+			{
+			}
+
+			protected override AutomationControlType GetAutomationControlTypeCore ()
+			{
+				return AutomationControlType.Pane;
 			}
 		}
 	}

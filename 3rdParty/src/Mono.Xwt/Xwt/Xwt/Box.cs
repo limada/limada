@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 using Xwt.Backends;
-using System.Windows.Markup;
 
 namespace Xwt
 {
@@ -69,11 +68,11 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IBoxBackend Backend {
+		new IBoxBackend Backend {
 			get { return (IBoxBackend) BackendHost.Backend; }
 		}
 		
-        protected Box (Orientation dir)
+		public Box (Orientation dir)
 		{
 			children = new ChildrenCollection<BoxPlacement> ((WidgetBackendHost)BackendHost);
 			direction = dir;
@@ -195,7 +194,7 @@ namespace Xwt
 				widget.MarginRight = marginRight;
 			if (marginBottom != -1)
 				widget.MarginBottom = marginBottom;
-			Pack (widget, expand, align, PackOrigin.Start);
+			Pack (widget, expand, align, ptype);
 		}
 
 		void Pack (Widget widget, bool? expand, WidgetPlacement align, PackOrigin ptype)
@@ -415,7 +414,6 @@ namespace Xwt
 		FillAndExpand = 3
 	}
 	
-	[ContentProperty("Child")]
 	public class BoxPlacement
 	{
 		IContainerEventSink<BoxPlacement> parent;

@@ -1,4 +1,4 @@
-﻿// 
+// 
 // MenuItemBackend.cs
 //  
 // Author:
@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using SWC = System.Windows.Controls;
 using SWMI = System.Windows.Media.Imaging;
 using Xwt.Backends;
@@ -95,6 +96,21 @@ namespace Xwt.WPFBackend
 				label = value;
 				if (this.menuItem != null)
 					menuItem.Header = UseMnemonic ? value : value.Replace ("_", "__");
+			}
+		}
+
+		public string TooltipText
+		{
+			get { return menuItem.ToolTip == null ? null : ((ToolTip)menuItem.ToolTip).Content.ToString(); }
+			set
+			{
+				var tp = menuItem.ToolTip as ToolTip;
+				if (tp == null)
+					menuItem.ToolTip = tp = new ToolTip();
+				tp.Content = value ?? string.Empty;
+				ToolTipService.SetIsEnabled(menuItem, value != null);
+				if (tp.IsOpen && value == null)
+					tp.IsOpen = false;
 			}
 		}
 
@@ -202,6 +218,19 @@ namespace Xwt.WPFBackend
 		void MenuItemClickHandler (object sender, EventArgs args)
 		{
 			Context.InvokeUserCode (eventSink.OnClicked);
+		}
+
+		public void SetFormattedText (FormattedText text)
+		{
+			var formattedLabel = new System.Windows.Controls.TextBlock();
+			formattedLabel.ApplyFormattedText(text, null);
+  
+			this.menuItem.Header = formattedLabel;
+		}
+
+		public void Dispose ()
+		{
+			// Nothing to do here.
 		}
 	}
 }

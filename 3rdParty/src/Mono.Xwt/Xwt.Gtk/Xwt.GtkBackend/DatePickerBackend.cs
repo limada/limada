@@ -107,9 +107,7 @@ namespace Xwt.GtkBackend
 
 		void HandleValueChanged (object sender, EventArgs e)
 		{
-			ApplicationContext.InvokeUserCode (delegate {
-				EventSink.ValueChanged ();
-			});
+			ApplicationContext.InvokeUserCode (EventSink.ValueChanged);
 		}
 		
 		public class GtkDatePickerEntry : Gtk.SpinButton
@@ -237,7 +235,13 @@ namespace Xwt.GtkBackend
 				else if (Adjustment.Value < currentValue.Ticks)
 					DateTime = currentValue.AddComponent (selectedComponent, -1);
 			}
-			
+
+			protected override void OnDestroyed()
+			{
+				Adjustment.ValueChanged -= HandleValueChanged;
+				base.OnDestroyed();
+			}
+
 			protected override int OnOutput ()
 			{
 				DateTime dateTime = new DateTime ((long)Adjustment.Value);

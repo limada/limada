@@ -104,6 +104,27 @@ namespace Xwt.Mac
 		{
 			Widget.SizeToFit ();
 		}
+
+		bool canGetFocus;
+		public override bool CanGetFocus
+		{
+			get { return canGetFocus; }
+			set { canGetFocus = value; }
+		}
+
+		public override void SetFocus()
+		{
+			if (Widget.Input.Window != null && CanGetFocus)
+				Widget.Input.Window.MakeFirstResponder(Widget.Input);
+		}
+
+		public override bool HasFocus
+		{
+			get
+			{
+				return Widget.Window != null && (Widget.Window.FirstResponder == Widget.Input || Widget.Window.FirstResponder == Widget.Stepper);
+			}
+		}
 	}
 
 	public sealed class MacSpinButton : WidgetView
@@ -111,6 +132,9 @@ namespace Xwt.Mac
 		NSStepper stepper;
 		NSTextField input;
 		NSNumberFormatter formater;
+
+		internal NSTextField Input { get { return input; } }
+		internal NSStepper Stepper { get { return stepper; } }
 
 		ISpinButtonEventSink eventSink;
 
@@ -178,9 +202,7 @@ namespace Xwt.Mac
 			
 			input.DoubleValue = stepper.DoubleValue;
 			if (enableValueChangedEvent) {
-				Backend.ApplicationContext.InvokeUserCode (delegate {
-					eventSink.ValueChanged ();
-				});
+				Backend.ApplicationContext.InvokeUserCode (eventSink.ValueChanged);
 			}
 		}
 
@@ -189,9 +211,7 @@ namespace Xwt.Mac
 			isIndeterminate = false;
 			stepper.DoubleValue = input.DoubleValue;
 			if (enableValueChangedEvent) {
-				Backend.ApplicationContext.InvokeUserCode (delegate {
-					eventSink.ValueChanged ();
-				});
+				Backend.ApplicationContext.InvokeUserCode (eventSink.ValueChanged);
 			}
 		}
 
@@ -237,9 +257,7 @@ namespace Xwt.Mac
 				stepper.DoubleValue = value;
 				input.DoubleValue = value;
 				if (enableValueChangedEvent) {
-					Backend.ApplicationContext.InvokeUserCode (delegate {
-						eventSink.ValueChanged ();
-					});
+					Backend.ApplicationContext.InvokeUserCode (eventSink.ValueChanged);
 				}
 			}
 		}
@@ -330,6 +348,40 @@ namespace Xwt.Mac
 				switch ((SpinButtonEvent)eventId) {
 				case SpinButtonEvent.ValueChanged: enableValueChangedEvent = false; break;
 				}
+			}
+		}
+
+		public override bool AcceptsFirstResponder()
+		{
+			return false;
+		}
+
+		public override string AccessibilityLabel
+		{
+			get
+			{
+				return base.AccessibilityLabel;
+			}
+
+			set
+			{
+				base.AccessibilityLabel = value;
+				input.AccessibilityLabel = value;
+			}
+		}
+
+		public override NSObject AccessibilityTitleUIElement
+		{
+			get
+			{
+				return base.AccessibilityTitleUIElement;
+			}
+
+			set
+			{
+				base.AccessibilityTitleUIElement = value;
+				input.AccessibilityTitleUIElement = value;
+				stepper.AccessibilityTitleUIElement = value;
 			}
 		}
 

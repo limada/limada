@@ -50,7 +50,11 @@ namespace Xwt.GtkBackend
 				return RunCustomDialog (dialog, parent);
 			} finally {
 				if (dialog != null)
+#if XWT_GTK3
+					dialog.Dispose ();
+#else			
 					dialog.Destroy ();
+#endif
 			}
 		}
 		

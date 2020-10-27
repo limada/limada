@@ -2,12 +2,10 @@ using System;
 using Xwt.Backends;
 using System.ComponentModel;
 using Xwt.Drawing;
-using System.Windows.Markup;
 
 namespace Xwt
 {
 	[BackendType (typeof(IExpanderBackend))]
-	[ContentProperty("Content")]
 	public class Expander: Widget
 	{
 		EventHandler expandChanged;
@@ -26,7 +24,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IExpanderBackend Backend {
+		new IExpanderBackend Backend {
 			get { return (IExpanderBackend)BackendHost.Backend; }
 		}
 

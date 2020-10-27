@@ -60,7 +60,7 @@ namespace Xwt
 			}
 		}
 		
-		IComboBoxBackend Backend {
+		new IComboBoxBackend Backend {
 			get { return (IComboBoxBackend) BackendHost.Backend; }
 		}
 		

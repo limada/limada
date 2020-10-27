@@ -35,6 +35,7 @@ using Xwt.Drawing;
 using System.Reflection;
 using System.Linq;
 using Xwt.Motion;
+using Xwt.Accessibility;
 
 namespace Xwt
 {
@@ -62,6 +63,7 @@ namespace Xwt
 		WidgetPlacement alignHorizontal = WidgetPlacement.Fill;
 		bool expandVertical;
 		bool expandHorizontal;
+		Accessible accessible;
 
 		EventHandler<DragOverCheckEventArgs> dragOverCheck;
 		EventHandler<DragOverEventArgs> dragOver;
@@ -320,6 +322,19 @@ namespace Xwt
 				}
 			}
 		}
+
+		public Accessible Accessible {
+			get {
+				if (accessible == null) {
+					if (Backend is XwtWidgetBackend) {
+						accessible = ((XwtWidgetBackend)Backend).Accessible;
+					} else {
+						accessible = new Accessible(this);
+					}
+				}
+				return accessible;
+			}
+		}
 		
 		/// <summary>
 		/// Gets the parent window of the widget.
@@ -360,7 +375,7 @@ namespace Xwt
 		/// Gets the backend.
 		/// </summary>
 		/// <value>The backend.</value>
-		protected IWidgetBackend Backend {
+		public IWidgetBackend Backend {
 			get { return (IWidgetBackend) BackendHost.Backend; }
 		}
 		
@@ -622,7 +637,7 @@ namespace Xwt
 		/// Gets or sets the content of this <see cref="Xwt.Widget"/>.
 		/// </summary>
 		/// <value>The content of the widget.</value>
-		protected Widget Content {
+		internal protected Widget Content {
 			get { return contentWidget; }
 			set {
 				ICustomWidgetBackend bk = Backend as ICustomWidgetBackend;
@@ -875,7 +890,7 @@ namespace Xwt
 		/// Starts a drag operation with the specified drag start arguments.
 		/// </summary>
 		/// <param name="sdata">The drag start arguments to start the drag with.</param>
-		public void DragStart (DragStartData sdata)
+		internal void DragStart (DragStartData sdata)
 		{
 			Backend.DragStart (sdata);
 		}
@@ -1180,7 +1195,7 @@ namespace Xwt
 		/// The event will be enabled in the backend automatically, if <see cref="Xwt.Widget.OnGotFocus"/>
 		/// is overridden.
 		/// </remarks>
-		protected virtual void OnGotFocus (EventArgs args)
+		internal protected virtual void OnGotFocus (EventArgs args)
 		{
 			if (gotFocus != null)
 				gotFocus (this, args);
@@ -1665,12 +1680,14 @@ namespace Xwt
 				foreach (var w in toReallocate) {
 					// The widget may already have been reallocated as a result of reallocating the parent
 					// so we have to check if it is still in the queue
-					if (reallocationQueue.Contains (w))
+					if (!w.IsDisposed && reallocationQueue.Contains (w))
 						w.Surface.Reallocate ();
 				}
 				foreach (var w in resizeWindows.ToArray ()) {
-					w.AdjustSize ();
-					w.Reallocate ();
+					if (!w.IsDisposed) {
+						w.AdjustSize();
+						w.Reallocate();
+					}
 				}
 			} finally {
 				resizeRequestQueue.Clear ();
@@ -1738,7 +1755,7 @@ namespace Xwt
 				return;
 
 			if (w.Surface.ToolkitEngine != Surface.ToolkitEngine)
-				throw new InvalidOperationException ("Widget belongs to a different toolkit");
+				throw new InvalidOperationException (string.Format ("Widget belongs to toolkit '{0}' but it should belong to '{1}'.", w.Surface.ToolkitEngine, Surface.ToolkitEngine));
 
 			var wback = w.Backend as XwtWidgetBackend;
 

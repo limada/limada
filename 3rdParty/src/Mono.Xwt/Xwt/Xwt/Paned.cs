@@ -26,7 +26,6 @@
 
 using System;
 using Xwt.Backends;
-using System.Windows.Markup;
 
 namespace Xwt
 {
@@ -91,7 +90,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IPanedBackend Backend {
+		new IPanedBackend Backend {
 			get { return (IPanedBackend) BackendHost.Backend; }
 		}
 		
@@ -199,7 +198,6 @@ namespace Xwt
 		}
 	}
 	
-	[ContentProperty("Child")]
 	public class Panel
 	{
 		IContainerEventSink<Panel> parent;

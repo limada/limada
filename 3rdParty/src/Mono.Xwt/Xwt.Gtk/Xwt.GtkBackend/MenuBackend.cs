@@ -75,7 +75,11 @@ namespace Xwt.GtkBackend
 
 		public virtual object Font {
 			get {
+#if XWT_GTKSHARP3				
+				return customFont ?? menu.Style.FontDesc;
+#else
 				return customFont ?? menu.Style.FontDescription;
+#endif
 			}
 			set {
 				customFont = (Pango.FontDescription) value;
@@ -109,6 +113,11 @@ namespace Xwt.GtkBackend
 		{
 			Gtk.MenuItem item = ((MenuItemBackend)menuItem).MenuItem;
 			menu.Remove (item);
+#if XWT_GTK3
+			item.Dispose ();
+#else			
+			item.Destroy ();
+#endif
 		}
 
 		public void EnableEvent (object eventId)
@@ -126,7 +135,10 @@ namespace Xwt.GtkBackend
 		
 		public void Popup (IWidgetBackend widget, double x, double y)
 		{
-			GtkWorkarounds.ShowContextMenu (Menu, ((WidgetBackend)widget).Widget, new Gdk.Rectangle ((int)x, (int)y, 0, 0));
+			var target = widget as WidgetBackend;
+			if (target == null)
+				throw new ArgumentException ("Widget belongs to an unsupported Toolkit", nameof (widget));
+			GtkWorkarounds.ShowContextMenu (Menu, target.Widget, new Gdk.Rectangle ((int)x, (int)y, 0, 0));
 		}
 	}
 }

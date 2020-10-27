@@ -167,6 +167,11 @@ namespace Xwt
 			add { Backend.NodesReordered += value; }
 			remove { Backend.NodesReordered -= value; }
 		}
+		event EventHandler ITreeDataSource.Cleared
+		{
+			add { Backend.Cleared += value; }
+			remove { Backend.Cleared -= value; }
+		}
 		
 		TreePosition ITreeDataSource.GetChild (TreePosition pos, int index)
 		{
@@ -243,6 +248,7 @@ namespace Xwt
 		public event EventHandler<TreeNodeChildEventArgs> NodeDeleted;
 		public event EventHandler<TreeNodeEventArgs> NodeChanged;
 		public event EventHandler<TreeNodeOrderEventArgs> NodesReordered;
+		public event EventHandler Cleared;
 
 		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
@@ -256,6 +262,8 @@ namespace Xwt
 		public void Clear ()
 		{
 			rootNodes.Clear ();
+			if (Cleared != null)
+				Cleared (this, EventArgs.Empty);
 		}
 		
 		NodePosition GetPosition (TreePosition pos)
@@ -288,7 +296,7 @@ namespace Xwt
 			}
 			node.Data [column] = value;
 			if (NodeChanged != null)
-				NodeChanged (this, new TreeNodeEventArgs (pos));
+				NodeChanged (this, new TreeNodeEventArgs (pos, n.NodeIndex));
 		}
 
 		public object GetValue (TreePosition pos, int column)
@@ -359,7 +367,7 @@ namespace Xwt
 			
 			var node = new NodePosition () { ParentList = np.ParentList, NodeId = nn.NodeId, NodeIndex = np.NodeIndex - 1, StoreVersion = version };
 			if (NodeInserted != null)
-				NodeInserted (this, new TreeNodeEventArgs (node));
+				NodeInserted (this, new TreeNodeEventArgs (node, node.NodeIndex));
 			return node;
 		}
 
@@ -377,7 +385,7 @@ namespace Xwt
 			
 			var node = new NodePosition () { ParentList = np.ParentList, NodeId = nn.NodeId, NodeIndex = np.NodeIndex + 1, StoreVersion = version };
 			if (NodeInserted != null)
-				NodeInserted (this, new TreeNodeEventArgs (node));
+				NodeInserted (this, new TreeNodeEventArgs (node, node.NodeIndex));
 			return node;
 		}
 		
@@ -410,19 +418,26 @@ namespace Xwt
 			
 			var node = new NodePosition () { ParentList = list, NodeId = nn.NodeId, NodeIndex = list.Count - 1, StoreVersion = version };
 			if (NodeInserted != null)
-				NodeInserted (this, new TreeNodeEventArgs (node));
+				NodeInserted (this, new TreeNodeEventArgs (node, node.NodeIndex));
 			return node;
 		}
 		
 		public void Remove (TreePosition pos)
 		{
+			if (pos == null)
+				return;
+			// Remove all child nodes in reverse order and notify client of each removed child.
+			// This allows clients to keep track of all removed nodes, before the current node
+			// will be removed and invalidated.
+			for (int i = GetChildrenCount (pos) - 1; i >= 0 ; i--)
+				Remove (GetChild (pos, i));
 			NodePosition np = GetPosition (pos);
 			np.ParentList.RemoveAt (np.NodeIndex);
 			var parent = np.ParentList.Parent;
 			var index = np.NodeIndex;
 			version++;
 			if (NodeDeleted != null)
-				NodeDeleted (this, new TreeNodeChildEventArgs (parent, index));
+				NodeDeleted (this, new TreeNodeChildEventArgs (parent, index, pos));
 		}
 		
 		public TreePosition GetParent (TreePosition pos)
@@ -446,6 +461,11 @@ namespace Xwt
 		
 		public void DisableEvent (object eventId)
 		{
+		}
+
+		protected virtual void OnNodesReordered(ListRowOrderEventArgs e)
+		{
+			if (NodesReordered != null) System.Diagnostics.Debug.WriteLine($"No support for {nameof(NodesReordered)} events from {nameof(DefaultTreeStoreBackend)}, sorry.");
 		}
 	}
 }

@@ -74,6 +74,7 @@ namespace Xwt.GtkBackend
 
 		protected override void OnGetPreferredHeight (out int minimum_height, out int natural_height)
 		{
+			base.OnGetPreferredHeight (out minimum_height, out natural_height);
 			// containers need initial width in heigt_for_width mode
 			// dirty fix: do not constrain width on first allocation 
 			var force_width = SizeConstraint.Unconstrained;
@@ -88,13 +89,14 @@ namespace Xwt.GtkBackend
 
 		protected override void OnGetPreferredWidth (out int minimum_width, out int natural_width)
 		{
+			base.OnGetPreferredWidth (out minimum_width, out natural_width);
 			// containers need initial height in width_for_height mode
 			// dirty fix: do not constrain height on first allocation
 			var force_height = SizeConstraint.Unconstrained;
 			if (IsReallocating)
-				force_height = SizeConstraint.WithSize (Allocation.Width);
+				force_height = SizeConstraint.WithSize (Allocation.Height);
 			var size = OnGetRequisition (SizeConstraint.Unconstrained, force_height);
-			if (size.Height < WidthRequest)
+			if (size.Width < WidthRequest)
 				minimum_width = natural_width = WidthRequest;
 			else
 				minimum_width = natural_width = size.Width;
@@ -102,6 +104,7 @@ namespace Xwt.GtkBackend
 
 		protected override void OnGetPreferredHeightForWidth (int width, out int minimum_height, out int natural_height)
 		{
+			base.OnGetPreferredHeightForWidth (width, out minimum_height, out natural_height);
 			var size = OnGetRequisition (SizeConstraint.WithSize (width), SizeConstraint.Unconstrained);
 			if (size.Height < HeightRequest)
 				minimum_height = natural_height = HeightRequest;
@@ -111,8 +114,9 @@ namespace Xwt.GtkBackend
 
 		protected override void OnGetPreferredWidthForHeight (int height, out int minimum_width, out int natural_width)
 		{
+			base.OnGetPreferredWidthForHeight (height, out minimum_width, out natural_width);
 			var size = OnGetRequisition (SizeConstraint.Unconstrained, SizeConstraint.WithSize (height));
-			if (size.Height < WidthRequest)
+			if (size.Width < WidthRequest)
 				minimum_width = natural_width = WidthRequest;
 			else
 				minimum_width = natural_width = size.Width;

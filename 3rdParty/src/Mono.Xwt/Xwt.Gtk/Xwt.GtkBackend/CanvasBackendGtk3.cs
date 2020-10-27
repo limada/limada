@@ -45,39 +45,86 @@ namespace Xwt.GtkBackend
 			return base.OnDrawn (cr);
 		}
 
-		protected override Gtk.SizeRequestMode OnGetRequestMode ()
+		// protected override Gtk.SizeRequestMode OnGetRequestMode ()
+		// {
+		// 	// always in fixed mode, since we have fixed width-height relation
+		// 	return Gtk.SizeRequestMode.ConstantSize;
+		// }
+		
+		protected override void OnRealized ()
 		{
-			// always in fixed mode, since we have fixed width-height relation
-			return (Gtk.SizeRequestMode)2;
+			// force reallocation, if unrealized previously
+			if (!IsReallocating) {
+				try {
+					OnReallocate ();
+				} catch {
+					IsReallocating = false;
+				}
+			}
+			base.OnRealized ();
 		}
-
+		
 		protected override void OnGetPreferredHeight (out int minimum_height, out int natural_height)
 		{
+#if Lmk_MakesTroubles
+
 			if (HeightRequest > 0)
 				minimum_height = natural_height = HeightRequest;
 			else {
 				minimum_height = natural_height = (Backend.Frontend.MinHeight > 0 ? (int) Backend.Frontend.MinHeight : 0);
-                foreach (var cr in children.Where (c => c.Key.Visible).ToArray()) {
+				foreach (var cr in children.Where (c => c.Key.Visible)) {
 					minimum_height = (int) Math.Max (minimum_height, cr.Value.Y + cr.Value.Height);
 					natural_height = (int) Math.Max (natural_height, cr.Value.Y + cr.Value.Height);
 				}
 			}
+#else
+			base.OnGetPreferredHeight (out minimum_height, out natural_height);
+			var min = 0;
+			var nat = 0;
+			foreach (var cr in children.Where (c => c.Key.Visible)) {
+				cr.Key.GetPreferredHeight (out var cmin, out var cnat);
+				min = (int) Math.Max (min, cmin);
+				nat = (int) Math.Max (natural_height, cr.Value.Y + cr.Value.Height);//(int) Math.Max (nat, cnat);
+			}
+
+			minimum_height = min;
+			natural_height = Math.Max (nat, min);
+#endif
+
 		}
 
 		protected override void OnGetPreferredWidth (out int minimum_width, out int natural_width)
 		{
+#if Lmk_MakesTroubles
+			
 			if (WidthRequest > 0)
 				minimum_width = natural_width = WidthRequest;
 			else {
 				minimum_width = natural_width = (Backend.Frontend.MinWidth > 0 ? (int)Backend.Frontend.MinWidth : 0);
-                foreach (var cr in children.Where (c => c.Key.Visible).ToArray()) {
+				foreach (var cr in children.Where (c => c.Key.Visible)) {
 					minimum_width = (int) Math.Max (minimum_width, cr.Value.X + cr.Value.Height);
 					natural_width = (int) Math.Max (natural_width, cr.Value.X + cr.Value.Height);
 				}
 			}
-		}
-	}
+#else
+			base.OnGetPreferredWidth (out minimum_width, out natural_width);
+			var min = 0;
+			var nat = 0;
+			foreach (var cr in children.Where (c => c.Key.Visible)) {
+				cr.Key.GetPreferredWidth (out var cmin, out var cnat);
+				min = (int) Math.Max (min, cmin);
+				nat = (int) Math.Max (natural_width, cr.Value.X + cr.Value.Width);//(int) Math.Max (nat, cnat);
+			}
 
+			minimum_width = min;
+			natural_width = Math.Max (nat, min);
+#endif
+		}
+
+		
+
+	}
+		
 	class TempCairoContextBackend : CairoContextBackend
 	{
 		public TempCairoContextBackend (double scaleFactor) : base (scaleFactor)

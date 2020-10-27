@@ -45,7 +45,7 @@ namespace Xwt
 			Image = image;
 		}
 		
-		IImageViewBackend Backend {
+		new IImageViewBackend Backend {
 			get { return (IImageViewBackend) BackendHost.Backend; }
 		}
 

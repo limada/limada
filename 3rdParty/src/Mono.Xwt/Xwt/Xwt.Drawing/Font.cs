@@ -26,7 +26,6 @@
 
 using System;
 using Xwt.Backends;
-using System.Windows.Markup;
 using System.ComponentModel;
 using System.Text;
 using System.Globalization;
@@ -38,7 +37,6 @@ using System.Linq;
 namespace Xwt.Drawing
 {
 	[TypeConverter (typeof(FontValueConverter))]
-	[ValueSerializer (typeof(FontValueSerializer))]
 	public sealed class Font: XwtObject
 	{
 		FontBackendHandler handler;
@@ -47,7 +45,7 @@ namespace Xwt.Drawing
 		{
 		}
 		
-		internal Font (object backend, Toolkit toolkit)
+		public Font (object backend, Toolkit toolkit)
 		{
 			if (toolkit != null)
 				ToolkitEngine = toolkit;
@@ -133,7 +131,7 @@ namespace Xwt.Drawing
 
 		internal static Font FromName (string name, Toolkit toolkit)
 		{
-			if (string.IsNullOrWhiteSpace (name))
+			if (name == null)
 				throw new ArgumentNullException (nameof (name), "Font name cannot be null");
 			if (name.Length == 0)
 				return toolkit.FontBackendHandler.SystemFont;
@@ -156,20 +154,19 @@ namespace Xwt.Drawing
 				FontWeight fw;
 				FontStretch fs;
 				double siz;
-				if (token != "Normal") {
-					if (double.TryParse (token, NumberStyles.Any, CultureInfo.InvariantCulture, out siz)) { // Try parsing the number first, since Enum.TryParse can also parse numbers
-						if (size == -1) // take only first number
-							size = siz;
-					}
-					else if (Enum.TryParse<FontStyle> (token, true, out st) && st != FontStyle.Normal)
-						style = st;
-					else if (Enum.TryParse<FontWeight> (token, true, out fw) && fw != FontWeight.Normal)
-						weight = fw;
-					else if (Enum.TryParse<FontStretch> (token, true, out fs) && fs != FontStretch.Normal)
-						stretch = fs;
-					else if (token.Length > 0)
-						break;
+				if (double.TryParse (token, NumberStyles.Any, CultureInfo.InvariantCulture, out siz)) { // Try parsing the number first, since Enum.TryParse can also parse numbers
+					if (size == -1) // take only first number
+						size = siz;
 				}
+				else if (Enum.TryParse<FontStyle> (token, true, out st) && st != FontStyle.Normal)
+					style = st;
+				else if (Enum.TryParse<FontWeight> (token, true, out fw) && fw != FontWeight.Normal)
+					weight = fw;
+				else if (Enum.TryParse<FontStretch> (token, true, out fs) && fs != FontStretch.Normal)
+					stretch = fs;
+				else if (token.Length > 0)
+					break;
+
 				lasti = i;
 				if (i <= 0)
 					break;
@@ -249,7 +246,9 @@ namespace Xwt.Drawing
 				// add dummy font names for unit tests, the names are not exposed to users
 				// see the FontNameWith* tests (Testing/Tests/FontTests.cs) for details
 				installedFonts.Add("____FakeTestFont 72", "Arial");
-				installedFonts.Add("____FakeTestFont Rounded MT Bold", "Arial");
+				installedFonts.Add ("____FakeTestFont Rounded MT Bold", "Arial");
+				// HACK: add font mapping for patched pango SF Font support
+				installedFonts ["-apple-system-font"] = ".AppleSystemUIFont";
 			}
 		}
 
@@ -470,6 +469,8 @@ namespace Xwt.Drawing
 	
 	public enum FontWeight
 	{
+		/// The UltraThin weight (50)
+		Ultrathin = 50,
 		/// The thin weight (100)
 		Thin = 100,
 		/// The ultra light weight (200)
@@ -484,6 +485,8 @@ namespace Xwt.Drawing
 		Normal = 400,
 		/// The medium weight (500)
 		Medium = 500,
+		/// Between medium an Semibold (550)
+		Mediumbold = 550,
 		/// The semi bold weight (600)
 		Semibold = 600,
 		/// The bold weight (700)
@@ -492,8 +495,14 @@ namespace Xwt.Drawing
 		Ultrabold = 800,
 		/// The heavy weight (900)
 		Heavy = 900,
+		/// The heavy2 weight (920)
+		Ultraheavy = 950,
+		/// The heavy3 weight (940)
+		Semiblack = 960,
+		/// The heavy3 weight (960)
+		Black = 980,
 		/// The ultra heavy weight (1000)
-		Ultraheavy = 1000
+		Ultrablack = 999
 	}
 	
 	public enum FontStretch
@@ -547,29 +556,6 @@ namespace Xwt.Drawing
 		public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
 		{
 			return sourceType == typeof(string);
-		}
-	}
-	
-	class FontValueSerializer: ValueSerializer
-	{
-		public override bool CanConvertFromString (string value, IValueSerializerContext context)
-		{
-			return true;
-		}
-		
-		public override bool CanConvertToString (object value, IValueSerializerContext context)
-		{
-			return true;
-		}
-		
-		public override string ConvertToString (object value, IValueSerializerContext context)
-		{
-			return value.ToString ();
-		}
-		
-		public override object ConvertFromString (string value, IValueSerializerContext context)
-		{
-			return Font.FromName (value);
 		}
 	}
 }

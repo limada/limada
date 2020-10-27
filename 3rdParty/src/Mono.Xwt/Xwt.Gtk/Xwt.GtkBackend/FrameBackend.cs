@@ -91,7 +91,11 @@ namespace Xwt.GtkBackend
 					}
 					Widget = box;
 					if (paddingAlign != null) {
+#if XWT_GTK3
+						paddingAlign.Dispose ();
+#else			
 						paddingAlign.Destroy ();
+#endif
 						paddingAlign = null;
 					}
 				}

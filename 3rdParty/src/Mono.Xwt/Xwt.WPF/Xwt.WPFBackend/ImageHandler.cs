@@ -71,11 +71,8 @@ namespace Xwt.WPFBackend
 			int stride = width * (bitmapImage.Format.BitsPerPixel + 7) / 8;
 			byte[] pixelData = new byte[stride * height];
 			bitmapImage.CopyPixels (pixelData, stride, 0);
-            		BitmapPalette pal = null;
-		    	if (bitmapImage.Format.BitsPerPixel == 1) {
-		        	pal = new BitmapPalette (new Color[] { Colors.Black, Colors.White });
-		    	}
-            		return BitmapSource.Create (width, height, dpi, dpi, bitmapImage.Format, pal, pixelData, stride);
+
+			return BitmapSource.Create (width, height, dpi, dpi, bitmapImage.Format, bitmapImage.Palette, pixelData, stride);
 		}
 
 		public override object CreateCustomDrawn (ImageDrawCallback drawCallback)
@@ -241,30 +238,16 @@ namespace Xwt.WPFBackend
 
 		public override bool IsBitmap (object handle)
 		{
-            		var source = (WpfImage)handle;
-		    	return source.MainFrame is SWMI.BitmapSource;
+			return !HasMultipleSizes (handle);
 		}
 
-		public override Xwt.Drawing.ImageFormat GetFormat (object handle) 
+		public override Size GetSize (string file)
 		{
-		    var source = (WpfImage)handle;
-		    var img = source.MainFrame as SWMI.BitmapSource;
-		    if (img != null) {
-		        if (img.Format.BitsPerPixel == 32)
-		            return Drawing.ImageFormat.ARGB32;
-		        if (img.Format.BitsPerPixel == 24)
-		            return Drawing.ImageFormat.RGB24;
-		    }
-		    return Drawing.ImageFormat.Other;
+			var frame = BitmapFrame.Create (new Uri (file), BitmapCreateOptions.DelayCreation, BitmapCacheOption.None);
+			return new Size (frame.PixelWidth, frame.PixelHeight);
 		}
 
-        public override Size GetSize (string file) 
-        {
-            var frame = BitmapFrame.Create (new Uri (file), BitmapCreateOptions.DelayCreation, BitmapCacheOption.None);
-            return new Size (frame.PixelWidth, frame.PixelHeight);
-        }
-
-        public override Size GetSize (object handle)
+		public override Size GetSize (object handle)
 		{
 			var source = (WpfImage) handle;
 			return source.Size;
@@ -288,7 +271,7 @@ namespace Xwt.WPFBackend
 		}
 	}
 
-	public class WpfImage
+	class WpfImage
 	{
 		public class ImageFrame
 		{

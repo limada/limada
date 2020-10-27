@@ -1,4 +1,4 @@
-﻿// 
+// 
 // ScrollViewBackend.cs
 //  
 // Author:
@@ -26,17 +26,49 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.WPFBackend;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows;
+using System.Windows.Markup;
 
 namespace Xwt.WPFBackend
 {
 	public class ScrollViewBackend
 		: WidgetBackend, IScrollViewBackend
 	{
-		public ScrollViewBackend()
+		private static readonly ResourceDictionary ScrollViewResourceDictionary;
+		static ScrollViewBackend ()
 		{
-			ScrollViewer = new ExScrollViewer();
+			Uri uri = new Uri ("pack://application:,,,/Xwt.WPF;component/XWT.WPFBackend/ScrollView.xaml");
+			ScrollViewResourceDictionary = (ResourceDictionary) XamlReader.Load (System.Windows.Application.GetResourceStream (uri).Stream);
+		}
+
+		public ScrollViewBackend ()
+		{
+			ScrollViewer = new ExScrollViewer ();
+			ScrollViewer.Resources.MergedDictionaries.Add (ScrollViewResourceDictionary);
+			ScrollViewer.GotKeyboardFocus += ScrollViewer_GotKeyboardFocus;
+			ScrollViewer.LostKeyboardFocus += ScrollViewer_LostKeyboardFocus;
+		}
+
+		Brush previousBrush;
+		Thickness previousBrushThickness;
+		void ScrollViewer_LostKeyboardFocus (object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+		{
+			if (BorderVisible) {
+				ScrollViewer.BorderThickness = previousBrushThickness;
+				ScrollViewer.BorderBrush = previousBrush;
+			}
+		}
+
+		void ScrollViewer_GotKeyboardFocus (object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+		{
+			if (BorderVisible) {
+				previousBrush = ScrollViewer.BorderBrush;
+				previousBrushThickness = ScrollViewer.BorderThickness;
+				ScrollViewer.BorderThickness = new Thickness (1);
+				ScrollViewer.BorderBrush = SystemColors.HighlightBrush;
+			}
 		}
 
 		public ScrollPolicy VerticalScrollPolicy
@@ -122,7 +154,7 @@ namespace Xwt.WPFBackend
 				vscrollControl = vbackend = new ScrollAdjustmentBackend ();
 				hscrollControl = hbackend = new ScrollAdjustmentBackend ();
 			}
-			ScrollViewer.Content = new CustomScrollViewPort (widget.NativeWidget, vbackend, hbackend);
+			ScrollViewer.Content = new CustomScrollViewPort (widget.NativeWidget, ScrollViewer, vbackend, hbackend);
 			ScrollViewer.CanContentScroll = true;
 
 			if (vbackend != null)
@@ -169,6 +201,16 @@ namespace Xwt.WPFBackend
 			}
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			if (ScrollViewer != null) {
+				ScrollViewer.GotKeyboardFocus -= ScrollViewer_GotKeyboardFocus;
+				ScrollViewer.LostKeyboardFocus -= ScrollViewer_LostKeyboardFocus;
+			}
+
+			base.Dispose (disposing);
+		}
+
 		protected ScrollViewer ScrollViewer
 		{
 			get { return (ScrollViewer) Widget; }
@@ -183,7 +225,7 @@ namespace Xwt.WPFBackend
 				case ScrollPolicy.Automatic:
 					return ScrollBarVisibility.Auto;
 				case ScrollPolicy.Never:
-					return ScrollBarVisibility.Hidden;
+					return ScrollBarVisibility.Disabled;
 
 				default:
 					throw new NotSupportedException();
@@ -197,7 +239,7 @@ namespace Xwt.WPFBackend
 					return ScrollPolicy.Automatic;
 				case ScrollBarVisibility.Visible:
 					return ScrollPolicy.Always;
-				case ScrollBarVisibility.Hidden:
+				case ScrollBarVisibility.Disabled:
 					return ScrollPolicy.Never;
 
 				default:

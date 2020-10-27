@@ -119,10 +119,23 @@ namespace Xwt.GtkBackend
 				return label != null ? (label.UseUnderline ? label.LabelProp : label.Text) : "";
 			}
 			set {
+				if (formattedText != null) {
+					formattedText = null;
+					label.ApplyFormattedText (null);
+				}
 				if (label.UseUnderline)
 					label.TextWithMnemonic = value;
 				else
 					label.Text = value;
+			}
+		}
+
+		public string TooltipText {
+			get {
+				return item.TooltipText;
+			}
+			set {
+				item.TooltipText = value;
 			}
 		}
 
@@ -159,7 +172,28 @@ namespace Xwt.GtkBackend
 				}
 			}
 		}
-		
+
+		FormattedText formattedText;
+		public void SetFormattedText (FormattedText text)
+		{
+			label.Text = text?.Text;
+			formattedText = text;
+			label.Realized -= HandleStyleUpdate;
+			label.StyleSet -= HandleStyleUpdate;
+			label.ApplyFormattedText(text);
+			label.Realized += HandleStyleUpdate;
+			label.StyleSet += HandleStyleUpdate;
+
+		}
+
+		void HandleStyleUpdate (object sender, EventArgs e)
+		{
+			// force text update with updated link color
+			if (label.IsRealized && formattedText != null) {
+				label.ApplyFormattedText (formattedText);
+			}
+		}
+
 /*		public void SetType (MenuItemType type)
 		{
 			string text = label.Text;
@@ -237,9 +271,16 @@ namespace Xwt.GtkBackend
 		void HandleItemActivated (object sender, EventArgs e)
 		{
 			if (!changingCheck) {
-				context.InvokeUserCode (delegate {
-					eventSink.OnClicked ();
-				});
+				context.InvokeUserCode (eventSink.OnClicked);
+			}
+		}
+
+		public void Dispose ()
+		{
+			if (label != null) {
+				label.Realized -= HandleStyleUpdate;
+				label.StyleSet -= HandleStyleUpdate;
+				label = null;
 			}
 		}
 	}

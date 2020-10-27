@@ -43,6 +43,7 @@ namespace Xwt.Mac
 		public IPopoverEventSink EventSink { get; set; }
 		internal bool EnableCloseEvent { get; private set; }
 		NSPopover popover;
+		FactoryViewController controller;
 
 		class FactoryViewController : NSViewController, INSPopoverDelegate
 		{
@@ -68,11 +69,21 @@ namespace Xwt.Mac
 				Cache.Add (this);
 			}
 
+			public string EffectiveAppearanceName { get; set; }
+
 			public override void LoadView ()
 			{
 				View = new ContainerView (this);
+
+				string appearance = EffectiveAppearanceName;
+
 				NativeChild.RemoveFromSuperview ();
 				View.AddSubview (NativeChild);
+
+				if (!string.IsNullOrEmpty(appearance) && appearance.IndexOf ("Dark", StringComparison.Ordinal) >= 0)
+					View.Appearance = NSAppearance.GetAppearance (MacSystemInformation.OsVersion < MacSystemInformation.Mojave ? NSAppearance.NameVibrantDark : new NSString("NSAppearanceNameDarkAqua"));
+				else
+					View.Appearance = NSAppearance.GetAppearance (NSAppearance.NameAqua);
 
 				WidgetSpacing padding = 0;
 				if (Backend != null)
@@ -203,7 +214,11 @@ namespace Xwt.Mac
 		public void Show (Popover.Position orientation, Widget referenceWidget, Rectangle positionRect, Widget child)
 		{
 			var refBackend = Toolkit.GetBackend (referenceWidget) as IWidgetBackend;
-			NSView refView = (refBackend as ViewBackend)?.Widget;
+
+			NSView refView = (refBackend as EmbedNativeWidgetBackend)?.EmbeddedView;
+
+			if (refView == null)
+				refView = (refBackend as ViewBackend)?.Widget;
 
 			if (refView == null) {
 				if (referenceWidget.Surface.ToolkitEngine.Type == ToolkitType.Gtk) {
@@ -233,13 +248,18 @@ namespace Xwt.Mac
 			popover = new NSAppearanceCustomizationPopover {
 				Behavior = NSPopoverBehavior.Transient
 			};
-			var controller = new FactoryViewController (this, child, popover) { BackgroundColor = backgroundColor };
+			controller = new FactoryViewController (this, child, popover) { BackgroundColor = backgroundColor };
 			popover.ContentViewController = controller;
 			popover.Delegate = controller;
 
 			// if the reference has a custom appearance, use it for the popover
-			if (popover is INSAppearanceCustomization && refView.EffectiveAppearance.Name != NSAppearance.NameAqua)
-				((INSAppearanceCustomization)popover).SetAppearance (refView.EffectiveAppearance);
+			if (refView.EffectiveAppearance.Name != NSAppearance.NameAqua) {
+
+				controller.EffectiveAppearanceName = refView.EffectiveAppearance.Name;
+
+				if (popover is INSAppearanceCustomization)
+					((INSAppearanceCustomization)popover).SetAppearance (refView.EffectiveAppearance);
+			}
 
 			popover.Show (positionRect.ToCGRect (),
 				      refView,
@@ -260,13 +280,12 @@ namespace Xwt.Mac
 		{
 			if (popover != null) {
 				popover.Close ();
-				var controller = popover.Delegate as FactoryViewController;
-				if (controller != null) {
-					popover.Delegate = null;
-					controller.Dispose ();
-				}
 				popover.Dispose ();
 				popover = null;
+			}
+			if (controller != null) {
+				controller.Dispose ();
+				controller = null;
 			}
 		}
 
@@ -282,6 +301,11 @@ namespace Xwt.Mac
 
 		public class NSAppearanceCustomizationPopover : NSPopover, INSAppearanceCustomization
 		{
+			public NSAppearanceCustomizationPopover ()
+			{ }
+
+			protected NSAppearanceCustomizationPopover (IntPtr handle) : base (handle)
+			{ }
 		}
 	}
 }

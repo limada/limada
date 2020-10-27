@@ -35,7 +35,7 @@ using TreeModel = Gtk.ITreeModel;
 
 namespace Xwt.GtkBackend
 {
-	public static class CellUtil
+	public static partial class CellUtil
 	{
 		class CellDataSource: ICellDataSource
 		{
@@ -61,7 +61,7 @@ namespace Xwt.GtkBackend
 			if (view is ITextCellViewFrontend) {
 				crd = new CustomCellRendererText ();
 			}
-			else if (view is ICheckBoxCellViewFrontend) {
+			else if (view is ICheckBoxCellViewFrontend || view is IRadioButtonCellViewFrontend) {
 				crd = new CustomCellRendererToggle ();
 			}
 			else if (view is IImageCellViewFrontend) {
@@ -95,20 +95,10 @@ namespace Xwt.GtkBackend
 				return CreateCellRenderer (actx, views.First ());
 		}
 		
-		public static Gtk.Widget CreateCellRenderer (ApplicationContext actx, CellView view)
+		static Gtk.Widget CreateCellRenderer__ (ApplicationContext actx, CellView view)
 		{
-			if (view is TextCellView) {
-				Gtk.Label lab = new Gtk.Label ();
-				lab.Xalign = 0;
-				lab.Text = ((TextCellView)view).Text;
-				return lab;
-			}
-            if (view is CheckBoxCellView) {
-                var chkBox = new Gtk.CheckButton();
-                chkBox.Clicked += (s, e) => ((CheckBoxCellView)view).RaiseToggled ();
-                return chkBox;
-            }
-			throw new NotImplementedException ();
+			
+			throw new NotImplementedException ($"see: {nameof(CreateCellRenderer)}");
 		}
 
 		public static void SetModelValue (TreeModel store, Gtk.TreeIter it, int column, Type type, object value)
@@ -163,6 +153,7 @@ namespace Xwt.GtkBackend
 		Gtk.Widget EventRootWidget { get; }
 		bool GetCellPosition (Gtk.CellRenderer r, int ex, int ey, out int cx, out int cy, out Gtk.TreeIter iter);
 		void QueueDraw (object target, Gtk.TreeIter iter);
+		void QueueResize (object target, Gtk.TreeIter iter);
 		TreeModel Model { get; }
 		Gtk.TreeIter PressedIter { get; set; }
 		CellViewBackend PressedCell { get; set; }

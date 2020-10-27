@@ -34,22 +34,21 @@ using Xwt.Backends;
 
 namespace Xwt.Mac
 {
-	public class OutlineViewBackend : NSOutlineView
+	public class OutlineViewBackend : NSOutlineView, IViewObject
 	{
-		ITreeViewEventSink eventSink;
-		protected ApplicationContext context;
 		NSTrackingArea trackingArea;
 
-		public OutlineViewBackend (ITreeViewEventSink eventSink, ApplicationContext context)
+		public OutlineViewBackend (TreeViewBackend viewBackend)
 		{
-			this.context = context;
-			this.eventSink = eventSink;
+			Backend = viewBackend;
 			AllowsColumnReordering = false;
 		}
 
-		public NSOutlineView View {
+		public NSView View {
 			get { return this; }
 		}
+
+		public ViewBackend Backend { get; set; }
 
 		public override NSObject WeakDataSource {
 			get { return base.WeakDataSource; }
@@ -57,6 +56,12 @@ namespace Xwt.Mac
 				base.WeakDataSource = value;
 				AutosizeColumns ();
 			}
+		}
+
+		bool animationsEnabled = true;
+		public bool AnimationsEnabled {
+			get { return animationsEnabled; }
+			set { animationsEnabled = value; }
 		}
 
 		public override void AddColumn (NSTableColumn tableColumn)
@@ -67,68 +72,82 @@ namespace Xwt.Mac
 
 		internal void AutosizeColumns ()
 		{
+			if (DataSource == null || RowCount == 0)
+				return;
 			var columns = TableColumns ();
-			foreach (var col in columns)
-				AutosizeColumn (col);
-			if (columns.Any (c => c.ResizingMask.HasFlag (NSTableColumnResizing.Autoresizing)))
+			if (columns.Length == 1 && columns[0].ResizingMask.HasFlag (NSTableColumnResizing.Autoresizing))
+				return;
+			var needsSizeToFit = false;
+			for (nint i = 0; i < columns.Length; i++) {
+				AutosizeColumn (columns[i], i);
+				needsSizeToFit |= columns[i].ResizingMask.HasFlag (NSTableColumnResizing.Autoresizing);
+			}
+			if (needsSizeToFit)
 				SizeToFit ();
 		}
 
-		void AutosizeColumn (NSTableColumn tableColumn)
+		void AutosizeColumn (NSTableColumn tableColumn, nint colIndex)
 		{
-			var column = IndexOfColumn (tableColumn);
-
-			var s = tableColumn.HeaderCell.CellSize;
+			var contentWidth = tableColumn.HeaderCell.CellSize.Width;
 			if (!tableColumn.ResizingMask.HasFlag (NSTableColumnResizing.UserResizingMask)) {
-				for (int i = 0; i < base.RowCount; i++) {
-					var cell = GetCell (column, i);
-					if (column == 0)
-					{ // first column contains expanders
-						var f = GetCellFrame (column, i);
-						s.Width = (nfloat)Math.Max (s.Width, f.X + cell.CellSize.Width);
-					}
-					else
-						s.Width = (nfloat)Math.Max (s.Width, cell.CellSize.Width);
-				}
+				contentWidth = Delegate.GetSizeToFitColumnWidth (this, colIndex);
 				if (!tableColumn.ResizingMask.HasFlag (NSTableColumnResizing.Autoresizing))
-					tableColumn.Width = s.Width;
+					tableColumn.Width = contentWidth;
 			}
-			tableColumn.MinWidth = s.Width;
-		}
-
-		nint IndexOfColumn (NSTableColumn tableColumn)
-		{
-			nint icol = -1;
-			foreach (var col in TableColumns ()) {
-				icol++;
-				if (col == tableColumn)
-					return icol;
-			}
-			return icol;
+			tableColumn.MinWidth = contentWidth;
 		}
 
 		public override void ExpandItem (NSObject item)
 		{
+			BeginExpandCollapseAnimation ();
 			base.ExpandItem (item);
+			EndExpandCollapseAnimation ();
 			QueueColumnResize ();
 		}
 
 		public override void ExpandItem (NSObject item, bool expandChildren)
 		{
+			BeginExpandCollapseAnimation ();
 			base.ExpandItem (item, expandChildren);
+			EndExpandCollapseAnimation ();
 			QueueColumnResize ();
 		}
 
 		public override void CollapseItem (NSObject item)
 		{
+			BeginExpandCollapseAnimation ();
 			base.CollapseItem (item);
+			EndExpandCollapseAnimation ();
 			QueueColumnResize ();
 		}
 
 		public override void CollapseItem (NSObject item, bool collapseChildren)
 		{
+			BeginExpandCollapseAnimation ();
 			base.CollapseItem (item, collapseChildren);
+			EndExpandCollapseAnimation ();
 			QueueColumnResize ();
+		}
+
+		public override void NoteHeightOfRowsWithIndexesChanged(NSIndexSet indexSet)
+		{
+			BeginExpandCollapseAnimation();
+			base.NoteHeightOfRowsWithIndexesChanged(indexSet);
+			EndExpandCollapseAnimation();
+		}
+
+		void BeginExpandCollapseAnimation ()
+		{
+			if (!AnimationsEnabled) {
+				NSAnimationContext.BeginGrouping ();
+				NSAnimationContext.CurrentContext.Duration = 0;
+			}
+		}
+
+		void EndExpandCollapseAnimation ()
+		{
+			if (!AnimationsEnabled)
+				NSAnimationContext.EndGrouping ();
 		}
 
 		public override void ReloadData ()
@@ -160,111 +179,105 @@ namespace Xwt.Mac
 		{
 			if (!columnResizeQueued) {
 				columnResizeQueued = true;
-				Application.MainLoop.QueueExitAction (delegate {
+				(Backend.ApplicationContext.Toolkit.GetSafeBackend (Backend.ApplicationContext.Toolkit) as ToolkitEngineBackend).InvokeBeforeMainLoop (delegate {
 					columnResizeQueued = false;
 					AutosizeColumns ();
 				});
 			}
 		}
 
+		public override void ResetCursorRects ()
+		{
+			base.ResetCursorRects ();
+			if (Backend.Cursor != null)
+				AddCursorRect (Bounds, Backend.Cursor);
+		}
+
 		public override void UpdateTrackingAreas ()
 		{
-			if (trackingArea != null) {
-				RemoveTrackingArea (trackingArea);
-				trackingArea.Dispose ();
-			}
-			var viewBounds = this.Bounds;
-			var options = NSTrackingAreaOptions.MouseMoved | NSTrackingAreaOptions.ActiveInKeyWindow | NSTrackingAreaOptions.MouseEnteredAndExited;
-			trackingArea = new NSTrackingArea (viewBounds, options, this, null);
-			AddTrackingArea (trackingArea);
+			this.UpdateEventTrackingArea (ref trackingArea);
 		}
 
 		public override void RightMouseDown (NSEvent theEvent)
 		{
-			base.RightMouseUp (theEvent);
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			ButtonEventArgs args = new ButtonEventArgs ();
-			args.X = p.X;
-			args.Y = p.Y;
-			args.Button = PointerButton.Right;
-			context.InvokeUserCode (delegate {
-				eventSink.OnButtonPressed (args);
-			});
+			if (!this.HandleMouseDown (theEvent))
+				base.RightMouseDown (theEvent);
 		}
 
 		public override void RightMouseUp (NSEvent theEvent)
 		{
-			base.RightMouseUp (theEvent);
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			ButtonEventArgs args = new ButtonEventArgs ();
-			args.X = p.X;
-			args.Y = p.Y;
-			args.Button = PointerButton.Right;
-			context.InvokeUserCode (delegate {
-				eventSink.OnButtonReleased (args);
-			});
+			if (!this.HandleMouseUp (theEvent))
+				base.RightMouseUp (theEvent);
 		}
 
 		public override void MouseDown (NSEvent theEvent)
 		{
-			base.MouseDown (theEvent);
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			ButtonEventArgs args = new ButtonEventArgs ();
-			args.X = p.X;
-			args.Y = p.Y;
-			args.Button = PointerButton.Left;
-			context.InvokeUserCode (delegate {
-				eventSink.OnButtonPressed (args);
-			});
+			if (!this.HandleMouseDown (theEvent))
+				base.MouseDown (theEvent);
 		}
 
 		public override void MouseUp (NSEvent theEvent)
 		{
-			base.MouseUp (theEvent);
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			ButtonEventArgs args = new ButtonEventArgs ();
-			args.X = p.X;
-			args.Y = p.Y;
-			args.Button = (PointerButton) (int) theEvent.ButtonNumber + 1;
-			context.InvokeUserCode (delegate {
-				eventSink.OnButtonReleased (args);
-			});
+			if (!this.HandleMouseUp (theEvent))
+				base.MouseUp (theEvent);
+		}
+
+		public override void OtherMouseDown (NSEvent theEvent)
+		{
+			if (!this.HandleMouseDown (theEvent))
+				base.OtherMouseDown (theEvent);
+		}
+
+		public override void OtherMouseUp (NSEvent theEvent)
+		{
+			if (!this.HandleMouseUp (theEvent))
+				base.OtherMouseUp (theEvent);
 		}
 
 		public override void MouseEntered (NSEvent theEvent)
 		{
-			base.MouseEntered (theEvent);
-			context.InvokeUserCode (delegate {
-				eventSink.OnMouseEntered ();
-			});
+			this.HandleMouseEntered (theEvent);
 		}
 
 		public override void MouseExited (NSEvent theEvent)
 		{
-			base.MouseExited (theEvent);
-			context.InvokeUserCode (delegate {
-				eventSink.OnMouseExited ();
-			});
+			this.HandleMouseExited (theEvent);
 		}
 
 		public override void MouseMoved (NSEvent theEvent)
 		{
-			base.MouseMoved (theEvent);
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			MouseMovedEventArgs args = new MouseMovedEventArgs ((long) TimeSpan.FromSeconds (theEvent.Timestamp).TotalMilliseconds, p.X, p.Y);
-			context.InvokeUserCode (delegate {
-				eventSink.OnMouseMoved (args);
-			});
+			if (!this.HandleMouseMoved (theEvent))
+				base.MouseMoved (theEvent);
+		}
+
+		public override void RightMouseDragged (NSEvent theEvent)
+		{
+			if (!this.HandleMouseMoved (theEvent))
+				base.RightMouseDragged (theEvent);
 		}
 
 		public override void MouseDragged (NSEvent theEvent)
 		{
-			base.MouseDragged (theEvent);
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			MouseMovedEventArgs args = new MouseMovedEventArgs ((long) TimeSpan.FromSeconds (theEvent.Timestamp).TotalMilliseconds, p.X, p.Y);
-			context.InvokeUserCode (delegate {
-				eventSink.OnMouseMoved (args);
-			});
+			if (!this.HandleMouseMoved (theEvent))
+				base.MouseDragged (theEvent);
+		}
+
+		public override void OtherMouseDragged (NSEvent theEvent)
+		{
+			if (!this.HandleMouseMoved (theEvent))
+				base.OtherMouseDragged (theEvent);
+		}
+
+		public override void KeyDown (NSEvent theEvent)
+		{
+			if (!this.HandleKeyDown (theEvent))
+				base.KeyDown (theEvent);
+		}
+
+		public override void KeyUp (NSEvent theEvent)
+		{
+			if (!this.HandleKeyUp (theEvent))
+				base.KeyUp (theEvent);
 		}
 	}
 }

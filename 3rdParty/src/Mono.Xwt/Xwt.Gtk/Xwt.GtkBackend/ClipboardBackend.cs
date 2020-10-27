@@ -107,7 +107,7 @@ namespace Xwt.GtkBackend
 		{
 			return ((DataRequest)ares).Result;
 		}
-
+		
 		#endregion
 	}
 	

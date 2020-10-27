@@ -13,5 +13,16 @@ namespace Xwt.WPFBackend
         {
             CurrentElement.InvalidateVisual ();
         }
+
+		public void QueueResize ()
+		{
+			CurrentElement.InvalidateVisual ();
+		}
+
+        public bool IsHighlighted {
+            get {
+                return false;
+            }
+        }
     }
 }

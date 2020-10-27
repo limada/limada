@@ -70,6 +70,9 @@ namespace Xwt.GtkBackend
 		{
 			if (images.Count () == 1)
 				return images.Cast<GtkImage> ().First ();
+			var customDrawn = images.Cast<GtkImage> ().FirstOrDefault (img => (img.Frames == null || img.Frames.Length == 0) && img.HasMultipleSizes);
+			if (customDrawn != null)
+				return customDrawn;
 			var frames = images.Cast<GtkImage> ().SelectMany (img => img.Frames);
 			return new GtkImage (frames);
 		}
@@ -169,18 +172,7 @@ namespace Xwt.GtkBackend
 			return !img.HasMultipleSizes;
 		}
 
-		public override ImageFormat GetFormat (object handle) 
-		{
-		    var img = (GtkImage)handle;
-		    var pixbuf = img.MainFrame;
-		    if (pixbuf.HasAlpha && pixbuf.BitsPerSample == 4)
-		        return ImageFormat.ARGB32;
-		    if (pixbuf.HasAlpha && pixbuf.BitsPerSample == 3)
-		        return ImageFormat.RGB24;
-		    return ImageFormat.Other;
-		}
-
-		public override object ConvertToBitmap(ImageDescription idesc, double scaleFactor, ImageFormat format)
+		public override object ConvertToBitmap (ImageDescription idesc, double scaleFactor, ImageFormat format)
 		{
 			var img = (GtkImage) idesc.Backend;
 			var f = new GtkImage.ImageFrame (img.GetBestFrame (ApplicationContext, scaleFactor, idesc, true), (int)idesc.Size.Width, (int)idesc.Size.Height, true);
@@ -286,12 +278,6 @@ namespace Xwt.GtkBackend
 
 		public ImageFrame[] Frames {
 			get { return frames; }
-		}
-
-		public Gdk.Pixbuf MainFrame 
-		{
-		    get { return frames[0].Pixbuf; }
-		    set { frames[0] = new ImageFrame (value, true); }
 		}
 
 		public GtkImage (Gdk.Pixbuf img)
@@ -442,8 +428,16 @@ namespace Xwt.GtkBackend
 		{
 			if (stockId != null) {
 				ImageFrame frame = null;
-				if (frames != null)
-					frame = frames.FirstOrDefault (f => f.Width == (int) idesc.Size.Width && f.Height == (int) idesc.Size.Height && f.Scale == scaleFactor);
+
+				// PERF: lambdas capture here, this is a hot path.
+				if (frames != null) {
+					foreach (var f in frames) {
+						if (f.Width == (int)idesc.Size.Width && f.Height == (int)idesc.Size.Height && f.Scale == scaleFactor) {
+							frame = f;
+							break;
+						}
+					}
+				}
 				if (frame == null) {
 					frame = new ImageFrame (ImageHandler.CreateBitmap (stockId, idesc.Size.Width, idesc.Size.Height, scaleFactor), (int)idesc.Size.Width, (int)idesc.Size.Height, false);
 					frame.Scale = scaleFactor;
@@ -511,6 +505,7 @@ namespace Xwt.GtkBackend
 			this.SetHasWindow (false);
 			this.SetAppPaintable (true);
 			this.actx = actx;
+			Accessible.Role = Atk.Role.Image;
 		}
 
 		public ImageDescription Image {

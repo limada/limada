@@ -45,7 +45,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 
-		IPasswordEntryBackend Backend
+		new IPasswordEntryBackend Backend
 		{
 			get { return (IPasswordEntryBackend) BackendHost.Backend; }
 		}

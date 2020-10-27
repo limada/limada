@@ -55,8 +55,6 @@ namespace Xwt
 			}
 		}
 
-		FileDialogFilterCollection filters = new FileDialogFilterCollection (null);
-
 		static FileSelector ()
 		{
 			MapEvent (FileSelectorEvent.FileChanged, typeof (FileSelector), "OnFileChanged");
@@ -71,7 +69,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 
-		IFileSelectorBackend Backend {
+		new IFileSelectorBackend Backend {
 			get { return (IFileSelectorBackend)BackendHost.Backend; }
 		}
 
@@ -106,7 +104,7 @@ namespace Xwt
 		/// Filters that allow the user to chose the kinds of files the dialog displays.
 		/// </summary>
 		public FileDialogFilterCollection Filters {
-			get { return filters; }
+			get { return Backend.Filters; }
 		}
 
 		/// <summary>
@@ -157,6 +155,7 @@ namespace Xwt
 	class DefaultFileSelectorBackend : XwtWidgetBackend, IFileSelectorBackend
 	{
 		TextEntry entry;
+		Button button;
 		FileDialog dialog;
 		FileDialogFilterCollection filters;
 		FileDialogFilter activeFilter;
@@ -169,14 +168,36 @@ namespace Xwt
 			filters = new FileDialogFilterCollection (null);
 		
 			var box = new HBox ();
-			entry = new TextEntry ();
-			entry.Changed += (sender, e) => NotifyFileChange ();
-			box.PackStart (entry, true);
+			box.Accessible.IsAccessible = true;
+			box.Accessible.Role = Accessibility.Role.Group;
+			box.Accessible.Title = Application.TranslationCatalog.GetString("File Selector");
 
-			var btn = new Button ("...");
-			box.PackStart (btn);
-			btn.Clicked += BtnClicked;
+			entry = new TextEntry ();
+			entry.Accessible.Title = Application.TranslationCatalog.GetString ("Path");
+			entry.Visible = true;
+			entry.Changed += (sender, e) => NotifyFileChange ();
+			box.PackStart (entry, true, vpos: WidgetPlacement.Center);
+
+			button = new Button ("...");
+			button.Accessible.Title = Application.TranslationCatalog.GetString ("Browse");
+			box.PackStart (button, false, vpos: WidgetPlacement.Center);
+			button.Clicked += BtnClicked;
 			Content = box;
+
+			Accessible.PropertyChanged += HandleAccessiblePropertyChanged;
+		}
+
+		private void HandleAccessiblePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof (Accessible.LabelWidget)) {
+				Content.Accessible.LabelWidget = Accessible.LabelWidget;
+				button.Accessible.LabelWidget = Accessible.LabelWidget;
+				entry.Accessible.LabelWidget = Accessible.LabelWidget;
+			} else if (e.PropertyName == nameof (Accessible.Label)) {
+				Content.Accessible.Label = Accessible.Label;
+				button.Accessible.Label = Accessible.Label;
+				entry.Accessible.Label = Accessible.Label;
+			}
 		}
 
 		public FileDialogFilter ActiveFilter {
@@ -206,6 +227,10 @@ namespace Xwt
 				else
 					currentFolder = value;
 			}
+		}
+
+		public FileDialogFilterCollection Filters {
+			get { return filters; }
 		}
 
 		public string FileName {
@@ -273,14 +298,25 @@ namespace Xwt
 					dialog.ActiveFilter = activeFilter;
 				if (!string.IsNullOrEmpty (title))
 					dialog.Title = title;
-				if (dialog.Run (ParentWindow))
+				if (dialog.Run(ParentWindow)) {
 					FileName = dialog.FileName;
+					currentFolder = dialog.CurrentFolder;
+					// do not update the active filter, since we don't want the
+					// picker to propagate filter changes back to the selector.
+					//activeFilter = dialog.ActiveFilter;
+				}
 			} finally {
-				currentFolder = dialog.CurrentFolder;
-				activeFilter = dialog.ActiveFilter;
 				dialog.Dispose ();
 				dialog = null;
 			}
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !IsDisposed) {
+				Accessible.PropertyChanged -= HandleAccessiblePropertyChanged;
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

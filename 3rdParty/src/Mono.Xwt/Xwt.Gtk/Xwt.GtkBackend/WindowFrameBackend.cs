@@ -92,6 +92,20 @@ namespace Xwt.GtkBackend
 		{
 			throw new NotSupportedException ();
 		}
+
+		#if !XWT_GTK3
+		void HandleSizeRequested (object sender, Gtk.SizeRequestedArgs args)
+		{
+			if (!Window.Resizable) {
+				int w = args.Requisition.Width, h = args.Requisition.Height;
+				if (w < (int) requestedSize.Width)
+					w = (int) requestedSize.Width;
+				if (h < (int) requestedSize.Height)
+					h = (int) requestedSize.Height;
+				args.Requisition = new Gtk.Requisition () { Width = w, Height = h };
+			}
+		}
+		#endif
 		
 		#region IWindowFrameBackend implementation
 		void IWindowFrameBackend.Initialize (IWindowFrameEventSink eventSink)
@@ -100,26 +114,23 @@ namespace Xwt.GtkBackend
 			Initialize ();
 
 			#if !XWT_GTK3
-			Window.SizeRequested += delegate(object o, Gtk.SizeRequestedArgs args) {
-				if (!Window.Resizable) {
-					int w = args.Requisition.Width, h = args.Requisition.Height;
-					if (w < (int) requestedSize.Width)
-						w = (int) requestedSize.Width;
-					if (h < (int) requestedSize.Height)
-						h = (int) requestedSize.Height;
-					args.Requisition = new Gtk.Requisition () { Width = w, Height = h };
-				}
-			};
+			Window.SizeRequested += HandleSizeRequested;
 			#endif
 		}
-		
-		public virtual void Initialize ()
+
+		public virtual void Initialize()
 		{
 		}
-		
+
 		public virtual void Dispose ()
 		{
+			#if !XWT_GTK3
+			Window.SizeRequested -= HandleSizeRequested;
 			Window.Destroy ();
+			#else
+			Window.Dispose();
+			#endif
+			
 		}
 		
 		public IWindowFrameEventSink EventSink {
@@ -330,16 +341,12 @@ namespace Xwt.GtkBackend
 		
 		void HandleHidden (object sender, EventArgs e)
 		{
-			ApplicationContext.InvokeUserCode (delegate {
-				EventSink.OnHidden ();
-			});
+			ApplicationContext.InvokeUserCode (EventSink.OnHidden);
 		}
 
 		void HandleShown (object sender, EventArgs e)
 		{
-			ApplicationContext.InvokeUserCode (delegate {
-				EventSink.OnShown ();
-			});
+			ApplicationContext.InvokeUserCode (EventSink.OnShown);
 		}
 
 		[GLib.ConnectBefore]

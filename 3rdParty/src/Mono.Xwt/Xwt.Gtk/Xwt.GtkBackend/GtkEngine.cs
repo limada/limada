@@ -71,11 +71,12 @@ namespace Xwt.GtkBackend
 			RegisterBackend<IComboBoxBackend, ComboBoxBackend> ();
 			RegisterBackend<IDesignerSurfaceBackend, DesignerSurfaceBackend> ();
 			RegisterBackend<IMenuButtonBackend, MenuButtonBackend> ();
-			#if !XWT_GTK3 // limada_8b3c8a
+#if XWT_GTK3			
+			// RegisterBackend<ITextEntryBackend, TextEntryBackend> ();
 			RegisterBackend<ITextEntryBackend, TextEntryMultiLineBackend> ();
-			#else
-			RegisterBackend<ITextEntryBackend, TextEntryBackend> ();
-			#endif
+#else			
+			RegisterBackend<ITextEntryBackend, TextEntryMultiLineBackend> ();
+#endif
 			RegisterBackend<IToggleButtonBackend, ToggleButtonBackend> ();
 			RegisterBackend<IImageViewBackend, ImageViewBackend> ();
 			RegisterBackend<IAlertDialogBackend, AlertDialogBackend> ();
@@ -118,6 +119,7 @@ namespace Xwt.GtkBackend
 			RegisterBackend<ICalendarBackend, CalendarBackend> ();
 			RegisterBackend<IFontSelectorBackend, FontSelectorBackend> ();
 			RegisterBackend<ISelectFontDialogBackend, SelectFontDialogBackend> ();
+			RegisterBackend<IAccessibleBackend, AccessibleBackend> ();
 			RegisterBackend<IPopupWindowBackend, PopupWindowBackend> ();
 			RegisterBackend<IUtilityWindowBackend, UtilityWindowBackend> ();
 
@@ -231,7 +233,8 @@ namespace Xwt.GtkBackend
 			if (action == null)
 				throw new ArgumentNullException ("action");
 
-			Gtk.Application.Invoke (delegate {
+			// Switch to no Invoke(Action) once a gtk# release is done.
+			Gtk.Application.Invoke ((o, args) => {
 				action ();
 			});
 		}
@@ -243,9 +246,7 @@ namespace Xwt.GtkBackend
 			if (timeSpan.TotalMilliseconds < 0)
 				throw new ArgumentException ("Timer period must be >=0", "timeSpan");
 
-			return GLib.Timeout.Add ((uint) timeSpan.TotalMilliseconds, delegate {
-				return action ();
-			});
+			return GLib.Timeout.Add ((uint) timeSpan.TotalMilliseconds, action.Invoke);
 		}
 
 		public override void CancelTimerInvoke (object id)
@@ -351,6 +352,20 @@ namespace Xwt.GtkBackend
 			Gtk.Widget w = (Gtk.Widget)nativeWidget;
 			if (ctx != null)
 				gim.Draw (ApplicationContext, ctx, Util.GetScaleFactor (w), x, y, img);
+		}
+
+		public override Rectangle GetScreenBounds (object nativeWidget)
+		{
+			var widget = nativeWidget as Gtk.Widget;
+			if (widget == null)
+				throw new InvalidOperationException ("Widget belongs to a different toolkit");
+
+			int x = 0, y = 0;
+			widget.GdkWindow?.GetOrigin (out x, out y);
+			var a = widget.Allocation;
+			x += a.X;
+			y += a.Y;
+			return new Rectangle (x, y, widget.Allocation.Width, widget.Allocation.Height);
 		}
 
 		public override ToolkitFeatures SupportedFeatures {

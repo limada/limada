@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
+using System.Linq;
 using AppKit;
 using CoreGraphics;
 using Foundation;
@@ -85,8 +86,7 @@ namespace Xwt.Mac
 		public override Size GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
 			// set initial width to 0 to force text wrapping if inside ScrollView with disabled horizontal scrolling
-			var enclosingScrolView = (Widget.Superview as NSClipView)?.EnclosingScrollView;
-			var width = (enclosingScrolView?.HasHorizontalScroller == false) ? 0 : (double)Widget.TextStorage.Size.Width;
+			var width = (Widget.EnclosingScrollView?.HasHorizontalScroller == false) ? 0 : (double)Widget.TextStorage.Size.Width;
 			if (widthConstraint.IsConstrained)
 				width = widthConstraint.AvailableSize;
 			if (minWidth != -1 && minWidth > width)
@@ -135,6 +135,11 @@ namespace Xwt.Mac
 			}
 		}
 
+		public Drawing.Color TextColor {
+			get { return Widget.TextColor.ToXwtColor (); }
+			set { Widget.TextColor = value.ToNSColor (); }
+		}
+
 		int? lineSpacing = null;
 		public int LineSpacing {
 			get {
@@ -144,7 +149,7 @@ namespace Xwt.Mac
 				lineSpacing = value;
 
 				if (currentBuffer != null)
-					Widget.TextStorage.SetString (currentBuffer.ToAttributedString (font, lineSpacing));
+					Widget.SetAttributedString (currentBuffer.ToAttributedString (font, lineSpacing), !currentBuffer.HasForegroundAttributes);
 			}
 		}
 
@@ -169,7 +174,8 @@ namespace Xwt.Mac
 			if (tview == null)
 				return;
 
-			tview.TextStorage.SetString (macBuffer.ToAttributedString (font, lineSpacing));
+
+			tview.SetAttributedString (macBuffer.ToAttributedString (font, lineSpacing), !macBuffer.HasForegroundAttributes);
 		}
 
 		public override void EnableEvent (object eventId)
@@ -345,6 +351,13 @@ namespace Xwt.Mac
 		readonly XmlWriter xmlWriter;
 		Stack <int> paragraphIndent;
 
+		/// <summary>
+		/// Used to identify whether we can safely update TextView's TextColor.
+		/// Otherwise such update can override all custom ForegroundColor attributes.
+		/// </summary>
+		/// <value></value>
+		public bool HasForegroundAttributes { get; private set; }
+
 		public MacRichTextBuffer ()
 		{
 			text = new StringBuilder ();
@@ -487,7 +500,6 @@ namespace Xwt.Mac
 			var d = s.GetData (new NSRange (0, s.Length), options, out err);
 			var str = (string)NSString.FromData (d, NSStringEncoding.UTF8);
 
-
 			//bool first = true;
 			foreach (string line in str.Split (lineSplitChars, StringSplitOptions.None)) {
 				//if (!first) {
@@ -497,6 +509,8 @@ namespace Xwt.Mac
 				//	first = false;
 				xmlWriter.WriteRaw (line);
 			}
+
+			HasForegroundAttributes |= text.Attributes.Any (a => a is Xwt.Drawing.ColorTextAttribute);
 		}
 
 		private static readonly IntPtr _AppKitHandle = Dlfcn.dlopen ("/System/Library/Frameworks/AppKit.framework/AppKit", 0);

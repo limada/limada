@@ -62,7 +62,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 
-		IFolderSelectorBackend Backend {
+		new IFolderSelectorBackend Backend {
 			get { return (IFolderSelectorBackend)BackendHost.Backend; }
 		}
 
@@ -129,6 +129,7 @@ namespace Xwt
 	class DefaultFolderSelectorBackend : XwtWidgetBackend, IFolderSelectorBackend
 	{
 		TextEntry entry;
+		Button button;
 		SelectFolderDialog dialog;
 		string currentFolder;
 		bool enableFolderChangedEvent;
@@ -138,14 +139,38 @@ namespace Xwt
 		public DefaultFolderSelectorBackend ()
 		{
 			var box = new HBox ();
-			entry = new TextEntry ();
-			entry.Changed += (sender, e) => NotifyFolderChange ();
-			box.PackStart (entry, true);
+			box.Accessible.IsAccessible = true;
+			box.Accessible.Role = Accessibility.Role.Group;
+			box.Accessible.Title = Application.TranslationCatalog.GetString ("Folder Selector");
 
-			var btn = new Button ("...");
-			box.PackStart (btn);
-			btn.Clicked += BtnClicked;
+			entry = new TextEntry ();
+			entry.Accessible.Title = Application.TranslationCatalog.GetString ("Path");
+			entry.Changed += (sender, e) => NotifyFolderChange();
+			box.PackStart (entry, true, vpos: WidgetPlacement.Center);
+
+			button = new Button ("...");
+			button.Accessible.Title = Application.TranslationCatalog.GetString ("Browse");
+			box.PackStart (button, vpos: WidgetPlacement.Center);
+			button.Clicked += BtnClicked;
 			Content = box;
+
+			Accessible.PropertyChanged += HandleAccessiblePropertyChanged;
+		}
+
+		private void HandleAccessiblePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(Accessible.LabelWidget))
+			{
+				Content.Accessible.LabelWidget = Accessible.LabelWidget;
+				button.Accessible.LabelWidget = Accessible.LabelWidget;
+				entry.Accessible.LabelWidget = Accessible.LabelWidget;
+			}
+			else if (e.PropertyName == nameof(Accessible.Label))
+			{
+				Content.Accessible.Label = Accessible.Label;
+				button.Accessible.Label = Accessible.Label;
+				entry.Accessible.Label = Accessible.Label;
+			}
 		}
 
 		public string CurrentFolder {
@@ -235,6 +260,14 @@ namespace Xwt
 				dialog.Dispose ();
 				dialog = null;
 			}
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !IsDisposed) {
+				Accessible.PropertyChanged -= HandleAccessiblePropertyChanged;
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

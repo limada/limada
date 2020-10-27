@@ -51,7 +51,7 @@ namespace Xwt.Mac
 			base.Initialize ();
 			if (ViewObject is MacComboBox) {
 				((MacComboBox)ViewObject).SetEntryEventSink (EventSink);
-			} else {
+			} else if (ViewObject == null) {
 				var view = new CustomTextField (EventSink, ApplicationContext);
 				ViewObject = new CustomAlignedContainer (EventSink, ApplicationContext, (NSView)view) { DrawsBackground = false };
 				Container.ExpandVertically = true;
@@ -228,9 +228,7 @@ namespace Xwt.Mac
 			    cacheSelectionLength != SelectionLength) {
 				cacheSelectionStart = SelectionStart;
 				cacheSelectionLength = SelectionLength;
-				ApplicationContext.InvokeUserCode (delegate {
-					EventSink.OnSelectionChanged ();
-				});
+                ApplicationContext.InvokeUserCode (EventSink.OnSelectionChanged);
 			}
 		}
 
@@ -343,7 +341,7 @@ namespace Xwt.Mac
 
 		class CustomCell : NSTextFieldCell
 		{
-			CustomEditor editor;
+			NSTextView editor;
 			NSObject selChangeObserver;
 			public ApplicationContext Context {
 				get; set;
@@ -358,25 +356,47 @@ namespace Xwt.Mac
 
 			}
 
+			protected CustomCell(IntPtr ptr) : base(ptr)
+			{
+			}
+
+			/// <summary>
+			/// Like what happens for the ios designer, AppKit can sometimes clone the native `NSTextFieldCell` using the Copy (NSZone)
+			/// method. We *need* to ensure we can create a new managed wrapper for the cloned native object so we need the IntPtr
+			/// constructor. NOTE: By keeping this override in managed we ensure the new wrapper C# object is created ~immediately,
+			/// which makes it easier to debug issues.
+			/// </summary>
+			/// <returns>The copy.</returns>
+			/// <param name="zone">Zone.</param>
+			public override NSObject Copy(NSZone zone)
+			{
+				// Don't remove this override because the comment on this explains why we need this!
+				var newCell = (CustomCell)base.Copy(zone);
+				newCell.editor = editor;
+				newCell.selChangeObserver = selChangeObserver;
+				newCell.Context = Context;
+				newCell.EventSink = EventSink;
+				return newCell;
+			}
+
 			public override NSTextView FieldEditorForView (NSView aControlView)
 			{
 				if (editor == null) {
-					editor = new CustomEditor {
+					editor = new CustomTextFieldCellEditor {
 						Context = this.Context,
 						EventSink = this.EventSink,
 						FieldEditor = true,
 						Editable = true,
 					};
-					selChangeObserver = NSNotificationCenter.DefaultCenter.AddObserver (new NSString ("NSTextViewDidChangeSelectionNotification"), HandleSelectionDidChange, editor);
+					using (var key = new NSString("NSTextViewDidChangeSelectionNotification"))
+						selChangeObserver = NSNotificationCenter.DefaultCenter.AddObserver (key, HandleSelectionDidChange, editor);
 				}
 				return editor;
 			}
 
 			void HandleSelectionDidChange (NSNotification notif)
 			{
-				Context.InvokeUserCode (delegate {
-					EventSink.OnSelectionChanged ();
-				});
+				Context.InvokeUserCode (EventSink.OnSelectionChanged);
 			}
 
 			public override void DrawInteriorWithFrame (CGRect cellFrame, NSView inView)
@@ -408,64 +428,64 @@ namespace Xwt.Mac
 				return rect.ToCGRect ();
 			}
 		}
+	}
 
-		class CustomEditor : NSTextView
+	class CustomTextFieldCellEditor : NSTextView
+	{
+		public ApplicationContext Context
 		{
-			public ApplicationContext Context {
-				get; set;
-			}
+			get; set;
+		}
 
-			public ITextEntryEventSink EventSink {
-				get; set;
-			}
+		public ITextEntryEventSink EventSink
+		{
+			get; set;
+		}
 
-			public CustomEditor ()
+		public override void KeyDown(NSEvent theEvent)
+		{
+			Context.InvokeUserCode(delegate {
+				EventSink.OnKeyPressed(theEvent.ToXwtKeyEventArgs());
+			});
+			base.KeyDown(theEvent);
+		}
+
+		nint cachedCursorPosition;
+		public override void KeyUp(NSEvent theEvent)
+		{
+			if (cachedCursorPosition != SelectedRange.Location)
 			{
-
-			}
-
-			public override void KeyDown (NSEvent theEvent)
-			{
-				Context.InvokeUserCode (delegate {
-					EventSink.OnKeyPressed (theEvent.ToXwtKeyEventArgs ());
+				cachedCursorPosition = SelectedRange.Location;
+				Context.InvokeUserCode(delegate {
+					EventSink.OnSelectionChanged();
+					EventSink.OnKeyReleased(theEvent.ToXwtKeyEventArgs());
 				});
-				base.KeyDown (theEvent);
 			}
+			base.KeyUp(theEvent);
+		}
 
-			nint cachedCursorPosition;
-			public override void KeyUp (NSEvent theEvent)
+		public override bool BecomeFirstResponder()
+		{
+			var result = base.BecomeFirstResponder();
+			if (result)
 			{
-				if (cachedCursorPosition != SelectedRange.Location) {
-					cachedCursorPosition = SelectedRange.Location;
-					Context.InvokeUserCode (delegate {
-						EventSink.OnSelectionChanged ();
-						EventSink.OnKeyReleased (theEvent.ToXwtKeyEventArgs ());
-					});
-				}
-				base.KeyUp (theEvent);
+				Context.InvokeUserCode(() => {
+					EventSink.OnGotFocus();
+				});
 			}
+			return result;
+		}
 
-			public override bool BecomeFirstResponder ()
+		public override bool ResignFirstResponder()
+		{
+			var result = base.ResignFirstResponder();
+			if (result)
 			{
-				var result = base.BecomeFirstResponder ();
-				if (result) {
-					Context.InvokeUserCode (() => {
-						EventSink.OnGotFocus ();
-					});
-				}
-				return result;
+				Context.InvokeUserCode(() => {
+					EventSink.OnLostFocus();
+				});
 			}
-
-			public override bool ResignFirstResponder ()
-			{
-				var result = base.ResignFirstResponder ();
-				if (result) {
-					Context.InvokeUserCode (() => {
-						EventSink.OnLostFocus ();
-					});
-				}
-				return result;
-			}
+			return result;
 		}
 	}
 }

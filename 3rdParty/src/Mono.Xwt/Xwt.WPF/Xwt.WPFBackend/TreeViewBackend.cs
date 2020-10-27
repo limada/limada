@@ -1,4 +1,4 @@
-﻿//
+//
 // TreeViewBackend.cs
 //
 // Author:
@@ -116,6 +116,15 @@ namespace Xwt.WPFBackend
 			}
 		}
 
+		public bool BorderVisible {
+			get {
+				return Tree.BorderThickness.Left != 0;
+			}
+			set {
+				Tree.BorderThickness = value ? new Thickness (1) : new Thickness (0);
+			}
+		}
+
 		private bool headersVisible = true;
 		public bool HeadersVisible {
 			get { return this.headersVisible; }
@@ -143,6 +152,17 @@ namespace Xwt.WPFBackend
 				gridLinesVisible = value;
 			}
 		}
+
+		public bool UseAlternatingRowColors {
+			get {
+				return Tree.AlternationCount == 2;
+			}
+			set {
+				Tree.AlternationCount = value ? 2 : 0;
+			}
+		}
+
+		public bool AnimationsEnabled { get; set; }
 
 		public void SelectRow (TreePosition pos)
 		{

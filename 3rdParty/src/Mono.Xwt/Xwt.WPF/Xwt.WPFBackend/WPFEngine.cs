@@ -123,6 +123,7 @@ namespace Xwt.WPFBackend
 			RegisterBackend<ICalendarBackend, CalendarBackend> ();
 			RegisterBackend<IPopupWindowBackend, WindowBackend>();
 			RegisterBackend<IUtilityWindowBackend, WindowBackend>();
+			RegisterBackend<IAccessibleBackend, AccessibleBackend>();
 		}
 
 		public override void DispatchPendingEvents()
@@ -145,7 +146,12 @@ namespace Xwt.WPFBackend
 			if (action == null)
 				throw new ArgumentNullException ("action");
 
-			application.Dispatcher.BeginInvoke (action, new object [0]);
+			try {
+				application.Dispatcher.BeginInvoke (action, new object [0]);
+			} catch (Exception ex) {
+
+				throw;
+			}
 		}
 
 		public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan)
@@ -244,6 +250,15 @@ namespace Xwt.WPFBackend
 			FrameworkElement w = (FrameworkElement)nativeWidget;
 			if (dc != null)
 				im.Draw (ApplicationContext, dc, Util.GetScaleFactor (w), x, y, img);
+		}
+
+		public override Rectangle GetScreenBounds (object nativeWidget)
+		{
+			var widget = nativeWidget as FrameworkElement;
+			if (widget == null)
+				throw new InvalidOperationException("Widget belongs to a different toolkit");
+			var p = widget.PointToScreenDpiAware (new System.Windows.Point(0, 0)).ToXwtPoint ();
+			return new Rectangle(p, new Size (widget.RenderSize.Width, widget.RenderSize.Height));
 		}
 	}
 }

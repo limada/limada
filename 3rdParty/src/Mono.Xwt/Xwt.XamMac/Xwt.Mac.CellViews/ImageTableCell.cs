@@ -1,4 +1,4 @@
-// 
+﻿// 
 // ImageTableCell.cs
 //  
 // Author:
@@ -28,47 +28,181 @@ using System;
 using AppKit;
 using CoreGraphics;
 using Xwt.Backends;
+using System.Linq;
 
 namespace Xwt.Mac
 {
-	class ImageTableCell: NSImageCell, ICellRenderer
+	class ImageTableCell : NSImageView, ICellRenderer
 	{
-		public ImageTableCell ()
-		{
-		}
-		
-		public ImageTableCell (IntPtr p): base (p)
-		{
-		}
-		
+		NSTrackingArea trackingArea;
+
 		IImageCellViewFrontend Frontend {
-			get { return (IImageCellViewFrontend) Backend.Frontend; }
+			get { return (IImageCellViewFrontend)Backend.Frontend; }
 		}
 
 		public CellViewBackend Backend { get; set; }
 
 		public CompositeCell CellContainer { get; set; }
 
+		public NSView CellView { get { return this; } }
+
+		public ImageTableCell ()
+		{
+			Cell = new ImageViewCell ();
+		}
+
 		public void Fill ()
 		{
-			ObjectValue = Frontend.Image.ToImageDescription (CellContainer.Context).ToNSImage ();
+			if (Frontend.Image != null) {
+				Image = Frontend.Image.ToImageDescription (Backend.Context).ToNSImage ();
+				SetFrameSize (Image.Size);
+			} else
+				SetFrameSize (CoreGraphics.CGSize.Empty);
+			Hidden = !Frontend.Visible;
+			this.ApplyAcessibilityProperties ();
 		}
-		
-		public override CGSize CellSize {
+
+		public override CoreGraphics.CGSize FittingSize {
 			get {
-				NSImage img = ObjectValue as NSImage;
-				if (img != null)
-					return img.Size;
-				else
-					return base.CellSize;
+				if (Image == null)
+					return CGSize.Empty;
+				return Image.Size;
 			}
 		}
-		
+
+		public override void SizeToFit()
+		{
+			if (Frame.Size.IsEmpty && Image != null)
+				SetFrameSize (Image.Size);
+		}
+
 		public void CopyFrom (object other)
 		{
 			var ob = (ImageTableCell)other;
 			Backend = ob.Backend;
 		}
+
+		public override NSImage Image {
+			get {
+				return base.Image;
+			}
+			set {
+				base.Image = value;
+				var cell = Cell as ImageViewCell;
+				if (cell != null) {
+					var customImage = value as CustomImage;
+					// don't switch styles automatically if "sel" hes been explicitely set
+					cell.AutoselectImageStyle = !customImage?.Image.Styles.Contains ("sel") ?? false;
+				}
+			}
+		}
+
+		public override void UpdateTrackingAreas ()
+		{
+			if (trackingArea != null) {
+				RemoveTrackingArea (trackingArea);
+				trackingArea.Dispose ();
+			}
+			var options = NSTrackingAreaOptions.MouseMoved | NSTrackingAreaOptions.ActiveInKeyWindow | NSTrackingAreaOptions.MouseEnteredAndExited;
+			trackingArea = new NSTrackingArea (Bounds, options, this, null);
+			AddTrackingArea (trackingArea);
+		}
+
+		public override void RightMouseDown (NSEvent theEvent)
+		{
+			if (!this.HandleMouseDown (theEvent))
+				base.RightMouseDown (theEvent); 
+		}
+
+		public override void RightMouseUp (NSEvent theEvent)
+		{
+			if (!this.HandleMouseUp (theEvent))
+				base.RightMouseUp (theEvent); 
+		}
+
+		public override void MouseDown (NSEvent theEvent)
+		{
+			if (!this.HandleMouseDown (theEvent))
+				base.MouseDown (theEvent); 
+		}
+
+		public override void MouseUp (NSEvent theEvent)
+		{
+			if (!this.HandleMouseUp (theEvent))
+				base.MouseUp (theEvent); 
+		}
+
+		public override void OtherMouseDown (NSEvent theEvent)
+		{
+			if (!this.HandleMouseDown (theEvent))
+				base.OtherMouseDown (theEvent);
+		}
+
+		public override void OtherMouseUp (NSEvent theEvent)
+		{
+			if (!this.HandleMouseUp (theEvent))
+				base.OtherMouseUp (theEvent);
+		}
+
+		public override void MouseEntered (NSEvent theEvent)
+		{
+			this.HandleMouseEntered (theEvent);
+				base.MouseEntered (theEvent);
+		}
+
+		public override void MouseExited (NSEvent theEvent)
+		{
+			this.HandleMouseExited (theEvent);
+				base.MouseExited (theEvent);
+		}
+
+		public override void MouseMoved (NSEvent theEvent)
+		{
+			if (!this.HandleMouseMoved (theEvent))
+				base.MouseMoved (theEvent);
+		}
+
+		public override void MouseDragged (NSEvent theEvent)
+		{
+			if (!this.HandleMouseMoved (theEvent))
+				base.MouseDragged (theEvent);
+		}
+
+		public override void KeyDown (NSEvent theEvent)
+		{
+			if (!this.HandleKeyDown (theEvent))
+				base.KeyDown (theEvent);
+		}
+
+		public override void KeyUp (NSEvent theEvent)
+		{
+			if (!this.HandleKeyUp (theEvent))
+				base.KeyUp (theEvent);
+		}
+	}
+
+	class ImageViewCell : NSImageCell
+	{
+		internal bool AutoselectImageStyle { get; set; }
+
+		public override NSBackgroundStyle BackgroundStyle {
+			get {
+				return base.BackgroundStyle;
+			}
+			set {
+				base.BackgroundStyle = value;
+				if (AutoselectImageStyle) {
+					var customImage = Image as CustomImage;
+					if (customImage != null) {
+						// no need to care about light/dark NSAppearance, BackgroundStyle won't be flipped
+						if (value == NSBackgroundStyle.Dark) {
+							customImage.Image.Styles = customImage.Image.Styles.Add ("sel");
+						} else {
+							customImage.Image.Styles = customImage.Image.Styles.Remove ("sel");
+						}
+					}
+				}
+			}
+		}
 	}
 }
-

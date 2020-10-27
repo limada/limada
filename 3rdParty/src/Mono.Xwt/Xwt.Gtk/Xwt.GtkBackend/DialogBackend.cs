@@ -72,7 +72,11 @@ namespace Xwt.GtkBackend
 			if (buttons != null) {
 				foreach (var b in buttons) {
 					((Gtk.Container)b.Parent).Remove (b);
+#if XWT_GTK3
+					b.Dispose ();
+#else			
 					b.Destroy ();
+#endif
 				}
 			}
 			dialogButtons = newButtons
@@ -157,6 +161,7 @@ namespace Xwt.GtkBackend
 		public void EndLoop ()
 		{
 			Window.Respond (Gtk.ResponseType.Ok);
+			Window.Hide ();
 		}
 
 		public override bool Close ()

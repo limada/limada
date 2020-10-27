@@ -28,7 +28,9 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Automation;
 using Xwt.Backends;
+using Xwt.Accessibility;
 using SWC = System.Windows.Controls;
 using SWM = System.Windows.Media;
 
@@ -40,11 +42,9 @@ namespace Xwt.WPFBackend.Utilities
 
 		internal static FrameworkElementFactory CreateBoundColumnTemplate (ApplicationContext ctx, WidgetBackend parent, CellViewCollection views, string dataPath = ".")
 		{
-			if (views.Count == 1)
-                return CreateBoundCellRenderer(ctx, parent, views[0], dataPath);
-
 			FrameworkElementFactory container = new FrameworkElementFactory (typeof (Grid));
-			int i = 0;
+
+			int i = 0;
 			foreach (CellView view in views) {
 				var factory = CreateBoundCellRenderer(ctx, parent, view, dataPath);
 
@@ -58,6 +58,8 @@ namespace Xwt.WPFBackend.Utilities
 				}
 				else if (!view.Visible)
 					factory.SetValue(UIElement.VisibilityProperty, Visibility.Collapsed);
+
+				BindAccessibleFields (factory, view.AccessibleFields, dataPath);
 
 				factory.SetValue (FrameworkElement.HorizontalAlignmentProperty, view.Expands ? HorizontalAlignment.Stretch : HorizontalAlignment.Left);
 				factory.SetValue (Grid.ColumnProperty, i);
@@ -165,7 +167,40 @@ namespace Xwt.WPFBackend.Utilities
 				return factory;
 			}
 
+			var radioButton = view as RadioButtonCellView;
+			if (radioButton != null)
+			{
+				FrameworkElementFactory factory = new FrameworkElementFactory(typeof(UngroupedRadioButton));
+				if (radioButton.EditableField == null)
+					factory.SetValue(UIElement.IsEnabledProperty, radioButton.Editable);
+				else
+					factory.SetBinding(UIElement.IsEnabledProperty, new Binding(dataPath + "[" + radioButton.EditableField.Index + "]"));
+
+				factory.SetValue(SWC.Primitives.ToggleButton.IsThreeStateProperty, false);
+				if (radioButton.ActiveField == null)
+					factory.SetValue(SWC.Primitives.ToggleButton.IsCheckedProperty, radioButton.Active);
+				else
+					factory.SetBinding(SWC.Primitives.ToggleButton.IsCheckedProperty, new Binding(dataPath + "[" + radioButton.ActiveField.Index + "]"));
+
+				var cb = new RadioButtonCellViewBackend ();
+				cb.Initialize(view, factory, parent as ICellRendererTarget);
+				fr.AttachBackend(parent.Frontend, cb);
+				return factory;
+			}
+
 			throw new NotImplementedException ();
+		}
+
+		static void BindAccessibleFields (FrameworkElementFactory factory, AccessibleFields accessibleFields, string dataPath)
+		{
+			if (accessibleFields == null)
+				return;
+			if (accessibleFields.Label != null)
+				factory.SetBinding(AutomationProperties.NameProperty, new Binding(dataPath + "[" + accessibleFields.Label.Index + "]"));
+			if (accessibleFields.Identifier != null)
+				factory.SetBinding(AutomationProperties.AutomationIdProperty, new Binding(dataPath + "[" + accessibleFields.Identifier.Index + "]"));
+			if (accessibleFields.Description != null)
+				factory.SetBinding(AutomationProperties.HelpTextProperty, new Binding(dataPath + "[" + accessibleFields.Description.Index + "]"));
 		}
 	}
 

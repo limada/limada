@@ -32,7 +32,7 @@ using System.Collections.Generic;
 
 namespace Xwt.Drawing
 {
-	public sealed class TextLayout: XwtObject, IDisposable
+	public sealed partial class TextLayout: XwtObject, IDisposable
 	{
 		TextLayoutBackendHandler handler;
 
@@ -40,8 +40,8 @@ namespace Xwt.Drawing
 		string text;
 		double width = -1;
 		double height = -1;
-		TextTrimming textTrimming = TextTrimming.Word;
-	    	WrapMode wrapMode = WrapMode.Word;
+		Alignment textAlignment;
+		TextTrimming textTrimming;
 		List<TextAttribute> attributes;
 
 		public TextLayout ()
@@ -65,12 +65,6 @@ namespace Xwt.Drawing
 		{
 			ToolkitEngine = null;
 			InitForToolkit (tk);
-		}
-
-		public TextLayout (Context ctx) {
-		    ToolkitEngine = ctx.ToolkitEngine;
-		    handler = ToolkitEngine.TextLayoutBackendHandler;
-		    Backend = handler.Create(ctx);
 		}
 
 		void Setup ()
@@ -116,6 +110,8 @@ namespace Xwt.Drawing
 					handler.SetWidth (Backend, width);
 				if (height != -1)
 					handler.SetHeight (Backend, height);
+				if (textAlignment != default(Alignment))
+					handler.SetAlignment (Backend, textAlignment);
 				if (attributes != null && attributes.Count > 0)
 					foreach (var attr in attributes)
 						handler.AddAttribute (Backend, attr);
@@ -129,8 +125,8 @@ namespace Xwt.Drawing
 				Height = height,
 				Text = text,
 				Font = font,
+				TextAlignment = textAlignment,
 				TextTrimming = textTrimming,
-                		WrapMode = wrapMode,
 				Attributes = attributes != null ? new List<TextAttribute> (attributes) : null
 			};
 		}
@@ -169,6 +165,15 @@ namespace Xwt.Drawing
 		}
 
 		/// <summary>
+		/// Gets or sets the text alignment when drawn with multiple lines.
+		/// </summary>
+		/// <value>The text alignment.</value>
+		public Alignment TextAlignment {
+			get { return textAlignment; }
+			set { textAlignment = value; handler.SetAlignment (Backend, value); }
+		}
+
+		/// <summary>
 		/// measures the text
 		/// if Width is other than -1, it measures the height according to Width
 		/// Height is ignored
@@ -202,11 +207,6 @@ namespace Xwt.Drawing
 		public TextTrimming Trimming {
 			get { return textTrimming; }
 			set { textTrimming = value; handler.SetTrimming (Backend, value); }
-		}
-
-		public WrapMode WrapMode {
-		    get { return wrapMode; }
-		    set { wrapMode = value; handler.SetWrapMode (Backend, value); }
 		}
 
 		/// <summary>
@@ -349,8 +349,8 @@ namespace Xwt.Drawing
 		public double Height = -1;
 		public string Text;
 		public Font Font;
+		public Alignment TextAlignment;
 		public TextTrimming TextTrimming;
-        	public WrapMode WrapMode;
 		public List<TextAttribute> Attributes;
 
 		public void InitLayout (TextLayout la)
@@ -365,7 +365,8 @@ namespace Xwt.Drawing
 				la.Font = Font;
 			if (TextTrimming != default(TextTrimming))
 				la.Trimming = TextTrimming;
-			la.WrapMode = WrapMode;
+			if (TextAlignment != default(Alignment))
+				la.TextAlignment = TextAlignment;
 			if (Attributes != null) {
 				foreach (var at in Attributes)
 					la.AddAttribute (at);
@@ -374,8 +375,7 @@ namespace Xwt.Drawing
 
 		public bool Equals (TextLayoutData other)
 		{
-			if (Width != other.Width || Height != other.Height || Text != other.Text || Font != other.Font || TextTrimming != other.TextTrimming
-				|| WrapMode != other.WrapMode)
+			if (Width != other.Width || Height != other.Height || Text != other.Text || Font != other.Font || TextTrimming != other.TextTrimming || TextAlignment != other.TextAlignment)
 				return false;
 			if (Attributes == null && other.Attributes == null)
 				return true;

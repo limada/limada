@@ -61,8 +61,6 @@ namespace Xwt.GtkBackend
 			}
 			base.Dispose (disposing);
 		}
-
-
 	}
 }
 

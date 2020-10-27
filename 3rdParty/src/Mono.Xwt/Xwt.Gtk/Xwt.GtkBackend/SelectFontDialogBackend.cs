@@ -40,6 +40,7 @@ namespace Xwt.GtkBackend
 		readonly FontSelectionDialog dlg;
 		string defaultTitle;
 		string defaultPreviewText;
+		ApplicationContext context;
 
 		public Font SelectedFont {
 			get;
@@ -63,6 +64,11 @@ namespace Xwt.GtkBackend
 			defaultPreviewText = dlg.PreviewText;
 		}
 
+		public void Initialize (ApplicationContext actx)
+		{
+			context = actx;
+		}
+
 		public bool Run (IWindowFrameBackend parent)
 		{
 			if (!String.IsNullOrEmpty (Title))
@@ -78,8 +84,8 @@ namespace Xwt.GtkBackend
 			if (SelectedFont != null)
 				dlg.SetFontName (SelectedFont.ToString ());
 
-			var p = (WindowFrameBackend)parent;
-			int result = MessageService.RunCustomDialog (dlg, p != null ? p.Window : null);
+			var p = parent != null ? context.Toolkit.GetNativeWindow (parent) as Gtk.Window : null;
+			int result = MessageService.RunCustomDialog (dlg, p);
 
 			if (result == (int)Gtk.ResponseType.Ok) {
 				SelectedFont = Font.FromName (dlg.FontName);

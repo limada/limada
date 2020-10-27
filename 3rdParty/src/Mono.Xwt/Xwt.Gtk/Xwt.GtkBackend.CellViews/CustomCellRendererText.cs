@@ -58,6 +58,8 @@ namespace Xwt.GtkBackend
 					cellRenderer.Attributes = new Pango.AttrList ();
 			}
 			cellRenderer.Editable = view.Editable;
+			if (!cellRenderer.Editable)
+				cellRenderer.Mode = CellRendererMode.Activatable;
 			cellRenderer.Ellipsize = view.Ellipsize.ToGtkValue ();
 		}
 		
@@ -66,7 +68,7 @@ namespace Xwt.GtkBackend
 			SetCurrentEventRow ();
 			var view = (ITextCellViewFrontend) Frontend;
 
-			if (!view.RaiseTextChanged () && view.TextField != null) {
+			if (!view.RaiseTextChanged (args.NewText) && view.TextField != null) {
 				Gtk.TreeIter iter;
 				if (TreeModel.GetIterFromString (out iter, args.Path))
 					CellUtil.SetModelValue (TreeModel, iter, view.TextField.Index, view.TextField.FieldType, args.NewText);

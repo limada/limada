@@ -84,8 +84,9 @@ namespace Xwt.GtkBackend
 			EventsRootWidget.SetBackgroundColor (color);
 		}
 		
-		public void SetContent (string label)
+		public void SetContent (string label, bool useMnemonic)
 		{
+			Widget.UseUnderline = useMnemonic;
 			Widget.Label = label;
 		}
 		
@@ -154,9 +155,7 @@ namespace Xwt.GtkBackend
 			}
 
 			if (toggleEventEnabled) {
-				ApplicationContext.InvokeUserCode (delegate {
-					EventSink.OnToggled ();
-				});
+				ApplicationContext.InvokeUserCode (EventSink.OnToggled);
 			}
 		}
 
@@ -165,9 +164,7 @@ namespace Xwt.GtkBackend
 			if (internalActiveUpdate)
 				return;
 			
-			ApplicationContext.InvokeUserCode (delegate {
-				EventSink.OnClicked ();
-			});
+			ApplicationContext.InvokeUserCode (EventSink.OnClicked);
 		}
 	}
 }

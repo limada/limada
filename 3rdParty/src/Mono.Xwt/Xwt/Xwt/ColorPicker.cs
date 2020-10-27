@@ -1,4 +1,4 @@
-﻿//
+//
 // ColorPicker.cs
 //
 // Author:
@@ -65,7 +65,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 
-		IColorPickerBackend Backend {
+		new IColorPickerBackend Backend {
 			get { return (IColorPickerBackend) BackendHost.Backend; }
 		}
 
@@ -120,7 +120,7 @@ namespace Xwt
 		}
 	}
 
-	class DefaultColorPickerBackend: XwtWidgetBackend, IColorPickerBackend
+	public class DefaultColorPickerBackend: XwtWidgetBackend, IColorPickerBackend
 	{
 		readonly Button colorButton;
 		readonly ColorImage colorImage;
@@ -181,6 +181,8 @@ namespace Xwt
 		protected new IColorPickerEventSink EventSink {
 			get { return (IColorPickerEventSink)base.EventSink; }
 		}
+
+		public Button ColorButton => colorButton;
 
 		public Color Color {
 			get {

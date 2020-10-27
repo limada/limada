@@ -74,7 +74,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IMenuButtonBackend Backend {
+		new IMenuButtonBackend Backend {
 			get { return (IMenuButtonBackend) BackendHost.Backend; }
 		}
 		

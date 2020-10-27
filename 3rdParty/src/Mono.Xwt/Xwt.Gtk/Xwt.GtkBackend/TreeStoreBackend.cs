@@ -71,6 +71,7 @@ namespace Xwt.GtkBackend
 		public event EventHandler<TreeNodeChildEventArgs> NodeDeleted;
 		public event EventHandler<TreeNodeEventArgs> NodeChanged;
 		public event EventHandler<TreeNodeOrderEventArgs> NodesReordered;
+		public event EventHandler Cleared;
 		
 		IterPos GetIterPos (TreePosition pos)
 		{
@@ -86,6 +87,8 @@ namespace Xwt.GtkBackend
 		{
 			version++;
 			Tree.Clear ();
+			if (Cleared != null)
+				Cleared (this, EventArgs.Empty);
 		}
 
 		public TreePosition GetChild (TreePosition pos, int index)
@@ -212,7 +215,7 @@ namespace Xwt.GtkBackend
 			IterPos tpos = GetIterPos (pos);
 			Gtk.TreeIter it = tpos.Iter;
 			var delPath = Tree.GetPath (it);
-			var eventArgs = new TreeNodeChildEventArgs (GetParent (tpos), delPath.Indices[delPath.Indices.Length - 1]);
+			var eventArgs = new TreeNodeChildEventArgs (GetParent (tpos), delPath.Indices[delPath.Indices.Length - 1], pos);
 			Tree.Remove (ref it);
 			if (NodeDeleted != null)
 				NodeDeleted (this, eventArgs);
@@ -257,6 +260,11 @@ namespace Xwt.GtkBackend
 		
 		public void DisableEvent (object eventId)
 		{
+		}
+
+		protected virtual void OnNodesReordered(ListRowOrderEventArgs e)
+		{
+			if (NodesReordered != null) System.Diagnostics.Debug.WriteLine ($"No support for {nameof (NodesReordered)} events from {nameof (TreeStoreBackend)}, sorry.");
 		}
 	}
 }

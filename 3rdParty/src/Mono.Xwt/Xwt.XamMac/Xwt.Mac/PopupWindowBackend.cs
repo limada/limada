@@ -61,6 +61,8 @@ namespace Xwt.Mac
 			ContentView.AutoresizesSubviews = true;
 			ContentView.Hidden = true;
 
+			AccessibilityRole = NSAccessibilityRoles.PopoverRole;
+
 			// TODO: do it only if mouse move events are enabled in a widget
 			AcceptsMouseMovedEvents = true;
 
@@ -95,20 +97,28 @@ namespace Xwt.Mac
 			this.ApplicationContext = context;
 			this.frontend = (Window) frontend;
 		}
+
+		bool backendInitiaized;
 		
 		public void Initialize (IWindowFrameEventSink eventSink)
 		{
-			this.eventSink = eventSink;
-			this.isPopup = false;
-			UpdateWindowStyle ();
+			if (!backendInitiaized) {
+				this.eventSink = eventSink;
+				this.isPopup = false;
+				UpdateWindowStyle();
+				backendInitiaized = true;
+			}
 		}
 
 		public void Initialize (IWindowFrameEventSink eventSink, PopupWindow.PopupType windowType)
 		{
-			this.isPopup = true;
-			this.eventSink = eventSink;
-			this.windowType = windowType;
-			UpdateWindowStyle ();
+			if (!backendInitiaized) {
+				this.eventSink = eventSink;
+				this.isPopup = true;
+				this.windowType = windowType;
+				UpdateWindowStyle();
+				backendInitiaized = true;
+			}
 		}
 
 		void UpdateWindowStyle ()
@@ -125,9 +135,14 @@ namespace Xwt.Mac
 				MovableByWindowBackground = true;
 				TitlebarAppearsTransparent = true;
 				TitleVisibility = NSWindowTitleVisibility.Hidden;
-				this.StandardWindowButton (NSWindowButton.CloseButton).Hidden = true;
-				this.StandardWindowButton (NSWindowButton.MiniaturizeButton).Hidden = true;
-				this.StandardWindowButton (NSWindowButton.ZoomButton).Hidden = true;
+				if (MacSystemInformation.OsVersion <= MacSystemInformation.HighSierra)
+				{
+					StandardWindowButton(NSWindowButton.CloseButton).Hidden = true;
+					StandardWindowButton(NSWindowButton.MiniaturizeButton).Hidden = true;
+					StandardWindowButton(NSWindowButton.ZoomButton).Hidden = true;
+				}
+				else
+					StyleMask &= ~(NSWindowStyle.Titled);
 
 				if (windowType == PopupWindow.PopupType.Tooltip)
 					// NSWindowLevel.ScreenSaver overlaps menus, this allows showing tooltips above menus

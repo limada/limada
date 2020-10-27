@@ -7,6 +7,8 @@ using Xwt.Backends;
 using System.Windows;
 using SWC = System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 
 namespace Xwt.WPFBackend
 {
@@ -17,14 +19,13 @@ namespace Xwt.WPFBackend
 
 		public CanvasBackend ()
 		{
-			Canvas = new CustomPanel ();
+			Canvas = new CustomCanvas (this);
 			Canvas.RenderAction = Render;
-		    	Canvas.CacheMode = new BitmapCache();
 		}
 
-		private CustomPanel Canvas
+		private CustomCanvas Canvas
 		{
-			get { return (CustomPanel)Widget; }
+			get { return (CustomCanvas)Widget; }
 			set { Widget = value; }
 		}
 
@@ -38,38 +39,28 @@ namespace Xwt.WPFBackend
 			// Do nothing
 		}
 
-	    private Rectangle queueRect = Rectangle.Zero; 
-
-		private void Render (System.Windows.Media.DrawingContext dc) {
-
-		    var dirtyRectangle = queueRect;
-		    queueRect = Rectangle.Zero;
-		    // disabled! queueRect allways zero!
-		    if (queueRect == Rectangle.Zero) {
-		        dirtyRectangle = new Rectangle(0, 0, Widget.ActualWidth, Widget.ActualHeight);
-		    }
-		    var dirtyRect = dirtyRectangle.ToWpfRect();
-            	    if (BackgroundColorSet) {
+		private void Render (System.Windows.Media.DrawingContext dc)
+		{
+			if (BackgroundColorSet) {
 				SolidColorBrush mySolidColorBrush = new SolidColorBrush ();
 				mySolidColorBrush.Color = BackgroundColor.ToWpfColor ();
-                		dc.DrawRectangle (mySolidColorBrush, null, dirtyRect);
-		    }
+				Rect myRect = new Rect (0, 0, Widget.ActualWidth, Widget.ActualHeight);
+				dc.DrawRectangle (mySolidColorBrush, null, myRect);
+			}
 			
-		    var ctx = new Xwt.WPFBackend.DrawingContext (dc, Widget.GetScaleFactor ());
-            	    ctx.Context.PushClip(new RectangleGeometry(dirtyRect));
-		    CanvasEventSink.OnDraw(ctx, dirtyRectangle);
+			var ctx = new Xwt.WPFBackend.DrawingContext (dc, Widget.GetScaleFactor ());
+            ctx.Context.PushClip(new RectangleGeometry(new Rect(0, 0, Widget.ActualWidth, Widget.ActualHeight)));
+            CanvasEventSink.OnDraw(ctx, new Rectangle(0, 0, Widget.ActualWidth, Widget.ActualHeight));
 		}
 
 		public void QueueDraw ()
 		{
 			Canvas.InvalidateVisual ();
-            		queueRect = Rectangle.Zero; 
 		}
 
 		public void QueueDraw (Rectangle rect)
 		{
 			Canvas.InvalidateVisual ();
-            		queueRect = rect; 
 		}
 
 		public void AddChild (IWidgetBackend widget, Rectangle bounds)
@@ -115,5 +106,83 @@ namespace Xwt.WPFBackend
 		}
 
 		#endregion
+	}
+
+	class CustomCanvas : CustomPanel
+	{
+		CanvasBackend backend;
+		CustomCanvasAutomationPeer automationPeer;
+
+		public CustomCanvas (CanvasBackend backend)
+		{
+			this.backend = backend;
+		}
+
+		internal CustomCanvasAutomationPeer AutomationPeer => automationPeer ?? (automationPeer = new CustomCanvasAutomationPeer (this));
+
+		protected override AutomationPeer OnCreateAutomationPeer () => AutomationPeer;
+
+		internal class CustomCanvasAutomationPeer : FrameworkElementAutomationPeer, IInvokeProvider
+		{
+			List<AutomationPeer> childrenPeers = null;
+
+			public CustomCanvasAutomationPeer (CustomCanvas canvas) : base (canvas)
+			{
+			}
+
+			CanvasBackend Backend => ((CustomCanvas)Owner)?.backend;
+			Xwt.Widget Frontend => Backend?.Frontend;
+			AccessibleBackend Accessible => (AccessibleBackend)Toolkit.GetBackend (Frontend.Accessible);
+
+			protected override AutomationControlType GetAutomationControlTypeCore ()
+			{
+				var backend = Backend;
+				if (backend == null || !backend.HasAccessibleObject)
+					return AutomationControlType.Custom;
+				var role = Frontend.Accessible.Role;
+				return AccessibleBackend.RoleToControlType (role);
+			}
+
+			public override object GetPattern (PatternInterface patternInterface)
+			{
+				if (patternInterface == PatternInterface.Invoke && Backend.HasAccessibleObject)
+					return this;
+				return base.GetPattern (patternInterface);
+			}
+
+			public void Invoke ()
+			{
+				if (Backend.HasAccessibleObject)
+					Accessible.PerformInvoke ();
+			}
+
+			protected override List<AutomationPeer> GetChildrenCore ()
+			{
+				if (childrenPeers != null)
+					return childrenPeers;
+				return base.GetChildrenCore ();
+			}
+
+			public void AddChild (AutomationPeer peer)
+			{
+				if (childrenPeers == null)
+					childrenPeers = new List<AutomationPeer> ();
+				childrenPeers.Add (peer);
+			}
+
+			public void RemoveAllChildren ()
+			{
+				if (childrenPeers == null)
+					return;
+				childrenPeers.Clear ();
+			}
+
+			public void RemoveChild (AutomationPeer peer)
+			{
+				if (childrenPeers == null)
+					return;
+				childrenPeers.Remove (peer);
+			}
+		}
 	}
 }

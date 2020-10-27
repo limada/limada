@@ -92,8 +92,6 @@ namespace Xwt.Backends
 		/// <param name="handle">Image handle</param>
 		public abstract bool IsBitmap (object handle);
 
-        	public abstract ImageFormat GetFormat (object handle);
-
 		/// <summary>
 		/// Converts an image to a bitmap of the specified size
 		/// </summary>

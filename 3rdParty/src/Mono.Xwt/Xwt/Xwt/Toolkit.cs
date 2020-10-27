@@ -29,10 +29,11 @@ using Xwt.Drawing;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Xwt
 {
-	public sealed class Toolkit: IFrontend
+	public sealed partial class Toolkit: IFrontend
 	{
 		static Toolkit currentEngine;
 		static Toolkit nativeEngine;
@@ -43,6 +44,7 @@ namespace Xwt
 		XwtTaskScheduler scheduler;
 		ToolkitType toolkitType;
 		ToolkitDefaults defaults;
+		XwtSynchronizationContext synchronizationContext;
 
 		int inUserCode;
 		Queue<Action> exitActions = new Queue<Action> ();
@@ -123,12 +125,6 @@ namespace Xwt
 			get { return context; }
 		}
 
-		public static Toolkit Engine<T> () where T : ToolkitEngineBackend {
-		    if (toolkits.ContainsKey(typeof(T)))
-		        return toolkits[typeof(T)];
-		    return null;
-		}
-
 		/// <summary>
 		/// Gets the toolkit backend.
 		/// </summary>
@@ -157,8 +153,17 @@ namespace Xwt
 
 		private Toolkit ()
 		{
+			synchronizationContext = new XwtSynchronizationContext (this);
 			context = new ApplicationContext (this);
 			scheduler = new XwtTaskScheduler (this);
+		}
+
+		/// <summary>
+		/// Gets a synchronization context for this toolkit.
+		/// </summary>
+		/// <value>The synchronization context.</value>
+		public XwtSynchronizationContext SynchronizationContext {
+			get { return synchronizationContext; }
 		}
 
 		/// <summary>
@@ -269,15 +274,6 @@ namespace Xwt
 			throw new ArgumentException ("Invalid toolkit type");
 		}
 
-		public static Toolkit CreateToolkit<T> (bool isGuest) where T: ToolkitEngineBackend {
-		    var t = typeof (T);
-		    var result = new Toolkit();
-		    result.backend = (ToolkitEngineBackend)Activator.CreateInstance(t);
-		    result.Initialize(isGuest);
-		    result.toolkitType = ToolkitType.Other;
-		    return result;
-		}
-
 		bool LoadBackend (string type, bool isGuest, bool throwIfFails)
 		{
 			int i = type.IndexOf (',');
@@ -297,7 +293,6 @@ namespace Xwt
 			catch (Exception ex) {
 				if (throwIfFails)
 					throw new Exception ("Toolkit could not be loaded", ex);
-				Application.NotifyException (ex);
 			}
 			if (throwIfFails)
 				throw new Exception ("Toolkit could not be loaded");
@@ -320,10 +315,6 @@ namespace Xwt
 			DesktopBackend = Backend.CreateBackend<DesktopBackend> ();
 			VectorImageRecorderContextHandler = new VectorImageRecorderContextHandler (this);
 			KeyboardHandler = Backend.CreateBackend<KeyboardHandler> ();
-		}
-
-		public T CreateBackendHandler<T> () {
-		    return Backend.CreateBackend<T>();
 		}
 
 		/// <summary>
@@ -430,6 +421,37 @@ namespace Xwt
 		}
 
 		/// <summary>
+		/// Switches the current context to the context of this toolkit
+		/// </summary>
+		ToolkitContext SwitchContext ()
+		{
+			var current = System.Threading.SynchronizationContext.Current;
+
+			// Store the current engine and the current context (which is not necessarily the context of the engine)
+			var currentContext = new ToolkitContext {
+				SynchronizationContext = current,
+				Engine = currentEngine
+			};
+
+			currentEngine = this;
+			if ((current as XwtSynchronizationContext)?.TargetToolkit != this)
+				System.Threading.SynchronizationContext.SetSynchronizationContext (SynchronizationContext);
+			return currentContext;
+		}
+
+		struct ToolkitContext
+		{
+			public SynchronizationContext SynchronizationContext;
+			public Toolkit Engine;
+
+			public void Restore ()
+			{
+				Toolkit.currentEngine = Engine;
+				System.Threading.SynchronizationContext.SetSynchronizationContext (SynchronizationContext);
+			}
+		}
+
+		/// <summary>
 		/// Invokes the specified action using this toolkit.
 		/// </summary>
 		/// <param name="a">The action to invoke in the context of this toolkit.</param>
@@ -442,9 +464,8 @@ namespace Xwt
 		/// <returns><c>true</c> if the action has been executed sucessfully; otherwise, <c>false</c>.</returns>
 		public bool Invoke (Action a)
 		{
-			var oldEngine = currentEngine;
+			ToolkitContext currentContext = SwitchContext ();
 			try {
-				currentEngine = this;
 				EnterUserCode ();
 				a ();
 				ExitUserCode (null);
@@ -453,23 +474,51 @@ namespace Xwt
 				ExitUserCode (ex);
 				return false;
 			} finally {
-				currentEngine = oldEngine;
+				currentContext.Restore ();
+			}
+		}
+
+		public T Invoke<T> (Func<T> func)
+		{
+			ToolkitContext currentContext = SwitchContext ();
+			try {
+				EnterUserCode ();
+				var res = func ();
+				ExitUserCode (null);
+				return res;
+			} catch (Exception ex) {
+				ExitUserCode (ex);
+				return default (T);
+			} finally {
+				currentContext.Restore ();
 			}
 		}
 
 		internal void InvokeAndThrow (Action a)
 		{
-			var oldEngine = currentEngine;
+			var currentContext = SwitchContext ();
 			try {
-				currentEngine = this;
-				EnterUserCode();
-				a();
+				EnterUserCode ();
+				a ();
 			} finally {
-				ExitUserCode(null);
-				currentEngine = oldEngine;
+				ExitUserCode (null);
+				currentContext.Restore ();
 			}
 		}
-		
+
+		internal T InvokeAndThrow<T> (Func<T> func)
+		{
+			var currentContext = SwitchContext ();
+			try {
+				currentEngine = this;
+				EnterUserCode ();
+				return func ();
+			} finally {
+				ExitUserCode (null);
+				currentContext.Restore ();
+			}
+		}
+
 		/// <summary>
 		/// Invokes an action after the user code has been processed.
 		/// </summary>
@@ -477,12 +526,15 @@ namespace Xwt
 		internal void InvokePlatformCode (Action a)
 		{
 			int prevCount = inUserCode;
+			inUserCode = 1;
+			ExitUserCode (null);
+			var currentContext = Application.MainLoop.Engine.SwitchContext ();
+
 			try {
-				inUserCode = 1;
-				ExitUserCode (null);
-				a ();
+				a();
 			} finally {
 				inUserCode = prevCount;
+				currentContext.Restore ();
 			}
 		}
 		
@@ -573,7 +625,7 @@ namespace Xwt
 		/// </summary>
 		/// <returns>An Xwt widget with the specified native widget backend.</returns>
 		/// <param name="nativeWidget">The native widget.</param>
-		public Widget WrapWidget (object nativeWidget, NativeWidgetSizing preferredSizing = NativeWidgetSizing.External)
+		public Widget WrapWidget (object nativeWidget, NativeWidgetSizing preferredSizing = NativeWidgetSizing.External, bool reparent = true)
 		{
 			var externalWidget = nativeWidget as Widget;
 			if (externalWidget != null) {
@@ -582,7 +634,7 @@ namespace Xwt
 				nativeWidget = externalWidget.Surface.ToolkitEngine.GetNativeWidget (externalWidget);
 			}
 			var embedded = CreateObject<EmbeddedNativeWidget> ();
-			embedded.Initialize (nativeWidget, externalWidget, preferredSizing);
+			embedded.Initialize (nativeWidget, externalWidget, preferredSizing, reparent);
 			return embedded;
 		}
 
@@ -605,6 +657,11 @@ namespace Xwt
 		public Context WrapContext (object nativeWidget, object nativeContext)
 		{
 			return new Context (backend.GetBackendForContext (nativeWidget, nativeContext), this);
+		}
+
+		public Accessibility.Accessible WrapAccessible (object nativeAccessibleObject)
+		{
+			return new Accessibility.Accessible (nativeAccessibleObject);
 		}
 
 		/// <summary>
@@ -676,14 +733,29 @@ namespace Xwt
 		}
 
 		/// <summary>
+		/// Gets the bounds of a native widget in screen coordinates.
+		/// </summary>
+		/// <returns>The screen bounds relative to <see cref="P:Xwt.Desktop.Bounds"/>.</returns>
+		/// <param name="nativeWidget">The native widget.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="nativeWidget"/> is <c>null</c>.</exception>
+		/// <exception cref="NotSupportedException">This toolkit does not support this operation.</exception>
+		/// <exception cref="InvalidOperationException"><paramref name="nativeWidget"/> does not belong to this toolkit.</exception>
+		public Rectangle GetScreenBounds (object nativeWidget)
+		{
+			if (nativeWidget == null)
+				throw new ArgumentNullException (nameof(nativeWidget));
+			return backend.GetScreenBounds(nativeWidget);
+		}
+
+		/// <summary>
 		/// Creates an Xwt frontend for a backend.
 		/// </summary>
 		/// <returns>The Xwt frontend.</returns>
 		/// <param name="ob">The toolkit backend.</param>
 		/// <typeparam name="T">The frontend Type.</typeparam>
-		public T CreateFrontend<T> (object ob)
+		T CreateFrontend__<T> (object ob)
 		{
-			return Backend.CreateFrontend<T>(ob);
+			throw new NotImplementedException ($"see {nameof(CreateFrontend)}");
 		}
 
 		/// <summary>

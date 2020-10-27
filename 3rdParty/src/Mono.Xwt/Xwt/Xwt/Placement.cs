@@ -25,7 +25,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 
-		IBoxBackend Backend {
+		new IBoxBackend Backend {
 			get { return (IBoxBackend) BackendHost.Backend; }
 		}
 

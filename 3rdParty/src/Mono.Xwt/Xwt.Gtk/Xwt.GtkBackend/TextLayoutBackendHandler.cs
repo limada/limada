@@ -35,13 +35,13 @@ using System.Runtime.InteropServices;
 
 namespace Xwt.GtkBackend
 {
-	public class GtkTextLayoutBackendHandler: TextLayoutBackendHandler
+	public partial class GtkTextLayoutBackendHandler: TextLayoutBackendHandler
 	{
 		static Cairo.Context SharedContext;
 		
 		public double Heigth = -1;
 
-		public class PangoBackend : IDisposable
+		internal class PangoBackend : IDisposable
 		{
 			Pango.Layout layout;
 			public Pango.Layout Layout {
@@ -79,10 +79,7 @@ namespace Xwt.GtkBackend
 				set {
 					text = value ?? String.Empty;;
 					indexer = null;
-					if (attributes != null) {
-						attributes.Dispose ();
-						attributes = null;
-					}
+					ClearAttributes ();
 				}
 			}
 			
@@ -129,20 +126,12 @@ namespace Xwt.GtkBackend
 			((IDisposable)SharedContext).Dispose ();
 		}
 		
-		public override object Create ()
-		{
-			var layout =  new PangoBackend {
-				Layout = Pango.CairoHelper.CreateLayout (SharedContext)
-			};
-		    SetTrimming (layout, TextTrimming.Word);
-		    SetWrapMode (layout, WrapMode.Word);
-		    return layout;
-
-		}
-
-		public override object Create (Context context) {
-		    return Create();
-		}
+		// public override object Create ()
+		// {
+		// 	return new PangoBackend {
+		// 		Layout = Pango.CairoHelper.CreateLayout (SharedContext)
+		// 	};
+		// }
 
 		public override void SetText (object backend, string text)
 		{
@@ -168,7 +157,13 @@ namespace Xwt.GtkBackend
 		{
 			this.Heigth = value;
 		}
-		
+
+		public override void SetAlignment (object backend, Alignment alignment)
+		{
+			var tl = (PangoBackend)backend;
+			tl.Layout.Alignment = alignment.ToPangoAlignment ();
+		}
+
 		public override void SetTrimming (object backend, TextTrimming textTrimming)
 		{
 			var tl = (PangoBackend)backend;
@@ -178,39 +173,13 @@ namespace Xwt.GtkBackend
 				tl.Layout.Ellipsize = Pango.EllipsizeMode.None;
 			
 		}
-
-		WrapMode wrapMode;
-		public override void SetWrapMode (object backend, WrapMode value) 
-		{
-		    var tl = (PangoBackend)backend;
-		    if (value == WrapMode.Word || value == WrapMode.None)
-		        tl.Layout.Wrap = Pango.WrapMode.Word;
-		    else if (value == WrapMode.Character)
-		        tl.Layout.Wrap = Pango.WrapMode.Char;
-		    else if (value == WrapMode.WordAndCharacter)
-		        tl.Layout.Wrap = Pango.WrapMode.WordChar;
-		    wrapMode = value;
-		}
-
+		
 		public override Size GetSize (object backend)
 		{
 			var tl = (PangoBackend)backend;
 			int w, h;
-		    	// disable ellipsize, otherwise GetPixelSize returns the heigth of one line only
-			var ellipsize = tl.Layout.Ellipsize;
-		    	tl.Layout.Ellipsize = Pango.EllipsizeMode.None;
 			tl.Layout.GetPixelSize (out w, out h);
-			tl.Layout.Ellipsize = ellipsize;
-			if (wrapMode == WrapMode.None && tl.Layout.LineCount > 0) {
-				var line = tl.Layout.Lines[0];
-				h = (int)(line.GetSize ().Height);
-			}
-
-		    if (ellipsize != Pango.EllipsizeMode.None && tl.Layout.Width > 0)
-                // an ellipsized text doesn't exceed layout's width
-		        w = Math.Min (w, (int) (tl.Layout.Width / Pango.Scale.PangoScale));
-		    
-		    return new Size ((double)w, (double)h);
+			return new Size ((double)w, (double)h);
 		}
 
 		public override void AddAttribute (object backend, TextAttribute attribute)
@@ -229,7 +198,7 @@ namespace Xwt.GtkBackend
 		{
 			var tl = (PangoBackend) backend;
 			int index, trailing;
-			tl.Layout.XyToIndex ((int)x, (int)y, out index, out trailing);
+			tl.Layout.XyToIndex (Pango.Units.FromPixels ((int)x), Pango.Units.FromPixels ((int)y), out index, out trailing);
 			return tl.TextIndexer.ByteIndexToIndex (index);
 		}
 

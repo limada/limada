@@ -70,7 +70,7 @@ namespace Xwt
 			MapEvent (ListViewEvent.RowActivated, typeof(ListView), "OnRowActivated");
 		}
 
-		IListBoxBackend Backend {
+		new IListBoxBackend Backend {
 			get { return (IListBoxBackend) BackendHost.Backend; }
 		}
 		

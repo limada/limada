@@ -51,6 +51,11 @@ namespace Xwt.Backends
 		string Label { get; set; }
 
 		/// <summary>
+		/// Gets or sets the tooltip text for the menu item.
+		/// </summary>
+		string TooltipText { get; set; }
+
+		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="Xwt.Backends.IMenuItemBackend"/> use a mnemonic.
 		/// </summary>
 		/// <value><c>true</c> if it use a mnemonic; otherwise, <c>false</c>.</value>
@@ -65,6 +70,23 @@ namespace Xwt.Backends
 		/// Gets or sets whether the menu item is visible.
 		/// </summary>
 		bool Visible { get; set; }
+
+		/// <summary>
+		/// Sets the formatted text display for this menu item.
+		/// </summary>
+		/// <param name="text">The text to display with additional markup for formatting <see cref="Xwt.FormattedText"/></param>
+		void SetFormattedText (FormattedText text);
+
+		/// <summary>
+		/// Releases all resources used by the widget
+		/// </summary>
+		/// <remarks>
+		/// This method is called to free all managed and unmanaged resources held by the backend.
+		/// In general, the backend should destroy the native widget at this point.
+		/// When a widget that has children is disposed, the Dispose method is called on all
+		/// backends of all widgets in the children hierarchy.
+		/// </remarks>
+		void Dispose ();
 	}
 	
 	public interface IMenuItemEventSink

@@ -73,7 +73,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		ITextEntryBackend Backend {
+		new ITextEntryBackend Backend {
 			get { return (ITextEntryBackend) BackendHost.Backend; }
 		}
 		

@@ -30,7 +30,8 @@ using Xwt.Drawing;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
-
+using static Xwt.Interop.DllImportPangoCairo;
+using static Xwt.Interop.DllImportFontConfig;
 namespace Xwt.GtkBackend
 {
 	public class GtkFontBackendHandler: FontBackendHandler
@@ -42,25 +43,32 @@ namespace Xwt.GtkBackend
 			systemContext = Gdk.PangoHelper.ContextGet ();
 		}
 
+		Gtk.Style _style;
+		
 		public override object GetSystemDefaultFont ()
 		{
+#if XWT_GTKSHARP3
+			_style = _style ?? (_style = Gtk.Rc.GetStyle (new Gtk.Label ()));
+			return _style?.FontDesc;
+#else			
 			var style = Gtk.Rc.GetStyleByPaths (Gtk.Settings.Default, null, null, Gtk.Label.GType);
 			return style.FontDescription;
+#endif
 		}
 
 		public override IEnumerable<string> GetInstalledFonts ()
 		{
-			var fontNames = systemContext.FontMap.Families.Select (f => f.Name);
+			var fontNames = systemContext.FontMap?.Families.Select (f => f.Name);
 			if (Platform.IsMac) {
 				var macFonts = new string [] { "-apple-system-font", ".AppleSystemUIFont" }.AsEnumerable ();
-				return macFonts.Concat (fontNames);
+				return fontNames == null ? macFonts : macFonts.Concat (fontNames);
 			}
-			return fontNames;
+			return fontNames ?? Enumerable.Empty<string>();
 		}
 
 		public override IEnumerable<KeyValuePair<string, object>> GetAvailableFamilyFaces (string family)
 		{
-			FontFamily pangoFamily = systemContext.FontMap.Families.FirstOrDefault (f => f.Name == family);
+			FontFamily pangoFamily = systemContext.FontMap?.Families.FirstOrDefault (f => f.Name == family);
 			if (pangoFamily != null) {
 				foreach (var face in pangoFamily.Faces)
 					yield return new KeyValuePair<string, object>(face.FaceName, face.Describe ());
@@ -70,14 +78,12 @@ namespace Xwt.GtkBackend
 
 		public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch)
 		{
-			return FontDescription.FromString (fontName + ", " + style + " " + weight + " " + stretch + " " + size.ToString (CultureInfo.InvariantCulture));
+			var result = FontDescription.FromString (fontName + " " + size.ToString (CultureInfo.InvariantCulture));
+			result.Style = (Pango.Style)style;
+			result.Weight = (Pango.Weight)weight;
+			result.Stretch = (Pango.Stretch)stretch;
+			return result;
 		}
-
-		[System.Runtime.InteropServices.DllImport (GtkInterop.LIBFONTCONFIG)]
-		static extern bool FcConfigAppFontAddFile (System.IntPtr config, string fontPath);
-
-		[System.Runtime.InteropServices.DllImport (GtkInterop.LIBPANGOCAIRO)]
-		static extern void pango_cairo_font_map_set_default (System.IntPtr fontmap);
 
 		public override bool RegisterFontFromFile (string fontPath)
 		{

@@ -26,6 +26,8 @@
 using System;
 using Xwt.Backends;
 using System.Runtime.InteropServices;
+using Xwt.Interop;
+using static Xwt.Interop.DllImportGtk;
 
 namespace Xwt.GtkBackend
 {
@@ -72,9 +74,7 @@ namespace Xwt.GtkBackend
 
 		void HandleFontChanged (object sender, EventArgs e)
 		{
-			ApplicationContext.InvokeUserCode (delegate {
-				EventSink.OnFontChanged ();
-			});
+			ApplicationContext.InvokeUserCode (EventSink.OnFontChanged);
 		}
 
 		public Xwt.Drawing.Font SelectedFont {
@@ -117,10 +117,6 @@ namespace Xwt.GtkBackend
 					FontChanged (this, new EventArgs ());
 			}
 		}
-
-		[DllImport (GtkInterop.LIBGTK, CallingConvention = CallingConvention.Cdecl)]
-		private static extern IntPtr gtk_font_selection_get_preview_entry (IntPtr raw);
-
 		Gtk.Entry GetPreviewEntry ()
 		{
 			IntPtr intPtr = gtk_font_selection_get_preview_entry (base.Handle);

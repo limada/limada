@@ -31,7 +31,7 @@ using Xwt.Backends;
 
 namespace Xwt
 {
-	public partial class ImageCellView: CellView, IImageCellViewFrontend
+	public sealed partial class ImageCellView: CellView, IImageCellViewFrontend
 	{
 		Image image;
 

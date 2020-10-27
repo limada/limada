@@ -91,6 +91,8 @@ namespace Xwt.GtkBackend
 			table.Add (new Gtk.TextTag ("p") {
 				SizePoints = Math.Max (LineSpacing, ParagraphSpacing),
 			});
+			
+			table.Add(new Gtk.TextTag ("textColor"));
 		}
 
 		private new GtkTextView Widget {
@@ -174,6 +176,19 @@ namespace Xwt.GtkBackend
 				Widget.PixelsBelowLines = value;
 				var tag = table.Lookup ("p");
 				tag.SizePoints = Math.Max (value, ParagraphSpacing);
+			}
+		}
+
+		public Drawing.Color TextColor {
+			get {
+				var tag = table.Lookup ("textColor");
+				return tag.ForegroundGdk.ToXwtValue ();
+			}
+			set {
+				var tag = table.Lookup ("textColor");
+				tag.ForegroundGdk = value.ToGtkValue ();
+				var buffer = Widget.Buffer;
+				buffer.ApplyTag (tag, buffer.StartIter, buffer.EndIter);
 			}
 		}
 
@@ -532,10 +547,16 @@ namespace Xwt.GtkBackend
 			{
 				int x, y;
 				WindowToBufferCoords (Gtk.TextWindowType.Text, (int)mousex, (int)mousey, out x, out y);
+#if XWT_GTKSHARP3
+				GetIterAtLocation(out var iter, x, y);
+#else					
 				var iter = GetIterAtLocation (x, y);
-				foreach (var l in Buffer.Links) {
-					if (iter.HasTag (l.Key)) {
-						return l.Value;
+#endif
+				if (Buffer != null) {
+					foreach (var l in Buffer.Links) {
+						if (iter.HasTag (l.Key)) {
+							return l.Value;
+						}
 					}
 				}
 				return null;
@@ -582,11 +603,15 @@ namespace Xwt.GtkBackend
 			{
 				if (!IsRealized)
 					return;
-				var color = (Gdk.Color) StyleGetProperty ("link-color");
+				var objColor = StyleGetProperty ("link-color");
+				var color = Gdk.Color.Zero;
+				if (objColor != null)
+					color = (Gdk.Color) objColor;
 				if (color.Equals (Gdk.Color.Zero))
 					color = Toolkit.CurrentEngine.Defaults.FallbackLinkColor.ToGtkValue ();
-				foreach (var linkTag in Buffer.Links.Keys)
-					linkTag.ForegroundGdk = color;
+				if (Buffer != null)
+					foreach (var linkTag in Buffer.Links.Keys)
+						linkTag.ForegroundGdk = color;
 			}
 
 			void UpdateBackground ()

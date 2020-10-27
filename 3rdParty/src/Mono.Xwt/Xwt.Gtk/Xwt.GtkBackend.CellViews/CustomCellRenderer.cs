@@ -37,7 +37,9 @@ namespace Xwt.GtkBackend
 		Rectangle backgroundArea;
 		bool isSelected;
 		bool hasFocus;
-		bool isDrawing;
+		bool isPrelit;
+		TreeIter lastIter;
+		bool shown;
 
 		public override void Initialize (ICellViewFrontend cellView, ICellRendererTarget rendererTarget, object target)
 		{
@@ -52,19 +54,34 @@ namespace Xwt.GtkBackend
 		{
 			this.cellArea = ca;
 			this.backgroundArea = ba;
-			isSelected = (flags & Gtk.CellRendererState.Selected) != 0;
-			hasFocus = (flags & Gtk.CellRendererState.Focused) != 0;
-			isDrawing = true;
+			isSelected = (flags & CellRendererState.Selected) != 0;
+			hasFocus = (flags & CellRendererState.Focused) != 0;
+			isPrelit = (flags & CellRendererState.Prelit) != 0;
+
+			// Gtk will rerender the cell on every status change, hence we can expect the values
+			// set here to be valid until the geometry or any other status of the cell and tree changes.
+			// Setting shown=true ensures that those values are always reused instead if queried
+			// from the parent tree after the cell has been rendered.
+			shown = true;
+		}
+
+		protected override void OnLoadData ()
+		{
+			if (!CurrentIter.Equals (lastIter)) {
+				// if the current iter has changed all cached values from the last draw are invalid
+				shown = false;
+				lastIter = CurrentIter;
+			}
+			base.OnLoadData ();
 		}
 
 		internal void EndDrawing ()
 		{
-			isDrawing = false;
 		}
 
 		public override Rectangle CellBounds {
 			get {
-				if (isDrawing)
+				if (shown)
 					return cellArea;
 				return base.CellBounds;
 			}
@@ -72,7 +89,7 @@ namespace Xwt.GtkBackend
 
 		public override Rectangle BackgroundBounds {
 			get {
-				if (isDrawing)
+				if (shown)
 					return backgroundArea;
 				return base.BackgroundBounds;
 			}
@@ -80,7 +97,7 @@ namespace Xwt.GtkBackend
 
 		public override bool Selected {
 			get {
-				if (isDrawing)
+				if (shown)
 					return isSelected;
 				return base.Selected;
 			}
@@ -88,9 +105,17 @@ namespace Xwt.GtkBackend
 
 		public override bool HasFocus {
 			get {
-				if (isDrawing)
+				if (shown)
 					return hasFocus;
 				return base.HasFocus;
+			}
+		}
+
+		public bool IsHighlighted {
+			get {
+				if (shown)
+					return isPrelit;
+				return false;
 			}
 		}
 	}
@@ -102,27 +127,44 @@ namespace Xwt.GtkBackend
 
 		protected override void OnRender (Cairo.Context cr, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
 		{
+			int wx, wy, dx = 0, dy = 0;
+			var tree = widget as Gtk.TreeView;
+			// Tree coordinates must be converted to widget coordinates,
+			// otherwise custom cell bounds will have an offset to the parent widget
+			if (tree != null) {
+				tree.ConvertBinWindowToWidgetCoords (cell_area.X, cell_area.Y, out wx, out wy);
+				dx = wx - cell_area.X;
+				dy = wy - cell_area.Y;
+				cell_area.X += dx;
+				background_area.X += dx;
+				cell_area.Y += dy;
+				background_area.Y += dy;
+			}
+
 			Parent.StartDrawing (new Rectangle (background_area.X, background_area.Y, background_area.Width, background_area.Height), new Rectangle (cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
 			CellView.ApplicationContext.InvokeUserCode (delegate {
 				CairoContextBackend ctx = new CairoContextBackend (Util.GetScaleFactor (widget));
 				ctx.Context = cr;
+				ctx.Context.Translate(-dx, -dy);
 				using (ctx) {
 					CellView.Draw (ctx, new Rectangle (cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height));
 				}
 			});
 			Parent.EndDrawing ();
 		}
-
+		
 		protected override void OnGetSize (Gtk.Widget widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height)
 		{
 			Size size = new Size ();
+			var widthConstraint = cell_area.Width > 0 ? SizeConstraint.WithSize(cell_area.Width) : SizeConstraint.Unconstrained;
 			CellView.ApplicationContext.InvokeUserCode (delegate {
-				size = CellView.GetRequiredSize ();
+				size = CellView.GetRequiredSize (widthConstraint);
 			});
 			width = (int) size.Width;
 			height = (int) size.Height;
 			x_offset = y_offset = 0;
 		}
+
 	}
 }
 

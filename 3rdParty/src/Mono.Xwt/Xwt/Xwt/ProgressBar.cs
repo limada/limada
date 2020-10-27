@@ -46,7 +46,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IProgressBarBackend Backend {
+		new IProgressBarBackend Backend {
 			get { return (IProgressBarBackend) BackendHost.Backend; }
 		}
 

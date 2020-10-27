@@ -30,20 +30,17 @@ using Xwt.Backends;
 
 namespace Xwt.GtkBackend
 {
-	public class NotebookBackend: WidgetBackend, INotebookBackend
+	public partial class NotebookBackend: WidgetBackend, INotebookBackend
 	{
 		public NotebookBackend ()
 		{
 			Widget = new Gtk.Notebook ();
 			Widget.Scrollable = true;
-            Widget.BorderWidth = 0;
-            Widget.TabHborder = 0;
-            Widget.TabVborder = 0;
-            Widget.ShowBorder = false;
+			Compose();
 			Widget.Show ();
 		}
 		
-		new Gtk.Notebook Widget {
+		protected new Gtk.Notebook Widget {
 			get { return (Gtk.Notebook)base.Widget; }
 			set { base.Widget = value; }
 		}

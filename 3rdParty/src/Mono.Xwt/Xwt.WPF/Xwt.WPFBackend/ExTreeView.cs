@@ -38,6 +38,7 @@ using SWC = System.Windows.Controls;
 using WKey = System.Windows.Input.Key;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
+using System.Windows.Automation.Peers;
 
 namespace Xwt.WPFBackend
 {
@@ -195,15 +196,8 @@ namespace Xwt.WPFBackend
 
 			foreach (object item in items) {
 				var treeItem = (ExTreeViewItem)g.ContainerFromItem (item);
-				if (treeItem == null) {
-					var ig = (IItemContainerGenerator)g;
-					using (ig.StartAt (new GeneratorPosition (-1, 1), GeneratorDirection.Forward)) {
-						ig.GenerateNext ();
-					}
-					treeItem = (ExTreeViewItem)g.ContainerFromItem (item);
-					if (treeItem == null)
-						continue;
-				}
+				if (treeItem == null)
+					continue;
 
 				if (!action (item, treeItem))
 					return false;
@@ -257,7 +251,7 @@ namespace Xwt.WPFBackend
 					HashSet<object> oldItems = (e.OldItems != null)
 												? new HashSet<object> (e.OldItems.Cast<object> ())
 												: new HashSet<object> ();
-					
+
 					TraverseTree ((o, ti) => {
 						if (newItems.Remove (o))
 							ti.IsSelected = true;
@@ -320,17 +314,26 @@ namespace Xwt.WPFBackend
 
 		public void SelectItem(ExTreeViewItem item)
 		{
+			if (item == null)
+				return;
+
 			FocusItem(item);
 			if (!CtrlPressed)
 				SelectedItems.Clear();
 			if (ShiftPressed)
 			{
+				if (shiftStart == null)
+					shiftStart = item;
 				if (shiftEnd != null)//Erase previous selection of shift
 					foreach (var forEachItem in GetItemsBetween(shiftStart, shiftEnd))
 						SelectedItems.Remove(forEachItem.DataContext);
 				shiftEnd = item;
-				foreach (var forEachItem in GetItemsBetween(shiftStart, shiftEnd))
-					SelectedItems.Add(forEachItem.DataContext);
+				if (this.SelectionMode == SWC.SelectionMode.Single) {
+					SelectedItems.Add(item.DataContext);
+				} else {
+					foreach (var forEachItem in GetItemsBetween(shiftStart, shiftEnd))
+						SelectedItems.Add(forEachItem.DataContext);
+				}
 			}
 			else
 			{
@@ -365,6 +368,10 @@ namespace Xwt.WPFBackend
 			var allVisibleItems = GetAllVisibleItems(this).ToList();
 			var startIndex = allVisibleItems.IndexOf(startItem);
 			var endIndex = allVisibleItems.IndexOf(endItem);
+
+			// Handle empty selection
+			if (startIndex == -1)
+				startIndex = 0;
 
 			if (endIndex == startIndex)
 				return new List<ExTreeViewItem> { endItem };
@@ -447,7 +454,12 @@ namespace Xwt.WPFBackend
 			int indexOfP = items.IndexOf(p);
 			if (indexOfP == 0)
 				return p;
-			else
+			else if (indexOfP == -1) {
+				if (items.Count > 0)
+					return items [items.Count - 1];
+
+				return null;
+ 			} else
 				return items[indexOfP - 1];
 		}
 
@@ -460,5 +472,38 @@ namespace Xwt.WPFBackend
 			else
 				return items[indexOfP + 1];
 		}
+
+		protected override AutomationPeer OnCreateAutomationPeer ()
+		{
+			var backend = this.Backend as TreeViewBackend;
+			var treeView = backend?.Frontend as Xwt.TreeView;
+
+			var peer = treeView?.Accessible.GetChildren ()?.FirstOrDefault () as AutomationPeer;
+			if (peer != null)
+				return peer;
+
+			return base.OnCreateAutomationPeer ();
+		}
+
+		internal AutomationPeer CreateChildAutomationPeer (object itemData, TreeViewItem itemView)
+		{
+			var backend = this.Backend as TreeViewBackend;
+			var treeView = backend?.Frontend as Xwt.TreeView;
+
+			var peer = treeView?.Accessible.GetChildren ()?.FirstOrDefault () as ExTreeViewAutomationPeer;
+			if (peer != null)
+				return peer.CreateChildAutomationPeer (itemData, itemView);
+
+			return null;
+		}
+	}
+
+	public abstract class ExTreeViewAutomationPeer: TreeViewAutomationPeer
+	{
+		public ExTreeViewAutomationPeer (SWC.TreeView owner): base (owner)
+		{
+		}
+
+		public abstract TreeViewItemAutomationPeer CreateChildAutomationPeer (object item, TreeViewItem viewItem);
 	}
 }

@@ -99,7 +99,7 @@ namespace Xwt
 				Items.Add (button);
 		}
 
-		ISegmentedButtonBackend Backend {
+		new ISegmentedButtonBackend Backend {
 			get { return (ISegmentedButtonBackend) BackendHost.Backend; }
 		}
 

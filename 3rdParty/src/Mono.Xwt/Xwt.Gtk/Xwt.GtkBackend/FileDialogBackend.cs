@@ -38,6 +38,8 @@ namespace Xwt.GtkBackend
 		List<Gtk.FileFilter> gtkFilters;
 		List<FileDialogFilter> filters;
 
+		public ApplicationContext ApplicationContext { get; private set; }
+
 		public FileDialogBackend (Gtk.FileChooserAction action)
 		{
 			this.action = action;
@@ -45,6 +47,7 @@ namespace Xwt.GtkBackend
 
 		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
+			ApplicationContext = context;
 		}
 		
 		public void EnableEvent (object eventId)
@@ -64,17 +67,17 @@ namespace Xwt.GtkBackend
 
 			switch (action) {
 				case Gtk.FileChooserAction.Open:
-					dialog.AddButton (Gtk.Stock.Cancel, Gtk.ResponseType.Cancel);
-					dialog.AddButton (Gtk.Stock.Open, Gtk.ResponseType.Ok);
+					dialog.AddButton (Application.TranslationCatalog.GetString(Gtk.Stock.Cancel), Gtk.ResponseType.Cancel);
+					dialog.AddButton (Application.TranslationCatalog.GetString(Gtk.Stock.Open), Gtk.ResponseType.Ok);
 					break;
 				case Gtk.FileChooserAction.SelectFolder:
 				case Gtk.FileChooserAction.CreateFolder:
-					dialog.AddButton (Gtk.Stock.Cancel, Gtk.ResponseType.Cancel);
+					dialog.AddButton (Application.TranslationCatalog.GetString(Gtk.Stock.Cancel), Gtk.ResponseType.Cancel);
 					dialog.AddButton (Application.TranslationCatalog.GetString("Select"), Gtk.ResponseType.Ok);
 					break;
 				case Gtk.FileChooserAction.Save:
-					dialog.AddButton (Gtk.Stock.Cancel, Gtk.ResponseType.Cancel);
-					dialog.AddButton (Gtk.Stock.Save, Gtk.ResponseType.Ok);
+					dialog.AddButton (Application.TranslationCatalog.GetString(Gtk.Stock.Cancel), Gtk.ResponseType.Cancel);
+					dialog.AddButton (Application.TranslationCatalog.GetString(Gtk.Stock.Save), Gtk.ResponseType.Ok);
 					break;
 				default:
 					break;
@@ -127,14 +130,18 @@ namespace Xwt.GtkBackend
 		
 		public bool Run (IWindowFrameBackend parent)
 		{
-			var p = (WindowFrameBackend) parent;
-			int result = MessageService.RunCustomDialog (dialog, p != null ? p.Window : null);
+			var p = parent != null ? ApplicationContext.Toolkit.GetNativeWindow (parent) as Gtk.Window : null;
+			int result = MessageService.RunCustomDialog (dialog, p);
 			return result == (int) Gtk.ResponseType.Ok;
 		}
 		
 		public void Cleanup ()
 		{
+#if XWT_GTK3
+			dialog.Dispose ();
+#else			
 			dialog.Destroy ();
+#endif			
 		}
 
 		protected Gtk.FileChooserDialog Dialog {

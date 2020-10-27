@@ -43,6 +43,7 @@ namespace Xwt.Mac
 		protected LabelBackend (IViewObject view)
 		{
 			View = view;
+			view.Backend = this;
 		}
 
 		IViewObject View;
@@ -50,6 +51,7 @@ namespace Xwt.Mac
 		public override void Initialize ()
 		{
 			ViewObject = new CustomAlignedContainer (EventSink, ApplicationContext, (NSView)View);
+			CanGetFocus = false;
 			Widget.StringValue = string.Empty;
 			Widget.Editable = false;
 			Widget.Bezeled = false;
@@ -231,6 +233,11 @@ namespace Xwt.Mac
 			}
 			Child.NeedsDisplay = true;
 		}
+
+		public override bool AcceptsFirstResponder()
+		{
+			return false;
+		}
 	}
 	
 	class TextFieldView: NSTextField, IViewObject
@@ -245,6 +252,7 @@ namespace Xwt.Mac
 		public TextFieldView ()
 		{
 			Cell = cell = new CustomTextFieldCell ();
+			AccessibilityRole = NSAccessibilityRoles.StaticTextRole;
 		}
 
 		public void SetBackgroundColor (CGColor c)
@@ -270,6 +278,30 @@ namespace Xwt.Mac
 	class CustomTextFieldCell: NSTextFieldCell
 	{
 		CGColor bgColor;
+
+		public CustomTextFieldCell ()
+		{
+		}
+
+		protected CustomTextFieldCell (IntPtr ptr) : base (ptr)
+		{
+		}
+
+		/// <summary>
+		/// Like what happens for the ios designer, AppKit can sometimes clone the native `NSTextFieldCell` using the Copy (NSZone)
+		/// method. We *need* to ensure we can create a new managed wrapper for the cloned native object so we need the IntPtr
+		/// constructor. NOTE: By keeping this override in managed we ensure the new wrapper C# object is created ~immediately,
+		/// which makes it easier to debug issues.
+		/// </summary>
+		/// <returns>The copy.</returns>
+		/// <param name="zone">Zone.</param>
+		public override NSObject Copy(NSZone zone)
+		{
+			// Don't remove this override because the comment on this explains why we need this!
+			var newCell = (CustomTextFieldCell)base.Copy(zone);
+			newCell.bgColor = bgColor;
+			return newCell;
+		}
 
 		public void SetBackgroundColor (CGColor c)
 		{

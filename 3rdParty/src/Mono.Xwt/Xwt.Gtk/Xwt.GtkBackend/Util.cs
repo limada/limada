@@ -30,7 +30,9 @@ using Xwt.Drawing;
 using Xwt.Backends;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Runtime.InteropServices;
+using  static Xwt.Interop.DllImportGtk;
+	
 namespace Xwt.GtkBackend
 {
 	public static class Util
@@ -84,9 +86,7 @@ namespace Xwt.GtkBackend
 		
 		public static bool GetSelectionData (ApplicationContext context, Gtk.SelectionData data, TransferDataStore target)
 		{
-            if (data == null)
-                return false;
-            TransferDataType type = Util.AtomToType (data.Target.Name);
+			TransferDataType type = Util.AtomToType (data.Target.Name);
 			if (type == null || data.Length <= 0)
 				return false;
 
@@ -115,8 +115,6 @@ namespace Xwt.GtkBackend
 				TransferDataType type;
 				if (atomToType.TryGetValue (dt.Name, out type))
 					types.Add (type);
-				else
-					types.Add(TransferDataType.FromId(dt.Name));
 			}
 			return types.ToArray ();
 		}
@@ -181,8 +179,7 @@ namespace Xwt.GtkBackend
 					entries = (Gtk.TargetEntry[])list;
 				}
 				else {
-					// entries = new Gtk.TargetEntry[] { new Gtk.TargetEntry (Gdk.Atom.Intern ("application/" + type.Id, false), 0, id) };
-					entries = new Gtk.TargetEntry [] { new Gtk.TargetEntry (Gdk.Atom.Intern (type.Id, false), 0, id) };
+					entries = new Gtk.TargetEntry[] { new Gtk.TargetEntry (Gdk.Atom.Intern ("application/" + type.Id, false), 0, id) };
 				}
 				
 				foreach (var a in entries.Select (e => e.Target))
@@ -282,30 +279,26 @@ namespace Xwt.GtkBackend
 			((IDisposable)cr).Dispose ();
 		}
 
-		#if !XWT_GTK3
-		public static void RenderPlaceholderText (Gtk.Widget widget, Gtk.ExposeEventArgs args, string placeHolderText, ref Pango.Layout layout) {
+		internal static TextIndexer ApplyFormattedText(this Gtk.Label label, FormattedText text)
+		{
+			TextIndexer indexer = null;
+			var list = new FastPangoAttrList ();
+			if (text != null) {
+				if (label.IsRealized) {
+					var color = Gdk.Color.Zero;
+					var colorVal = label.StyleGetProperty ("link-color");
+					if (colorVal is Gdk.Color)
+						color = (Gdk.Color)colorVal;
+					if (!color.Equals (Gdk.Color.Zero))
+						list.DefaultLinkColor = color;
+				}
+				indexer = new TextIndexer (text.Text);
+				list.AddAttributes (indexer, text.Attributes);
+			}
+			gtk_label_set_attributes (label.Handle, list.Handle);
 
-		    if (layout == null) {
-		        layout = new Pango.Layout (widget.PangoContext);
-		        layout.FontDescription = widget.PangoContext.FontDescription.Copy ();
-		    }
-
-		    int wh, ww;
-		    args.Event.Window.GetSize (out ww, out wh);
-
-		    int width, height;
-		    layout.SetText (placeHolderText);
-		    layout.GetPixelSize (out width, out height);
-		    using (var gc = new Gdk.GC (args.Event.Window)) {
-		        gc.Copy (widget.Style.TextGC (Gtk.StateType.Normal));
-		        Color color_a = widget.Style.Base (Gtk.StateType.Normal).ToXwtValue ();
-		        Color color_b = widget.Style.Text (Gtk.StateType.Normal).ToXwtValue ();
-		        gc.RgbFgColor = color_b.BlendWith (color_a, 0.5).ToGtkValue ();
-
-		        args.Event.Window.DrawLayout (gc, 2, (wh - height) / 2, layout);
-		    }
+			return indexer;
 		}
-		#endif
-    }
+	}
 }
 

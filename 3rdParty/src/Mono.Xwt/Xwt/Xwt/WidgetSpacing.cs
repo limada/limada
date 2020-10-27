@@ -32,7 +32,6 @@ using Xwt.Backends;
 using Xwt.Drawing;
 using System.Reflection;
 using System.Linq;
-using System.Windows.Markup;
 using System.Text;
 using System.Globalization;
 
@@ -42,7 +41,6 @@ namespace Xwt
 	/// Spacing/Margin around a widget.
 	/// </summary>
 	[TypeConverter (typeof(WidgetSpacingValueConverter))]
-	[ValueSerializer (typeof(WidgetSpacingValueSerializer))]
 	public struct WidgetSpacing : IEquatable<WidgetSpacing>
 	{
 		public static WidgetSpacing Zero = new WidgetSpacing ();
@@ -64,25 +62,25 @@ namespace Xwt
 		/// Gets the space on the left side of a widget.
 		/// </summary>
 		/// <value>The spance on the left side.</value>
-		public double Left { get; set; }
+		public double Left { get; internal set; }
 
 		/// <summary>
 		/// Gets the space on the bottom side of a widget.
 		/// </summary>
 		/// <value>The spance on the bottom side.</value>
-		public double Bottom { get; set; }
+		public double Bottom { get; internal set; }
 	
 		/// <summary>
 		/// Gets the space on the right side of a widget.
 		/// </summary>
 		/// <value>The spance on the right side.</value>
-		public double Right { get; set; }
+		public double Right { get; internal set; }
 	
 		/// <summary>
 		/// Gets the space on the top side of a widget.
 		/// </summary>
 		/// <value>The spance on the top side.</value>
-		public double Top { get; set; }
+		public double Top { get; internal set; }
 
 		/// <summary>
 		/// Gets the horizontal spacing (left + right) of a widget.
@@ -166,56 +164,6 @@ namespace Xwt
 		public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
 		{
 			return sourceType == typeof(string);
-		}
-	}
-	
-	class WidgetSpacingValueSerializer: ValueSerializer
-	{
-		public override bool CanConvertFromString (string value, IValueSerializerContext context)
-		{
-			return true;
-		}
-		
-		public override bool CanConvertToString (object value, IValueSerializerContext context)
-		{
-			return true;
-		}
-		
-		public override string ConvertToString (object value, IValueSerializerContext context)
-		{
-			WidgetSpacing s = (WidgetSpacing) value;
-			if (s.Left == s.Right && s.Right == s.Top && s.Top == s.Bottom)
-				return s.Left.ToString (CultureInfo.InvariantCulture);
-			if (s.Bottom != 0)
-				return s.Left.ToString (CultureInfo.InvariantCulture) + " " + s.Top.ToString (CultureInfo.InvariantCulture) + " " + s.Right.ToString (CultureInfo.InvariantCulture) + " " + s.Bottom.ToString (CultureInfo.InvariantCulture);
-			if (s.Right != 0)
-				return s.Left.ToString (CultureInfo.InvariantCulture) + " " + s.Top.ToString (CultureInfo.InvariantCulture) + " " + s.Right.ToString (CultureInfo.InvariantCulture);
-			return s.Left.ToString (CultureInfo.InvariantCulture) + " " + s.Top.ToString (CultureInfo.InvariantCulture);
-		}
-		
-		public override object ConvertFromString (string value, IValueSerializerContext context)
-		{
-			WidgetSpacing c = new WidgetSpacing ();
-			string[] values = value.Split (new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-			if (values.Length == 0)
-				return c;
-
-			double v;
-			if (double.TryParse (values [0], NumberStyles.Any, CultureInfo.InvariantCulture, out v))
-				c.Left = v;
-
-			if (value.Length == 1) {
-				c.Top = c.Right = c.Bottom = v;
-				return c;
-			}
-
-			if (value.Length >= 2 && double.TryParse (values [1], NumberStyles.Any, CultureInfo.InvariantCulture, out v))
-				c.Top = v;
-			if (value.Length >= 3 && double.TryParse (values [2], NumberStyles.Any, CultureInfo.InvariantCulture, out v))
-				c.Right = v;
-			if (value.Length >= 4 && double.TryParse (values [3], NumberStyles.Any, CultureInfo.InvariantCulture, out v))
-				c.Bottom = v;
-			return c;
 		}
 	}
 }

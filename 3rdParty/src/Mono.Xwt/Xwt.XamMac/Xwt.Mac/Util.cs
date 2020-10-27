@@ -29,6 +29,7 @@ using System.Text;
 using AppKit;
 using CoreGraphics;
 using CoreImage;
+using CoreText;
 using Foundation;
 using ObjCRuntime;
 using Xwt.Backends;
@@ -55,6 +56,18 @@ namespace Xwt.Mac
 					pattern = CGColorSpace.CreatePattern (null);
 				return pattern;
 			}
+		}
+
+		public static void SetAttributedString (this NSTextView view, NSAttributedString str, bool canOverrideTextColor)
+		{
+			var textColor = view.TextColor;
+			view.TextStorage.SetString (str);
+			
+			// Workaround:
+			// Apply the previous view's TextColor,
+			// otherwise it would be reset to Black by the line above.
+			if (canOverrideTextColor && textColor != null)
+				view.TextColor = textColor;
 		}
 
 		public static double WidgetX (this NSView v)
@@ -240,6 +253,21 @@ namespace Xwt.Mac
 			}
 		}
 
+		public static bool TriggersContextMenu (this NSEvent theEvent)
+		{
+			if (theEvent.ButtonNumber == 1 &&
+					(NSEvent.CurrentPressedMouseButtons & 1 | NSEvent.CurrentPressedMouseButtons & 4) == 0) {
+				return true;
+			}
+
+			if (theEvent.ButtonNumber == 0 && (theEvent.ModifierFlags & NSEventModifierMask.ControlKeyMask) != 0 &&
+					(NSEvent.CurrentPressedMouseButtons & 2 | NSEvent.CurrentPressedMouseButtons & 4) == 0) {
+				return true;
+			}
+
+			return false;
+		}
+
 		public static NSImage ToNSImage (this ImageDescription idesc)
 		{
 			if (idesc.IsNull)
@@ -264,6 +292,8 @@ namespace Xwt.Mac
 		public static int ToMacValue (this FontWeight weight)
 		{
 			switch (weight) {
+			case FontWeight.Ultrathin:
+				return 0;
 			case FontWeight.Thin:
 				return 1;
 			case FontWeight.Ultralight:
@@ -276,6 +306,8 @@ namespace Xwt.Mac
 				return 5;
 			case FontWeight.Medium:
 				return 6;
+			case FontWeight.Mediumbold:
+				return 7;
 			case FontWeight.Semibold:
 				return 8;
 			case FontWeight.Bold:
@@ -286,8 +318,14 @@ namespace Xwt.Mac
 				return 11;
 			case FontWeight.Ultraheavy:
 				return 12;
-			default:
+			case FontWeight.Semiblack:
 				return 13;
+			case FontWeight.Black:
+				return 14;
+			case FontWeight.Ultrablack:
+				return 15;
+			default:
+				return 15;
 			}
 		}
 
@@ -295,9 +333,16 @@ namespace Xwt.Mac
 		{
 			int w = weight.ToMacValue ();
 			var traits = NSFontManager.SharedFontManager.TraitsOfFont (font);
-			traits |= weight >= FontWeight.Bold? NSFontTraitMask.Bold : NSFontTraitMask.Unbold;
-			traits &= weight >= FontWeight.Bold? ~NSFontTraitMask.Unbold : ~NSFontTraitMask.Bold;
+			traits |= weight >= FontWeight.Bold ? NSFontTraitMask.Bold : NSFontTraitMask.Unbold;
+			traits &= weight >= FontWeight.Bold ? ~NSFontTraitMask.Unbold : ~NSFontTraitMask.Bold;
 			return NSFontManager.SharedFontManager.FontWithFamily (font.FamilyName, traits, w, font.PointSize);
+		}
+
+		public static NSFont WithSize (this NSFont font, float size)
+		{
+			var w = NSFontManager.SharedFontManager.WeightOfFont (font);
+			var traits = NSFontManager.SharedFontManager.TraitsOfFont (font);
+			return NSFontManager.SharedFontManager.FontWithFamily (font.FamilyName, traits, w, size);
 		}
 
 		static Selector applyFontTraits = new Selector ("applyFontTraits:range:");
@@ -331,12 +376,26 @@ namespace Xwt.Mac
 						ns.AddAttribute (NSStringAttributeKey.Obliqueness, (NSNumber)0.0f, r);
 						Messaging.void_objc_msgSend_int_NSRange (ns.Handle, applyFontTraits.Handle, (IntPtr)(long)NSFontTraitMask.Unitalic, r);
 					}
-				}
+				} 
 				else if (att is FontWeightTextAttribute) {
 					var xa = (FontWeightTextAttribute)att;
 					var trait = xa.Weight >= FontWeight.Bold ? NSFontTraitMask.Bold : NSFontTraitMask.Unbold;
 					Messaging.void_objc_msgSend_int_NSRange (ns.Handle, applyFontTraits.Handle, (IntPtr)(long) trait, r);
-				}
+				} 
+				else if (att is FontSizeTextAttribute)
+				{
+					var xa = (FontSizeTextAttribute)att;
+					ns.EnumerateAttribute (NSStringAttributeKey.Font, r, NSAttributedStringEnumeration.None, (NSObject value, NSRange range, ref bool stop) => {
+						var font = value as NSFont;
+						if (font == null) {
+							font = NSFont.SystemFontOfSize (xa.Size);
+						} else {
+							font = font.WithSize (xa.Size);
+						}
+						ns.RemoveAttribute (NSStringAttributeKey.Font, r);
+						ns.AddAttribute (NSStringAttributeKey.Font, font, r);
+					});
+				} 
 				else if (att is LinkTextAttribute) {
 					var xa = (LinkTextAttribute)att;
 					if (xa.Target != null)
@@ -352,13 +411,24 @@ namespace Xwt.Mac
 				else if (att is FontTextAttribute) {
 					var xa = (FontTextAttribute)att;
 					var nf = ((FontData)Toolkit.GetBackend (xa.Font)).Font;
-					ns.AddAttribute (NSStringAttributeKey.Font, nf, r);
+
+					ns.EnumerateAttribute (NSStringAttributeKey.Font, r, NSAttributedStringEnumeration.None, (NSObject value, NSRange range, ref bool stop) => {
+						var font = value as NSFont;
+						if (font == null) {
+							font = nf;
+						} else {
+							var w = NSFontManager.SharedFontManager.WeightOfFont (font);
+							var traits = NSFontManager.SharedFontManager.TraitsOfFont (font);
+							font = NSFontManager.SharedFontManager.FontWithFamily (nf.FamilyName, traits, w, font.PointSize);
+						}
+						ns.RemoveAttribute (NSStringAttributeKey.Font, r);
+						ns.AddAttribute (NSStringAttributeKey.Font, font, r);
+					});
 				}
 			}
 			ns.EndEditing ();
 			return ns;
 		}
-
 
 		public static NSMutableAttributedString WithAlignment (this NSMutableAttributedString ns, NSTextAlignment alignment)
 		{
@@ -387,7 +457,7 @@ namespace Xwt.Mac
 		{
 			if (str == null)
 				return null;
-			var newText = new StringBuilder ();
+			var newText = new StringBuilder (str.Length);
 			for (int i = 0; i < str.Length; i++) {
 				if (str [i] != '_')
 					newText.Append (str [i]);
@@ -532,7 +602,8 @@ namespace Xwt.Mac
 				transformColor.RVector = new CIVector(0, (float)color.Value.Red, 0);
 				transformColor.GVector = new CIVector((float)color.Value.Green, 0, 0);
 				transformColor.BVector = new CIVector(0, 0, (float)color.Value.Blue);
-				ciImage = (CIImage)transformColor.ValueForKey(new NSString("outputImage"));
+				using (var key = new NSString("outputImage"))
+					ciImage = (CIImage)transformColor.ValueForKey(key);
 
 				var ciCtx = CIContext.FromContext(NSGraphicsContext.CurrentContext.GraphicsPort, null);
 				ciCtx.DrawImage (ciImage, new CGRect (CGPoint.Empty, size), new CGRect (CGPoint.Empty, displaySize));
@@ -543,12 +614,257 @@ namespace Xwt.Mac
 		public static CGPoint ConvertPointFromEvent(this NSView view, NSEvent theEvent)
 		{
 			var point = theEvent.LocationInWindow;
-			if (theEvent.WindowNumber != view.Window.WindowNumber)
+			if (view.Window != null && theEvent.WindowNumber != view.Window.WindowNumber)
 			{
 				point = theEvent.Window.ConvertBaseToScreen(point);
 				point = view.Window.ConvertScreenToBase(point);
 			}
 			return view.ConvertPointFromView(point, null);
+		}
+
+		public static PointerButton GetPointerButton (this NSEvent theEvent)
+		{
+			switch (theEvent.ButtonNumber) {
+			case 0: return PointerButton.Left;
+			case 1: return PointerButton.Right;
+			case 2: return PointerButton.Middle;
+			case 3: return PointerButton.ExtendedButton1;
+			case 4: return PointerButton.ExtendedButton2;
+			}
+			return (PointerButton)0;
+		}
+
+		public static Accessibility.Role GetXwtRole (INSAccessibility widget)
+		{
+			var r = widget.AccessibilityRole;
+			var sr = widget.AccessibilitySubrole;
+			if (r == NSAccessibilityRoles.ButtonRole) {
+				if (sr == NSAccessibilitySubroles.CloseButtonSubrole)
+					return Accessibility.Role.ButtonClose;
+				if (sr == NSAccessibilitySubroles.MinimizeButtonSubrole)
+					return Accessibility.Role.ButtonMinimize;
+				if (sr == NSAccessibilitySubroles.ZoomButtonSubrole)
+					return Accessibility.Role.ButtonMaximize;
+				if (sr == NSAccessibilitySubroles.FullScreenButtonSubrole)
+					return Accessibility.Role.ButtonFullscreen;
+				return Accessibility.Role.Button;
+			}
+			if (r == NSAccessibilityRoles.CellRole)
+				return Accessibility.Role.Cell;
+			if (r == NSAccessibilityRoles.CheckBoxRole)
+				return Accessibility.Role.CheckBox;
+			if (r == NSAccessibilityRoles.ColorWellRole)
+				return Accessibility.Role.ColorChooser;
+			if (r == NSAccessibilityRoles.ColumnRole)
+				return Accessibility.Role.Column;
+			if (r == NSAccessibilityRoles.ComboBoxRole)
+				return Accessibility.Role.ComboBox;
+			if (r == NSAccessibilityRoles.ComboBoxRole)
+				return Accessibility.Role.ComboBox;
+			if (r == NSAccessibilityRoles.DisclosureTriangleRole)
+				return Accessibility.Role.Disclosure;
+			if (r == NSAccessibilityRoles.GroupRole)
+				return Accessibility.Role.Group;
+			if (r == NSAccessibilityRoles.ImageRole)
+				return Accessibility.Role.Image;
+			if (r == NSAccessibilityRoles.LevelIndicatorRole)
+				return Accessibility.Role.LevelIndicator;
+			if (r == NSAccessibilityRoles.LinkRole)
+				return Accessibility.Role.Link;
+			if (r == NSAccessibilityRoles.ListRole)
+				return Accessibility.Role.List;
+			if (r == "NSAccessibilityMenuBarRole")
+				return Accessibility.Role.MenuBar;
+			if (r == NSAccessibilityRoles.MenuBarItemRole)
+				return Accessibility.Role.MenuBarItem;
+			if (r == NSAccessibilityRoles.MenuItemRole)
+				return Accessibility.Role.MenuItem;
+			if (r == NSAccessibilityRoles.MenuRole)
+				return Accessibility.Role.Menu;
+			if (r == NSAccessibilityRoles.OutlineRole)
+				return Accessibility.Role.Tree;
+			if (r == NSAccessibilityRoles.PopUpButtonRole)
+				return Accessibility.Role.MenuButton;
+			if (r == NSAccessibilityRoles.PopoverRole)
+				return Accessibility.Role.Popup;
+			if (r == NSAccessibilityRoles.ProgressIndicatorRole)
+				return Accessibility.Role.ProgressBar;
+			if (r == NSAccessibilityRoles.RadioButtonRole)
+				return Accessibility.Role.RadioButton;
+			if (r == NSAccessibilityRoles.RadioGroupRole)
+				return Accessibility.Role.RadioGroup;
+			if (r == NSAccessibilityRoles.RowRole)
+				return Accessibility.Role.Row;
+			if (r == NSAccessibilityRoles.ScrollAreaRole)
+				return Accessibility.Role.ScrollView;
+			if (r == NSAccessibilityRoles.ScrollBarRole)
+				return Accessibility.Role.ScrollBar;
+			if (r == NSAccessibilityRoles.SliderRole)
+				return Accessibility.Role.Slider;
+			if (r == NSAccessibilityRoles.SplitGroupRole)
+				return Accessibility.Role.Paned;
+			if (r == NSAccessibilityRoles.SplitterRole)
+				return Accessibility.Role.PanedSplitter;
+			if (r == NSAccessibilityRoles.StaticTextRole)
+				return Accessibility.Role.Label;
+			if (r == NSAccessibilityRoles.TabGroupRole)
+				return Accessibility.Role.Notebook;
+			if (r == NSAccessibilityRoles.TableRole)
+				return Accessibility.Role.Table;
+			if (r == NSAccessibilityRoles.TextAreaRole)
+				return Accessibility.Role.TextEntry;
+			if (r == NSAccessibilityRoles.TextFieldRole) {
+				if (sr == NSAccessibilitySubroles.SearchFieldSubrole)
+					return Accessibility.Role.TextEntrySearch;
+				if (sr == NSAccessibilitySubroles.SecureTextFieldSubrole)
+					return Accessibility.Role.TextEntryPassword;
+				return Accessibility.Role.TextEntry;
+			}
+			if (r == NSAccessibilityRoles.ToolbarRole)
+				return Accessibility.Role.ToolBar;
+			if (r == NSAccessibilityRoles.ValueIndicatorRole)
+				return Accessibility.Role.SpinButton;
+			//if (r == NSAccessibilityRoles.WindowRole)
+			//	return Accessibility.Role.Window;
+			
+			return Accessibility.Role.Custom;
+
+			// TODO:
+			//NSAccessibilityRoles.ApplicationRole;
+			//NSAccessibilityRoles.BrowserRole;
+			//NSAccessibilityRoles.BusyIndicatorRole;
+			//NSAccessibilityRoles.DrawerRole;
+			//NSAccessibilityRoles.GridRole;
+			//NSAccessibilityRoles.GrowAreaRole;
+			//NSAccessibilityRoles.HandleRole;
+			//NSAccessibilityRoles.HelpTagRole;
+			//NSAccessibilityRoles.IncrementorRole;
+			//NSAccessibilityRoles.LayoutAreaRole;
+			//NSAccessibilityRoles.LayoutItemRole;
+			//NSAccessibilityRoles.IncrementorRole
+			//NSAccessibilityRoles.MatteRole;
+			//NSAccessibilityRoles.MenuButtonRole;
+			//NSAccessibilityRoles.RelevanceIndicatorRole;
+			//NSAccessibilityRoles.RulerMarkerRole;
+			//NSAccessibilityRoles.RulerRole;
+			//NSAccessibilityRoles.SheetRole;
+			//NSAccessibilityRoles.UnknownRole;
+		}
+
+		public static NSString GetMacRole (this Accessibility.Role role)
+		{
+			switch (role) {
+				case Accessibility.Role.Button:
+					return NSAccessibilityRoles.ButtonRole;
+				//case Accessibility.Role.Calendar:
+				//	break;
+				case Accessibility.Role.Cell:
+					return NSAccessibilityRoles.CellRole;
+				case Accessibility.Role.CheckBox:
+					return NSAccessibilityRoles.CheckBoxRole;
+				case Accessibility.Role.ColorChooser:
+					return NSAccessibilityRoles.ColorWellRole;
+				case Accessibility.Role.Column:
+					return NSAccessibilityRoles.ColumnRole;
+				case Accessibility.Role.ComboBox:
+					return NSAccessibilityRoles.ComboBoxRole;
+				//case Accessibility.Role.Custom:
+				//	break;
+				//case Accessibility.Role.Dialog:
+				//	return NSAccessibilityRoles.WindowRole;
+				case Accessibility.Role.Disclosure:
+					return NSAccessibilityRoles.DisclosureTriangleRole;
+				//case Accessibility.Role.Grid:
+				//	break;
+				case Accessibility.Role.Group:
+					return NSAccessibilityRoles.GroupRole;
+				case Accessibility.Role.Image:
+					return NSAccessibilityRoles.ImageRole;
+				case Accessibility.Role.Label:
+					return NSAccessibilityRoles.StaticTextRole;
+				case Accessibility.Role.LevelIndicator:
+					return NSAccessibilityRoles.LevelIndicatorRole;
+				case Accessibility.Role.Link:
+					return NSAccessibilityRoles.LinkRole;
+				case Accessibility.Role.List:
+					return NSAccessibilityRoles.ListRole;
+				case Accessibility.Role.Menu:
+					return NSAccessibilityRoles.MenuRole;
+				case Accessibility.Role.MenuBar:
+					return new NSString ("NSAccessibilityMenuBarRole");
+				case Accessibility.Role.MenuBarItem:
+					return NSAccessibilityRoles.MenuBarItemRole;
+				case Accessibility.Role.MenuButton:
+					return NSAccessibilityRoles.PopUpButtonRole;
+				case Accessibility.Role.MenuItem:
+				case Accessibility.Role.MenuItemCheckBox:
+				case Accessibility.Role.MenuItemRadio:
+					return NSAccessibilityRoles.MenuItemRole;
+				case Accessibility.Role.Notebook:
+					return NSAccessibilityRoles.TabGroupRole;
+				//case Accessibility.Role.NotebookTab:
+				//	break;
+				case Accessibility.Role.Popup:
+					return NSAccessibilityRoles.PopoverRole;
+				case Accessibility.Role.ProgressBar:
+					return NSAccessibilityRoles.ProgressIndicatorRole;
+				case Accessibility.Role.RadioButton:
+					return NSAccessibilityRoles.RadioButtonRole;
+				case Accessibility.Role.RadioGroup:
+					return NSAccessibilityRoles.RadioGroupRole;
+				case Accessibility.Role.Row:
+					return NSAccessibilityRoles.RowRole;
+				case Accessibility.Role.ScrollBar:
+					return NSAccessibilityRoles.ScrollBarRole;
+				case Accessibility.Role.ScrollView:
+					return NSAccessibilityRoles.ScrollAreaRole;
+				//case Accessibility.Role.Separator:
+				//	break;
+				case Accessibility.Role.Slider:
+					return NSAccessibilityRoles.SliderRole;
+				case Accessibility.Role.SpinButton:
+					return NSAccessibilityRoles.ValueIndicatorRole;
+				case Accessibility.Role.Paned:
+					return NSAccessibilityRoles.SplitGroupRole;
+				case Accessibility.Role.PanedSplitter:
+					return NSAccessibilityRoles.SplitterRole;
+				case Accessibility.Role.Table:
+					return NSAccessibilityRoles.TableRole;
+				case Accessibility.Role.TextArea:
+					return NSAccessibilityRoles.TextAreaRole;
+				case Accessibility.Role.TextEntry:
+					return NSAccessibilityRoles.TextFieldRole;
+				case Accessibility.Role.ToggleButton:
+					return NSAccessibilityRoles.ButtonRole;
+				case Accessibility.Role.ToolBar:
+					return NSAccessibilityRoles.ToolbarRole;
+				//case Accessibility.Role.ToolTip:
+				//	break;
+				case Accessibility.Role.Tree:
+					return NSAccessibilityRoles.OutlineRole;
+				//case Accessibility.Role.Window:
+				//	return NSAccessibilityRoles.WindowRole;
+			}
+			return NSAccessibilityRoles.UnknownRole;
+		}
+
+		public static NSString GetMacSubrole (this Accessibility.Role role)
+		{
+			switch (role) {
+			case Accessibility.Role.ButtonClose:
+				return NSAccessibilitySubroles.CloseButtonSubrole;
+			case Accessibility.Role.ButtonMaximize:
+				return NSAccessibilitySubroles.ZoomButtonSubrole;
+			case Accessibility.Role.ButtonMinimize:
+				return NSAccessibilitySubroles.MinimizeButtonSubrole;
+			case Accessibility.Role.ButtonFullscreen:
+				return NSAccessibilitySubroles.FullScreenButtonSubrole;
+			case Accessibility.Role.TextEntrySearch:
+				return NSAccessibilitySubroles.SearchFieldSubrole;
+			case Accessibility.Role.TextEntryPassword:
+				return NSAccessibilitySubroles.SecureTextFieldSubrole;
+			}
+			return null;
 		}
 	}
 

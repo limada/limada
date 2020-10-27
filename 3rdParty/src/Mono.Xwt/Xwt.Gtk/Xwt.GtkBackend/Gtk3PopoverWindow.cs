@@ -107,6 +107,7 @@ namespace Xwt.GtkBackend
 				cr.Operator = Operator.Source;
 				cr.Paint();
 			}
+			cr.Save ();
 			var handled = OnDraw (cr);
 			cr.Restore();
 

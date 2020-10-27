@@ -30,7 +30,7 @@ using System;
 using System.ComponentModel;
 using Xwt.Backends;
 
-namespace Xwt
+namespace Xwt 
 {
 	public sealed class ComboBoxCellView : CellView, IComboBoxCellViewFrontend
 	{

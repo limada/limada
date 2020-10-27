@@ -53,7 +53,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IComboBoxEntryBackend Backend {
+		new IComboBoxEntryBackend Backend {
 			get { return (IComboBoxEntryBackend) BackendHost.Backend; }
 		}
 		
@@ -78,6 +78,20 @@ namespace Xwt
 				else
 					Backend.SetTextColumn (0);
 			}
+		}
+
+		/// <summary>
+		/// Get ot sets a value indicating whether Autocompletion is enabled
+		/// </summary>
+		/// <value><c>true</c> if sompletion is enabled, otherwise <c>false</c></value>
+		/// <remarks>
+		/// Enables autocompletion with values from the given source and <see cref="TextField"/> while typing.
+		/// Will reset custom completions specified with <see cref="TextEntry.SetCompletions(string[])"/> when enabled.
+		/// </remarks>
+		public bool Completes
+		{
+			get { return Backend.Completes; }
+			set { Backend.Completes = value; }
 		}
 	}
 	

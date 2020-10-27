@@ -42,7 +42,7 @@ namespace Xwt
 			}
 		}
 		
-		ISpinButtonBackend Backend {
+		new ISpinButtonBackend Backend {
 			get { return (ISpinButtonBackend) BackendHost.Backend; }
 		}
 		

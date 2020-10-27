@@ -8,6 +8,7 @@ namespace Xwt.GtkBackend
 	public partial class GtkClipboardBackend
 	{
 
+	
 		public override IEnumerable<TransferDataType> GetTypesAvailable ()
 		{
 			Gdk.Atom [] result = null;
@@ -20,6 +21,7 @@ namespace Xwt.GtkBackend
 			}
 
 		}
+
 	}
 
 	public delegate void ClipboardTargetsReceivedFunc (Gtk.Clipboard clipboard, Gdk.Atom [] atoms, int n_atoms);
@@ -30,10 +32,16 @@ namespace Xwt.GtkBackend
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		internal delegate void ClipboardTargetsReceivedFuncNative (IntPtr clipboard, IntPtr atoms, int n_atoms, IntPtr data);
 
+#if XWT_GTKSHARP3
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		delegate void d_gtk_clipboard_request_targets(IntPtr raw, ClipboardTargetsReceivedFuncNative cb, IntPtr user_data);
+		static d_gtk_clipboard_request_targets gtk_clipboard_request_targets = FuncLoader.LoadFunction<d_gtk_clipboard_request_targets>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_request_targets"));
+
+#else
 		// https://developer.gnome.org/gtk3/2.90/gtk3-Clipboards.html#GtkClipboardTargetsReceivedFunc
 		[DllImport (GtkInterop.LIBGTK, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void gtk_clipboard_request_targets (IntPtr raw, ClipboardTargetsReceivedFuncNative cb, IntPtr user_data);
-
+#endif
 		internal void NativeCallback (IntPtr clipboard, IntPtr atoms, int n_atoms, IntPtr data)
 		{
 			try {

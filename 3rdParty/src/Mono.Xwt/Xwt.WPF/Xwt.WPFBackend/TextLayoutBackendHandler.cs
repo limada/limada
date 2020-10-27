@@ -44,10 +44,6 @@ namespace Xwt.WPFBackend
 			return new TextLayoutBackend (ApplicationContext);
 		}
 
-		public override object Create (Context context) {
-		    return Create();
-		}
-
 		public override void SetWidth (object backend, double value)
 		{
 			var t = (TextLayoutBackend)backend;
@@ -72,30 +68,16 @@ namespace Xwt.WPFBackend
 			t.SetFont (font);
 		}
 
+		public override void SetAlignment(object backend, Alignment alignment)
+		{
+			var t = (TextLayoutBackend)backend;
+			t.SetAlignment (alignment);
+		}
+
 		public override void SetTrimming (object backend, Xwt.Drawing.TextTrimming textTrimming)
 		{
 			var t = (TextLayoutBackend)backend;
-			switch (textTrimming) {
-				case Xwt.Drawing.TextTrimming.WordElipsis:
-					t.FormattedText.Trimming = System.Windows.TextTrimming.WordEllipsis;
-					break;
-				default:
-					t.FormattedText.Trimming = System.Windows.TextTrimming.None;
-					break;
-			}
-		}
-
-		public override void SetWrapMode (object backend, Xwt.WrapMode wrapMode) 
-		{
-		    var t = (TextLayoutBackend)backend;
-		    switch (wrapMode) {
-		        case Xwt.WrapMode.None:
-		            t.FormattedText.MaxLineCount = 1;
-		            break;
-		        default:
-		            t.FormattedText.MaxLineCount = int.MaxValue;
-		            break;
-		    }
+			t.SetTrimming(textTrimming);
 		}
 
 		public override Size GetSize (object backend)
@@ -153,6 +135,7 @@ namespace Xwt.WPFBackend
 		double height;
 		string text = String.Empty;
 		Xwt.Drawing.TextTrimming? textTrimming;
+		Xwt.Alignment? textAlignment;
 		bool needsRebuild;
 
 		readonly ApplicationContext ApplicationContext;
@@ -229,6 +212,21 @@ namespace Xwt.WPFBackend
 			FormattedText.SetFontStretch(f.Stretch);
 			FormattedText.SetFontStyle(f.Style);
 			FormattedText.SetFontWeight(f.Weight);
+		}
+
+		public void SetAlignment(Xwt.Alignment textAlignment)
+		{
+			if (this.textAlignment != textAlignment)
+			{
+				this.textAlignment = textAlignment;
+				if (formattedText != null)
+					ApplyAlignment();
+			}
+		}
+
+		void ApplyAlignment()
+		{
+			FormattedText.TextAlignment = DataConverter.ToTextAlignment (textAlignment ?? Alignment.Start);
 		}
 
 		public void SetTrimming(Xwt.Drawing.TextTrimming textTrimming)
@@ -316,18 +314,18 @@ namespace Xwt.WPFBackend
 		{
 			needsRebuild = false;
 			var dir = System.Windows.FlowDirection.LeftToRight;
-            var maxLines = formattedText != null ? formattedText.MaxLineCount : -1;
-            formattedText = new System.Windows.Media.FormattedText(text, System.Globalization.CultureInfo.CurrentCulture, dir, defaultFont, 36, brush);
-            if (width > 0)
-                formattedText.MaxTextWidth = width;
-            if (height > 0)
+			formattedText = new System.Windows.Media.FormattedText(text, System.Globalization.CultureInfo.CurrentCulture, dir, defaultFont, 36, brush);
+			if (width > 0)
+				formattedText.MaxTextWidth = width;
+			if (height > 0)
 				formattedText.MaxTextHeight = height;
 			if (Font != null)
 				ApplyFont();
+			if (textAlignment != null)
+				ApplyAlignment();
 			if (textTrimming != null)
 				ApplyTrimming();
-            if (maxLines >= 0)
-                formattedText.MaxLineCount = maxLines;
+
 			if (attributes != null)
 				foreach (var at in attributes)
 					ApplyAttribute(at);

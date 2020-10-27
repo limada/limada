@@ -25,12 +25,12 @@
 // THE SOFTWARE.
 
 using System;
+using Gtk;
 using Xwt.Backends;
 using Xwt.Drawing;
+using Context = Cairo.Context;
 
 namespace Xwt.GtkBackend {
-
-    #if !XWT_GTK3
     /// <summary>
     /// MultiLine-TextEntryBackend
     /// uses Gtk.TextView instead of Gtk.Entry
@@ -45,9 +45,11 @@ namespace Xwt.GtkBackend {
 
         public class MlTextView : Gtk.TextView 
         {
+	        public MlTextView () : base () { }
+	        public MlTextView (IntPtr handle) : base (handle) { }
 
-            public bool MultiLine { get; set; }
-
+	        public bool MultiLine { get; set; }
+            
             protected override bool OnKeyPressEvent (Gdk.EventKey evnt) {
                 if ((evnt.Key == Gdk.Key.Return || evnt.Key == Gdk.Key.ISO_Enter || evnt.Key == Gdk.Key.KP_Enter) && !MultiLine)
                     return true;
@@ -55,6 +57,16 @@ namespace Xwt.GtkBackend {
                     return false;
                 return base.OnKeyPressEvent (evnt);
             }
+#if XWT_GTK3
+	        public event EventHandler<Context> Draw;
+
+	        protected override bool OnDrawn (Context cr) {
+		        var result = base.OnDrawn (cr);
+		        Draw?.Invoke (this,cr);
+		        return result;
+	        }
+
+#endif            
         }
 
         public string Text {
@@ -103,10 +115,14 @@ namespace Xwt.GtkBackend {
             set {
                 showFrame = value;
                 frameMargin = value ? 4 : 0;
-                TextView.PixelsAboveLines = frameMargin;
-                TextView.PixelsBelowLines = frameMargin;
-                TextView.RightMargin = frameMargin;
-                TextView.LeftMargin = value ? frameMargin : 1;
+                // TextView.PixelsAboveLines = frameMargin;
+                // TextView.PixelsBelowLines = frameMargin;
+                TextView.SetBorderWindowSize (TextWindowType.Top,frameMargin);
+                TextView.SetBorderWindowSize (TextWindowType.Bottom,frameMargin);
+                TextView.SetBorderWindowSize (TextWindowType.Left,frameMargin);
+                TextView.SetBorderWindowSize (TextWindowType.Right,frameMargin);
+                // TextView.RightMargin = frameMargin;
+                // TextView.LeftMargin = value ? frameMargin : 1;
 
             }
         }
@@ -120,6 +136,7 @@ namespace Xwt.GtkBackend {
             set { base.Widget = value; }
         }
 
+#if !XWT_GTK3
 		protected virtual void RenderFrame (object o, Gtk.ExposeEventArgs args)
 		{
 
@@ -153,6 +170,14 @@ namespace Xwt.GtkBackend {
 			}
 		}
 
+        protected virtual void RenderPlaceholderText (object o, Gtk.ExposeEventArgs args) {
+	        var w = TextView.GetWindow (Gtk.TextWindowType.Text);
+	        if (!string.IsNullOrEmpty (PlaceholderText) && string.IsNullOrEmpty (Text) && args.Event.Window == w) {
+		        UtilLmk.RenderPlaceholderText (TextView, args, PlaceholderText, ref layout);
+	        }
+        }
+
+	    
 		public string PlaceholderText {
 			get { return placeholderText; }
 			set {
@@ -165,13 +190,28 @@ namespace Xwt.GtkBackend {
 				placeholderText = value;
 			}
 		}
+#else
+	    private void RenderFrame (object sender, Context ctx) {
+		   
+		    if (ShowFrame) {
+			    var w = TextView.GetWindow (Gtk.TextWindowType.Text);
+			    w.GetSize (out var ww, out var wh);
+			    TextView.StyleContext.RenderFrame (ctx,0,0,ww,wh);
+			   
+			 //    ctx.Save ();
+				// ctx.Rectangle (0,0,ww,wh);
+				// ctx.Stroke ();
+				// ctx.Restore ();
+		    }
+	    }
 
-        protected virtual void RenderPlaceholderText (object o, Gtk.ExposeEventArgs args) {
-	        var w = TextView.GetWindow (Gtk.TextWindowType.Text);
-	        if (!string.IsNullOrEmpty (PlaceholderText) && string.IsNullOrEmpty (Text) && args.Event.Window == w) {
-		        Util.RenderPlaceholderText (TextView, args, PlaceholderText, ref layout);
-	        }
-        }
+	    public string PlaceholderText {
+		    get { return placeholderText; }
+		    set {placeholderText = value;
+		    }
+	    }
+#endif
+
 
 		protected Pango.Layout Layout {
 			get { return layout ?? (layout = new Pango.Layout (TextView.PangoContext)); }
@@ -192,11 +232,16 @@ namespace Xwt.GtkBackend {
 			Widget.Show ();
 
 			ShowFrame = true;
+#if !XWT_GTKSHARP3
 			TextView.ExposeEvent += RenderFrame;
+#else
+			TextView.Draw += RenderFrame;
+#endif			
 
 			InitializeMultiLine ();
 
 		}
+
 
 		#region Multiline-Handling
 
@@ -213,6 +258,7 @@ namespace Xwt.GtkBackend {
 		{
 			var w = 0;
 			var lastHeight = -1;
+#if !XWT_GTKSHARP3
 
 			TextView.SizeRequested += (s, args) => {
 				if (!MultiLine)
@@ -221,7 +267,7 @@ namespace Xwt.GtkBackend {
 						Height = lineHeight
 					};
 			};
-
+#endif
 			TextView.SizeAllocated += (s, e) => {
 				if (!MultiLine && lastHeight != e.Allocation.Height) {
 					lastHeight = e.Allocation.Height;
@@ -242,12 +288,12 @@ namespace Xwt.GtkBackend {
 		{
 			if (MultiLine)
 				return base.GetPreferredSize (widthConstraint, heightConstraint);
-
+#if ! XWT_GTKSHARP3
 			if (bufferSizeRequest) {
 				bufferSizeRequest = !widthConstraint.IsConstrained;
 				return new Size (Widget.Allocation.Width, Widget.Allocation.Height);
 			}
-
+#endif
 			return base.GetPreferredSize (widthConstraint, heightConstraint);
 		}
 
@@ -455,7 +501,7 @@ namespace Xwt.GtkBackend {
 
 		protected override void Dispose (bool disposing)
 		{
-			if (disposing) {
+			if (disposing  && !IsDestroyed) {
 				if (xLayout != null)
 					xLayout.Dispose ();
 				xLayout = null;
@@ -475,5 +521,4 @@ namespace Xwt.GtkBackend {
 		{
 		}
 	}
-#endif
 }

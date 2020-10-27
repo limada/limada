@@ -47,7 +47,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 
-		ILabelBackend Backend {
+		new ILabelBackend Backend {
 			get { return (ILabelBackend) BackendHost.Backend; }
 		}
 

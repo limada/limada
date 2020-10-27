@@ -31,7 +31,7 @@ using Xwt.Backends;
 
 namespace Xwt.Drawing
 {
-	public sealed class Context: DrawingPath
+	public sealed partial class Context: DrawingPath
 	{
 		ContextBackendHandler handler;
 		Pattern pattern;
@@ -40,13 +40,13 @@ namespace Xwt.Drawing
 
 		static HashSet<string> registeredStyles = new HashSet<string> ();
 		static StyleSet globalStyles = StyleSet.Empty;
-
-		Stack<SavedContext> contextStack = new Stack<SavedContext> ();
+		SavedContext stackTop;
 
 		class SavedContext
 		{
 			public double Alpha;
 			public StyleSet Styles;
+			public SavedContext Previous;
 		}
 		
 		public Context (object backend, Toolkit toolkit): this (backend, toolkit, toolkit.ContextBackendHandler)
@@ -80,17 +80,21 @@ namespace Xwt.Drawing
 		public void Save ()
 		{
 			handler.Save (Backend);
-			contextStack.Push (new SavedContext {
+
+			stackTop = new SavedContext {
 				Alpha = globalAlpha,
 				Styles = styles,
-			});
+				Previous = stackTop,
+			};
 		}
 		
 		public void Restore ()
 		{
 			handler.Restore (Backend);
-			if (contextStack.Count > 0) {
-				var info = contextStack.Pop ();
+			if (stackTop != null) {
+				var info = stackTop;
+				stackTop = stackTop.Previous;
+
 				globalAlpha = info.Alpha;
 				if (styles != info.Styles) {
 					styles = info.Styles;
@@ -476,8 +480,15 @@ namespace Xwt.Drawing
 			}
 		}
 
+		internal static int GlobalStylesVersion {
+			get { return stylesVersion; }
+		}
+
+		static int stylesVersion;
+
 		static void NotifyGlobalStylesChanged ()
 		{
+			stylesVersion++;
 			if (GlobalStylesChanged != null)
 				GlobalStylesChanged (null, EventArgs.Empty);
 		}

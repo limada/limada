@@ -53,7 +53,7 @@ namespace Xwt
 			}
 		}
 
-		ISliderBackend Backend {
+		new ISliderBackend Backend {
 			get { return (ISliderBackend) BackendHost.Backend; }
 		}
 		

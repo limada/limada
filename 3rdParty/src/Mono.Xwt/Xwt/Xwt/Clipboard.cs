@@ -24,7 +24,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xwt.Backends;
 using Xwt.Drawing;
@@ -34,10 +33,18 @@ namespace Xwt
 {
 	public static partial class Clipboard
 	{
+		// Cache the toolkit the first time we access the Clipboard and then always use
+		//  the same one, otherwise we will get inconsistent results from APIs like ContainsData<T>().
+		static Toolkit toolkit;
+
 		static ClipboardBackend Backend {
-			get { return Toolkit.CurrentEngine.ClipboardBackend; }
+			get {
+				if (toolkit == null)
+					toolkit = Toolkit.CurrentEngine;
+				return toolkit.ClipboardBackend;
+			}
 		}
-		
+
 		public static void Clear ()
 		{
 			Backend.Clear ();
@@ -172,22 +179,6 @@ namespace Xwt
 				return dataSource ();
 			});
 		}
-
-		public static ITransferData GetTransferData (IEnumerable<TransferDataType> dataTypes) {
-		    var result = new TransferDataStore();
-		    result.DataRequestCallback = t => Clipboard.GetData(t);
-		    foreach (var dt in dataTypes.Where (t => Clipboard.ContainsData (t)))
-		        result.AddValue(dt, (object) null);
-		    return result;
-		}
-
-		public static void SetTransferData (TransferDataSource source) {
-		    foreach (var t in source.DataTypes)
-		        if (source.DataRequestCallback != null)
-		            Clipboard.SetData(t, source.DataRequestCallback);
-		        else
-		            Clipboard.SetData (t, source.GetValue (t));
-		}
-    }
+	}
 }
 

@@ -53,7 +53,7 @@ namespace Xwt
 			Date = DateTime.Now;
 		}
 
-		ICalendarBackend Backend {
+		new ICalendarBackend Backend {
 			get { return (ICalendarBackend)BackendHost.Backend; }
 		}
 

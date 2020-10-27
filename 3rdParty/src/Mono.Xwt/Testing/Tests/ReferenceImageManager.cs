@@ -47,10 +47,8 @@ namespace Xwt
 
 		public static void Init (string projectName)
 		{
-			var baseDir = Path.GetDirectoryName (typeof(ReferenceImageManager).Assembly.CodeBase);
-			if (baseDir.StartsWith ("file:\\"))
-		        	baseDir = baseDir.Substring (6);
-            		while (Path.GetFileName (baseDir) != "Testing")
+			var baseDir = Path.GetDirectoryName (typeof(ReferenceImageManager).Assembly.Location);
+			while (Path.GetFileName (baseDir) != "Testing")
 				baseDir = Path.GetDirectoryName (baseDir);
 			ProjectReferenceImageDir = Path.Combine (baseDir, "Tests", "ReferenceImages");
 			ProjectCustomReferenceImageDir = Path.Combine (baseDir, projectName, "ReferenceImages");

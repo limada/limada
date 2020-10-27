@@ -47,12 +47,12 @@ namespace Xwt.Drawing
 		{
 		}
 		
-		public Image (object backend): base (backend)
+		internal Image (object backend): base (backend)
 		{
 			Init ();
 		}
 		
-		public Image (object backend, Toolkit toolkit): base (backend, toolkit)
+		internal Image (object backend, Toolkit toolkit): base (backend, toolkit)
 		{
 			Init ();
 		}
@@ -171,17 +171,22 @@ namespace Xwt.Drawing
 		/// </remarks>
 		public static Image FromResource (Assembly assembly, string resource)
 		{
+			return FromResource (assembly, resource, null);
+		}
+
+		internal static Image FromResource (Assembly assembly, string resource, ImageTagSet tagFilter)
+		{
 			if (assembly == null)
 				throw new ArgumentNullException ("assembly");
 			if (resource == null)
 				throw new ArgumentNullException ("resource");
-			
+
 			var toolkit = Toolkit.CurrentEngine;
 			if (toolkit == null)
 				throw new ToolkitNotInitializedException ();
 
 			var loader = new ResourceImageLoader (toolkit, assembly);
-			return LoadImage (loader, resource, null);
+			return LoadImage (loader, resource, tagFilter);
 		}
 
 		static Image LoadImage (ImageLoader loader, string fileName, ImageTagSet tagFilter)
@@ -196,10 +201,11 @@ namespace Xwt.Drawing
 			var ext = GetExtension (fileName);
 			var name = fileName.Substring (0, fileName.Length - ext.Length);
 			var altImages = new List<Tuple<string,ImageTagSet,bool,object>> ();
-			var tags = Context.RegisteredStyles;
+			int scale;
 
 			foreach (var r in loader.GetAlternativeFiles (fileName, name, ext)) {
-				int scale;
+				if (r == fileName) // loader might include the base filename, make sure to exclude it
+					continue;
 				ImageTagSet fileTags;
 				if (ParseImageHints (name, r, ext, out scale, out fileTags) && (tagFilter == null || tagFilter.Equals (fileTags))) {
 					var rim = loader.LoadImage (r);
@@ -209,7 +215,11 @@ namespace Xwt.Drawing
 			}
 
 			if (altImages.Count > 0) {
-				altImages.Insert (0, new Tuple<string, ImageTagSet, bool, object> (fileName, ImageTagSet.Empty, false, img));
+				// Add the base file only if no tag filter is specified or the tags match
+				ImageTagSet fileTags = null;
+				if (tagFilter == null || tagFilter.IsEmpty || ParseImageHints (name, fileName, ext, out scale, out fileTags) && tagFilter.Equals (fileTags)) {
+					altImages.Insert (0, new Tuple<string, ImageTagSet, bool, object> (fileName, fileTags ?? ImageTagSet.Empty, false, img));
+				}
 				var list = new List<Tuple<Image,string[]>> ();
 				foreach (var imageGroup in altImages.GroupBy (t => t.Item2)) {
 					Image altImg;
@@ -234,17 +244,20 @@ namespace Xwt.Drawing
 			}
 		}
 
+		static readonly char [] tagDelimiters = { '@', '~' };
+
 		static bool ParseImageHints (string baseName, string fileName, string ext, out int scale, out ImageTagSet tags)
 		{
 			scale = 1;
 			tags = ImageTagSet.Empty;
+			var firstDelimiter = fileName.IndexOfAny (tagDelimiters);
 
-			if (!fileName.StartsWith (baseName, StringComparison.Ordinal) || fileName.Length <= baseName.Length + 1 || (fileName [baseName.Length] != '@' && fileName [baseName.Length] != '~'))
+			if (firstDelimiter <= 0 || fileName.Length <= baseName.Length + 1 || !fileName.StartsWith (baseName, StringComparison.Ordinal))
 				return false;
 
 			fileName = fileName.Substring (0, fileName.Length - ext.Length);
 
-			int i = baseName.Length;
+			int i = firstDelimiter;
 			if (fileName [i] == '~') {
 				// For example: foo~dark@2x
 				i++;
@@ -326,14 +339,36 @@ namespace Xwt.Drawing
 			return new Image (Toolkit.CurrentEngine.ImageBackendHandler.CreateMultiResolutionImage (images.Select (ExtensionMethods.GetBackend)));
 		}
 
+		/// <summary>
+		/// Create a composed image
+		/// </summary>
+		/// <param name="images">Images to compose to a single image</param>
+		/// <param name="size">Optional size of the new image</param>
+		/// <remarks>
+		/// The images will be rendered on top of eachother aligned to the
+		/// upper left corner.
+		/// With a fixed image size (<see cref="WithSize(Size)"/>) all images will be scaled.
+		/// The size of the first image will be used, if no size is given (<see cref="Size.Zero"/>).
+		/// If the size of the first image is <see cref="Size.Zero"/> too, no scaling will be applied.
+		/// </remarks>
+		public static Image CreateComposedImage (IEnumerable<Image> images, Size size = default (Size))
+		{
+			return new ComposedImage (images, size);
+		}
+
 		public static Image FromFile (string file)
+		{
+			return FromFile (file, null);
+		}
+
+		internal static Image FromFile (string file, ImageTagSet tagFilter)
 		{
 			var toolkit = Toolkit.CurrentEngine;
 			if (toolkit == null)
 				throw new ToolkitNotInitializedException ();
 
 			var loader = new FileImageLoader (toolkit);
-			return LoadImage (loader, file, null);
+			return LoadImage (loader, file, tagFilter);
 		}
 
 		static Image CreateComposedNinePatch (Toolkit toolkit, IEnumerable<Tuple<string,ImageTagSet,bool,object>> altImages)
@@ -882,10 +917,10 @@ namespace Xwt.Drawing
 					} else if (s.CustomImageLoader != null) {
 						targetToolkit.Invoke (() => newBackend = Image.FromCustomLoader (s.CustomImageLoader, s.Source, s.Tags).GetBackend());
 					} else if (s.ResourceAssembly != null) {
-						targetToolkit.Invoke (() => newBackend = Image.FromResource (s.ResourceAssembly, s.Source).GetBackend());
+						targetToolkit.Invoke (() => newBackend = Image.FromResource (s.ResourceAssembly, s.Source, s.Tags).GetBackend());
 					}
 					else if (s.Source != null)
-						targetToolkit.Invoke (() => newBackend = Image.FromFile (s.Source).GetBackend());
+						targetToolkit.Invoke (() => newBackend = Image.FromFile (s.Source, s.Tags).GetBackend());
 					else if (s.DrawCallback != null)
 						newBackend = targetToolkit.ImageBackendHandler.CreateCustomDrawn (s.DrawCallback);
 					else if (s.StockId != null)

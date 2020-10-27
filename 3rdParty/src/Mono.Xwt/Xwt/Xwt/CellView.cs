@@ -27,6 +27,7 @@
 using System;
 using Xwt.Drawing;
 using Xwt.Backends;
+using Xwt.Accessibility;
 using System.ComponentModel;
 using System.Collections.Generic;
 
@@ -165,6 +166,15 @@ namespace Xwt
 			set { visible = value; }
 		}
 
+		AccessibleFields accessibleFields;
+
+		public AccessibleFields AccessibleFields {
+			get {
+				if (accessibleFields == null)
+					accessibleFields = new AccessibleFields ();
+				return accessibleFields;
+			}
+		}
 		ICellViewEventSink ICellViewFrontend.Load (ICellDataSource dataSource)
 		{
 			DataSource = dataSource;
@@ -190,7 +200,7 @@ namespace Xwt
 			get { return container; }
 		}
 
-		protected Rectangle Bounds {
+		public Rectangle Bounds {
 			get { return Backend.CellBounds; }
 		}
 
@@ -222,7 +232,7 @@ namespace Xwt
 		/// <param name="field">Field.</param>
 		/// <param name="defaultValue">Default value to be returned if the field has no value</param>
 		/// <typeparam name="T">Type of the value</typeparam>
-		protected T GetValue<T> (IDataField<T> field, T defaultValue = default(T))
+		public T GetValue<T> (IDataField<T> field, T defaultValue = default(T))
 		{
 			if (DataSource != null && field != null) {
 				var result = DataSource.GetValue (field);

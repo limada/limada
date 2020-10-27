@@ -25,19 +25,17 @@
 // THE SOFTWARE.
 using System;
 using System.ComponentModel;
-using System.Windows.Markup;
 using System.Collections.Generic;
 
 namespace Xwt
 {
 	[TypeConverter (typeof(CursorTypeValueConverter))]
-	[ValueSerializer (typeof(CursorTypeValueSerializer))]
 	public class CursorType
 	{
 		string id;
 		static Dictionary<string,CursorType> cursors = new Dictionary<string, CursorType> ();
 
-		public CursorType (string id)
+		internal CursorType (string id)
 		{
 			// Maybe some day we'll support creating custom cursors
 			this.id = id;
@@ -53,11 +51,18 @@ namespace Xwt
 		public static readonly CursorType ResizeUp = new CursorType ("ResizeUp");
 		public static readonly CursorType ResizeDown = new CursorType ("ResizeDown");
 		public static readonly CursorType ResizeUpDown = new CursorType ("ResizeUpDown");
+		public static readonly CursorType ResizeNE = new CursorType("ResizeNE");
+		public static readonly CursorType ResizeNW = new CursorType("ResizeNW");
+		public static readonly CursorType ResizeSE = new CursorType("ResizeSE");
+		public static readonly CursorType ResizeSW = new CursorType("ResizeSW");
 		public static readonly CursorType Hand = new CursorType ("Hand");
+		public static readonly CursorType Hand2 = new CursorType("Hand2");
 		public static readonly CursorType Move = new CursorType ("Move");
 		public static readonly CursorType Wait = new CursorType ("Watch");
 		public static readonly CursorType Help = new CursorType ("Help");
 		public static readonly CursorType Invisible = new CursorType ("Invisible");
+		public static readonly CursorType DragCopy = new CursorType("DragCopy");
+		public static readonly CursorType NotAllowed = new CursorType("NotAllowed");
 
 		
 		class CursorTypeValueConverter: TypeConverter
@@ -72,32 +77,8 @@ namespace Xwt
 				return sourceType == typeof(string);
 			}
 		}
-		
-		class CursorTypeValueSerializer: ValueSerializer
-		{
-			public override bool CanConvertFromString (string value, IValueSerializerContext context)
-			{
-				return true;
-			}
-			
-			public override bool CanConvertToString (object value, IValueSerializerContext context)
-			{
-				return true;
-			}
-			
-			public override string ConvertToString (object value, IValueSerializerContext context)
-			{
-				CursorType s = (CursorType) value;
-				return s.id;
-			}
-			
-			public override object ConvertFromString (string value, IValueSerializerContext context)
-			{
-				CursorType ct;
-				cursors.TryGetValue (value, out ct);
-				return ct;
-			}
-		}
+
+		public override string ToString() => id;
 	}
 }
 

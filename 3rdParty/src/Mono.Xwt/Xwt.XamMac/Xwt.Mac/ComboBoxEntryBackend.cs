@@ -83,6 +83,15 @@ namespace Xwt.Mac
 				Widget.SelectItem (value);
 			}
 		}
+
+		public bool Completes {
+			get {
+				return Widget.Completes;
+			}
+			set {
+				Widget.Completes = value;
+			}
+		}
 		
 		public void SetTextColumn (int column)
 		{
@@ -171,6 +180,7 @@ namespace Xwt.Mac
 			args.X = p.X;
 			args.Y = p.Y;
 			args.Button = PointerButton.Right;
+			args.IsContextMenuTrigger = theEvent.TriggersContextMenu ();
 			context.InvokeUserCode (delegate {
 				eventSink.OnButtonPressed (args);
 			});
@@ -197,6 +207,7 @@ namespace Xwt.Mac
 			args.X = p.X;
 			args.Y = p.Y;
 			args.Button = PointerButton.Left;
+			args.IsContextMenuTrigger = theEvent.TriggersContextMenu ();
 			context.InvokeUserCode (delegate {
 				eventSink.OnButtonPressed (args);
 			});
@@ -219,17 +230,13 @@ namespace Xwt.Mac
 		{
 			base.MouseEntered (theEvent);
 			checkMouseMovement = true;
-			context.InvokeUserCode (delegate {
-				eventSink.OnMouseEntered ();
-			});
+			context.InvokeUserCode (eventSink.OnMouseEntered);
 		}
 
 		public override void MouseExited (NSEvent theEvent)
 		{
 			base.MouseExited (theEvent);
-			context.InvokeUserCode (delegate {
-				eventSink.OnMouseExited ();
-			});
+			context.InvokeUserCode (eventSink.OnMouseExited);
 			checkMouseMovement = false;
 			HandleSelectionChanged ();
 		}
@@ -256,9 +263,7 @@ namespace Xwt.Mac
 			    cacheSelectionLength != CurrentEditor.SelectedRange.Length) {
 				cacheSelectionStart = (int)CurrentEditor.SelectedRange.Location;
 				cacheSelectionLength = (int)CurrentEditor.SelectedRange.Length;
-				context.InvokeUserCode (delegate {
-					entryEventSink.OnSelectionChanged ();
-				});
+				context.InvokeUserCode (entryEventSink.OnSelectionChanged);
 			}
 		}
 	}

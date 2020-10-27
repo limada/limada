@@ -69,8 +69,8 @@ namespace Xwt
 				((DatePicker)Parent).OnValueChanged (EventArgs.Empty);
 			}
 		}
-		
-		IDatePickerBackend Backend {
+
+		new IDatePickerBackend Backend {
 			get { return (IDatePickerBackend) BackendHost.Backend; }
 		}
 		

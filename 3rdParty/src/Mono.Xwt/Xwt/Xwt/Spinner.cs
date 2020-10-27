@@ -33,7 +33,7 @@ namespace Xwt
 	[BackendType (typeof(ISpinnerBackend))]
 	public class Spinner : Widget
 	{
-		ISpinnerBackend Backend {
+		new ISpinnerBackend Backend {
 			get { return (ISpinnerBackend) BackendHost.Backend; }
 		}
 

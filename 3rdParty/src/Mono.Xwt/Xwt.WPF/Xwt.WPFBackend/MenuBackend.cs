@@ -1,4 +1,4 @@
-﻿// 
+// 
 // MenuBackend.cs
 //  
 // Author:
@@ -30,6 +30,7 @@
 
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -41,11 +42,13 @@ namespace Xwt.WPFBackend
 	{
 		List<MenuItemBackend> items;
 		FontData customFont;
+		UIElement dummyAccessibiltyUIElement;
 
 		public override void InitializeBackend (object frontend, ApplicationContext context)
 		{
 			base.InitializeBackend (frontend, context);
 			items = new List<MenuItemBackend> ();
+			dummyAccessibiltyUIElement = new UIElement ();
 		}
 
 		public IList<MenuItemBackend> Items {
@@ -62,6 +65,14 @@ namespace Xwt.WPFBackend
 		public WindowBackend ParentWindow {
 			get;
 			set;
+		}
+
+		public ContextMenu NativeMenu => menu;
+
+		public UIElement DummyAccessibilityUIElement => dummyAccessibiltyUIElement;
+
+		new Menu Frontend {
+			get { return (Menu)base.frontend; }
 		}
 
 		public virtual object Font {
@@ -122,7 +133,10 @@ namespace Xwt.WPFBackend
 		public void Popup (IWidgetBackend widget, double x, double y)
 		{
 			var menu = CreateContextMenu ();
-			menu.PlacementTarget = (UIElement) widget.NativeWidget;
+			var target = widget.NativeWidget as UIElement;
+			if (target == null)
+				throw new System.ArgumentException ("Widget belongs to an unsupported Toolkit", nameof (widget));
+			menu.PlacementTarget = target;
 			menu.Placement = PlacementMode.Relative;
 
 			double hratio = 1;
@@ -144,8 +158,13 @@ namespace Xwt.WPFBackend
 		{
 			if (this.menu == null) {
 				this.menu = new ContextMenu ();
+
 				foreach (var item in Items)
 					this.menu.Items.Add (item.Item);
+
+				var accessibleBackend = (AccessibleBackend)Toolkit.GetBackend (Frontend.Accessible);
+				if (accessibleBackend != null)
+					accessibleBackend.InitAutomationProperties (menu);
 			}
 
 			return menu;

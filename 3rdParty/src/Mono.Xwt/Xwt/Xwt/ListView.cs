@@ -85,7 +85,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IListViewBackend Backend {
+		new IListViewBackend Backend {
 			get { return (IListViewBackend) BackendHost.Backend; }
 		}
 

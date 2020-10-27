@@ -31,7 +31,7 @@ using Xwt.CairoBackend;
 using System.Runtime.InteropServices;
 using System.Linq;
 using System.Collections.Generic;
-
+using  static Xwt.Interop.DllImportGtk;
 
 namespace Xwt.GtkBackend
 {
@@ -39,7 +39,6 @@ namespace Xwt.GtkBackend
 	{
 		Color? textColor;
 		List<LabelLink> links;
-		TextIndexer indexer;
 
 		public LabelBackend ()
 		{
@@ -148,7 +147,6 @@ namespace Xwt.GtkBackend
 			get { return Label.Text; }
 			set {
 				links = null;
-				indexer = null;
 				Label.Text = value;
 			}
 		}
@@ -163,26 +161,15 @@ namespace Xwt.GtkBackend
 		{
 			Label.Text = text.Text;
 			formattedText = text;
-			var list = new FastPangoAttrList ();
-			if (Label.IsRealized) {
-				var color = Gdk.Color.Zero;
-				var colorVal = Label.StyleGetProperty ("link-color");
-				if (colorVal is Gdk.Color)
-					color = (Gdk.Color)colorVal;
-				if (!color.Equals (Gdk.Color.Zero))
-					list.DefaultLinkColor = color;
-			}
-			indexer = new TextIndexer (text.Text);
-			list.AddAttributes (indexer, text.Attributes);
-			gtk_label_set_attributes (Label.Handle, list.Handle);
+			var indexer = Label.ApplyFormattedText (text);
 
 			if (links != null)
 				links.Clear ();
 
 			foreach (var attr in text.Attributes.OfType<LinkTextAttribute> ()) {
 				LabelLink ll = new LabelLink () {
-					StartIndex = indexer.IndexToByteIndex (attr.StartIndex),
-					EndIndex = indexer.IndexToByteIndex (attr.StartIndex + attr.Count),
+					StartIndex = indexer != null ? indexer.IndexToByteIndex (attr.StartIndex) : attr.StartIndex,
+					EndIndex = indexer != null ? indexer.IndexToByteIndex (attr.StartIndex + attr.Count) : attr.StartIndex + attr.Count,
 					Target = attr.Target
 				};
 				if (links == null) {
@@ -205,9 +192,6 @@ namespace Xwt.GtkBackend
 				SetFormattedText (formattedText);
 			}
 		}
-
-		[DllImport (GtkInterop.LIBGTK, CallingConvention=CallingConvention.Cdecl)]
-		static extern void gtk_label_set_attributes (IntPtr label, IntPtr attrList);
 
 		public Xwt.Drawing.Color TextColor {
 			get {

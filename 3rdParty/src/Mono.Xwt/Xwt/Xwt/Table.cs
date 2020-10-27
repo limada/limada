@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 using Xwt.Backends;
-using System.Windows.Markup;
 using Xwt.Drawing;
 
 namespace Xwt
@@ -72,7 +71,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IBoxBackend Backend {
+		new IBoxBackend Backend {
 			get { return (IBoxBackend) BackendHost.Backend; }
 		}
 		
@@ -271,7 +270,6 @@ namespace Xwt
 		}
 	}
 	
-	[ContentProperty("Child")]
 	public class TablePlacement
 	{
 		IContainerEventSink<TablePlacement> parent;

@@ -25,103 +25,93 @@
 // THE SOFTWARE.
 using System;
 using System.Runtime.InteropServices;
+using static Xwt.Interop.DllImportWebkit;
 
 namespace Xwt.GtkBackend.WebKit
 {
-#if XWT_GTK3
+	#if XWT_GTK3
 	public class WebView : Gtk.Container, Gtk.IScrollable
-#else
+	#else
 	public class WebView : Gtk.Container
-#endif
+	#endif
 	{
 		public WebView(IntPtr raw) : base(raw)
 		{
 		}
 
-		public WebView() : base(IntPtr.Zero)
+		public WebView () : base (IntPtr.Zero)
 		{
 			Raw = webkit_web_view_new();
 		}
 
-		public void LoadUri(string uri)
-		{
-			IntPtr native_uri = GLib.Marshaller.StringToPtrGStrdup(uri);
+#if XWT_GTKSHARP3
+
+		bool Gtk.IScrollable.GetBorder (Gtk.Border border) {
+			return true;
+		}
+#endif
+		
+		public void LoadUri(string uri) {
+			IntPtr native_uri = GLib.Marshaller.StringToPtrGStrdup (uri);
 			webkit_web_view_load_uri(Handle, native_uri);
-			GLib.Marshaller.Free(native_uri);
+			GLib.Marshaller.Free (native_uri);
 		}
 
-		public string Uri
-		{
-			get
-			{
+		public string Uri { 
+			get {
 				IntPtr raw_ret = webkit_web_view_get_uri(Handle);
-				string ret = GLib.Marshaller.Utf8PtrToString(raw_ret);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
 			}
 		}
 
-		public double LoadProgress
-		{
-			get
-			{
+		public double LoadProgress { 
+			get {
 				double ret = webkit_web_view_get_progress(Handle);
 				return ret;
 			}
 		}
 
-		public bool FullContentZoom
-		{
-			get
-			{
+		public bool FullContentZoom { 
+			get {
 				bool raw_ret = webkit_web_view_get_full_content_zoom(Handle);
 				bool ret = raw_ret;
 				return ret;
 			}
-			set
-			{
+			set {
 				webkit_web_view_set_full_content_zoom(Handle, value);
 			}
 		}
 
-		[GLib.Property("self-scrolling")]
-		public bool SelfScrolling
-		{
-			get
-			{
-				using (GLib.Value property = GetProperty("self-scrolling"))
-				{
-					return (bool)property.Val;
+		[GLib.Property ("self-scrolling")]
+		public bool SelfScrolling {
+			get {
+				using (GLib.Value property = GetProperty ("self-scrolling")) {
+					return (bool) property.Val;
 				}
 			}
-			set
-			{
-				using (GLib.Value val = new GLib.Value(value))
-				{
-					SetProperty("self-scrolling", val);
+			set {
+				using (GLib.Value val = new GLib.Value (value)) {
+					SetProperty ("self-scrolling", val);
 				}
 			}
 		}
 
-		[GLib.Property("transparent")]
-		public bool Transparent
-		{
-			get
-			{
-				using (GLib.Value property = GetProperty("transparent"))
-				{
+		[GLib.Property ("transparent")]
+		public bool Transparent {
+			get {
+				using (GLib.Value property = GetProperty ("transparent")) {
 					return (bool)property.Val;
 				}
 			}
-			set
-			{
-				using (GLib.Value val = new GLib.Value(value))
-				{
-					SetProperty("transparent", val);
+			set {
+				using (GLib.Value val = new GLib.Value (value)) {
+					SetProperty ("transparent", val);
 				}
 			}
 		}
 
-#if XWT_GTK3 // Gtk.IScrollable
+		#if XWT_GTK3 // Gtk.IScrollable
 		[GLib.Property ("hadjustment")]
 		public Gtk.Adjustment Hadjustment {
 			get {
@@ -177,258 +167,171 @@ namespace Xwt.GtkBackend.WebKit
 				}
 			}
 		}
-#endif
+		#endif
 
-		public void StopLoading()
-		{
+		public void StopLoading() {
 			webkit_web_view_stop_loading(Handle);
 		}
 
-		public void Reload()
-		{
+		public void Reload() {
 			webkit_web_view_reload(Handle);
 		}
 
-		public bool CanGoBack()
-		{
+		public bool CanGoBack() {
 			bool raw_ret = webkit_web_view_can_go_back(Handle);
 			bool ret = raw_ret;
 			return ret;
 		}
 
-		public void GoBack()
-		{
+		public void GoBack() {
 			webkit_web_view_go_back(Handle);
 		}
 
-		public void GoForward()
-		{
+		public void GoForward() {
 			webkit_web_view_go_forward(Handle);
 		}
 
-		public bool CanGoForward()
-		{
+		public bool CanGoForward() {
 			bool raw_ret = webkit_web_view_can_go_forward(Handle);
 			bool ret = raw_ret;
 			return ret;
 		}
 
-		public void LoadHtmlString(string content, string base_uri)
-		{
-			IntPtr native_content = GLib.Marshaller.StringToPtrGStrdup(content);
-			IntPtr native_base_uri = GLib.Marshaller.StringToPtrGStrdup(base_uri);
-			webkit_web_view_load_string(Handle, native_content, IntPtr.Zero, IntPtr.Zero, native_base_uri);
-			GLib.Marshaller.Free(native_content);
-			GLib.Marshaller.Free(native_base_uri);
+		public void LoadHtmlString(string content, string base_uri) {
+			IntPtr native_content = GLib.Marshaller.StringToPtrGStrdup (content);
+			IntPtr native_base_uri = GLib.Marshaller.StringToPtrGStrdup (base_uri);
+			webkit_web_view_load_string (Handle, native_content, IntPtr.Zero, IntPtr.Zero, native_base_uri);
+			GLib.Marshaller.Free (native_content);
+			GLib.Marshaller.Free (native_base_uri);
 		}
 
-		public string Title
-		{
-			get
-			{
+		public string Title { 
+			get {
 				IntPtr raw_ret = webkit_web_view_get_title(Handle);
-				string ret = GLib.Marshaller.Utf8PtrToString(raw_ret);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
 			}
 		}
 
 		[GLib.Signal("load-finished")]
-		public event EventHandler<GLib.SignalArgs> LoadFinished
-		{
-			add
-			{
-				this.AddSignalHandler("load-finished", value, typeof(GLib.SignalArgs));
+		public event EventHandler<GLib.SignalArgs> LoadFinished {
+			add {
+				this.AddSignalHandler ("load-finished", value, typeof(GLib.SignalArgs));
 			}
-			remove
-			{
-				this.RemoveSignalHandler("load-finished", value);
+			remove {
+				this.RemoveSignalHandler ("load-finished", value);
 			}
 		}
 
 		[GLib.Signal("load-started")]
-		public event EventHandler<GLib.SignalArgs> LoadStarted
-		{
-			add
-			{
-				this.AddSignalHandler("load-started", value, typeof(GLib.SignalArgs));
+		public event EventHandler<GLib.SignalArgs> LoadStarted {
+			add {
+				this.AddSignalHandler ("load-started", value, typeof(GLib.SignalArgs));
 			}
-			remove
-			{
-				this.RemoveSignalHandler("load-started", value);
+			remove {
+				this.RemoveSignalHandler ("load-started", value);
 			}
 		}
 
 		[GLib.Signal("navigation-requested")]
-		public event EventHandler<NavigationRequestedArgs> NavigationRequested
-		{
-			add
-			{
-				this.AddSignalHandler("navigation-requested", value, typeof(NavigationRequestedArgs));
+		public event EventHandler<NavigationRequestedArgs> NavigationRequested {
+			add {
+				this.AddSignalHandler ("navigation-requested", value, typeof(NavigationRequestedArgs));
 			}
-			remove
-			{
-				this.RemoveSignalHandler("navigation-requested", value);
+			remove {
+				this.RemoveSignalHandler ("navigation-requested", value);
 			}
 		}
 
 		[GLib.Signal("title-changed")]
-		public event EventHandler<TitleChangedArgs> TitleChanged
-		{
-			add
-			{
-				this.AddSignalHandler("title-changed", value, typeof(TitleChangedArgs));
+		public event EventHandler<TitleChangedArgs> TitleChanged {
+			add {
+				this.AddSignalHandler ("title-changed", value, typeof(TitleChangedArgs));
 			}
-			remove
-			{
-				this.RemoveSignalHandler("title-changed", value);
+			remove {
+				this.RemoveSignalHandler ("title-changed", value);
 			}
 		}
 
-		[GLib.Signal("context-menu")]
-		public event EventHandler<ContextMenuArgs> ContextMenu
-		{
-			add
-			{
-				this.AddSignalHandler("context-menu", value, typeof(ContextMenuArgs));
+		[GLib.Signal ("context-menu")]
+		public event EventHandler<ContextMenuArgs> ContextMenu {
+			add {
+				this.AddSignalHandler ("context-menu", value, typeof (ContextMenuArgs));
 			}
-			remove
-			{
-				this.RemoveSignalHandler("context-menu", value);
+			remove {
+				this.RemoveSignalHandler ("context-menu", value);
 			}
 		}
 
-		static WebView()
+		static WebView ()
 		{
-			Initialize();
+			Initialize ();
 		}
 
 		static bool initialized = false;
-		internal static void Initialize()
+		internal static void Initialize ()
 		{
 			if (initialized)
 				return;
 
 			initialized = true;
-			GLib.GType.Register(WebView.GType, typeof(WebView));
-			GLib.GType.Register(NetworkRequest.GType, typeof(NetworkRequest));
+			GLib.GType.Register (WebView.GType, typeof (WebView));
+			GLib.GType.Register (NetworkRequest.GType, typeof (NetworkRequest));
 		}
 
-		public static new GLib.GType GType
-		{
-			get
-			{
+		public static new GLib.GType GType { 
+			get {
 				IntPtr raw_ret = webkit_web_view_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
 		}
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern IntPtr webkit_web_view_new();
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern IntPtr webkit_web_view_get_type();
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern void webkit_web_view_load_uri(IntPtr raw, IntPtr uri);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern IntPtr webkit_web_view_get_uri(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern bool webkit_web_view_get_full_content_zoom(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern void webkit_web_view_set_full_content_zoom(IntPtr raw, bool full_content_zoom);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern void webkit_web_view_stop_loading(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern void webkit_web_view_reload(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern bool webkit_web_view_can_go_back(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern void webkit_web_view_go_back(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern bool webkit_web_view_can_go_forward(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern void webkit_web_view_go_forward(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern void webkit_web_view_load_string(IntPtr raw, IntPtr content, IntPtr mime_type, IntPtr encoding, IntPtr base_uri);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern IntPtr webkit_web_view_get_title(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern double webkit_web_view_get_progress(IntPtr raw);
+	
 
 	}
 
-	public sealed class NetworkRequest : GLib.Object
-	{
+	public sealed class NetworkRequest : GLib.Object {
 
-		public NetworkRequest(IntPtr raw) : base(raw) { }
+		public NetworkRequest(IntPtr raw) : base(raw) {}
 
-		public NetworkRequest(string uri) : base(IntPtr.Zero)
+		public NetworkRequest (string uri) : base (IntPtr.Zero)
 		{
-			IntPtr native_uri = GLib.Marshaller.StringToPtrGStrdup(uri);
+			IntPtr native_uri = GLib.Marshaller.StringToPtrGStrdup (uri);
 			Raw = webkit_network_request_new(native_uri);
-			GLib.Marshaller.Free(native_uri);
+			GLib.Marshaller.Free (native_uri);
 		}
 
-		public static new GLib.GType GType
-		{
-			get
-			{
+		public static new GLib.GType GType { 
+			get {
 				IntPtr raw_ret = webkit_network_request_get_type();
 				GLib.GType ret = new GLib.GType(raw_ret);
 				return ret;
 			}
 		}
 
-		public string Uri
-		{
-			get
-			{
+		public string Uri { 
+			get {
 				IntPtr raw_ret = webkit_network_request_get_uri(Handle);
-				string ret = GLib.Marshaller.Utf8PtrToString(raw_ret);
+				string ret = GLib.Marshaller.Utf8PtrToString (raw_ret);
 				return ret;
 			}
-			set
-			{
-				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup(value);
+			set {
+				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
 				webkit_network_request_set_uri(Handle, native_value);
-				GLib.Marshaller.Free(native_value);
+				GLib.Marshaller.Free (native_value);
 			}
 		}
 
 
-		static NetworkRequest()
+		static NetworkRequest ()
 		{
-			WebView.Initialize();
+			WebView.Initialize ();
 		}
 
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern IntPtr webkit_network_request_new(IntPtr uri);
 
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern IntPtr webkit_network_request_get_type();
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern IntPtr webkit_network_request_get_uri(IntPtr raw);
-
-		[DllImport(GtkInterop.LIBWEBKIT)]
-		static extern void webkit_network_request_set_uri(IntPtr raw, IntPtr uri);
 	}
 
-	public enum NavigationResponse
-	{
+	public enum NavigationResponse {
 
 		Accept,
 		Ignore,
@@ -439,9 +342,8 @@ namespace Xwt.GtkBackend.WebKit
 	{
 		public int Progress
 		{
-			get
-			{
-				return (int)Args[0];
+			get {
+				return (int)Args [0];
 			}
 		}
 	}
@@ -450,17 +352,15 @@ namespace Xwt.GtkBackend.WebKit
 	{
 		public IntPtr Frame
 		{
-			get
-			{
-				return (IntPtr)Args[0];
+			get {
+				return (IntPtr) Args [0];
 			}
 		}
 
 		public NetworkRequest Request
 		{
-			get
-			{
-				return (NetworkRequest)Args[1];
+			get {
+				return (NetworkRequest) Args [1];
 			}
 		}
 	}
@@ -469,40 +369,32 @@ namespace Xwt.GtkBackend.WebKit
 	{
 		public string Title
 		{
-			get
-			{
-				return (string)Args[1];
+			get {
+				return (string)Args [1];
 			}
 		}
 	}
 
 	public class ContextMenuArgs : GLib.SignalArgs
 	{
-		public Gtk.Widget DefaultMenu
-		{
-			get
-			{
-				return Args[0] as Gtk.Widget;
+		public Gtk.Widget DefaultMenu {
+			get {
+				return Args [0] as Gtk.Widget;
 			}
-			set
-			{
-				Args[0] = value;
+			set {
+				Args [0] = value;
 			}
 		}
 
-		public GLib.Object HitTestResult
-		{
-			get
-			{
-				return Args[1] as GLib.Object;
+		public GLib.Object HitTestResult {
+			get {
+				return Args [1] as GLib.Object;
 			}
 		}
 
-		public bool TriggeredWithKeyboard
-		{
-			get
-			{
-				return (bool)Args[2];
+		public bool TriggeredWithKeyboard {
+			get {
+				return (bool)Args [2];
 			}
 		}
 	}

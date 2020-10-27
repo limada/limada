@@ -11,6 +11,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -21,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,10 +32,13 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DebugSymbols>true</DebugSymbols>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <XamMacPath>\Library\Frameworks\Xamarin.Mac.framework\Versions\Current\lib\x86_64\full\Xamarin.Mac.dll</XamMacPath>
     <XamMacPath Condition="Exists('$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\Xamarin.Mac\v2.0\Xamarin.Mac.dll')">$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\Xamarin.Mac\v2.0\Xamarin.Mac.dll</XamMacPath>
+    <XamMacPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\Xamarin.Mac\v2.0\Xamarin.Mac.dll')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\Xamarin.Mac\v2.0\Xamarin.Mac.dll</XamMacPath>
+    <XamMacPath Condition="Exists('$(MSBuildToolsPath)\..\..\..\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\Xamarin.Mac\v2.0\Xamarin.Mac.dll')">$(MSBuildToolsPath)\..\..\..\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\Xamarin.Mac\v2.0\Xamarin.Mac.dll</XamMacPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -132,8 +137,14 @@
     <Compile Include="Xwt.Mac\CalendarBackend.cs" />
     <Compile Include="Xwt.Mac\SelectFontDialogBackend.cs" />
     <Compile Include="Xwt.Mac\NSApplicationInitializer.cs" />
+    <Compile Include="Xwt.Mac.CellViews\RadioButtonTableCell.cs" />
     <Compile Include="Xwt.Mac\GtkQuartz.cs" />
+    <Compile Include="Xwt.Mac\AccessibleBackend.cs" />
     <Compile Include="Xwt.Mac\PopupWindowBackend.cs" />
+    <Compile Include="Xwt.Mac\SearchTextEntryBackend.cs" />
+    <Compile Include="Xwt.Mac\WindowFrameBackend.cs" />
+    <Compile Include="Xwt.Mac\AccessibleBackend.AccessibilityHelper.cs" />
+    <Compile Include="Xwt.Mac\AccerssibilityHelper.cs" />
   </ItemGroup>
   <Import Project="..\BuildHelpers.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

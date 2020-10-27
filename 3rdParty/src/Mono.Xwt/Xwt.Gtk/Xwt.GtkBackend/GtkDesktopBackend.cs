@@ -35,12 +35,14 @@ namespace Xwt.GtkBackend
 
 		public GtkDesktopBackend ()
 		{
+
 			Gdk.Screen.Default.SizeChanged += delegate {
 				OnScreensChanged ();
 			};
 			Gdk.Screen.Default.CompositedChanged += delegate {
 				OnScreensChanged ();
 			};
+
 		}
 
 		public override Point GetMouseLocation ()

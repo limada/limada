@@ -75,7 +75,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IToggleButtonBackend Backend {
+		new IToggleButtonBackend Backend {
 			get { return (IToggleButtonBackend) BackendHost.Backend; }
 		}
 		

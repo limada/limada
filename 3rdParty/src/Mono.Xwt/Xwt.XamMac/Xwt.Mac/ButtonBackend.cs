@@ -28,6 +28,7 @@ using System;
 using AppKit;
 using CoreGraphics;
 using Foundation;
+using Xwt.Accessibility;
 using Xwt.Backends;
 using Xwt.Drawing;
 
@@ -142,7 +143,24 @@ namespace Xwt.Mac
 				break;
 			}
 		}
-		
+		bool isDefault;
+		public bool IsDefault {
+			get { return isDefault; }
+			set {
+				isDefault = value;
+				if (Widget.Window != null && Widget.Window.DefaultButtonCell != Widget.Cell)
+					Widget.Window.DefaultButtonCell = Widget.Cell;
+			}
+		}
+
+		public void SetFormattedText (FormattedText text)
+		{
+			if (text == null || Widget is NSPopUpButton) // NSPopUpButton has no formatting support
+				Widget.Title = text?.Text ?? string.Empty;
+			else
+				Widget.AttributedTitle = text.ToAttributedString();
+		}
+
 		#endregion
 
 		public override Color BackgroundColor {
@@ -166,7 +184,7 @@ namespace Xwt.Mac
 		}
 	}
 	
-	class MacButton: NSButton, IViewObject
+	class MacButton: NSButton, IViewObject, INSAccessibleEventSource
 	{
 		//
 		// This is necessary since the Activated event for NSControl in AppKit does 
@@ -203,9 +221,7 @@ namespace Xwt.Mac
 		public MacButton (IRadioButtonEventSink eventSink, ApplicationContext context)
 		{
 			Activated += delegate {
-				context.InvokeUserCode (delegate {
-					eventSink.OnClicked ();
-				});
+				context.InvokeUserCode (eventSink.OnClicked);
 				OnActivatedInternal ();
 			};
 		}
@@ -222,6 +238,12 @@ namespace Xwt.Mac
 
 		public void DisableEvent (ButtonEvent ev)
 		{
+		}
+
+		public override void ViewDidMoveToWindow ()
+		{
+			if ((Backend as ButtonBackend)?.IsDefault == true && Window != null)
+				Window.DefaultButtonCell = Cell;
 		}
 
 		void OnActivatedInternal ()
@@ -284,6 +306,17 @@ namespace Xwt.Mac
 			{
 				controlView.DrawWithColorTransform(Color, delegate { base.DrawBezelWithFrame (frame, controlView); });
 			}
+		}
+
+		public Func<bool> PerformAccessiblePressDelegate { get; set; }
+
+		public override bool AccessibilityPerformPress ()
+		{
+			if (PerformAccessiblePressDelegate != null) {
+				if (PerformAccessiblePressDelegate ())
+					return true;
+			}
+			return base.AccessibilityPerformPress ();
 		}
 	}
 }

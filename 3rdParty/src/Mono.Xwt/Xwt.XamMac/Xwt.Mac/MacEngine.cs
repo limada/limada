@@ -36,6 +36,8 @@ namespace Xwt.Mac
 {
 	public class MacEngine: Xwt.Backends.ToolkitEngineBackend
 	{
+		public static Func<bool, AppDelegate> AppDelegateFactory;
+
 		static AppDelegate appDelegate;
 		static NSAutoreleasePool pool;
 		
@@ -51,7 +53,7 @@ namespace Xwt.Mac
 			if (pool != null)
 				pool.Dispose ();
 			pool = new NSAutoreleasePool ();
-			appDelegate = new AppDelegate (IsGuest);
+			appDelegate = AppDelegateFactory?.Invoke(IsGuest) ?? new AppDelegate (IsGuest);
 			NSApplication.SharedApplication.Delegate = appDelegate;
 
 			// If NSPrincipalClass is not set, set it now. This allows running
@@ -126,8 +128,10 @@ namespace Xwt.Mac
 			RegisterBackend <Xwt.Backends.IColorPickerBackend, ColorPickerBackend> ();
 			RegisterBackend <Xwt.Backends.ICalendarBackend,CalendarBackend> ();
 			RegisterBackend <Xwt.Backends.ISelectFontDialogBackend, SelectFontDialogBackend> ();
+			RegisterBackend <Xwt.Backends.IAccessibleBackend, AccessibleBackend> ();
 			RegisterBackend <Xwt.Backends.IPopupWindowBackend, PopupWindowBackend> ();
 			RegisterBackend <Xwt.Backends.IUtilityWindowBackend, PopupWindowBackend> ();
+			RegisterBackend <Xwt.Backends.ISearchTextEntryBackend, SearchTextEntryBackend> ();
 		}
 
 		public override void RunApplication ()
@@ -166,9 +170,7 @@ namespace Xwt.Mac
 			if (action == null)
 				throw new ArgumentNullException ("action");
 
-			NSRunLoop.Main.BeginInvokeOnMainThread (delegate {
-				action ();
-			});
+			NSRunLoop.Main.BeginInvokeOnMainThread (action);
 		}
 		
 		public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan)
@@ -228,7 +230,7 @@ namespace Xwt.Mac
 
 		public override Xwt.Backends.IWindowFrameBackend GetBackendForWindow (object nativeWindow)
 		{
-			throw new NotImplementedException ();
+			return new WindowFrameBackend ((NSWindow) nativeWindow);
 		}
 
 		public override object GetNativeWindow (IWindowFrameBackend backend)
@@ -253,47 +255,68 @@ namespace Xwt.Mac
 		{
 			var until = NSDate.DistantPast;
 			var app = NSApplication.SharedApplication;
-			var p = new NSAutoreleasePool ();
-			while (true) {
-				var ev = app.NextEvent (NSEventMask.AnyEvent, until, NSRunLoop.NSDefaultRunLoopMode, true);
-				if (ev != null)
-					app.SendEvent (ev);
-				else
-					break;
+			using (var p = new NSAutoreleasePool()) {
+				while (true) {
+					var ev = app.NextEvent(NSEventMask.AnyEvent, until, NSRunLoopMode.Default, true);
+					if (ev != null)
+						app.SendEvent(ev);
+					else
+						break;
+				}
 			}
-			p.Dispose ();
 		}
 
 		public override object RenderWidget (Widget w)
 		{
 			var view = ((ViewBackend)w.GetBackend ()).Widget;
 			view.LockFocus ();
-			var img = new NSImage (view.DataWithPdfInsideRect (view.Bounds));
-			var imageData = img.AsTiff ();
-			var imageRep = (NSBitmapImageRep)NSBitmapImageRep.ImageRepFromData (imageData);
-			var im = new NSImage ();
-			im.AddRepresentation (imageRep);
-			im.Size = new CGSize ((nfloat)view.Bounds.Width, (nfloat)view.Bounds.Height);
-			return im;
+			using (var img = new NSImage(view.DataWithPdfInsideRect(view.Bounds)))
+			using (var imageData = img.AsTiff()) {
+				var imageRep = (NSBitmapImageRep)NSBitmapImageRep.ImageRepFromData(imageData);
+				var im = new NSImage ();
+				im.AddRepresentation (imageRep);
+				im.Size = new CGSize ((nfloat)view.Bounds.Width, (nfloat)view.Bounds.Height);
+				return im;
+			}
+		}
+
+		public override Rectangle GetScreenBounds (object nativeWidget)
+		{
+			var widget = nativeWidget as NSView;
+			if (widget == null)
+				throw new InvalidOperationException ("Widget belongs to a different toolkit");
+			var lo = widget.ConvertPointToView (new CGPoint(0, 0), null);
+			lo = widget.Window.ConvertRectToScreen (new CGRect (lo, CGSize.Empty)).Location;
+			return MacDesktopBackend.ToDesktopRect (new CGRect (lo.X, lo.Y, widget.Frame.Width, widget.Frame.Height));
 		}
 	}
 
 	public class AppDelegate : NSApplicationDelegate
 	{
 		bool launched;
-		List<WindowBackend> pendingWindows = new List<WindowBackend> ();
+		List<IMacWindowBackend> pendingWindows = new List<IMacWindowBackend> ();
+
+		public enum LaunchType
+		{
+			Unknown,
+			Normal,
+			LaunchedFromFileManager
+		}
+
+		public LaunchType LaunchReason { get; private set; } = LaunchType.Unknown;
 
 		public event EventHandler<TerminationEventArgs> Terminating;
 		public event EventHandler Unhidden;
 		public event EventHandler<OpenFilesEventArgs> OpenFilesRequest;
 		public event EventHandler<OpenUrlEventArgs> OpenUrl;
+		public event EventHandler<ShowDockMenuArgs> ShowDockMenu;
 		
 		public AppDelegate (bool launched)
 		{
 			this.launched = launched;
 		}
 		
-		internal void ShowWindow (WindowBackend w)
+		internal void ShowWindow (IMacWindowBackend w)
 		{
 			if (!launched) {
 				if (!pendingWindows.Contains (w))
@@ -306,6 +329,15 @@ namespace Xwt.Mac
 		public override void DidFinishLaunching (NSNotification notification)
 		{
 			launched = true;
+
+			NSObject val;
+			if (notification.UserInfo.TryGetValue (NSApplication.LaunchIsDefaultLaunchKey, out val)) {
+				var num = val as NSNumber;
+				if (num != null) {
+					LaunchReason = num.BoolValue ? LaunchType.Normal : LaunchType.LaunchedFromFileManager;
+				}
+			}
+
 			foreach (var w in pendingWindows)
 				w.InternalShow ();
 		}
@@ -366,6 +398,19 @@ namespace Xwt.Mac
 				openFilesEvent (NSApplication.SharedApplication, args);
 			}
 		}
+
+		public override NSMenu ApplicationDockMenu (NSApplication sender)
+		{
+			NSMenu retMenu = null;
+			var showDockMenuEvent = ShowDockMenu;
+			if (showDockMenuEvent != null) {
+				var args = new ShowDockMenuArgs ();
+				showDockMenuEvent (NSApplication.SharedApplication, args);
+				retMenu = args.DockMenu;
+			}
+
+			return retMenu;
+		}
 	}
 
 	public class TerminationEventArgs : EventArgs
@@ -394,5 +439,10 @@ namespace Xwt.Mac
 		{
 			Url = url;
 		}
+	}
+
+	public class ShowDockMenuArgs : EventArgs
+	{
+		public NSMenu DockMenu { get; set; }
 	}
 }

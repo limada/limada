@@ -27,11 +27,12 @@
 using System;
 using Xwt.Backends;
 using Xwt.Drawing;
+using Xwt.Accessibility;
 
 namespace Xwt
 {
 	[BackendType (typeof(IMenuBackend))]
-	public class Menu: XwtComponent
+	public partial class Menu: XwtComponent
 	{
 		MenuItemCollection items;
 
@@ -50,18 +51,21 @@ namespace Xwt
 			}
 		}
 		
+		Accessible accessible;
+		public Accessible Accessible {
+			get {
+				if (accessible == null) {
+					accessible = new Accessible (this);
+				}
+				return accessible;
+			}
+		}
+
 		public Menu ()
 		{
 			items = new MenuItemCollection (this);
 		}
-
-		public Menu (params MenuItem[] subItems):this() { AddItems(subItems); }
-
-		public void AddItems (params MenuItem[] subItems) {
-		    foreach (var item in subItems)
-		        items.Add(item);
-		}
-
+		
 		internal IMenuBackend Backend {
 			get { return (IMenuBackend) BackendHost.Backend; }
 		}
@@ -96,7 +100,7 @@ namespace Xwt
 		/// <param name="y">The y coordinate, relative to the widget origin</param>
 		public void Popup (Widget parentWidget, double x, double y)
 		{
-			Backend.Popup ((IWidgetBackend)BackendHost.ToolkitEngine.GetSafeBackend (parentWidget), x, y);
+			Backend.Popup (parentWidget.GetBackend (), x, y);
 		}
 		
 		/// <summary>
@@ -116,6 +120,13 @@ namespace Xwt
 			}
 			if (Items.Count > 0 && Items[Items.Count - 1] is SeparatorMenuItem)
 				Items.RemoveAt (Items.Count - 1);
+		}
+		protected override void Dispose (bool release_all)
+		{
+			for (int n = 0; n < Items.Count; n++) {
+				Items[n].Dispose ();
+			}
+			base.Dispose (release_all);
 		}
 	}
 }

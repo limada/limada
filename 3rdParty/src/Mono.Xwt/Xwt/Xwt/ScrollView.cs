@@ -52,7 +52,7 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IScrollViewBackend Backend {
+		new IScrollViewBackend Backend {
 			get { return (IScrollViewBackend)BackendHost.Backend; }
 		}
 		

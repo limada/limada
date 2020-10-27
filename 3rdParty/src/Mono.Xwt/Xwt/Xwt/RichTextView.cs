@@ -46,7 +46,7 @@ namespace Xwt
 			}
 		}
 
-		IRichTextViewBackend Backend {
+		new IRichTextViewBackend Backend {
 			get { return (IRichTextViewBackend) BackendHost.Backend; }
 		}
 
@@ -123,6 +123,15 @@ namespace Xwt
 			}
 			set {
 				Backend.LineSpacing = value;
+			}
+		}
+
+		public Drawing.Color TextColor {
+			get {
+				return Backend.TextColor;
+			}
+			set {
+				Backend.TextColor = value;
 			}
 		}
 

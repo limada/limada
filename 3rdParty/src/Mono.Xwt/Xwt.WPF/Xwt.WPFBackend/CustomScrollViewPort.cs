@@ -1,4 +1,4 @@
-﻿//
+//
 // CustomScrollViewPort.cs
 //
 // Author:
@@ -37,10 +37,12 @@ namespace Xwt.WPFBackend
 	internal class CustomScrollViewPort
 		: SWC.Panel, IScrollInfo
 	{
-		internal CustomScrollViewPort (object widget, ScrollAdjustmentBackend verticalBackend, ScrollAdjustmentBackend horizontalBackend)
+		internal CustomScrollViewPort (object widget, SWC.ScrollViewer scrollOwner, ScrollAdjustmentBackend verticalBackend, ScrollAdjustmentBackend horizontalBackend)
 		{
 			if (widget == null)
 				throw new ArgumentNullException ("widget");
+
+			ScrollOwner = scrollOwner;
 
 			((FrameworkElement)widget).RenderTransform = this.transform;
 
@@ -117,13 +119,11 @@ namespace Xwt.WPFBackend
 			SetVerticalOffset (VerticalOffset - VerticalStepIncrement);
 		}
 
-        	public bool ScrollIntoView { get; set; }
 		public Rect MakeVisible (Visual visual, Rect rectangle)
 		{
 			// This is the area which is currently visible
 			var visibleRect = new Rect (HorizontalOffset, VerticalOffset, ViewportWidth, ViewportHeight);
-		    	if(!ScrollIntoView)
-                		return visibleRect;
+
 			// This is the area we wish to be visible
 			rectangle = visual.TransformToAncestor (this).TransformBounds (rectangle);
 
@@ -198,37 +198,9 @@ namespace Xwt.WPFBackend
 			set;
 		}
 
-		public void SetHorizontalOffset (double offset)
-		{
-			if (offset < 0 || this.viewport.Width >= this.extent.Width)
-				offset = 0;
-			else if (offset + this.viewport.Width >= this.extent.Width)
-				offset = this.extent.Width - this.viewport.Width;
+		public void SetHorizontalOffset (double offset) => SetOffset (x: offset);
 
-			this.contentOffset.X = offset;
-			if (usingCustomScrolling)
-				this.horizontalBackend.SetOffset (offset);
-			else
-				this.transform.X = -offset;
-			if (ScrollOwner != null)
-				ScrollOwner.InvalidateScrollInfo ();
-		}
-
-		public void SetVerticalOffset (double offset)
-		{
-			if (offset < 0 || this.viewport.Height >= this.extent.Height)
-				offset = 0;
-			else if (offset + this.viewport.Height >= this.extent.Height)
-				offset = this.extent.Height - this.viewport.Height;
-
-			this.contentOffset.Y = offset;
-			if (usingCustomScrolling)
-				this.verticalBackend.SetOffset (offset);
-			else
-				this.transform.Y = -offset;
-			if (ScrollOwner != null)
-				ScrollOwner.InvalidateScrollInfo ();
-		}
+		public void SetVerticalOffset (double offset) => SetOffset (y: offset);
 
 		public void SetOffset (ScrollAdjustmentBackend scroller, double offset)
 		{
@@ -236,6 +208,40 @@ namespace Xwt.WPFBackend
 				SetVerticalOffset (offset);
 			else
 				SetHorizontalOffset (offset);
+		}
+
+		void SetOffset (double? x = null, double? y = null)
+		{
+			var offset = this.contentOffset;
+			if (x.HasValue)
+				offset.X = x.Value;
+			if (y.HasValue)
+				offset.Y = y.Value;
+
+			// Clamp horizontal
+			if (offset.X < 0 || this.viewport.Width >= this.extent.Width)
+				offset.X = 0;
+			else if (offset.X + this.viewport.Width >= this.extent.Width)
+				offset.X = this.extent.Width - this.viewport.Width;
+
+			// Clamp vertical
+			if (offset.Y < 0 || this.viewport.Height >= this.extent.Height)
+				offset.Y = 0;
+			else if (offset.Y + this.viewport.Height >= this.extent.Height)
+				offset.Y = this.extent.Height - this.viewport.Height;
+
+			if (offset != this.contentOffset) {
+				this.contentOffset = offset;
+				if (usingCustomScrolling) {
+					this.horizontalBackend.SetOffset (offset.X);
+					this.verticalBackend.SetOffset (offset.Y);
+				}  else {
+					this.transform.X = -offset.X;
+					this.transform.Y = -offset.Y;
+				}
+				if (ScrollOwner != null)
+					ScrollOwner.InvalidateScrollInfo ();
+			}
 		}
 
 		public void UpdateCustomExtent ()
@@ -306,8 +312,6 @@ namespace Xwt.WPFBackend
 
 		protected override WSize MeasureOverride (WSize constraint)
 		{
-            		if (InternalChildren.Count == 0)
-                		return base.MeasureOverride (constraint);			
 			FrameworkElement child = (FrameworkElement) InternalChildren [0];
 
 			if (usingCustomScrolling) {
@@ -319,18 +323,17 @@ namespace Xwt.WPFBackend
 				return child.DesiredSize;
 			}
 			else {
-				// We don't use the child size here, but WPF requires Measure to
-				// be called for all children of a widget in the container's MeasureOverride
+				// We only use child size for the dimensions that scrolling is disabled. This
+				//  allows the child to properly influence the measure of the scroll view in that
+				//  case.
 				child.Measure (InfiniteSize);
-				return new WSize (0, 0);
+				var sz = child.DesiredSize;
+				return new WSize (CanHorizontallyScroll? 0 : sz.Width, CanVerticallyScroll? 0 : sz.Height);
 			}
 		}
 
 		protected override System.Windows.Size ArrangeOverride (System.Windows.Size finalSize)
 		{
-			if (InternalChildren.Count == 0)
-				return base.ArrangeOverride (finalSize);
-
 			FrameworkElement child = (FrameworkElement)InternalChildren [0];
 
 			WSize childSize = child.DesiredSize;
@@ -354,6 +357,10 @@ namespace Xwt.WPFBackend
 					this.viewport = finalSize;
 					ScrollOwner.InvalidateScrollInfo ();
 				}
+
+				// It's possible our child is now smaller than our viewport, in which case we need to
+				//  update the content offset, otherwise the child may be scrolled entirely out of view.
+				SetOffset ();
 			}
 
 			child.Arrange (new Rect (0, 0, childSize.Width, childSize.Height));

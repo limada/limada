@@ -33,7 +33,7 @@ using System.Collections.Generic;
 namespace Xwt
 {
 	[BackendType (typeof(IListStoreBackend))]
-	public class ListStore: XwtComponent, IListDataSource
+	public partial class ListStore: XwtComponent, IListDataSource
 	{
 		IDataField[] fields;
 		
@@ -387,11 +387,16 @@ namespace Xwt
 		{
 			int count = list.Count;
 			list.Clear ();
-			for (int n=0; n<count; n++) {
+			for (int n=count-1; n>=0; n--) {
 				if (RowDeleted != null)
 					RowDeleted (this, new ListRowEventArgs (n));
 			}
 		}
+
+		protected virtual void OnRowsReordered(ListRowOrderEventArgs e)
+		{
+			if (RowsReordered != null) System.Diagnostics.Debug.WriteLine($"No support for {nameof(RowsReordered)} events from {nameof(DefaultListStoreBackend)}, sorry.");
+		}	
 	}
 }
 

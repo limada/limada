@@ -55,6 +55,10 @@ namespace Xwt.Mac
 			}
 		}
 
+		public DialogBackend (IntPtr ptr) : base (ptr)
+		{
+		}
+
 		public DialogBackend ()
 		{
 		}
@@ -162,25 +166,8 @@ namespace Xwt.Mac
 
 		public void RunLoop (IWindowFrameBackend parent)
 		{
-			if (parent != null)
-				StyleMask &= ~NSWindowStyle.Miniaturizable;
-			else
-				StyleMask |= NSWindowStyle.Miniaturizable;
 			Visible = true;
 			modalSessionRunning = true;
-			var win = parent as NSWindow ?? ApplicationContext.Toolkit.GetNativeWindow (parent) as NSWindow;
-			if (win != null) {
-				win.AddChildWindow (this, NSWindowOrderingMode.Above);
-				// always use NSWindow for alignment when running in guest mode and
-				// don't rely on AddChildWindow to position the window correctly
-				if (!(parent is WindowBackend)) {
-					var parentBounds = MacDesktopBackend.ToDesktopRect (win.ContentRectFor (win.Frame));
-					var bounds = ((IWindowFrameBackend)this).Bounds;
-					bounds.X = parentBounds.Center.X - (Frame.Width / 2);
-					bounds.Y = parentBounds.Center.Y - (Frame.Height / 2);
-					((IWindowFrameBackend)this).Bounds = bounds;
-				}
-			}
 			NSApplication.SharedApplication.RunModalForWindow (this);
 		}
 
@@ -193,8 +180,12 @@ namespace Xwt.Mac
 			OrderOut (this);
 			Close();
 			NSApplication.SharedApplication.StopModal ();
-			if (parent != null)
+			if (parent != null) {
 				parent.MakeKeyAndOrderFront (parent);
+				if (parent.AccessibilityFocusedWindow != parent) {
+					parent.AccessibilityFocusedWindow = parent;
+				}
+			}
 		}
 
 		#endregion

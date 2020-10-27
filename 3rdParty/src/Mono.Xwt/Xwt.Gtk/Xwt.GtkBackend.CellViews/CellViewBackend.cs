@@ -190,15 +190,16 @@ namespace Xwt.GtkBackend
 			if (!buttonReleaseSubscribed)
 				rendererTarget.EventRootWidget.ButtonReleaseEvent -= HandleButtonReleaseEvent;
 
-			var rect = rendererTarget.GetCellBounds (target, CellRenderer, iter);
+			var rect = rendererTarget.GetCellBackgroundBounds (target, CellRenderer, iter);
 			if (captured || rect.Contains (cx, cy)) {
 				ApplicationContext.InvokeUserCode (delegate {
 					LoadData (rendererTarget.Model, iter);
+					SetCurrentEventRow ();
 					var a = new ButtonEventArgs {
 						X = args.Event.X,
 						Y = args.Event.Y,
-                        MultiplePress = args.Event.Type == Gdk.EventType.TwoButtonPress ? 2 :
-                                        args.Event.Type == Gdk.EventType.ThreeButtonPress ? 3 : 1,
+						MultiplePress = args.Event.Type == Gdk.EventType.TwoButtonPress ? 2 :
+							args.Event.Type == Gdk.EventType.ThreeButtonPress ? 3 : 1,
 						Button = (PointerButton) args.Event.Button
 					};
 					EventSink.OnButtonReleased (a);
@@ -214,7 +215,7 @@ namespace Xwt.GtkBackend
 			int cx, cy;
 			Gtk.TreeIter iter;
 			if (rendererTarget.GetCellPosition (CellRenderer, (int)args.Event.X, (int)args.Event.Y, out cx, out cy, out iter)) {
-				var rect = rendererTarget.GetCellBounds (target, CellRenderer, iter);
+				var rect = rendererTarget.GetCellBackgroundBounds (target, CellRenderer, iter);
 				if (rect.Contains (cx, cy)) {
 					rendererTarget.PressedIter = iter;
 					rendererTarget.PressedCell = this;
@@ -228,14 +229,14 @@ namespace Xwt.GtkBackend
 					}
 					ApplicationContext.InvokeUserCode (delegate {
 						LoadData (rendererTarget.Model, iter);
-                        var a = new ButtonEventArgs {
-                            X = args.Event.X,
-                            Y = args.Event.Y,
-                            MultiplePress = args.Event.Type == Gdk.EventType.TwoButtonPress ? 2 :
-                                            args.Event.Type == Gdk.EventType.ThreeButtonPress ? 3 : 1,
-                            Button = (PointerButton)args.Event.Button
-                        };
-                        EventSink.OnButtonPressed (a);
+						SetCurrentEventRow ();
+						var a = new ButtonEventArgs {
+							X = args.Event.X,
+							Y = args.Event.Y,
+							Button = (PointerButton) args.Event.Button,
+							IsContextMenuTrigger = args.Event.TriggersContextMenu ()
+						};
+						EventSink.OnButtonPressed (a);
 						if (a.Handled)
 							args.RetVal = true;
 					});
@@ -249,13 +250,14 @@ namespace Xwt.GtkBackend
 			int cx, cy;
 			Gtk.TreeIter iter;
 			if (rendererTarget.GetCellPosition (CellRenderer, (int)args.Event.X, (int)args.Event.Y, out cx, out cy, out iter)) {
-				var rect = rendererTarget.GetCellBounds (target, CellRenderer, iter);
+				var rect = rendererTarget.GetCellBackgroundBounds (target, CellRenderer, iter);
 
 				if (rect.Contains (cx, cy)) {
 					if (enabledEvents.HasFlag (WidgetEvent.MouseMoved))
 						ApplicationContext.InvokeUserCode (delegate {
 							LoadData (rendererTarget.Model, iter);
-						EventSink.OnMouseMoved (new MouseMovedEventArgs (args.Event.Time, cx, cy));
+							SetCurrentEventRow ();
+							EventSink.OnMouseMoved (new MouseMovedEventArgs (args.Event.Time, cx, cy));
 						});
 
 					if (!mouseInsideCell) {
@@ -263,6 +265,7 @@ namespace Xwt.GtkBackend
 						if (enabledEvents.HasFlag (WidgetEvent.MouseEntered))
 							ApplicationContext.InvokeUserCode (delegate {
 								LoadData (rendererTarget.Model, iter);
+								SetCurrentEventRow ();
 								EventSink.OnMouseEntered ();
 							});
 					} 
@@ -271,6 +274,7 @@ namespace Xwt.GtkBackend
 					if (enabledEvents.HasFlag (WidgetEvent.MouseExited))
 						ApplicationContext.InvokeUserCode (delegate {
 						LoadData (rendererTarget.Model, iter);
+						SetCurrentEventRow ();
 						EventSink.OnMouseExited ();
 					});
 				}
@@ -318,6 +322,12 @@ namespace Xwt.GtkBackend
 			CurrentIter = iter;
 			EventSink = Frontend.Load (this);
 			CellRenderer.Visible = Frontend.Visible;
+
+			if (CellRenderer is GtkCellRendererCustom && Frontend.AccessibleFields.Label != null) {
+				var label = GetValue (Frontend.AccessibleFields.Label) as string;
+				((GtkCellRendererCustom)CellRenderer).AccessibleText = label ?? string.Empty;
+			}
+
 			OnLoadData ();
 		}
 
@@ -363,6 +373,11 @@ namespace Xwt.GtkBackend
 		public void QueueDraw ()
 		{
 			rendererTarget.QueueDraw (target, CurrentIter);
+		}
+
+		public void QueueResize ()
+		{
+			rendererTarget.QueueResize (target, CurrentIter);
 		}
 	}
 }

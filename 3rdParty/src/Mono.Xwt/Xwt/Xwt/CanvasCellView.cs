@@ -41,6 +41,15 @@ namespace Xwt
 		}
 
 		/// <summary>
+		/// Signals that the size of the cell may have changed, and the row
+		/// that contains it may need to be resized
+		/// </summary>
+		protected void QueueResize ()
+		{
+			((ICanvasCellViewBackend)BackendHost.Backend).QueueResize ();
+		}
+
+		/// <summary>
 		/// Called when the cell needs to be redrawn
 		/// </summary>
 		/// <param name='ctx'>
@@ -55,9 +64,17 @@ namespace Xwt
 			return cellBounds;
 		}
 
+		[Obsolete("Use OnGetRequiredSize (SizeConstraint widthConstraint)")]
 		protected virtual Size OnGetRequiredSize ()
 		{
 			return new Size ();
+		}
+
+		protected virtual Size OnGetRequiredSize (SizeConstraint widthConstraint)
+		{
+			#pragma warning disable 618
+			return OnGetRequiredSize ();
+			#pragma warning restore 618
 		}
 		
 		#region ICanvasCellRenderer implementation
@@ -77,7 +94,12 @@ namespace Xwt
 
 		Size ICanvasCellViewFrontend.GetRequiredSize ()
 		{
-			return OnGetRequiredSize ();
+			return OnGetRequiredSize (SizeConstraint.Unconstrained);
+		}
+
+		Size ICanvasCellViewFrontend.GetRequiredSize (SizeConstraint widthConstraint)
+		{
+			return OnGetRequiredSize (widthConstraint);
 		}
 
 		ApplicationContext ICanvasCellViewFrontend.ApplicationContext {
@@ -85,6 +107,10 @@ namespace Xwt
 		}
 
 		#endregion
+
+		protected bool IsHighlighted {
+			get { return ((ICanvasCellViewBackend)BackendHost.Backend).IsHighlighted; }
+		}
 	}
 }
 

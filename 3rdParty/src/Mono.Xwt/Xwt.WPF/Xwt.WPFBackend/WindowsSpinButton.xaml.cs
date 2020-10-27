@@ -1,4 +1,4 @@
-﻿//
+//
 // WindowsSpinButton.cs
 //
 // Author:
@@ -39,6 +39,9 @@ using System.Windows.Threading;
 using System.Globalization;
 using System.ComponentModel;
 using System.Windows.Controls.Primitives;
+using System.Windows.Automation.Provider;
+using System.Windows.Automation;
+using System.Windows.Automation.Peers;
 
 namespace Xwt.WPFBackend
 {
@@ -154,7 +157,7 @@ namespace Xwt.WPFBackend
 
         #region General
         Grid mainGrid;
-        TextBox textBox;
+        SpinButtonTextBox textBox;
         RepeatButton buttonUp;
         RepeatButton buttonDown;
         public WindowsSpinButton()
@@ -166,7 +169,7 @@ namespace Xwt.WPFBackend
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(16) });
 
             //Textbox
-            textBox = new TextBox();
+            textBox = new SpinButtonTextBox (this);
             textBox.Text = "0";
             textBox.HorizontalAlignment = HorizontalAlignment.Stretch;
             textBox.MinWidth = 25;
@@ -244,6 +247,7 @@ namespace Xwt.WPFBackend
             }
         }
 
+	    public TextBox TextBox => textBox;
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -452,6 +456,97 @@ namespace Xwt.WPFBackend
             else
                 DecreaseValue(Increment);
         }
-        #endregion
-    }
+		#endregion
+
+		#region Accessibility
+
+		protected override AutomationPeer OnCreateAutomationPeer ()
+		{
+			return new WindowsSpinButtonAutomationPeer (this);
+		}
+
+		class SpinButtonTextBox : TextBox
+		{
+			WindowsSpinButton spinButton;
+
+			public SpinButtonTextBox (WindowsSpinButton spinButton)
+			{
+				this.spinButton = spinButton;
+			}
+
+			protected override AutomationPeer OnCreateAutomationPeer ()
+			{
+				return UIElementAutomationPeer.FromElement (spinButton);
+			}
+		}
+
+		class WindowsSpinButtonAutomationPeer : UserControlAutomationPeer, IRangeValueProvider
+		{
+			public WindowsSpinButtonAutomationPeer (WindowsSpinButton owner) : base (owner)
+			{
+			}
+
+			WindowsSpinButton Button => (WindowsSpinButton)Owner;
+
+			protected override string GetClassNameCore ()
+			{
+				return nameof (WindowsSpinButton);
+			}
+
+			protected override List<AutomationPeer> GetChildrenCore ()
+			{
+				return null;
+			}
+
+			protected override AutomationControlType GetAutomationControlTypeCore ()
+			{
+				return AutomationControlType.Spinner;
+			}
+
+			protected override bool IsKeyboardFocusableCore ()
+			{
+				return Button.IsEnabled;
+			}
+
+			protected override bool HasKeyboardFocusCore ()
+			{
+				return Button.IsKeyboardFocusWithin;
+			}
+
+			protected override void SetFocusCore ()
+			{
+				Button.TextBox.Focus ();
+			}
+
+			public override object GetPattern (PatternInterface patternInterface)
+			{
+				if (patternInterface == PatternInterface.RangeValue) {
+					return this;
+				}
+				return base.GetPattern (patternInterface);
+			}
+
+			public void SetValue (double value)
+			{
+				if (IsReadOnly)
+					throw new ElementNotEnabledException ();
+				if (value < Button.MinimumValue || value > Button.MaximumValue)
+					throw new ArgumentOutOfRangeException (nameof (value));
+				Button.Value = value;
+			}
+
+			public double Value => Button.Value;
+
+			public bool IsReadOnly => !Button.IsEnabled;
+
+			public double Maximum => Button.MaximumValue;
+
+			public double Minimum => Button.MinimumValue;
+
+			public double LargeChange => Button.Increment;
+
+			public double SmallChange => Button.Increment;
+		}
+		#endregion
+	}
 }

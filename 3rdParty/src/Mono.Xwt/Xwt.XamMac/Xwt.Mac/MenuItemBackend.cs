@@ -75,8 +75,23 @@ namespace Xwt.Mac
 			}
 			set
 			{
-				item.Title = UseMnemonic ? value.RemoveMnemonic() : value;
+				if (item.AttributedTitle != null) // once set, AttributedTitle can not be removed, so let's just use it
+					item.AttributedTitle = new Foundation.NSAttributedString (value.RemoveMnemonic());
+				else
+					item.Title = UseMnemonic ? value.RemoveMnemonic() : value;
 				label = value;
+			}
+		}
+
+		public string TooltipText
+		{
+			get
+			{
+				return item.ToolTip;
+			}
+			set
+			{
+				item.ToolTip = value;
 			}
 		}
 
@@ -137,6 +152,11 @@ namespace Xwt.Mac
 			}
 		}
 
+		public void SetFormattedText (FormattedText text)
+		{
+			item.AttributedTitle = text.ToAttributedString ();
+		}
+
 		#region IBackend implementation
 		public void InitializeBackend(object frontend, ApplicationContext context)
 		{
@@ -172,6 +192,11 @@ namespace Xwt.Mac
 			{
 				eventSink.OnClicked();
 			});
+		}
+
+		public void Dispose ()
+		{
+			// Nothing to do here.
 		}
 	}
 }

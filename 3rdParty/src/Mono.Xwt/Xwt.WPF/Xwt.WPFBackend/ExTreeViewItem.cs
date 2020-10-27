@@ -1,4 +1,4 @@
-﻿//
+//
 // ExTreeViewItem.cs
 //
 // Author:
@@ -26,7 +26,10 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SWC = System.Windows.Controls;
@@ -35,9 +38,12 @@ using Xwt.Backends;
 
 namespace Xwt.WPFBackend
 {
+	using Keyboard = System.Windows.Input.Keyboard;
+
 	public class ExTreeViewItem
 		: TreeViewItem
 	{
+
 		public ExTreeViewItem()
 		{
 			Loaded += OnLoaded;
@@ -52,6 +58,9 @@ namespace Xwt.WPFBackend
 
 		protected override void OnExpanded (RoutedEventArgs e)
 		{
+			if (!(DataContext is TreeStoreNode))
+				return;
+
 			var node = (TreeStoreNode)DataContext;
 			view.Backend.Context.InvokeUserCode (delegate {
 				((ITreeViewEventSink)view.Backend.EventSink).OnRowExpanding (node);
@@ -66,10 +75,10 @@ namespace Xwt.WPFBackend
 
 		protected override void OnCollapsed(RoutedEventArgs e)
 		{
-			var node = DataContext as TreeStoreNode;
-			if (node == null) {
+			if (!(DataContext is TreeStoreNode))
 				return;
-			}
+
+			var node = (TreeStoreNode)DataContext;
 			if (!IsExpanded)
 				UnselectChildren((object o, ExTreeViewItem i) =>
 				{
@@ -127,13 +136,45 @@ namespace Xwt.WPFBackend
 			return new ExTreeViewItem (this.view);
 		}
 
-		protected override void OnMouseLeftButtonDown (MouseButtonEventArgs e) {
-			view.SelectItem(this);
+		protected override void OnMouseLeftButtonDown (MouseButtonEventArgs e)
+		{
+			var args = e.ToXwtButtonArgs (view.Backend.Widget);
+			view.Backend.Context.InvokeUserCode (delegate () {
+				view.Backend.EventSink.OnButtonPressed (args);
+			});
+			if (args.Handled) {
+				e.Handled = true;
+				return;
+			}
+
+			if (!view.SelectedItems.Contains (this.DataContext) || CtrlPressed)
+				view.SelectItem (this);
+			view.Backend.WidgetMouseDownForDragHandler (this, e);
+
 			e.Handled = true;
-			base.OnMouseLeftButtonDown(e);
+			base.OnMouseLeftButtonDown (e);
 		}
 
-		protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
+		protected override void OnMouseLeftButtonUp (MouseButtonEventArgs e)
+		{
+			var args = e.ToXwtButtonArgs (view.Backend.Widget);
+			view.Backend.Context.InvokeUserCode (delegate () {
+				view.Backend.EventSink.OnButtonReleased (args);
+			});
+			if (args.Handled) {
+				e.Handled = true;
+				return;
+			}
+
+			if (view.SelectedItems.Contains (this.DataContext) && !CtrlPressed)
+				view.SelectItem (this);
+			view.Backend.WidgetMouseUpForDragHandler(this, e);
+
+			e.Handled = true;
+			base.OnMouseLeftButtonUp (e);
+		}
+
+		protected override void OnMouseDoubleClick (MouseButtonEventArgs e)
 		{
 			if ((view.Backend as TreeViewBackend)?.RowActivatedEventEnabled == true && IsSelected)
 			{
@@ -194,6 +235,40 @@ namespace Xwt.WPFBackend
 		{
 			BringIntoView();
 			//We can't allow TreeViewItem(our base class) to get this message(OnGotFocus) because it will also select this item which we don't want
+		}
+
+		private bool CtrlPressed
+		{
+			get
+			{
+				return Keyboard.IsKeyDown (WKey.RightCtrl) || Keyboard.IsKeyDown (WKey.LeftCtrl);
+			}
+		}
+
+		protected override AutomationPeer OnCreateAutomationPeer ()
+		{
+			return view.CreateChildAutomationPeer (DataContext, this) ?? new ExTreeViewItemAutomationPeer(this);
+		}
+
+		class ExTreeViewItemAutomationPeer : TreeViewItemAutomationPeer
+		{
+			public ExTreeViewItemAutomationPeer (ExTreeViewItem owner) : base (owner)
+			{
+			}
+
+			protected override List<AutomationPeer> GetChildrenCore ()
+			{
+				List<AutomationPeer> defaultChildren = base.GetChildrenCore ();
+				if (defaultChildren == null)
+					return null;
+
+				// We only want to include TreeView items in the a11y tree, not their constituent image/text/etc controls -
+				// for one thing including all controls messes up the "item 3 of 5" style counts announced by the
+				// narrator, as those controls would be include
+				List<AutomationPeer> children = defaultChildren.Where (
+					child => child is TreeViewItemAutomationPeer || child is TreeViewDataItemAutomationPeer).ToList ();
+				return children;
+			}
 		}
 	}
 }

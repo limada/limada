@@ -41,25 +41,14 @@ namespace Xwt.GtkBackend
 		{
 			var a = evnt.Area;
 			using (var ctx = CreateContext ()) {
-
-				#if limada_8b3c8a
-				// offset exposed area by CanvasBackend origin
-				var dirtyRect = new Rectangle(a.X - ctx.Origin.X, a.Y - ctx.Origin.Y, a.Width, a.Height);
-
-				#else
-			    
-				// cliping is very slow on windows, so better use without clip
-
 				// Set context Origin from initial Cairo CTM (to ensure new Xwt CTM is Identity Matrix)
-                ctx.Origin.X = ctx.Context.Matrix.X0;
+				ctx.Origin.X = ctx.Context.Matrix.X0;
 				ctx.Origin.Y = ctx.Context.Matrix.Y0;
 				// Gdk Expose event supplies the area to be redrawn - but need to adjust X,Y for context Origin 
 				Rectangle dirtyRect = new Rectangle (a.X-ctx.Origin.X, a.Y-ctx.Origin.Y, a.Width, a.Height);
 				ctx.Context.Rectangle (dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
 				ctx.Context.Clip ();
-				#endif
-
-                OnDraw(dirtyRect, ctx);
+				OnDraw (dirtyRect, ctx);
 			}
 			return base.OnExposeEvent (evnt);
 		}

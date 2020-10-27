@@ -30,6 +30,7 @@ using Xwt.Backends;
 using Xwt.Drawing;
 
 namespace Xwt.GtkBackend {
+
     /// <summary>
     /// MultiLine-TextEntryBackend
     /// uses Gtk.TextView instead of Gtk.Entry
@@ -40,20 +41,23 @@ namespace Xwt.GtkBackend {
         GtkMultilineTextEntry textView;
 
         public string Text {
-            get { return TextView.Buffer.Text; }
+            get => TextView.Buffer.Text;
             set {
                 bufferSizeRequest = true;
-                TextView.Buffer.Text = value;
+                if (value == null)
+                    TextView.Buffer.Clear ();
+                else
+                    TextView.Buffer.Text = value;
             }
         }
 
         public Alignment TextAlignment {
-            get { return TextView.Justification.ToXwtValue (); }
-            set { TextView.Justification = value.ToGtkValue (); }
+            get => TextView.Justification.ToXwtValue ();
+            set => TextView.Justification = value.ToGtkValue ();
         }
 
         public bool ReadOnly {
-            get { return !TextView.Editable; }
+            get => !TextView.Editable;
             set {
                 TextView.Editable = !value;
                 TextView.CursorVisible = !value;
@@ -61,66 +65,79 @@ namespace Xwt.GtkBackend {
         }
 
         public bool MultiLine {
-            get { return TextView.MultiLine; }
-            set { TextView.MultiLine = value; }
+            get => TextView.MultiLine;
+            set => TextView.MultiLine = value;
         }
 
         public bool ShowFrame {
-            get { return ((Gtk.Frame)Widget).ShadowType != Gtk.ShadowType.None; }
+            get {
+                if (Widget is Gtk.Frame frame)
+                    return frame.ShadowType != Gtk.ShadowType.None;
+                return false;
+            }
             set {
-                if (value)
-                    ((Gtk.Frame)Widget).ShadowType = Gtk.ShadowType.In;
-                else
-                    ((Gtk.Frame)Widget).ShadowType = Gtk.ShadowType.None;
+                if (Widget is Gtk.Frame frame) {
+                    frame.ShadowType = value ? Gtk.ShadowType.In : Gtk.ShadowType.None;
+                }
             }
         }
 
-        protected virtual GtkMultilineTextEntry TextView {
-            get { return textView; }
-        }
+        protected virtual GtkMultilineTextEntry TextView => textView;
 
         public string PlaceholderText {
             get { return placeholderText; }
             set {
                 if (placeholderText != value) {
+#if XWT_GTKSHARP3
+                    // TODO
+#else
                     if (placeholderText == null)
                         TextView.ExposeEvent += RenderPlaceholderText;
                     else if (value == null)
                         TextView.ExposeEvent -= RenderPlaceholderText;
+#endif
                 }
+
                 placeholderText = value;
             }
         }
 
-        protected Pango.Layout Layout {
-            get { return layout ?? (layout = new Pango.Layout (TextView.PangoContext)); }
-        }
-
+        protected Pango.Layout Layout => layout ??= new Pango.Layout (TextView.PangoContext);
+#if XWT_GTKSHARP3
+        // TODO
+#else
         protected virtual void RenderPlaceholderText (object o, Gtk.ExposeEventArgs args) {
             var w = TextView.GetWindow (Gtk.TextWindowType.Text);
             if (!string.IsNullOrEmpty (PlaceholderText) && string.IsNullOrEmpty (Text) && args.Event.Window == w) {
                 Util.RenderPlaceholderText (TextView, args, PlaceholderText, ref layout);
             }
         }
+
         //protected virtual void RenderPlaceholderText (object o, Gtk.ExposeEventArgs args) {
         //    TextView.RenderPlaceholderText (args, PlaceholderText, ref layout);
         //}
-
+#endif
         public override object Font {
-            get { return base.Font; }
+            get => base.Font;
             set {
                 base.Font = value;
-                TextView.ModifyFont ((Pango.FontDescription)value);
+                TextView.ModifyFont ((Pango.FontDescription) value);
                 layout = null;
             }
         }
 
         public override void Initialize () {
             textView = new GtkMultilineTextEntry ();
-            Widget = new Gtk.Frame ();
-            ((Gtk.Frame)Widget).Add (textView);
-            ((Gtk.Frame)Widget).ShadowType = Gtk.ShadowType.In;
-            Widget.ShowAll ();
+            if (true) {
+                // BUG: Frame gets all events
+                Widget = new Gtk.Frame ();
+                ((Gtk.Frame) Widget).Add (textView);
+                ((Gtk.Frame) Widget).ShadowType = Gtk.ShadowType.In;
+                Widget.ShowAll ();
+            } else {
+                Widget = textView;
+            }
+
             ShowFrame = true;
             InitializeMultiLine ();
         }
@@ -168,7 +185,6 @@ namespace Xwt.GtkBackend {
                 var end = start;
                 TextView.Buffer.GetSelectionBounds (out start, out end);
                 return start.Offset;
-
             }
             set {
                 var start = new Gtk.TextIter ();
@@ -190,7 +206,6 @@ namespace Xwt.GtkBackend {
                 if (!TextView.Buffer.GetSelectionBounds (out start, out end))
                     return 0;
                 return end.Offset - start.Offset;
-
             }
             set {
                 var start = new Gtk.TextIter ();
@@ -199,6 +214,7 @@ namespace Xwt.GtkBackend {
                     start = TextView.Buffer.GetIterAtMark (TextView.Buffer.InsertMark);
                     end = start;
                 }
+
                 end.Offset = start.Offset + value;
                 TextView.GrabFocus ();
                 TextView.Buffer.SelectRange (start, end);
@@ -227,6 +243,7 @@ namespace Xwt.GtkBackend {
                     TextView.Buffer.DeleteSelection (true, true);
                     start = TextView.Buffer.GetIterAtOffset (cachedOffset);
                 }
+
                 TextView.Buffer.Insert (ref start, value);
                 start.Offset = cachedOffset;
                 end = start;
@@ -240,29 +257,29 @@ namespace Xwt.GtkBackend {
 
         #region Eventhandling
 
-        protected new ITextEntryEventSink EventSink {
-            get { return (ITextEntryEventSink)base.EventSink; }
-        }
+        protected new ITextEntryEventSink EventSink => (ITextEntryEventSink) base.EventSink;
 
-        public bool HasCompletions => throw new NotImplementedException ();
-
+        public bool HasCompletions => false;
+        // protected override Gtk.Widget EventsRootWidget {
+        //     get { return textView; }
+        // }
         public override void EnableEvent (object eventId) {
             base.EnableEvent (eventId);
             if (eventId is TextEntryEvent) {
-                switch ((TextEntryEvent)eventId) {
-                case TextEntryEvent.Changed:
-                    TextView.Buffer.Changed += HandleChanged;
-                    break;
-                case TextEntryEvent.Activated:
-                    TextView.KeyPressEvent += HandleActivated;
-                    break;
-                case TextEntryEvent.SelectionChanged:
-                    enableSelectionChangedEvent = true;
-                    TextView.MoveCursor += HandleMoveCursor;
-                    TextView.ButtonPressEvent += HandleButtonPressEvent;
-                    TextView.ButtonReleaseEvent += HandleButtonReleaseEvent;
-                    TextView.MotionNotifyEvent += HandleMotionNotifyEvent;
-                    break;
+                switch ((TextEntryEvent) eventId) {
+                    case TextEntryEvent.Changed:
+                        TextView.Buffer.Changed += HandleChanged;
+                        break;
+                    case TextEntryEvent.Activated:
+                        TextView.KeyPressEvent += HandleActivated;
+                        break;
+                    case TextEntryEvent.SelectionChanged:
+                        enableSelectionChangedEvent = true;
+                        TextView.MoveCursor += HandleMoveCursor;
+                        TextView.ButtonPressEvent += HandleButtonPressEvent;
+                        TextView.ButtonReleaseEvent += HandleButtonReleaseEvent;
+                        TextView.MotionNotifyEvent += HandleMotionNotifyEvent;
+                        break;
                 }
             }
         }
@@ -270,20 +287,20 @@ namespace Xwt.GtkBackend {
         public override void DisableEvent (object eventId) {
             base.DisableEvent (eventId);
             if (eventId is TextEntryEvent) {
-                switch ((TextEntryEvent)eventId) {
-                case TextEntryEvent.Changed:
-                    TextView.Buffer.Changed -= HandleChanged;
-                    break;
-                case TextEntryEvent.Activated:
-                    TextView.KeyPressEvent -= HandleActivated;
-                    break;
-                case TextEntryEvent.SelectionChanged:
-                    enableSelectionChangedEvent = false;
-                    TextView.MoveCursor -= HandleMoveCursor;
-                    TextView.ButtonPressEvent -= HandleButtonPressEvent;
-                    TextView.ButtonReleaseEvent -= HandleButtonReleaseEvent;
-                    TextView.MotionNotifyEvent -= HandleMotionNotifyEvent;
-                    break;
+                switch ((TextEntryEvent) eventId) {
+                    case TextEntryEvent.Changed:
+                        TextView.Buffer.Changed -= HandleChanged;
+                        break;
+                    case TextEntryEvent.Activated:
+                        TextView.KeyPressEvent -= HandleActivated;
+                        break;
+                    case TextEntryEvent.SelectionChanged:
+                        enableSelectionChangedEvent = false;
+                        TextView.MoveCursor -= HandleMoveCursor;
+                        TextView.ButtonPressEvent -= HandleButtonPressEvent;
+                        TextView.ButtonReleaseEvent -= HandleButtonReleaseEvent;
+                        TextView.MotionNotifyEvent -= HandleMotionNotifyEvent;
+                        break;
                 }
             }
         }
@@ -353,14 +370,13 @@ namespace Xwt.GtkBackend {
                     layout.Dispose ();
                 layout = null;
             }
+
             base.Dispose (disposing);
         }
 
-        public void SetCompletions (string [] completions) {
-        }
+        public void SetCompletions (string[] completions) { }
 
-        public void SetCompletionMatchFunc (Func<string, string, bool> matchFunc) {
-        }
+        public void SetCompletionMatchFunc (Func<string, string, bool> matchFunc) { }
     }
 
     public class GtkMultilineTextEntry : Gtk.TextView {
@@ -370,9 +386,7 @@ namespace Xwt.GtkBackend {
         Pango.Layout xLayout;
 
         public bool MultiLine {
-            get {
-                return multiline;
-            }
+            get => multiline;
             set {
                 if (multiline != value) {
                     multiline = value;
@@ -385,18 +399,7 @@ namespace Xwt.GtkBackend {
             }
         }
 
-        protected override void OnSizeRequested (ref Gtk.Requisition requisition) {
-            base.OnSizeRequested (ref requisition);
-            if (!MultiLine)
-                requisition = new Gtk.Requisition {
-                    Width = -1,
-                    Height = lineHeight
-                };
-        }
-
-        protected Pango.Layout XLayout {
-            get { return xLayout ?? (xLayout = CreatePangoLayout ("X")); }
-        }
+        protected Pango.Layout XLayout => xLayout ?? (xLayout = CreatePangoLayout ("X"));
 
         protected override void OnSizeAllocated (Gdk.Rectangle allocation) {
             int width;
@@ -404,24 +407,24 @@ namespace Xwt.GtkBackend {
                 lastHeight = allocation.Height;
                 XLayout.GetPixelSize (out width, out lineHeight);
                 if (lastHeight > lineHeight)
-                    PixelsAboveLines = (int)((lastHeight - lineHeight) / 2d);
+                    PixelsAboveLines = (int) ((lastHeight - lineHeight) / 2d);
             }
+
             base.OnSizeAllocated (allocation);
         }
 
         protected override bool OnKeyPressEvent (Gdk.EventKey evnt) {
-            if ((evnt.Key == Gdk.Key.Return || evnt.Key == Gdk.Key.ISO_Enter || evnt.Key == Gdk.Key.KP_Enter ) && !MultiLine)
+            if ((evnt.Key == Gdk.Key.Return || evnt.Key == Gdk.Key.ISO_Enter || evnt.Key == Gdk.Key.KP_Enter) && !MultiLine)
                 return true;
             return base.OnKeyPressEvent (evnt);
         }
 
-        public override void Dispose () {
-            if (xLayout != null)
-                xLayout.Dispose ();
+        protected override void Dispose (bool disposing) {
+            xLayout?.Dispose ();
             xLayout = null;
-            base.Dispose ();
+            base.Dispose (disposing);
         }
 
-
     }
+
 }

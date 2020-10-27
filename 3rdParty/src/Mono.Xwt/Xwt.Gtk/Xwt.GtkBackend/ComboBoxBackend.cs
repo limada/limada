@@ -96,9 +96,7 @@ namespace Xwt.GtkBackend
 
 		void HandleChanged (object sender, EventArgs e)
 		{
-			ApplicationContext.InvokeUserCode (delegate {
-				EventSink.OnSelectionChanged ();
-			});
+			ApplicationContext.InvokeUserCode (EventSink.OnSelectionChanged);
 		}
 
 		#region IComboBoxBackend implementation
@@ -117,6 +115,7 @@ namespace Xwt.GtkBackend
 				Widget.Model = model.Store;
 			} else
 				Widget.Model = b.Store;
+			OnSourceSet ();
 		}
 
 		public int SelectedRow {
@@ -128,6 +127,8 @@ namespace Xwt.GtkBackend
 			}
 		}
 		#endregion
+
+		protected virtual void OnSourceSet () { }
 
 		#region ICellRendererTarget implementation
 		public void PackStart (object target, Gtk.CellRenderer cr, bool expand)
@@ -184,6 +185,19 @@ namespace Xwt.GtkBackend
 
 		public void QueueDraw (object target, Gtk.TreeIter iter)
 		{
+		}
+
+		public void QueueResize (object target, Gtk.TreeIter iter)
+		{
+		}
+
+		bool disposed;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+				Widget.RowSeparatorFunc = null;
+			disposed = true;
+			base.Dispose(disposing);
 		}
 
 		#endregion

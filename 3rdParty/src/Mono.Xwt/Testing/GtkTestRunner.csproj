@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -8,9 +8,6 @@
     <RootNamespace>GtkTestRunner</RootNamespace>
     <AssemblyName>GtkTestRunner</AssemblyName>
     <TestRunnerCommand>bin\GtkTestRunner.exe</TestRunnerCommand>
-    <ReleaseVersion>18.04</ReleaseVersion>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -22,7 +19,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
     <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,29 +40,20 @@
     <Reference Include="nunit.core.interfaces">
       <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.core.interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="nunit-console-runner">
       <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit-console-runner.dll</HintPath>
     </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>glib-sharp-2.0</Package>
-    </Reference>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="nunit.util">
       <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.util.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\..\trunk\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
-      <Package>nunit</Package>
-    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GtkTestRunner\Main.cs" />
@@ -125,6 +113,7 @@
     <Compile Include="Tests\DialogTests.cs" />
     <Compile Include="Tests\ScrollableWidgetTests.cs" />
     <Compile Include="GtkTestRunner\GtkInit.cs" />
+    <Compile Include="GtkTests\PangoTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -137,7 +126,9 @@
       <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GtkTests\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Tests\ninep-ss.9.png">
       <LogicalName>ninep-ss.9.png</LogicalName>
@@ -165,7 +156,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
 </Project>

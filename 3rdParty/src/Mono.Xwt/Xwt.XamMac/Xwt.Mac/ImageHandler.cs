@@ -46,7 +46,9 @@ namespace Xwt.Mac
 		static readonly IntPtr cls_NSImage = new Class (typeof (NSImage)).Handle;
 
 		static Dictionary<string, NSImage> stockIcons = new Dictionary<string, NSImage> ();
-		
+
+		public override bool DisposeHandleOnUiThread => true;
+
 		public override object LoadFromStream (Stream stream)
 		{
 			using (NSData data = NSData.FromStream (stream)) {
@@ -107,10 +109,11 @@ namespace Xwt.Mac
 
 			var imageData = img.AsTiff ();
 			var imageRep = (NSBitmapImageRep) NSBitmapImageRep.ImageRepFromData (imageData);
-			var props = new NSDictionary ();
-			imageData = imageRep.RepresentationUsingTypeProperties (fileType.ToMacFileType (), props);
-			using (var s = imageData.AsStream ()) {
-				s.CopyTo (stream);
+			using (var props = new NSDictionary()) {
+				imageData = imageRep.RepresentationUsingTypeProperties(fileType.ToMacFileType(), props);
+				using (var s = imageData.AsStream()) {
+					s.CopyTo(stream);
+				}
 			}
 		}
 
@@ -159,25 +162,27 @@ namespace Xwt.Mac
 				var ci = (CustomImage)idesc.Backend;
 				ci.DrawInContext (ctx, idesc);
 
-				var img = new NSImage (((CGBitmapContext)bmp).ToImage (), new CGSize (pixelWidth, pixelHeight));
-				var imageData = img.AsTiff ();
-				var imageRep = (NSBitmapImageRep)NSBitmapImageRep.ImageRepFromData (imageData);
-				var im = new NSImage ();
-				im.AddRepresentation (imageRep);
-				im.Size = new CGSize ((nfloat)width, (nfloat)height);
-				bmp.Dispose ();
-				return im;
+				using (var img = new NSImage(((CGBitmapContext)bmp).ToImage(), new CGSize(pixelWidth, pixelHeight)))
+				using (var imageData = img.AsTiff()) {
+					var imageRep = (NSBitmapImageRep)NSBitmapImageRep.ImageRepFromData(imageData);
+					var im = new NSImage();
+					im.AddRepresentation(imageRep);
+					im.Size = new CGSize((nfloat)width, (nfloat)height);
+					bmp.Dispose();
+					return im;
+				}
 			}
 			else {
 				NSImage img = (NSImage)idesc.Backend;
 				NSBitmapImageRep bitmap = img.Representations ().OfType<NSBitmapImageRep> ().FirstOrDefault ();
 				if (bitmap == null) {
-					var imageData = img.AsTiff ();
-					var imageRep = (NSBitmapImageRep)NSBitmapImageRep.ImageRepFromData (imageData);
-					var im = new NSImage ();
-					im.AddRepresentation (imageRep);
-					im.Size = new CGSize ((nfloat)width, (nfloat)height);
-					return im;
+					using (var imageData = img.AsTiff()) {
+						var imageRep = (NSBitmapImageRep)NSBitmapImageRep.ImageRepFromData(imageData);
+						var im = new NSImage ();
+						im.AddRepresentation (imageRep);
+						im.Size = new CGSize ((nfloat)width, (nfloat)height);
+						return im;
+					}
 				}
 				return idesc.Backend;
 			}
@@ -305,10 +310,25 @@ namespace Xwt.Mac
 			AddRepresentation (imgRep);
 		}
 
+		public override CGSize Size
+		{
+			get {
+				return base.Size;
+			}
+			set {
+				base.Size = value;
+				imgRep.Size = value;
+			}
+		}
+
 		[Export ("drawIt:")]
 		public void DrawIt (NSObject ob)
 		{
-			CGContext ctx = NSGraphicsContext.CurrentContext.GraphicsPort;
+			CGContext ctx = NSGraphicsContext.CurrentContext?.GraphicsPort;
+			// for some reason CurrentContext might be null here, observed on Catalina beta
+			// just abort at this point if that happens, nothing else can be done anyways
+			if (ctx == null)
+				return;
 			if (!NSGraphicsContext.CurrentContext.IsFlipped) {
 				// Custom drawing is done using flipped order, so if the target surface is not flipped, we need to flip it
 				ctx.TranslateCTM (0, Size.Height);
@@ -333,7 +353,7 @@ namespace Xwt.Mac
 
 		internal void DrawInContext (CGContextBackend ctx, ImageDescription idesc)
 		{
-			var s = ctx.Size != CGSize.Empty ? ctx.Size : Size;
+			var s = ctx.Size != CGSize.Empty ? ctx.Size : new CGSize (idesc.Size.Width, idesc.Size.Height);
 			actx.InvokeUserCode (delegate {
 				drawCallback (ctx, new Rectangle (0, 0, s.Width, s.Height), idesc, actx.Toolkit);
 			});

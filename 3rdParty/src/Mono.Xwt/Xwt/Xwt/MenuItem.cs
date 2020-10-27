@@ -28,12 +28,12 @@ using System;
 using Xwt.Backends;
 using System.ComponentModel;
 using Xwt.Drawing;
-using System.Linq;
+using Xwt.Accessibility;
 
 namespace Xwt
 {
 	[BackendType (typeof(IMenuItemBackend))]
-	public class MenuItem: XwtComponent, ICellContainer
+	public partial class MenuItem: XwtComponent, ICellContainer
 	{
 		CellViewCollection cells;
 		Menu subMenu;
@@ -54,6 +54,16 @@ namespace Xwt
 			}
 		}
 		
+		Accessible accessible;
+		public Accessible Accessible {
+			get {
+				if (accessible == null) {
+					accessible = new Accessible (this);
+				}
+				return accessible;
+			}
+		}
+
 		protected override Xwt.Backends.BackendHost CreateBackendHost ()
 		{
 			return new MenuItemBackendHost ();
@@ -82,23 +92,7 @@ namespace Xwt
 			Label = label;
 		}
 
-		public MenuItem (string label, Image image, EventHandler clicked):this(label) {
-		    Clicked += clicked;
-		    Image = image;
-		}
-
-		public MenuItem (string label, Image image, EventHandler clicked, params MenuItem[] subItems)
-		    : this(label, image, clicked) {
-
-			if (subItems.Length == 0)
-				return;
-		    SubMenu = new Menu();
-		    for (int i = 0; i < subItems.Length; i++)
-			if(subItems [i]!=null)
-		        	SubMenu.InsertItem(i, subItems[i]);
-		}
-
-	    protected void LoadCommandProperties (Command command)
+		protected void LoadCommandProperties (Command command)
 		{
 			Label = command.Label;
 			Image = command.Icon;
@@ -119,6 +113,38 @@ namespace Xwt
 				if (IsSeparator)
 					throw new NotSupportedException ();
 				Backend.Label = value;
+			}
+		}
+
+		string markup;
+		/// <summary>
+		/// Gets or sets the text with markup to display.
+		/// </summary>
+		/// <remarks>
+		/// <see cref="Xwt.FormattedText"/> for supported formatting options.</remarks>
+		[DefaultValue ("")]
+		public string Markup {
+			get { return markup; }
+			set {
+				markup = value;
+				var t = FormattedText.FromMarkup (markup);
+				Backend.SetFormattedText (t);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the tooltip text.
+		/// </summary>
+		/// <value>The tooltip text.</value>
+		[DefaultValue("")]
+		public string TooltipText
+		{
+			get { return Backend.TooltipText ?? ""; }
+			set
+			{
+				if (IsSeparator)
+					throw new NotSupportedException();
+				Backend.TooltipText = value;
 			}
 		}
 
@@ -216,6 +242,14 @@ namespace Xwt
 				clicked -= value;
 				base.BackendHost.OnAfterEventRemove (MenuItemEvent.Clicked, clicked);
 			}
+		}
+
+		protected override void Dispose (bool release_all)
+		{
+			if (release_all) {
+				Backend.Dispose ();
+			}
+			base.Dispose (release_all);
 		}
 	}
 	

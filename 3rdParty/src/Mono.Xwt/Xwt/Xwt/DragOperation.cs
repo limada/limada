@@ -126,12 +126,10 @@ namespace Xwt
 		/// <exception cref="System.InvalidOperationException">The drag image is not set.</exception>
 		internal DragStartData GetStartData ()
 		{
-		    //if (image == null)
-		    //    throw new InvalidOperationException("The drag image must be set before starting the drag operation");
-		    object img = null;
-		    if(image !=null)
-		        img = image.ToBitmap().GetBackend();
-		    return new DragStartData (data, action, img, hotX, hotY);
+			if (image == null)
+				throw new InvalidOperationException ("The drag image must be set before starting the drag operation");
+			image.InitForToolkit (source.Surface.ToolkitEngine);
+			return new DragStartData (data, action, image.ToBitmap ().GetBackend (), hotX, hotY);
 		}
 		
 	}
@@ -139,7 +137,7 @@ namespace Xwt
 	/// <summary>
 	/// Interface implemented by data stores containing data for drag &amp; drop and copy &amp; paste operations
 	/// </summary>
-	public interface ITransferData
+	public partial interface ITransferData
 	{
 		/// <summary>
 		/// Gets the transferred text.
@@ -173,9 +171,13 @@ namespace Xwt
 		/// <returns>The transferred value.</returns>
 		/// <typeparam name="T">The Type of the transferred value.</typeparam>
 		T GetValue<T> () where T:class;
-		bool HasType (TransferDataType type);
 
-	    	IEnumerable<TransferDataType> DataTypes { get; }
-    }
+		/// <summary>
+		/// Determines whether a value of the specified type is transferred.
+		/// </summary>
+		/// <returns><c>true</c> if this store contains a value of the specified type; otherwise, <c>false</c>.</returns>
+		/// <param name="type">The specific transfer data type.</param>
+		bool HasType (TransferDataType type);
+	}
 }
 
