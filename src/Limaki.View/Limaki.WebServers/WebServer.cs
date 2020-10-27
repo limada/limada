@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 // Look to Manos as replacemet for this
 // for threading problems see: Manos.Managed.IOLoop
@@ -36,12 +37,10 @@ namespace Limaki.WebServers {
         protected ManualResetEvent AllDone = new ManualResetEvent(false);
 
         public override void Listen() {
-            if (ListenerThread == null) {
-                //start the thread which calls the method 'StartListen'
-                ListenerThread = new Thread(new ThreadStart(StartListen));
-                ListenerThread.Name = ServerName + " running at " + Authority;
-                ListenerThread.Start();
-
+            if (ListenerTask == null) {
+                ListenerTaskCancellationTokenSource = new CancellationTokenSource();
+                ListenerTask = new Task (StartListen,ListenerTaskCancellationTokenSource.Token);
+                ListenerTask.Start();
             }
         }
 

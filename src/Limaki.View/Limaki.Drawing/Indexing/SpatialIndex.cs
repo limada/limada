@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Limaki.Drawing;
-using Limaki.View;
 using Xwt;
 using System;
 

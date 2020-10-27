@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Limaki.Usecases {
@@ -33,7 +34,7 @@ namespace Limaki.Usecases {
         }
 
         public string PluginDir (string pluginDir) {
-            return PluginDir (AppDomain.CurrentDomain.BaseDirectory, pluginDir);
+            return PluginDir (AppDomain.CurrentDomain.BaseDirectory, pluginDir) ?? PluginDir ( Path.GetDirectoryName (Process.GetCurrentProcess ().MainModule.FileName), pluginDir);
         }
     }
 }

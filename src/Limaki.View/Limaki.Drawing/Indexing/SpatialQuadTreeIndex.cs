@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Limaki.Drawing;
 using Limaki.Drawing.Indexing.QuadTrees;
 using Xwt;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace Limaki.Drawing.Indexing {
         public Quadtree<TItem> GeoIndex {
             get {
                 if (_geoIndex == null) {
-                    _geoIndex = new Quadtree<TItem>();
+                    _geoIndex = new Quadtree<TItem> ();
                 }
                 return _geoIndex;
             }
@@ -25,20 +24,20 @@ namespace Limaki.Drawing.Indexing {
 
         protected override void Add (Rectangle bounds, TItem item) {
             if (bounds != Rectangle.Zero)
-                GeoIndex.Add(bounds, item);
+                GeoIndex.Add (bounds, item);
         }
 
         protected override void Remove (Rectangle bounds, TItem item) {
             if (bounds != Rectangle.Zero)
-                GeoIndex.Remove(bounds, item);
+                GeoIndex.Remove (bounds, item);
         }
 
         public override IEnumerable<TItem> Query (Rectangle clipBounds) {
-            return GeoIndex.Query(clipBounds).Where(item=>DrawingExtensions.Intersects(clipBounds, BoundsOf(item)));
+            return GeoIndex.Query (clipBounds).Where (item => DrawingExtensions.Intersects (clipBounds, BoundsOf (item)));
         }
 
         public override IEnumerable<TItem> Query () {
-            return GeoIndex.QueryAll();
+            return GeoIndex.QueryAll ();
         }
 
         protected override Rectangle CalculateBounds () {
@@ -52,7 +51,7 @@ namespace Limaki.Drawing.Indexing {
             var r = double.MinValue;
             var b = double.MinValue;
 
-            GeoIndex.QueryBounds(
+            GeoIndex.QueryBounds (
                 ref l, ref t, ref r, ref b,
                 GeoIndex.Root,
                 BoundsOf);
@@ -65,7 +64,7 @@ namespace Limaki.Drawing.Indexing {
                 r = 0;
             if (b < 0)
                 b = 0;
-            return Rectangle.FromLTRB((int) l, (int) t, (int) r, (int) b);
+            return Rectangle.FromLTRB ((int)l, (int)t, (int)r, (int)b);
         }
 
         public override void Clear () {

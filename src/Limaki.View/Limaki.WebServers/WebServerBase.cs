@@ -5,6 +5,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 using Limaki.Common;
 
 namespace Limaki.WebServers {
@@ -92,28 +94,63 @@ namespace Limaki.WebServers {
         public Func<string, WebContent> ContentGetter { get; set; }
 
         public bool Asycn { get; set; }
+        
+        protected Task ListenerTask { get; set; }
+        protected CancellationTokenSource ListenerTaskCancellationTokenSource { get; set; }
 
-        protected Thread ListenerThread { get; set; }
+        public static int PortFree (IPAddress adress, int port) {
+            var ipProperties = IPGlobalProperties.GetIPGlobalProperties ();
+            var ipEndPoints = ipProperties.GetActiveTcpListeners ();
+
+            bool InUse (int aport) {
+                foreach (var endPoint in ipEndPoints) {
+                    if (endPoint.Port == aport && endPoint.Address.Equals (adress)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            for (var i = port; i < port + 100; i++) {
+                if (!InUse (i))
+                    return i;
+            }
+
+            return default;
+        }
+
 
         public virtual void Start() {
             try {
                 //start listing on the given port
 
-                int count = 0;
-                bool hasPort = false;
-                while (count < 100 && !hasPort)
-                    try {
-                        count++;
-                        Listener = new TcpListener(Addr, Port);
-                        Listener.Start();
-                        hasPort = true;
-                    } catch (SocketException ex) {
-                        if (ex.ErrorCode == 10048) {
-                            Port = Port + 1;
-                        } else {
-                            throw ex;
+                var freePort = PortFree (Addr, Port);
+                if (freePort == default) {
+                    throw new SocketException(98);
+                }
+
+                Port = freePort;
+                Listener = new TcpListener(Addr, Port);
+                Listener.Start();
+                if (false) {
+                    int count = 0;
+                    bool hasPort = false;
+                    while (count < 100 && !hasPort)
+                        try {
+                            count++;
+                            Listener = new TcpListener (Addr, Port);
+                            Listener.Start ();
+                            hasPort = true;
+                        } catch (SocketException ex) {
+                            if (ex.ErrorCode == 10048 || ex.ErrorCode == 98) {
+                                Port = Port + 1;
+                            } else {
+                                throw ex;
+                            }
                         }
-                    }
+                }
+
                 Trace.WriteLine(ServerName + " Running at: " + Authority);
                 Listen();
             } catch (Exception e) {
@@ -160,10 +197,12 @@ namespace Limaki.WebServers {
         }
 
         public virtual void Sleep() {
-            if (ListenerThread != null) {
-                ListenerThread.Abort();
-                ListenerThread = null;
+            if (ListenerTask != null) {
+                ListenerTaskCancellationTokenSource.Cancel();
+                ListenerTask = null;
+                ListenerTaskCancellationTokenSource = null;
             }
+
         }
 
         public virtual void Dispose() {

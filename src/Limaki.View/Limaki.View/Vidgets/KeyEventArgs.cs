@@ -29,8 +29,8 @@ namespace Limaki.View.Vidgets {
 
         public int PlatformKeyCode {
             get {
-                Registry.Pooled<IExceptionHandler> ()
-                    .Catch (new Exception (this.GetType ().Name + ".PlatformKeyCode not implemented"), MessageType.OK);
+                // Registry.Pooled<IExceptionHandler> ()
+                //     .Catch (new Exception (this.GetType ().Name + ".PlatformKeyCode not implemented"), MessageType.OK);
                 return 0;
             }
         }

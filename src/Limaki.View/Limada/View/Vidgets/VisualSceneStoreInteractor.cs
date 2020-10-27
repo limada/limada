@@ -88,7 +88,7 @@ namespace Limada.View.Vidgets {
                 new SheetSerializer ().Save (stream, scene.Graph, layout);
                 stream.Position = 0;
 
-                SheetStore.Add (id, stream.GetBuffer ((int)stream.Length));
+                SheetStore.Add (id, stream.GetBuffer ());
 
                 return true;
             }

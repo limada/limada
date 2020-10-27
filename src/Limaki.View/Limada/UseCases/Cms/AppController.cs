@@ -32,8 +32,8 @@ namespace Limada.Usecases.Cms {
                 string data = appSettings.Get(i);
 
                 if (key == "DataBaseFileName") {
-                    if (Path.GetDirectoryName (data) == "")
-                        data = ApplicationPhysicalPath + Path.DirectorySeparatorChar + data;
+                    // if (Path.GetDirectoryName (data) == "")
+                    //     data = ApplicationPhysicalPath + Path.DirectorySeparatorChar + data;
                     IoriExtensions.FromFileName(iori,data);
                 }
 
