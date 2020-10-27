@@ -81,15 +81,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
+    <ProjectReference Include="..\3rdParty\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
       <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
       <Name>Geckofx-Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Winforms\Geckofx-Winforms.csproj">
+    <ProjectReference Include="..\3rdParty\Geckofx-29\Geckofx-Winforms\Geckofx-Winforms.csproj">
       <Project>{D7ADC901-E1C4-480E-8F6D-B1FFD5CF87E8}</Project>
       <Name>Geckofx-Winforms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+    <ProjectReference Include="..\3rdParty\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
     </ProjectReference>

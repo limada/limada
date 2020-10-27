@@ -9,10 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Limaki</RootNamespace>
     <AssemblyName>Limaki.Application.Xwt</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-  </PropertyGroup>
+</PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -45,14 +45,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.4.5.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Security.AccessControl, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Security.AccessControl.4.5.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Security.Permissions.4.5.0\lib\net461\System.Security.Permissions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Security.Principal.Windows.4.5.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration.ConfigurationManager">
-      <HintPath>..\packages\System.Configuration.ConfigurationManager.4.5.0-preview1-25914-04\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
@@ -65,12 +82,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk2\Xwt.Gtk2.csproj">
+      <Project>{89f9640c-4b82-482b-a9ec-22ac0f1bec8a}</Project>
+      <Name>Xwt.Gtk2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
-      <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
+      <Project>{044E8D0A-A7F7-44B8-8F63-1F011FEBCF0F}</Project>
       <Name>Limaki.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
@@ -80,6 +101,10 @@
     <ProjectReference Include="..\Limaki.View.Xwt.Tests\Limaki.View.Xwt.Tests.csproj">
       <Project>{1E41C2F8-935A-4453-B7C9-F59CD96536DC}</Project>
       <Name>Limaki.View.Xwt.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.XwtGtk2\Limaki.View.XwtGtk2.csproj">
+      <Project>{4a0ed4b1-ebb2-47f0-9b5e-8c312a01fe98}</Project>
+      <Name>Limaki.View.XwtGtk2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Xwt\Limaki.View.Xwt.csproj">
       <Project>{4C8B39FE-F433-4C22-B5C7-FDCF33035D23}</Project>
@@ -92,14 +117,6 @@
     <ProjectReference Include="..\Limaki.View.Html5\Limaki.View.Html5.csproj">
       <Project>{B77C5BE4-8B43-4B9D-BD73-25B7E58BC8EF}</Project>
       <Name>Limaki.View.Html5</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk\Xwt.Gtk.csproj">
-      <Project>{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}</Project>
-      <Name>Xwt.Gtk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Limaki.View.XwtGtk\Limaki.View.XwtGtk.csproj">
-      <Project>{0577142F-B5D1-4271-8795-FE4615C2D728}</Project>
-      <Name>Limaki.View.XwtGtk</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.WCF\Limaki.WCF.csproj">
       <Project>{200FACE5-859B-4EC8-A764-C25E0E368658}</Project>
@@ -137,7 +154,7 @@
   </Target>
   -->
   <ItemGroup>
-    <None Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk\Xwt.Gtk.dll.config">
+    <None Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk2\Xwt.Gtk2.dll.config">
       <Link>Xwt.Gtk.dll.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -147,5 +164,10 @@
     </None>
     <None Include="makeBundle.sh" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit">
+      <Version>3.9.0</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>
