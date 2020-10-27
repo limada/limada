@@ -12,6 +12,7 @@ using Limada.Usecases.Cms;
 using Limada.Usecases.Cms.Models;
 using Limaki.Web.MvcCore.Models;
 using Microsoft.CodeAnalysis.Operations;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Limaki.Web.MvcCore.Controllers {
 
@@ -145,10 +146,10 @@ namespace Limaki.Web.MvcCore.Controllers {
         /// resolves requests with aspx-style: xxx.aspx?id
         /// </summary>
         /// <returns></returns>
-        //public ActionResult AspxReqest () {
-        //    return Index ((Request.QueryString.Count() > 0) ?
-        //        Request.QueryString.Get (0) : null);
-        //}
+        public IActionResult AspxReqest () {
+            var r = QueryHelpers.ParseQuery (Request.QueryString.ToString());
+            return Index (r.Keys.FirstOrDefault());
+        }
 
         public IActionResult About () {
             var content = new HtmlContent {

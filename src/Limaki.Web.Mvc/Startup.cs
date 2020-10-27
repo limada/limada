@@ -16,6 +16,7 @@ using Limada.Usecases.Cms;
 using Limada.Usecases.Cms;
 using System.Collections.Specialized;
 using Microsoft.AspNetCore.HttpOverrides;
+using Limaki.Web.MvcCore.Controllers;
 
 namespace Limaki.Web.MvcCore
 {
@@ -64,8 +65,8 @@ namespace Limaki.Web.MvcCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -93,33 +94,31 @@ namespace Limaki.Web.MvcCore
                 routes.MapRoute (
                     "BrowseCompatible", // Route name 
                     "Default.aspx", // URL with parameters
-                    new { controller = "Home", action = "AspxReqest" });
+                    new { controller = "Home", action = nameof(HomeController.AspxReqest) });
 
                 routes.MapRoute (
                    "StreamContent", // Route name 
                    "Content/{id?}", // URL with parameters
                    new { controller = "Home", action = "StreamContent" });
-                
 
-                
                 routes.MapRoute (
                     "browse", // Route name
                     "{id?}", // URL with parameters
-                    new { controller = "Home", action = "Index" });
+                    new { controller = "Home", action = nameof (HomeController.Index) });
                 routes.MapRoute (
-                    "Index", // Route name
+                     nameof (HomeController.Index), // Route name
                     "{id?}", // URL with parameters
-                    new { controller = "Home", action = "Index" });
+                    new { controller = "Home", action = nameof (HomeController.Index) });
                 
                 routes.MapRoute (
-                    "About", // Route name
+                    nameof (HomeController.About), // Route name
                     "{id?}", // URL with parameters
-                    new { controller = "Home", action = "About" });
+                    new { controller = "Home", action = nameof (HomeController.About) });
                 
                 routes.MapRoute (
                     "default", // Route name
                     "{id?}", // URL with parameters
-                    new { controller = "Home", action = "Index" });
+                    new { controller = "Home", action = nameof (HomeController.Index) });
 
             });
         }

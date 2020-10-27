@@ -1,0 +1,13 @@
+﻿<Limioris>
+<Iori xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Limaki.Data">
+<AccessMode>ClientServer</AccessMode><!-- eg. ClientServer  -->
+<Extension>limo</Extension>
+<Name>limada</Name>
+<Password>test</Password>
+<Path></Path>
+<Port>4444</Port>
+<Provider>Db4o</Provider>
+<Server>127.0.0.1</Server>
+<User>web</User>
+</Iori>
+</Limioris>
