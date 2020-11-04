@@ -461,9 +461,22 @@ namespace Limaki.Data.db4o {
               namespc + ".*, " + ass));
         }
 
+        protected virtual void ConfigureCoreLib (ICommonConfiguration configuration, Type type) {
+            var reference = Sharpen.Lang.TypeReference.FromType (type); 
+            string namespc = type.Namespace;
+            const string mscorlib = "mscorlib";
+            const string corelib = "System.Private.CoreLib";
+            var runtime = reference.GetUnversionedName ();
+            if (runtime.Contains (corelib)) {
+                var stored = runtime.Replace (corelib, mscorlib);
+                configuration.AddAlias (new TypeAlias (stored, runtime));
+            }
+        }
+        
         protected virtual void ConfigureAliases(ICommonConfiguration configuration) {
             var assembliesDone = new Set<string> ();
             var namespacesDone = new Set<string> ();
+            //ConfigureCoreLib (configuration, typeof(string));
             foreach (var type in TypesToConfigure) {
                 if (!namespacesDone.Contains(type.Namespace) || !
                     assembliesDone.Contains(type.Assembly.FullName)) {
@@ -471,7 +484,9 @@ namespace Limaki.Data.db4o {
                     namespacesDone.Add (type.Namespace);
                     assembliesDone.Add (type.Assembly.FullName);
                 }
+                //ConfigureCoreLib (configuration,type);
             }
+          
         }
 
         #endregion
