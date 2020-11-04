@@ -246,6 +246,7 @@ namespace Xwt.GdiBackend {
                 case Alignment.End:
                     return SD.StringAlignment.Far;
             }
+            return SD.StringAlignment.Near;
         }
 
         public static StringTrimming ToGdi (this TextTrimming value) {
@@ -275,7 +276,7 @@ namespace Xwt.GdiBackend {
         public static SDI.PixelFormat ToGdi (this  ImageFormat value) {
             if (value == ImageFormat.ARGB32)
                 return SDI.PixelFormat.Format32bppPArgb;
-            else if (value == ImageFormat.RGB24)
+            if (value == ImageFormat.RGB24)
                 return SDI.PixelFormat.Format24bppRgb;
             return SDI.PixelFormat.DontCare;
         }
@@ -283,7 +284,7 @@ namespace Xwt.GdiBackend {
         public static Xwt.Drawing.ImageFormat ToXwt (this SD.Imaging.PixelFormat value) {
             if (value == SDI.PixelFormat.Format32bppPArgb)
                 return ImageFormat.ARGB32;
-            else if (value == SDI.PixelFormat.Format24bppRgb)
+            if (value == SDI.PixelFormat.Format24bppRgb)
                 return ImageFormat.RGB24;
             return ImageFormat.Other;
         }

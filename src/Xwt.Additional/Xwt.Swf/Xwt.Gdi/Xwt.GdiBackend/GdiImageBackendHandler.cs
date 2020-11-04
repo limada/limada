@@ -81,12 +81,12 @@ namespace Xwt.GdiBackend {
             return image.IsBitmap;
         }
 
-        public override ImageFormat GetFormat (object handle) {
-            var image = (GdiImage)handle;
-            if (!image.IsBitmap)
-                return ImageFormat.Other;
-            return ((SD.Bitmap)image.Image).PixelFormat.ToXwt();
-        }
+        // public override ImageFormat GetFormat (object handle) {
+        //     var image = (GdiImage)handle;
+        //     if (!image.IsBitmap)
+        //         return ImageFormat.Other;
+        //     return ((SD.Bitmap)image.Image).PixelFormat.ToXwt();
+        // }
 
         public override object ConvertToBitmap (ImageDescription idesc, double scaleFactor, XD.ImageFormat format) {
             var image = (GdiImage)idesc.Backend;
