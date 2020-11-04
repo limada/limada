@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties/AssemblyInfo.Shared.cs</Link>
+    </Compile>
+    <Compile Remove="Limaki.LinqData.Tests\MigrateDbToLatestInitializerConnString.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
+    <ProjectReference Include="..\Limada.LinqData\Limada.LinqData.csproj" />
+    <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj" />
+    <ProjectReference Include="$(UnitsOfWorkDirectory)\Limaki.LinqData.Linq2DbProvider\Limaki.LinqData.Linq2DbProvider.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.9.0" />
+  </ItemGroup>
+</Project>
