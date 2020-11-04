@@ -62,6 +62,12 @@ namespace Xwt.GdiBackend {
             tl.Font = font;
         }
 
+        public override void SetAlignment (object backend, Alignment alignment)
+        {
+            var tl = (GdiTextLayoutBackend)backend;
+            tl.Alignment = alignment.ToGdi ();
+        }
+        
         public override Size GetSize (object backend) {
             var tl = (GdiTextLayoutBackend) backend;
             return tl.Size;

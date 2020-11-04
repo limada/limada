@@ -237,6 +237,17 @@ namespace Xwt.GdiBackend {
             return result;
         }
 
+        public static SD.StringAlignment ToGdi (this Alignment value) {
+            switch (value) {
+                case Alignment.Start:
+                    return SD.StringAlignment.Near;
+                case Alignment.Center:
+                    return SD.StringAlignment.Center;
+                case Alignment.End:
+                    return SD.StringAlignment.Far;
+            }
+        }
+
         public static StringTrimming ToGdi (this TextTrimming value) {
             if (value == TextTrimming.Word)
                 return StringTrimming.Word;

@@ -89,7 +89,7 @@ namespace Xwt.GdiBackend {
                     _format.FormatFlags |= SD.StringFormatFlags.NoWrap;
                 else
                     _format.FormatFlags &= ~SD.StringFormatFlags.NoWrap;
-                _format.Alignment = SD.StringAlignment.Near;
+                _format.Alignment = Alignment;
                 _format.LineAlignment = SD.StringAlignment.Center;
                 return _format;
             }
@@ -107,5 +107,7 @@ namespace Xwt.GdiBackend {
                 throw new NotImplementedException ();
             }
         }
+
+        public SD.StringAlignment Alignment { get; set; } = SD.StringAlignment.Near;
     }
 }
