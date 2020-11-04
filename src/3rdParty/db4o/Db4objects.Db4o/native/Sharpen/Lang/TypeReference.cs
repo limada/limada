@@ -65,13 +65,21 @@ namespace Sharpen.Lang
 			AppendUnversionedAssemblyName(builder);
 		}
 
+		const string mscorlib = "mscorlib";
+		const string corelib = "System.Private.CoreLib";
+		
 		protected void AppendUnversionedAssemblyName(StringBuilder builder)
 		{
 			AssemblyName assemblyName = AssemblyName;
 			if (null == assemblyName) return;
 
 			builder.Append(", ");
-			builder.Append(assemblyName.Name);
+			var name = assemblyName.Name;
+			if (name == corelib) {
+				name = mscorlib;
+			}
+
+			builder.Append(name);
 		}
 	}
 
