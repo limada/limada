@@ -24,7 +24,7 @@ namespace Limaki.Contents.IO {
     public class MarkdownStreamContentIo : StreamContentIo {
         public MarkdownStreamContentIo ()
             : base (new MarkdownContentSpot ()) {
-            this.IoMode = IO.IoMode.ReadWrite;
+            this.IoMode = Common.IoMode.ReadWrite;
         }
     }
 

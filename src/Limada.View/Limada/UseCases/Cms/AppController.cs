@@ -2,6 +2,7 @@ using Limaki.Data;
 using System.Collections.Specialized;
 using System;
 using System.IO;
+using Limaki.Common;
 
 namespace Limada.Usecases.Cms {
 

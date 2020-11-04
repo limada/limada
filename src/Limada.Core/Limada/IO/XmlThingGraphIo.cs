@@ -26,7 +26,7 @@ namespace Limada.IO {
     public class XmlThingGraphIo : ThingGraphIo {
 
         public XmlThingGraphIo (): base(new XmlThingGraphSpot()) {
-            this.IoMode = Limaki.Contents.IO.IoMode.ReadWrite;
+            this.IoMode = IoMode.ReadWrite;
         }
 
         protected override ThingGraphContent OpenInternal (Iori source) {

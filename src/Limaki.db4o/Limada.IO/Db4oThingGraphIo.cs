@@ -19,6 +19,7 @@ using Limaki.Data;
 using Limaki.Contents.IO;
 using System;
 using System.Linq;
+using Limaki.Common;
 using ThingGraph = Limada.IO.db4o.ThingGraph;
 
 namespace Limada.IO {
@@ -26,7 +27,7 @@ namespace Limada.IO {
     public class Db4oThingGraphIo : ThingGraphIo {
 
         public Db4oThingGraphIo (): base(new Db4oThingGraphSpot()) {
-            this.IoMode = Limaki.Contents.IO.IoMode.ReadWrite;
+            this.IoMode = IoMode.ReadWrite;
         }
 
         protected override ThingGraphContent OpenInternal (Iori source) {

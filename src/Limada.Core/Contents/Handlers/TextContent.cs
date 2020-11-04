@@ -60,7 +60,7 @@ namespace Limaki.Contents.IO {
     public class TextStreamContentIo : StreamContentIo {
         public TextStreamContentIo ()
             : base(new TextContentSpot()) {
-            this.IoMode = IO.IoMode.ReadWrite;
+            this.IoMode = IoMode.ReadWrite;
         }
     }
 

@@ -25,6 +25,7 @@ using Limada.View.ContentViewers;
 using Limaki.Usecases;
 using System.Linq;
 using Limaki.View.Common;
+using About = Limada.Usecases.About;
 
 namespace Limaki.View.XwtBackend {
    

@@ -102,7 +102,7 @@ namespace Limada.Usecases {
             
             foreach (var file in ms.FileNames) {
 
-                var io = Registry.Pooled<ThingGraphIoPool> ().Find (Path.GetExtension (file), Limaki.Contents.IO.IoMode.Read)
+                var io = Registry.Pooled<ThingGraphIoPool> ().Find (Path.GetExtension (file), IoMode.Read)
                  as ThingGraphIo;
 
                 if (!filesOpen.ContainsKey (file)) {

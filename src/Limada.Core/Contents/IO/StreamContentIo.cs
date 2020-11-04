@@ -40,7 +40,7 @@ namespace Limaki.Contents.IO {
         
         public virtual Content<Stream> Read (Uri source, Content<Stream> sink) {
             var result = default(Content<Stream>);
-            if (IoMode.HasFlag(IO.IoMode.Read) && source.IsFile) {
+            if (IoMode.HasFlag(IoMode.Read) && source.IsFile) {
                 var filename = IoUtils.UriToFileName(source);
                 var file = new FileStream(filename, FileMode.Open);
 

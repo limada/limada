@@ -77,7 +77,7 @@ namespace Limaki.View.XwtBackend {
 
             Application.Initialize (this.XwtToolkitType);
 
-            this.Create (new XwtContextResourceLoader ());
+            this.Configure (new XwtContextResourceLoader ());
 
             About.ToolKitType = XwtToolkitType.ToString ();
 

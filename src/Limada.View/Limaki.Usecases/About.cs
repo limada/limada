@@ -20,7 +20,7 @@ using System.Linq;
 using System.Reflection;
 using Limaki.Data;
 
-namespace Limaki.Usecases {
+namespace Limada.Usecases {
 
     public class About {
 

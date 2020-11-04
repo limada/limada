@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using Id = System.Int64;
 using System.Linq.Expressions;
+using Limaki.Repository;
 
 namespace Limada.Data {
 

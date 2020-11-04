@@ -14,13 +14,14 @@
 
 using Limada.Model;
 using Limaki.Data;
-using Limaki.Contents.IO;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Linq;
+using Limaki.Common;
 using Limaki.Contents;
+using IoMode = Limaki.Common.IoMode;
 
 namespace Limada.IO {
 
@@ -47,7 +48,7 @@ namespace Limada.IO {
     public class IoriThingGraphIo : ThingGraphIo {
 
         public IoriThingGraphIo (): base(new IoriThingGraphSpot()) {
-            this.IoMode = Limaki.Contents.IO.IoMode.Read;
+            this.IoMode = IoMode.Read;
         }
 
         private ThingGraphIoManager _thingGraphIoManager = null;

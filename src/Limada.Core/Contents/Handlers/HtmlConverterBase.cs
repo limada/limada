@@ -35,7 +35,7 @@ namespace Limaki.Contents.Text {
 
         public abstract long ConversionType (long contentType);
 
-        public virtual string WithHmtlHeaderTags (Stream s) => $"{HtmlHelper.HtmUtf8Begin}<body>{ToHtml (s)}</body></html>";
+        public virtual string WithHmtlHeaderTags (Stream s) => $"{HtmlHelper.HtmUtf8Begin99}<body>{ToHtml (s)}</body></html>";
         public virtual bool UseHtmlHeaderTags { get; set; } = true;
 
         public override Content<Stream> Use (Content<Stream> source, Content<Stream> sink) {

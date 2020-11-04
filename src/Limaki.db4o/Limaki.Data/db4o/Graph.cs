@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using Db4objects.Db4o.Events;
 using System.Threading.Tasks;
+using Limaki.Common;
 using Limaki.Contents.IO;
 
 namespace Limaki.Data.db4o {

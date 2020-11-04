@@ -44,7 +44,7 @@ namespace Limaki.Contents.IO {
 
         public virtual Stream Read (Uri uri) {
             var result = default(Stream);
-            if (IoMode.HasFlag(IO.IoMode.Read) && uri.IsFile) {
+            if (IoMode.HasFlag(IoMode.Read) && uri.IsFile) {
                 var filename = IoUtils.UriToFileName(uri);
                 var file = new FileStream(filename, FileMode.Open);
             }
@@ -56,7 +56,7 @@ namespace Limaki.Contents.IO {
             if (sink == null)
                 throw new ArgumentException("Uri must not be null");
 
-            if (IoMode.HasFlag(IO.IoMode.Write) && sink.IsFile) {
+            if (IoMode.HasFlag(IoMode.Write) && sink.IsFile) {
                 var filename = IoUtils.UriToFileName(sink);
                 var file = new FileStream(filename, FileMode.Create);
                 var target = new BufferedStream(file);

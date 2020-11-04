@@ -17,12 +17,13 @@ using Db4objects.Db4o.Config;
 using Db4objects.Db4o.CS;
 using Db4objects.Db4o.CS.Config;
 using Db4objects.Db4o.Events;
-using Limaki.Contents.IO;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using Limaki.Common;
+using IoMode = Limaki.Common.IoMode;
 
 namespace Limaki.Data.db4o {
 

@@ -38,7 +38,7 @@ namespace Limaki.Contents.IO {
 
     public class PdfStreamContentIo : StreamContentIo {
         public PdfStreamContentIo (): base(new PdfContentSpot()) {
-            this.IoMode = IO.IoMode.ReadWrite;
+            this.IoMode = Common.IoMode.ReadWrite;
         }
     }
 

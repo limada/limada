@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Limaki.Common;
 using Id = System.Int64;
 
 namespace Limada.IO.db4o {
@@ -192,7 +193,7 @@ namespace Limada.IO.db4o {
         }
 
         public Db4oRepairer (): base(new Db4oThingGraphSpot()) {
-            this.IoMode = Limaki.Contents.IO.IoMode.Read;
+            this.IoMode = IoMode.Read;
         }
 
         public override bool Supports (IThingGraphRepair source) {
