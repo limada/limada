@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-</PropertyGroup>
+  </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -21,8 +21,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\3rdParty\Limaki.ImagePack\Limaki.ImagePack.csproj" />
     <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\Limaki.ImagePack\Limaki.ImagePack.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />

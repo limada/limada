@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+    <PropertyGroup>
+        <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+        <RootNamespace>Limaki</RootNamespace>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <OutputPath>..\bin\Debug</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\AssemblyInfo.Shared.cs">
+            <Link>Properties/AssemblyInfo.Shared.cs</Link>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\3rdParty\Limaki.ImagePack\Limaki.ImagePack.csproj" />
+        <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
+        <ProjectReference Include="..\Limaki.Imaging\Limaki.ImageLibs.csproj" />
+        <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
+        <PackageReference Include="NUnit" Version="3.9.0" />
+    </ItemGroup>
+</Project>
