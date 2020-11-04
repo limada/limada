@@ -11,7 +11,8 @@
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-</PropertyGroup>
+    <ReleaseVersion>18.04</ReleaseVersion>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -186,25 +187,29 @@
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolbarPanelBackendDummy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
+    <ProjectReference Include="$(UnitsOfWorkDirectory)\Limaki.UnitsOfWork.Core\Limaki.UnitsOfWork.Core.csproj">
+      <Project>{355925a9-a935-4953-94fa-ac398f7f53ba}</Project>
+      <Name>Limaki.UnitsOfWork.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\3rdParty\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
       <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
       <Name>Geckofx-Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Winforms\Geckofx-Winforms.csproj">
+    <ProjectReference Include="..\3rdParty\Geckofx-29\Geckofx-Winforms\Geckofx-Winforms.csproj">
       <Project>{D7ADC901-E1C4-480E-8F6D-B1FFD5CF87E8}</Project>
       <Name>Geckofx-Winforms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+    <ProjectReference Include="$(XwtDirectory)\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limada.Core\Limada.Core.csproj">
-      <Project>{b28433e8-bba2-4cb5-a7a2-10ae6aeddfb7}</Project>
+      <Project>{044e8d0a-a7f7-44b8-8f63-1f011febcf0f}</Project>
       <Name>Limada.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limada.View.Resources\Limada.View.Resources.csproj">
-      <Project>{ca6c22ca-dc4a-4f47-88da-17c64c9bddc4}</Project>
-      <Name>Limada.View.Resources</Name>
+    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
+      <Name>Limaki.View.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
@@ -214,9 +219,9 @@
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
       <Name>Xwt.Gdi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limada.View\Limada.View.csproj">
-      <Project>{3434f6bc-d6aa-4c53-b359-a1b114364025}</Project>
-      <Name>Limada.View</Name>
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
+      <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
