@@ -28,7 +28,6 @@
     <None Remove="Limaki.View.Shared.projitems" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="NUnit" Version="3.9.0" />
   </ItemGroup>
   <ItemGroup>
