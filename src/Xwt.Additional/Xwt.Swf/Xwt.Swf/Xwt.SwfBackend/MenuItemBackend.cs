@@ -52,6 +52,8 @@ namespace Xwt.Swf.Xwt.SwfBackend {
             set { MenuItem.Text = value; }
         }
 
+        public string TooltipText { get; set; }
+
         public bool Sensitive {
             get { return MenuItem.Enabled; }
             set { MenuItem.Enabled = value; }
@@ -67,6 +69,13 @@ namespace Xwt.Swf.Xwt.SwfBackend {
             set { MenuItem.Visible = value; }
         }
 
+        public void SetFormattedText (FormattedText text) {
+            MenuItem.Text = text.Text;
+        }
+
+        public void Dispose () {
+            MenuItem.Dispose ();
+        }
 
         public void SetImage (ImageDescription image) {
         }
