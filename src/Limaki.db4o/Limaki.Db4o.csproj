@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties/AssemblyInfo.Shared.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o\Db4objects.Db4o.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.CS\Db4objects.Db4o.CS.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.CS.Optional\Db4objects.Db4o.CS.Optional.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.Optional\Db4objects.Db4o.Optional.csproj" />
+    <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Limaki.db4o.Shared.projitems" />
+  </ItemGroup>
+</Project>
