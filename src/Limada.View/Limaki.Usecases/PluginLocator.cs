@@ -21,7 +21,7 @@ namespace Limaki.Usecases {
     public class PluginLocator  {
 
         public string PluginDir (string basedir, string pluginDir) {
-            foreach (var dir in new string[] { @"Plugins" + Path.DirectorySeparatorChar, string.Format ("..{0}3rdParty{0}bin{0}", Path.DirectorySeparatorChar) }) {
+            foreach (var dir in new string[] { @"Plugins" + Path.DirectorySeparatorChar, $"..{Path.DirectorySeparatorChar}3rdParty{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}"}) {
                 var s = dir;
                 for (int i = 0; i <= 10; i++) {
                     var path = basedir + s + pluginDir;
