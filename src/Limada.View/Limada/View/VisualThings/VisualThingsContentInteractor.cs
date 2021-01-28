@@ -16,7 +16,9 @@ using System;
 using System.IO;
 using Limada.Model;
 using Limada.Schemata;
+using Limaki.Common;
 using Limaki.Contents;
+using Limaki.Contents.IO;
 using Limaki.Graphs;
 using Limaki.View.Visuals;
 
@@ -69,7 +71,16 @@ namespace Limada.View.VisualThings {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (sourceGraph != null) {
                 var thingGraph = graph.ThingGraph();
-                return thingGraph.ContentOf(sourceGraph.Get(visual));
+                var content = thingGraph.ContentOf(sourceGraph.Get(visual));
+                if (content?.Data != null) {
+                    var detected = Registry.Pooled<StreamContentIoPool> ().Find (content.Data, IoMode.ReadWrite)
+                        ?.Use (content.Data);
+                    if (detected != null && detected.ContentType != content.ContentType) {
+                        content.ContentType = detected.ContentType;
+                    }
+                }
+
+                return content;
             }
             return null;
         }

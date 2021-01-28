@@ -47,14 +47,17 @@ namespace Limaki.View.Vidgets {
         public string Title { get; set; }
 
 
-        public void SetFileName(string fileName) {
-            this.FileName = Path.GetFileNameWithoutExtension(fileName);
+        public void SetFileName (string fileName) {
+            this.FileName = Path.GetFileNameWithoutExtension (fileName);
             try {
                 var path = Path.GetDirectoryName (fileName);
-                var uri = new Uri(path);
+                if (string.IsNullOrEmpty (path))
+                    return;
+
+                var uri = new Uri (path);
                 if (uri.IsUnc || uri.IsFile)
                     this.InitialDirectory = path;
-            } catch {}
+            } catch { }
         }
 
         public void ResetFileName () {

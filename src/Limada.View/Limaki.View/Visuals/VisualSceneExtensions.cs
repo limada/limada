@@ -80,7 +80,7 @@ namespace Limaki.View.Visuals {
 
         public static IVisualEdge CreateEdge (IGraphScene<IVisual, IVisualEdge> scene) {
             var edge = scene?.Markers?.CreateDefaultEdge () as IVisualEdge;
-            return edge ?? Registry.Factory.Create<IGraphModelFactory<IVisual, IVisualEdge>> ().CreateEdge ("°");
+            return edge ?? Registry.Factory.Create<IGraphModelFactory<IVisual, IVisualEdge>> ().CreateEdge ("ï¿½");
         }
 
         public static IVisualEdge CreateEdge (IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual leaf) {
@@ -178,7 +178,7 @@ namespace Limaki.View.Visuals {
         }
 
         public static Content<Stream> ContentOfVisual (this IGraphScene<IVisual, IVisualEdge> scene, IVisual visual) {
-            if (scene == null || scene.Graph == null || visual == null)
+            if (scene?.Graph == null || visual == null)
                 return null;
 
             return VisualContentViz.ContentOf (scene.Graph, visual);
