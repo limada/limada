@@ -29,8 +29,7 @@ namespace Limada.Model {
         /// <returns></returns>
         public static Content<Stream> ContentOf (this IThing thing) {
             var result = default (Content<Stream>);
-            var streamThing = thing as IStreamThing;
-            if (streamThing != null) {
+            if (thing is IStreamThing streamThing) {
                 result = new Content<Stream> ();
 
                 streamThing.DeCompress ();

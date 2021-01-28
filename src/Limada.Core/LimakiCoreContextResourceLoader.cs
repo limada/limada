@@ -3,7 +3,6 @@ using System.Reflection;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limada.Model;
-
 using Limaki.Contents.IO;
 using System.IO;
 using Limaki.Contents;
@@ -13,13 +12,12 @@ using Limaki.Model;
 namespace Limaki {
 
     public class LimakiCoreContextResourceLoader : ContextResourceLoader {
-        
-		protected static bool Applied { get; set; } 
 
-        public override void ApplyResources(IApplicationContext context) {
+        protected static bool Applied { get; set; }
 
-			if (Applied)
-				return;
+        public override void ApplyResources (IApplicationContext context) {
+            if (Applied)
+                return;
 
             context.Factory.Add<ICompressionWorker, CompressionWorker> ();
 
@@ -31,14 +29,16 @@ namespace Limaki {
             streamContentIoPool.Add (new HtmlStreamContentIo ());
             streamContentIoPool.Add (new PdfStreamContentIo ());
             streamContentIoPool.Add (new TextStreamContentIo ());
+            streamContentIoPool.Add (new MarkdownStreamContentIo ());
 
             var contentDiggPool = Registry.Pooled<ContentDiggPool> ();
             contentDiggPool.Add (new TextContentDigger ());
             contentDiggPool.Add (new HtmlContentDigger ());
             contentDiggPool.Add (new RtfContentDigger ());
 
-			Applied = true;
+            Applied = true;
         }
 
     }
+
 }
