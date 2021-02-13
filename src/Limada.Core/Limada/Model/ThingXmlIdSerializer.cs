@@ -98,19 +98,37 @@ namespace Limada.Model {
             ReadInto (Things);
         }
 
-        public override void Read(Stream s) {
-            if (s.Length ==0) {
+        public override void Read (Stream s) {
+            if (s.Length == 0) {
                 return;
             }
 
-            using (var reader = CreateReader (s)){
-                var document = XDocument.Load (reader);
-                this.Document = document;
-                this.XThings = null;
-                ReadXThings ();
+            void TryRead (Stream stream) {
+
+                using (var reader = CreateReader (s)) {
+                    var result = XDocument.Load (reader);
+                    this.Document = result;
+                    this.XThings = null;
+                    ReadXThings ();
+                }
+
+            }
+
+            try {
+                TryRead (s);
+
+
+            } catch (XmlException ex) {
+                var pos = ex.LinePosition;
+                // TODO: is here a conceptional problem?
+                // why the stream is 0-terminated and has wrong length?
+                if (s is MemoryStream m) {
+                    m.Position = 0;
+                    m.SetLength (pos+2);
+                    TryRead (m);
+                }
             }
         }
-
 
     }
 
