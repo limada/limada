@@ -58,10 +58,10 @@ namespace Limada.Usecases.Cms {
 
         public void Open () {
             if (Current != null) {
-                Trace.WriteLine (string.Format ("Provider already opened {0}", Current.Description));
+                Trace.WriteLine ($"Provider already opened {Current.Description}");
                 var conn = Current.Data as IGatewayConnection;
                 if (conn != null) {
-                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen, conn.Gateway.Iori.ToFileName ()));
+                    Trace.WriteLine ($"Connection already opened {conn.Gateway.IsOpen}/{conn.Gateway.Iori.ToFileName ()}");
                 }
             } else {
                 var ioManager = new ThingGraphIoManager { };
@@ -69,7 +69,7 @@ namespace Limada.Usecases.Cms {
                 try {
                     var sink = sinkIo.Open(Iori);
                     if (sink != null) {
-                        Trace.WriteLine (string.Format ("DataBase opened {0}", Iori.ToFileName ()));
+                        Trace.WriteLine ($"DataBase opened {Iori.ToFileName ()}");
                         Current = sink;
                         var graph = new SchemaThingGraph (Current.Data);
                         PrepareGraph (graph);
@@ -80,7 +80,7 @@ namespace Limada.Usecases.Cms {
                 } catch (Exception e) {
                     Trace.WriteLine (e.Message);
                     _thingGraph = new ThingGraph ();
-                    Trace.WriteLine (string.Format ("Empty Graph created {0}", Iori.ToFileName ()));
+                    Trace.WriteLine ($"Empty Graph created {Iori.ToFileName ()}");
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace Limada.Usecases.Cms {
             if (Current != null) {
 
                 Close(Current);
-                Trace.WriteLine (string.Format ("DataBase closed {0}", Iori.ToFileName ()));
+                Trace.WriteLine ($"DataBase closed {Iori.ToFileName ()}");
                 Current = null;
             }
         }

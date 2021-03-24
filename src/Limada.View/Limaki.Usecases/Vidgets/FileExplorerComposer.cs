@@ -228,7 +228,7 @@ namespace Limaki.Usecases.Vidgets {
                 foreach (var drive in DriveInfo.GetDrives ()) {
                     try {
                         graph.Add (new VisualDir (DriveIcon,
-                            string.Format ("{0} ({1})", drive.VolumeLabel, drive.Name)));
+                            $"{drive.VolumeLabel} ({drive.Name})"));
                     }
                     catch (Exception ex) {
                     }

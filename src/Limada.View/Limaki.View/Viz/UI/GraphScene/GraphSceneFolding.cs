@@ -149,7 +149,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
         public override void OnKeyPressed (KeyActionEventArgs e) {
 
-            Trace.WriteLine (string.Format ("folding key {0} {1}", e.Key, e.Modifiers));
+            Trace.WriteLine ($"folding key {e.Key} {e.Modifiers}");
 
             base.OnKeyPressed (e);
 

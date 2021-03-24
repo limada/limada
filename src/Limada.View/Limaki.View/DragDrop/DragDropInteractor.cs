@@ -120,7 +120,7 @@ namespace Limaki.View.DragDrop {
 
                         if (data.Uris.Length > 1)
                             Registry.Pooled<IMessageBoxShow> ().Show ("DragDrop multiple files",
-                                string.Format ("Only one file {0} will be stored currently", uri.AbsolutePath), MessageBoxButtons.Ok);
+                                $"Only one file {uri.AbsolutePath} will be stored currently", MessageBoxButtons.Ok);
 
                         break;
                     }

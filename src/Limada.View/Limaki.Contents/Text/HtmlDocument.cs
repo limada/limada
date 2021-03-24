@@ -55,18 +55,18 @@ namespace Limaki.Contents.Text {
             if (style.SectionAttribute.HasFlag (SectionAttribute.Subscript))
                 attrs.Add ("sub");
 
-            BodyText.Append (string.Format ("<{0} {1}>", tag, tagStyle));
+            BodyText.Append ($"<{tag} {tagStyle}>");
 
             foreach (var attr in attrs)
-                BodyText.Append (string.Format ("<{0}>", attr));
+                BodyText.Append ($"<{attr}>");
 
             BodyText.Append (System.Net.WebUtility.HtmlEncode (trimmed));
 
             foreach (var attr in attrs)
-                BodyText.Append (string.Format ("</{0}>", attr));
+                BodyText.Append ($"</{attr}>");
 
             //if (!newLine)
-                BodyText.Append (string.Format ("</{0}>", tag));
+                BodyText.Append ($"</{tag}>");
             lineLen += text.Length;
             if (newLine) {
                 lineLen = 0;

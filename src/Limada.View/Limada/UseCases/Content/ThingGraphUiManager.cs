@@ -198,7 +198,7 @@ namespace Limada.Usecases.Contents {
 
             AttachCurrent (sink, iori.Name);
 
-            OnProgress (string.Format ("{0} saved as {1}", Path.GetFileNameWithoutExtension (oldSource), iori.Name), -1, -1);
+            OnProgress ($"{Path.GetFileNameWithoutExtension (oldSource)} saved as {iori.Name}", -1, -1);
             return true;
         }
 

@@ -9,16 +9,11 @@ using System.Globalization;
 namespace Limada.Model {
 	
     public abstract class ThingXmlSerializerBase:XmlSerializerBase {
-		
-        private XDocument _document = new XDocument();
+
+        private XDocument _document;
         public virtual XDocument Document {
-            get {
-                if (_document == null) {
-                    _document = new XDocument();
-                }
-                return _document;
-            }
-            set { _document = value; }
+            get => _document ??= new XDocument ();
+            set => _document = value;
         }
 
         private IThingGraph _graph = null;
