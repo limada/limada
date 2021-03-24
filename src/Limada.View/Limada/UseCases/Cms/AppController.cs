@@ -9,7 +9,7 @@ namespace Limada.Usecases.Cms {
     public class AppController {
 
         public virtual string SiteName { get; set; }
-        public virtual string ApplicationPhysicalPath { get; set; }
+        public virtual string ContentRootPath { get; set; }
 
         public BackendController Backend { get; set; }
 
@@ -33,8 +33,8 @@ namespace Limada.Usecases.Cms {
                 string data = appSettings.Get(i);
 
                 if (key == "DataBaseFileName") {
-                    // if (Path.GetDirectoryName (data) == "")
-                    //     data = ApplicationPhysicalPath + Path.DirectorySeparatorChar + data;
+                    if (Path.GetDirectoryName (data) == "")
+                        data = ContentRootPath + Path.DirectorySeparatorChar + data;
                     IoriExtensions.FromFileName(iori,data);
                 }
 
