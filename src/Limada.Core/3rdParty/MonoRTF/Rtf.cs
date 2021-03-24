@@ -87,7 +87,7 @@ namespace Limaki.Common.Text.RTF.Parser {
 
         public Rtf (Stream stream) {
             EnsureCodePages ();
-            _source = new StreamReader (stream);
+            _source = new StreamReader (stream, Encoding.GetEncoding (1252));
 
             _textBuffer = new StringBuilder (1024);
             //pushed_text_buffer = new StringBuilder(1024);
