@@ -35,7 +35,7 @@
     <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.Shared.cs">
