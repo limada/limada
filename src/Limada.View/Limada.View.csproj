@@ -11,6 +11,8 @@
     <Compile Include="..\AssemblyInfo.Shared.cs">
       <Link>Properties/AssemblyInfo.Shared.cs</Link>
     </Compile>
+    <Compile Remove="Limaki.WebServers\TinyServer\WebServer.cs" />
+    <Compile Remove="Limaki.WebServers\TinyServer\WebServerBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
@@ -20,5 +22,8 @@
   <ItemGroup>
     <None Remove="Limaki.Drawing\Indexing\QuadTree01.rar" />
     <None Remove="Limaki.View.Shared.projitems" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Limaki.WebServers\TinyServer" />
   </ItemGroup>
 </Project>
