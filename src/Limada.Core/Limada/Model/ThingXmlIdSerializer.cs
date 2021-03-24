@@ -46,7 +46,8 @@ namespace Limada.Model {
         }
 
         public override XmlReader CreateReader(Stream s) {
-            return XmlReader.Create (s);
+            var result = XmlReader.Create (s,new XmlReaderSettings {CheckCharacters = true});
+            return result;
         }
 
         public override XmlWriter CreateWriter(Stream s) {
