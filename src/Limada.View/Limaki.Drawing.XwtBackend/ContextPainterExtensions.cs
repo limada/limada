@@ -72,16 +72,17 @@ namespace Limaki.Drawing.XwtBackend {
             var w = rect.Width;
             var h = rect.Height;
             if (w > 1 && h > 1) {
+                // this gives not necessarily the correct height:
                 var textLayout = new TextLayout(ctx) {
                     Trimming = TextTrimming.WordElipsis, 
-                    Text = text, Font = font, Width = w + 0.1, Height = h,
+                    Text = text, Font = font, Width = w + 0.1, Height = h+0.1,
                 };
                 var size = textLayout.GetSize();
                 w = size.Width < w ? (w - size.Width) / 2d : 0;
                 h = size.Height < h ? (h - size.Height) / 2d : 0;
                 ctx.SetColor(textColor);
                 ctx.SetLineWidth(1);
-                ctx.DrawTextLayout(textLayout, rect.X + w, rect.Y + h);
+                ctx.DrawTextLayout(textLayout, rect.X + w, rect.Y);
 
             }
         }
