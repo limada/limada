@@ -60,7 +60,7 @@ namespace Limada.Usecases {
 			var result = new XElement (NodeNames.Display);
 
 			if (display.Iori != null) {
-				result.Add (new XElement (NodeNames.Source, Write (NodeNames.File, display.Iori.ToString ())));
+				result.Add (new XElement (NodeNames.Source, Write (NodeNames.File, display.Iori.ToFileName ())));
 			} else {
 				// TODO: write MemoryThingGraph
 			}
