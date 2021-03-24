@@ -1,14 +1,23 @@
 ﻿@model IEnumerable<Limada.Usecases.Cms.Models.Href>
+@{
+    var homelinkStyle = "filter:opacity(60%)"; //filter: brightness(150%)
+    var homelinkClass = "fa-xs";
+}
 <div class="head">
-    <a href="/About" id="LogoRef" >
-        <img id="Logo" style="height: 2em; float: right; padding-right: 1em; border-style: none" src="Content/Logo.png" alt="Logo.png" />
+    @* <a href="@Url.Action("Index", new {id = default(string)})"> *@
+    @*     <i class="fa fa-star"></i> *@
+    @* </a> *@
+
+    <a href="/About" id="LogoRef">
+        <img id="Logo" style="height: 2em; float: right; padding-right: 1em; padding-bottom: 3px; border-style: none" src="~/images/logo.png" alt="Logo.png"/>
     </a>
 
+
     @foreach (var link in Model) {
-        @(Html.ActionLink (link.Text, "Index", new {Id=link.Id}));
+        @(Html.ActionLink (link.Text, "Index", new {Id = link.Id}))
+        ;
         <text>&nbsp;</text>
     }
 
-    
-</div>
 
+</div>

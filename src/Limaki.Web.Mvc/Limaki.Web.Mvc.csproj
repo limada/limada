@@ -1,51 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-      <RazorCompileOnBuild>false</RazorCompileOnBuild>
-      <RazorCompileOnPublish>false</RazorCompileOnPublish>
-</PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ReleaseVersion>18.04</ReleaseVersion>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o\Db4objects.Db4o.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.CS\Db4objects.Db4o.CS.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.CS.Optional\Db4objects.Db4o.CS.Optional.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Optional\Db4objects.Db4o.Optional.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o\Db4objects.Db4o.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.CS\Db4objects.Db4o.CS.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.CS.Optional\Db4objects.Db4o.CS.Optional.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq.csproj" />
+    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.Optional\Db4objects.Db4o.Optional.csproj" />
     <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
-    <ProjectReference Include="..\Limaki.db4o\Limada.Db4o.csproj" />
+    <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj" />
     <ProjectReference Include="..\Limaki.Imaging\Limaki.ImageLibs.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\Limaki.ImagePack\Limaki.ImagePack.csproj" />
-    <ProjectReference Include="..\Limada.View\Limada.View.csproj" />
+    <ProjectReference Include="..\3rdParty\Limaki.ImagePack\Limaki.ImagePack.csproj" />
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj" />
     <ProjectReference Include="..\Limaki.View.Html5\Limaki.View.Html5.csproj" />
-    <ProjectReference Include="..\Limada.View.Resources\Limada.View.Resources.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
+    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj" />
+    <ProjectReference Include="$(XwtDirectory)\Xwt\Xwt.csproj" />
     <ProjectReference Include="..\Xwt.Hmtl5\Xwt.Hmtl5.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Limada\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Views\" />
-    <Folder Include="Views\Home\" />
-    <Folder Include="Views\Shared\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="Pages\Contact.cshtml" />
-    <Content Remove="Pages\Privacy.cshtml" />
-    <Content Remove="Pages\Index.cshtml" />
-    <Content Remove="Pages\_ViewImports.cshtml" />
-    <Content Remove="Pages\_ViewStart.cshtml" />
-    <Content Remove="wwwroot\css\Site.css" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="ClientServer.limiori">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="limada.limo">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="about.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

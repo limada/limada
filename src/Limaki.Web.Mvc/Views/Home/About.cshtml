@@ -1,4 +1,10 @@
 ﻿@using Limada.Usecases.Cms.Models
 @model Limada.Usecases.Cms.Models.HtmlContent
-
-<p>Use this area to provide additional information.</p>
+<div class="head">
+    <a href="@Url.Action("Index", new {id = default(string)})">
+        <img id="Logo" style="height: 2em; float: right; padding-right: 1em; padding-bottom: 3px; border-style: none" src="~/images/logo.png" alt="Logo.png"/>
+    </a>
+</div>
+<div>
+    @Html.Raw(Model.Data)
+</div>

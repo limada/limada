@@ -5,8 +5,6 @@
 @section Head
 {
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
     <script type="text/javascript">
 
         var pages = [
@@ -116,36 +114,29 @@
     init();
 }
 
-@{  Html.RenderPartial ("HeaderWithHrefs", Model.Roots);
+@{
+    Html.RenderPartial ("HeaderWithHrefs", Model.Roots);
 
-<div class="description" style="padding-bottom:1em">
-    <h2 style="display:inline">
-        @Model.Content.Description
-    </h2>
-    <div style="display:inline; float:right">
-        <a id="page-prev" class="btn btn-default" href="#" style="text-decoration: none">
-            <i class="fa fa-caret-left fa-2x"></i>
-        </a>
-        <input id="page-number" class="form-control" type="number" min="1"
-               style="width:4em;line-height:none;margin-bottom:1em; text-align:right">
-        <a id="page-next" class="btn btn-default" href="#" style="text-decoration: none">
-            <i class="fa fa-caret-right fa-2x"></i>
-        </a>
+    <div class="description" style="padding-bottom:1em">
+        <h2 style="display:inline">
+            @Model.Content.Description
+        </h2>
+        <div style="display:inline; float:right">
+            <a id="page-prev" class="btn btn-default" href="#" style="text-decoration: none">
+                <i class="fa fa-caret-left fa-2x"></i>
+            </a>
+            <input id="page-number" class="form-control" type="number" min="1"
+                   style="width:4em;line-height: unset;margin-bottom:1em; text-align:right">
+            <a id="page-next" class="btn btn-default" href="#" style="text-decoration: none">
+                <i class="fa fa-caret-right fa-2x"></i>
+            </a>
+
+        </div>
 
     </div>
 
-</div>
-
     <div id="pageDiv">
-        <img id="pageImg"  />
+        <img id="pageImg"/>
     </div>
 
 }
-
-
-
-
-
-
-
-

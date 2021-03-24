@@ -57,15 +57,21 @@ namespace Limaki.Web.MvcCore
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) {
+            
+            services.AddControllersWithViews();
 
+            services.AddRouting();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+               .AddControllersAsServices()
+                ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+            
+            AppController.ContentRootPath = env.ContentRootPath;
             
             if (env.IsDevelopment())
             {
@@ -74,7 +80,7 @@ namespace Limaki.Web.MvcCore
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                // app.UseHsts();
             }
 
             app.UseForwardedHeaders (new ForwardedHeadersOptions {
@@ -85,37 +91,40 @@ namespace Limaki.Web.MvcCore
             app.UseStaticFiles();
             //app.UseCookiePolicy();
 
-            //app.UseMvc();
+            app.UseMvc();
             var nullId = default (string);
-            app.UseMvc (routes => {
+            app.UseRouting();
+            
+            app.UseEndpoints (endPoints => {
 
                 // routes.IgnoreRoute ("{resource}.axd/{*pathInfo}");
-
-                routes.MapRoute (
+                // endPoints.MapDefaultControllerRoute ();
+                
+                endPoints.MapControllerRoute (
                     "BrowseCompatible", // Route name 
                     "Default.aspx", // URL with parameters
                     new { controller = "Home", action = nameof(HomeController.AspxReqest) });
 
-                routes.MapRoute (
+                endPoints.MapControllerRoute (
                    "StreamContent", // Route name 
                    "Content/{id?}", // URL with parameters
                    new { controller = "Home", action = "StreamContent" });
 
-                routes.MapRoute (
-                    "browse", // Route name
-                    "{id?}", // URL with parameters
-                    new { controller = "Home", action = nameof (HomeController.Index) });
-                routes.MapRoute (
+                // endPoints.MapControllerRoute (
+                //     "browse", // Route name
+                //     "{id?}", // URL with parameters
+                //     new { controller = "Home", action = nameof (HomeController.Index) });
+                endPoints.MapControllerRoute (
                      nameof (HomeController.Index), // Route name
                     "{id?}", // URL with parameters
                     new { controller = "Home", action = nameof (HomeController.Index) });
                 
-                routes.MapRoute (
+                endPoints.MapControllerRoute (
                     nameof (HomeController.About), // Route name
                     "{id?}", // URL with parameters
                     new { controller = "Home", action = nameof (HomeController.About) });
                 
-                routes.MapRoute (
+                endPoints.MapControllerRoute (
                     "default", // Route name
                     "{id?}", // URL with parameters
                     new { controller = "Home", action = nameof (HomeController.Index) });

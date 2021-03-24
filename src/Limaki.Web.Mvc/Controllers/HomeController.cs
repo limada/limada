@@ -11,17 +11,18 @@ using Limaki.Contents;
 using Limada.Usecases.Cms;
 using Limada.Usecases.Cms.Models;
 using Limaki.Web.MvcCore.Models;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.AspNetCore.WebUtilities;
+using System.IO;
+using Limaki.Contents.Text;
 
 namespace Limaki.Web.MvcCore.Controllers {
 
     public class HomeController : Controller {
 
         AppController _appController;
-        public AppController AppController { get { return _appController ?? (_appController = Registry.Pooled<AppController> ()); } }
+        public AppController AppController => _appController ??= Registry.Pooled<AppController> ();
 
-        public BackendController Backend { get { return AppController.Backend; } }
+        public BackendController Backend => AppController.Backend;
 
         //protected override void Initialize (System.Web.Routing.RequestContext requestContext) {
         //    base.Initialize (requestContext);
@@ -39,10 +40,11 @@ namespace Limaki.Web.MvcCore.Controllers {
             public const string Error = "Error";
         }
 
-        public IActionResult Index (string id) {
-            Trace.WriteLine ("HomeController.Index({0})", id);
-            var result = Error ();
+        public ActionResult Index (string id) {
+            Trace.WriteLine ($"HomeController.Index({id})");
 
+            ActionResult result = default;
+            
             ViewBag.Message = id ?? "<null>";
             ViewBag.Id = id;
             if (id == nameof(About))
@@ -54,7 +56,7 @@ namespace Limaki.Web.MvcCore.Controllers {
             if (things == null) {
                 return View ("About", new HtmlContent {
                     Description = "not found",
-                    Data = string.Format ("{0}<br/>{1}", id, "not found")
+                    Data = $"{id}<br/>{"not found"}"
                 });
             }
 
@@ -139,26 +141,31 @@ namespace Limaki.Web.MvcCore.Controllers {
 
             }
 
-            return result;
+            return result ?? Error ();
         }
 
         /// <summary>
         /// resolves requests with aspx-style: xxx.aspx?id
         /// </summary>
         /// <returns></returns>
-        public IActionResult AspxReqest () {
+        public ActionResult AspxReqest () {
             var r = QueryHelpers.ParseQuery (Request.QueryString.ToString());
             return Index (r.Keys.FirstOrDefault());
         }
 
-        public IActionResult About () {
+        public ActionResult About () {
             var content = new HtmlContent {
-                Description = "Settings",
-                Data = string.Format ("{0}<br/>{1}",
-                    AppController.SiteName,
-                    AppController.Backend.Iori.ToString ()
-                )
+                Description = "About",
             };
+
+            var mdFile = Path.Combine (AppController.ContentRootPath, "about.md");
+            if (System.IO.File.Exists (mdFile)) {
+                using var reader = new FileStream (mdFile, FileMode.Open);
+                content.Data = new MarkDownHtmlConverter ().ToHtml (reader);
+            } else {
+                content.Data = "<p>Use this area to provide additional information.</p>";
+            }
+
             return View (Views.About, content);
         }
 
@@ -173,7 +180,7 @@ namespace Limaki.Web.MvcCore.Controllers {
 //            return View (content);
 //        }
 
-        public IActionResult Error () {
+        public ActionResult Error () {
             return View (Views.Error, new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier}
             );
         }
