@@ -16,13 +16,9 @@ namespace Limada.Model {
             set => _document = value;
         }
 
-        private IThingGraph _graph = null;
-        public virtual IThingGraph Graph {
-            get { return _graph; }
-            set { _graph = value; }
-        }
+        public virtual IThingGraph Graph { get; set; }
 
-		private ICollection<IThing> _thingCollection = null;
+        private ICollection<IThing> _thingCollection = null;
         public virtual ICollection<IThing> Things {
             get {
                 if (_thingCollection == null && Graph != null) {
@@ -30,7 +26,7 @@ namespace Limada.Model {
                 }
                 return _thingCollection;
             }
-            set { _thingCollection = value; }
+            set => _thingCollection = value;
         }
 
         public abstract XmlReader CreateReader ( Stream s );
