@@ -61,7 +61,7 @@ namespace Limaki.Contents.IO {
         public Action<string, int, int> Progress { get; set; }
 
         protected TContentIoPool _pool = null;
-        public virtual TContentIoPool ContentIoPool { get { return _pool ?? (_pool = Registry.Pooled<TContentIoPool>()); } }
+        public virtual TContentIoPool ContentIoPool => _pool ??= Registry.Pooled<TContentIoPool>();
 
         #region providing ContentIo
 
