@@ -16,7 +16,7 @@
 using System.Collections.Generic;
 
 namespace Limaki.Graphs {
-    public interface IMarkerFacade<TOne, TEdgeOne> {
+    public interface IMarkerInteractor<TOne, TEdgeOne> {
         string[] MarkersAsStrings();
         void ChangeMarkers ( IEnumerable<TOne> elements, object data );
         void ChangeAndAddMarker ( IEdge<TOne> edge, object data );

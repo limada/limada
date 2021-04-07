@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace Limada.Usecases {
 
-    public class ThingGraphUseCases {
+    public class ThingGraphTimelineInteractor {
 
         public IEnumerable<IThing> DateTimesOf (IGraph<IThing, ILink> graph) {
             graph = graph.Unwrap();

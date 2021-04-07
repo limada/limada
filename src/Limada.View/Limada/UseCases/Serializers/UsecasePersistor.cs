@@ -90,14 +90,14 @@ namespace Limada.Usecases {
 			// close others
             foreach (var g in backHandler.MappedGraphs
                 //.Where(g=>backGraphs.Contains(g)
-                .Select (g => new {iori = ThingMapHelper.GetIori (g), graph = g})
+                .Select (g => new {iori = ThingMapExtensions.GetIori (g), graph = g})
                 .Where (g => g.iori == null || !ser.FileNames.Contains (g.iori.ToString ()))
                 .Select (j => j.graph)
                 .ToArray ()) {
 
                 backHandler.UnregisterMappedGraph (g);
 
-                usecase.GraphSceneUiManager.SetContent (ThingMapHelper.GetContent (g));
+                usecase.GraphSceneUiManager.SetContent (ThingMapExtensions.GetContent (g));
                 usecase.GraphSceneUiManager.Close ();
             }
 
@@ -114,7 +114,7 @@ namespace Limada.Usecases {
 			}
 			var thingGraph = backHandler.MappedGraphs.FirstOrDefault() as IThingGraph;
             if (thingGraph != null) {
-				usecase.GraphSceneUiManager.SetContent (ThingMapHelper.GetContent(thingGraph));
+				usecase.GraphSceneUiManager.SetContent (ThingMapExtensions.GetContent(thingGraph));
             }
 
             var focused = usecase.SplitView.Display1.Data.Focused;

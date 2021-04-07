@@ -32,7 +32,7 @@ namespace Limada.Usecases {
 
 			var thingGraphs = new XElement (NodeNames.Files,
 				interactor.MappedGraphs
-					.Select (g => ThingMapHelper.GetIori (g))
+					.Select (g => ThingMapExtensions.GetIori (g))
 					.Where (i => i != null)
 					.Select (i => new XElement (NodeNames.File, Write (NodeNames.Name, i.ToString ()))));
 			result.Add (thingGraphs);
@@ -41,7 +41,7 @@ namespace Limada.Usecases {
 			var displays = new XElement (NodeNames.Displays);
 
 			foreach (var disp in organizer.Displays.Where(d=>d.Data!=null)) {
-				var iori = ThingMapHelper.GetIori (interactor.MappedGraphOf (disp.Data.Graph));
+				var iori = ThingMapExtensions.GetIori (interactor.MappedGraphOf (disp.Data.Graph));
 				if (disp.DataId == 0) {
 					disp.DataId = Isaac.Long;
 				}

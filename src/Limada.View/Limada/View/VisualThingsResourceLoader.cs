@@ -30,7 +30,7 @@ namespace Limada.View {
             context.Factory.Add<IVisualGraphSceneSearch, VisualThingSearch> ();
             context.Factory.Add<IContentViewManager, ContentViewManager> ();
 
-            context.Factory.Add<IMarkerFacade<IVisual, IVisualEdge>> (p => {
+            context.Factory.Add<IMarkerInteractor<IVisual, IVisualEdge>> (p => {
                 var graph = p[0] as IGraph<IVisual, IVisualEdge>;
                 if (graph == null) {
                     var scene = p[0] as IGraphScene<IVisual, IVisualEdge>;
@@ -39,7 +39,7 @@ namespace Limada.View {
                 }
 
                 if (graph.ThingGraph () != null)
-                    return new VisualThingMarkerFacade (graph);
+                    return new VisualThingMarkerInteractor (graph);
                 else
                     return null;
             });

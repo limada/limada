@@ -254,7 +254,7 @@ namespace Limada.Usecases {
                 var scene = Organizer.CreateSinkScene (oldScene.Graph);
                 display.Data = scene;
 
-                var visuals = new ThingGraphUseCases ()
+                var visuals = new ThingGraphTimelineInteractor ()
                     .TimeLine (thingGraph)
                     .Select (t => scene.Graph.VisualOf (t)).ToArray ();
 

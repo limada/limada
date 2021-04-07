@@ -20,10 +20,10 @@ using Limaki.Common.Linqish;
 
 namespace Limaki.Graphs {
 
-    public abstract class MarkerFacade<TOne,TTwo, TEdgeOne,TEdgeTwo>:IMarkerFacade<TOne,TEdgeOne> 
+    public abstract class MarkerInteractor<TOne,TTwo, TEdgeOne,TEdgeTwo>:IMarkerInteractor<TOne,TEdgeOne> 
     where TEdgeOne:IEdge<TOne>{
         protected IGraph<TOne, TEdgeOne> Graph = null;
-        public MarkerFacade(IGraph<TOne, TEdgeOne> graph) {
+        public MarkerInteractor(IGraph<TOne, TEdgeOne> graph) {
             this.Graph = graph;
             SetMarkers(graph);
         }
@@ -97,15 +97,15 @@ namespace Limaki.Graphs {
         
         #endregion
 
-        object IMarkerFacade<TOne, TEdgeOne>.FittingMarker(object data) {
+        object IMarkerInteractor<TOne, TEdgeOne>.FittingMarker(object data) {
             return FittingMarker(data);
         }
 
-        object IMarkerFacade<TOne, TEdgeOne>.CreateMarker(object data) {
+        object IMarkerInteractor<TOne, TEdgeOne>.CreateMarker(object data) {
             return CreateMarker(data);
         }
 
-        object IMarkerFacade<TOne, TEdgeOne>.DefaultMarker {
+        object IMarkerInteractor<TOne, TEdgeOne>.DefaultMarker {
             get { return this.DefaultMarker; }
             set {
                 if (value is TTwo) {

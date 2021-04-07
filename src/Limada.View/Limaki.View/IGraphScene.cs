@@ -77,7 +77,7 @@ namespace Limaki.View {
         void Clear();
         void ClearView();
 
-        IMarkerFacade<TItem, TEdge> Markers { get; set; }
+        IMarkerInteractor<TItem, TEdge> Markers { get; set; }
         IEnumerable<TEdge> Twig(TItem visual);
 
         

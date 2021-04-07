@@ -93,7 +93,7 @@ namespace Limada.Usecases {
             var filesOpen = backHandler
                 .MappedGraphs
                 .Select (g => new {
-                    Iori = ThingMapHelper.GetIori (g),
+                    Iori = ThingMapExtensions.GetIori (g),
                     Graph = g
                 })
                 .Where (i => i.Iori != null)

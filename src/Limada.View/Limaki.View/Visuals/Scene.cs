@@ -332,8 +332,8 @@ namespace Limaki.View.Visuals {
 
         #region Marker-Handling
 
-        private IMarkerFacade<IVisual, IVisualEdge> _markers = null;
-        public IMarkerFacade<IVisual, IVisualEdge> Markers {
+        private IMarkerInteractor<IVisual, IVisualEdge> _markers = null;
+        public IMarkerInteractor<IVisual, IVisualEdge> Markers {
             get { return _markers; }
             set { _markers = value; }
         }

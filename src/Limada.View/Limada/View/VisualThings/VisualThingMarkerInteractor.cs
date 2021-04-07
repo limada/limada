@@ -21,9 +21,9 @@ using Limaki.View.Visuals;
 
 namespace Limada.View.VisualThings {
 
-    public class VisualThingMarkerFacade:MarkerFacade<IVisual,IThing, IVisualEdge,ILink> {
+    public class VisualThingMarkerInteractor:MarkerInteractor<IVisual,IThing, IVisualEdge,ILink> {
 
-        public VisualThingMarkerFacade(IGraph<IVisual, IVisualEdge> graph): base(graph) {}
+        public VisualThingMarkerInteractor(IGraph<IVisual, IVisualEdge> graph): base(graph) {}
 
         public override IEdge<IVisual> CreateDefaultEdge() {
             return Transformer.VisualFactory.CreateEdge (DefaultMarker.ToString());

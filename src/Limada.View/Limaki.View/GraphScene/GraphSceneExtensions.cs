@@ -65,7 +65,7 @@ namespace Limaki.View.GraphScene {
         }
 
         public static void CreateMarkers<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene) where TEdge : TItem, IEdge<TItem> {
-            scene.Markers = Registry.Factory.Create<IMarkerFacade<TItem, TEdge>> (scene.Graph);
+            scene.Markers = Registry.Factory.Create<IMarkerInteractor<TItem, TEdge>> (scene.Graph);
         }
 
         public static void ClearSelection<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene, TItem current = default(TItem)) where TEdge : TItem, IEdge<TItem> {
