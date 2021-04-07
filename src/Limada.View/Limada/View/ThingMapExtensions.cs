@@ -15,7 +15,7 @@ using Limaki.Contents.IO;
 
 namespace Limada.View.VisualThings {
 
-    public static class ThingMapHelper {
+    public static class ThingMapExtensions {
 
         public static Iori GetIori (IGraph<IThing, ILink> g) {
             var graphContent = new ThingGraphContent {Data = g.UnWrapped () as IThingGraph};
@@ -86,7 +86,7 @@ namespace Limada.View.VisualThings {
                     .FirstOrDefault ();
 
                 if (thingGraph == null) {
-                    thingGraph = register (ThingMapHelper.OpenGraph (iori));
+                    thingGraph = register (ThingMapExtensions.OpenGraph (iori));
                 }
             }
 
