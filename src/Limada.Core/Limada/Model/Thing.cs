@@ -97,7 +97,7 @@ namespace Limada.Model {
         public virtual void MakeEqual(IThing thing) {}
 
         public override string ToString() {
-            return "°";
+            return "Â°";
         }
 
         #region IThing<long> Member

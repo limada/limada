@@ -51,7 +51,7 @@ namespace Limada.Model {
             public static readonly IThing EmptyMarker = Thing (0x528FE1B697E54910);
             
             public static string NullString = ((char) (0x2260)).ToString (); // not equal
-            public static string EmtpyMarkerString = "°";
+            public static string EmtpyMarkerString = "Â°";
 
             protected static IThing Thing (ulong id) { return new ModelVersion_0_8 ().CreateItem<object> (unchecked((Id)id), null); }
         }
