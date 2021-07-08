@@ -319,7 +319,8 @@ namespace Db4objects.Db4o.Internal
 
         public static bool IsNetCore () {
             if (_isnetcore == null) {
-                _isnetcore = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToLower ().Contains ("core");
+                var desc = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToLower (); 
+                _isnetcore = desc.Contains ("core") || desc.Contains (".net 5");
             }
             return _isnetcore.Value;
         }
