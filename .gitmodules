@@ -1,0 +1,7 @@
+[submodule "libs/UnitsOfWork"]
+	path = libs/UnitsOfWork
+	url = https://github.com/limada/limaki-framework.git
+[submodule "libs/xwt"]
+	path = libs/xwt
+	url = https://github.com/limada/xwt.git
+    branch = Limada_2010
