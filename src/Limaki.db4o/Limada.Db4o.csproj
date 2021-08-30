@@ -13,14 +13,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o\Db4objects.Db4o.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.CS\Db4objects.Db4o.CS.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.CS.Optional\Db4objects.Db4o.CS.Optional.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq.csproj" />
-    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Optional\Db4objects.Db4o.Optional.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Limaki.db4o.Shared.projitems" />
+    <ProjectReference Include="$(ThirdPartyDirectory)\db4o\Db4objects.Db4o\Db4objects.Db4o.csproj" />
+    <ProjectReference Include="$(ThirdPartyDirectory)\db4o\Db4objects.Db4o.CS\Db4objects.Db4o.CS.csproj" />
+    <ProjectReference Include="$(ThirdPartyDirectory)\db4o\Db4objects.Db4o.CS.Optional\Db4objects.Db4o.CS.Optional.csproj" />
+    <ProjectReference Include="$(ThirdPartyDirectory)\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq.csproj" />
+    <ProjectReference Include="$(ThirdPartyDirectory)\db4o\Db4objects.Db4o.Optional\Db4objects.Db4o.Optional.csproj" />
   </ItemGroup>
 </Project>

@@ -8,20 +8,15 @@
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o\Db4objects.Db4o.csproj" />
-    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.CS\Db4objects.Db4o.CS.csproj" />
-    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.CS.Optional\Db4objects.Db4o.CS.Optional.csproj" />
-    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq.csproj" />
-    <ProjectReference Include="..\3rdParty\db4o\Db4objects.Db4o.Optional\Db4objects.Db4o.Optional.csproj" />
     <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
-    <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj" />
+    <ProjectReference Include="..\Limada.View.Resources\Limada.View.Resources.csproj" />
+    <ProjectReference Include="..\Limada.View\Limada.View.csproj" />
+    <ProjectReference Include="..\Limaki.db4o\Limada.Db4o.csproj" />
     <ProjectReference Include="..\Limaki.Imaging\Limaki.ImageLibs.csproj" />
     <ProjectReference Include="..\3rdParty\Limaki.ImagePack\Limaki.ImagePack.csproj" />
-    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj" />
     <ProjectReference Include="..\Limaki.View.Html5\Limaki.View.Html5.csproj" />
-    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj" />
     <ProjectReference Include="$(XwtDirectory)\Xwt\Xwt.csproj" />
-    <ProjectReference Include="..\Xwt.Hmtl5\Xwt.Hmtl5.csproj" />
+    <ProjectReference Include="$(XwtAdditionalDirectory)\Xwt.Hmtl5\Xwt.Hmtl5.csproj" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

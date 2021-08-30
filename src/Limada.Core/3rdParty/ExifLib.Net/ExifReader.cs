@@ -5,8 +5,7 @@ using System.IO;
 using System.Text;
 
 /// <summary>
-/// found somewhere at: http://www.codeproject.com/
-/// TODO: look for the correct URI!
+/// https://github.com/esskar/ExifLib.Net
 /// </summary>
 /// 
 namespace Limaki.Drawing.Imaging {

@@ -15,7 +15,7 @@
     <Compile Remove="Limaki.WebServers\TinyServer\WebServerBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
+    <ProjectReference Include="$(XwtDirectory)\Xwt\Xwt.csproj" />
     <ProjectReference Include="..\Limada.View.Resources\Limada.View.Resources.csproj" />
     <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
   </ItemGroup>

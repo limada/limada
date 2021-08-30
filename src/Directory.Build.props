@@ -1,9 +1,10 @@
 <Project>
-  <PropertyGroup>
-    <RootDirectory>$(MSBuildThisFileDirectory)\..</RootDirectory>
-    <UnitsOfWorkDirectory>$(RootDirectory)\libs\UnitsOfWork\src</UnitsOfWorkDirectory>
-    <Libs3rdPartyDirectory>$(RootDirectory)\libs\UnitsOfWork\src\3rdParty</Libs3rdPartyDirectory>
-    <LibsDirectory>$(RootDirectory)\libs</LibsDirectory>
-    <XwtDirectory>$(LibsDirectory)\UnitsOfWork\libs\xwt</XwtDirectory>
-  </PropertyGroup>
+     <PropertyGroup>
+        <RootDirectory>$(MSBuildThisFileDirectory)</RootDirectory>
+        <ThirdPartyDirectory>$(RootDirectory)\3rdParty</ThirdPartyDirectory>
+        <LibsDirectory>$(RootDirectory)\..\libs</LibsDirectory>
+        <UnitsOfWorkDirectory>$(LibsDirectory)\UnitsOfWork\src</UnitsOfWorkDirectory>
+        <XwtDirectory>$(LibsDirectory)\xwt</XwtDirectory>
+        <XwtAdditionalDirectory>$(RootDirectory)\Xwt.Additional</XwtAdditionalDirectory>
+    </PropertyGroup>
 </Project>

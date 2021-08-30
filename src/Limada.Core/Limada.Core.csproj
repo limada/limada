@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <ReleaseVersion>18.04</ReleaseVersion>
+    <RootNamespace>Limaki.Core</RootNamespace>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -12,8 +13,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(XwtDirectory)\Xwt\Xwt.csproj" />
-    <ProjectReference Include="..\Limada.View\Limada.View.csproj" />
-    <ProjectReference Include="$(XwtAdditionalDirectory)\Xwt.Hmtl5\Xwt.Hmtl5.csproj" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(UnitsOfWorkDirectory)\Limaki.UnitsOfWork.Core\Limaki.UnitsOfWork.Core.csproj" />
   </ItemGroup>
 </Project>

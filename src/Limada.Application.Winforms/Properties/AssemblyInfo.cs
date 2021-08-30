@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Limada.Application.Winforms.WindowsForms")]
+[assembly: AssemblyTitle("Limaki.Application.WindowsForms")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("Limada.Application.Winforms.WindowsForms")]
+[assembly: AssemblyProduct("Limaki.Application.WindowsForms")]
 
 
 // Setting ComVisible to false makes the types in this assembly not visible 

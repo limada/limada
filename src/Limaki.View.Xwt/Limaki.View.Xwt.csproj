@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-</PropertyGroup>
+    <ReleaseVersion>18.04</ReleaseVersion>
+  </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -19,10 +20,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
-    <ProjectReference Include="..\Limada.View\Limada.View.csproj" />
-    <ProjectReference Include="..\Limada.View.Resources\Limada.View.Resources.csproj" />
+    <ProjectReference Include="$(XwtDirectory)\Xwt\Xwt.csproj" />
     <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
+    <ProjectReference Include="..\Limada.View.Resources\Limada.View.Resources.csproj" />
+    <ProjectReference Include="..\Limada.View\Limada.View.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Properties\Settings.settings" />

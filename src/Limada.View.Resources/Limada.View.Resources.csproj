@@ -61,7 +61,7 @@
     <None Remove="Limaki.Iconeria\svg\viewview.svgpath" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
+    <ProjectReference Include="$(XwtDirectory)\Xwt\Xwt.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resource.Designer.cs">

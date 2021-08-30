@@ -24,7 +24,7 @@
         <ProjectReference Include="..\3rdParty\Limaki.ImagePack\Limaki.ImagePack.csproj" />
         <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
         <ProjectReference Include="..\Limaki.Imaging\Limaki.ImageLibs.csproj" />
-        <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj" />
+        <ProjectReference Include="..\Limada.Tests\Limada.Tests.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />

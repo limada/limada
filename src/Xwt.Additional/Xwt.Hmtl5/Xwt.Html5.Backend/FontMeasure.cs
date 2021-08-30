@@ -22,7 +22,7 @@ namespace Xwt.Html5.Backend {
     }
 
     /// <summary>
-    /// created with: Limaki.Tests.View.GDI.FontMeasureFactory
+    /// created with: Limada.Tests.View.GDI.FontMeasureFactory
     /// </summary>
     public class FontMeasureTimes : FontMeasure {
         public override void Make () {
