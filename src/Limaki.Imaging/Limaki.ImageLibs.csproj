@@ -21,7 +21,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj" />
+    <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
     <ProjectReference Include="..\..\3rdParty\src\Limaki.ImagePack\Limaki.ImagePack.csproj" />
   </ItemGroup>
   <ItemGroup>

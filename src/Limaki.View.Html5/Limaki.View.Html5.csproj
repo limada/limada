@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
-    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj" />
+    <ProjectReference Include="..\Limada.View\Limada.View.csproj" />
     <ProjectReference Include="..\Xwt.Hmtl5\Xwt.Hmtl5.csproj" />
   </ItemGroup>
 </Project>

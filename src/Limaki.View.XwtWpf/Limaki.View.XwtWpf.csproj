@@ -104,9 +104,9 @@
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
-      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
-      <Name>Limaki.View</Name>
+    <ProjectReference Include="..\Limada.View\Limada.View.csproj">
+      <Project>{3434f6bc-d6aa-4c53-b359-a1b114364025}</Project>
+      <Name>Limada.View</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

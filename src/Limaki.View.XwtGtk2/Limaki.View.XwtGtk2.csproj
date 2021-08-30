@@ -27,7 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk2\Xwt.Gtk2.csproj" />
-    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj" />
+    <ProjectReference Include="..\Limada.View\Limada.View.csproj" />
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj" />
   </ItemGroup>
   <ItemGroup>

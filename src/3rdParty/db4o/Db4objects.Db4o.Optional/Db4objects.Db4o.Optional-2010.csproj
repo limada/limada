@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E9588FE7-C19D-445E-BB53-AE539EA4F0E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Db4objects.Db4o.Optional</RootNamespace>
+    <AssemblyName>Db4objects.Db4o.Optional</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\db4objects.snk</AssemblyOriginatorKeyFile>
+    <ReleaseVersion>17.10</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;POLL_SOCKET;NET_3_5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Db4objects.Db4o.Optional.xml</DocumentationFile>
+    <NoWarn>1591;1572;1573;1574;0419;</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;POLL_SOCKET;NET_3_5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Db4objects.Db4o.Optional.xml</DocumentationFile>
+    <NoWarn>1591;1572;1573;1574;0419;</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Cecil.FlowAnalysis">
+      <HintPath>..\Libs\net-2.0\Cecil.FlowAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\Libs\net-2.0\Mono.Cecil.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Db4objects.Db4o\Cluster\Cluster.cs" />
+    <Compile Include="Db4objects.Db4o\Consistency\ConsistencyChecker.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\BigSetMiscCollector.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\ClassNode.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\ClassUsageStats.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\FileUsageStats.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\FileUsageStatsCollector.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\FileUsageStatsUtil.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\ISlotMap.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\MiscCollector.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\NullSlotMap.cs" />
+    <Compile Include="Db4objects.Db4o\Filestats\SlotMapImpl.cs" />
+    <Compile Include="Db4objects.Db4o\Foundation\TreeString.cs" />
+    <Compile Include="Db4objects.Db4o\Foundation\TreeStringObject.cs" />
+    <Compile Include="Db4objects.Db4o\IO\DebugIoAdapter.cs" />
+    <Compile Include="Db4objects.Db4o\IO\MemoryIoAdapter.cs" />
+    <Compile Include="Db4objects.Db4o\IO\NonFlushingIoAdapter.cs" />
+    <Compile Include="Db4objects.Db4o\IO\SaveAsStorage.cs" />
+    <Compile Include="Db4objects.Db4o\Internal\Cluster\ClusterConstraint.cs" />
+    <Compile Include="Db4objects.Db4o\Internal\Cluster\ClusterConstraints.cs" />
+    <Compile Include="Db4objects.Db4o\Internal\Cluster\ClusterQuery.cs" />
+    <Compile Include="Db4objects.Db4o\Internal\Cluster\ClusterQueryResult.cs" />
+    <Compile Include="Db4objects.Db4o\Monitoring\IReferenceSystemListener.cs" />
+    <Compile Include="Db4objects.Db4o\Monitoring\Internal\MonitoringReferenceSystem.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\ClassInfo.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\FieldInfo.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\ISelfReflectable.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\SelfArray.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\SelfClass.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\SelfField.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\SelfMethod.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\SelfReflectionRegistry.cs" />
+    <Compile Include="Db4objects.Db4o\Reflect\Self\SelfReflector.cs" />
+    <Compile Include="Db4objects.Db4o\Tools\Statistics.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="native\Db4objects.Db4o\Config\JavaSupport.cs" />
+    <Compile Include="native\Db4objects.Db4o\Filestats\FileUsageStatsCollector.cs" />
+    <Compile Include="native\Db4objects.Db4o\Monitoring\Db4oPerformanceCounters.cs" />
+    <Compile Include="native\Db4objects.Db4o\Monitoring\FreespaceMonitoringSupport.cs" />
+    <Compile Include="native\Db4objects.Db4o\Monitoring\IOMonitoringSupport.cs" />
+    <Compile Include="native\Db4objects.Db4o\Monitoring\MonitoredStorage.cs" />
+    <Compile Include="native\Db4objects.Db4o\Monitoring\ObjectLifecycleMonitoringSupport.cs" />
+    <Compile Include="native\Db4objects.Db4o\Monitoring\PerformanceCounterSpec.cs" />
+    <Compile Include="native\Db4objects.Db4o\Monitoring\QueryMonitoringSupport.cs" />
+    <Compile Include="native\Db4objects.Db4o\Monitoring\ReferenceSystemMonitoringSupport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="native\Db4objects.Db4o\Monitoring\CS\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

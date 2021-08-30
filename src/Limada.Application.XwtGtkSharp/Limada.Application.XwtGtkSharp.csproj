@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+<RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Limaki.Application.XwtGtkSharp</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>TRACE;XWT_GTK3;XWT_GTKSHARP3</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>TRACE;XWT_GTK3;XWT_GTKSHARP3</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj" />
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.GtkSharp\Xwt.GtkSharp.csproj" />
+    <ProjectReference Include="..\Limaki.db4o\Limada.Db4o.csproj" />
+    <ProjectReference Include="..\Limaki.View.Html5\Limaki.View.Html5.csproj" />
+    <ProjectReference Include="..\Limaki.View.XwtGtkSharp\Limaki.View.XwtGtkSharp.csproj" />
+    <ProjectReference Include="..\Limaki.View.Xwt\Limaki.View.Xwt.csproj" />
+    <ProjectReference Include="..\Limada.View\Limada.View.csproj" />
+    <ProjectReference Include="..\Limada.Core\Limada.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\3rdParty\Plugins\**\*" LinkBase="Plugins" CopyToOutputDirectory="PreserveNewest">
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugins" />
+  </ItemGroup>
+</Project>

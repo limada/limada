@@ -13,6 +13,7 @@ recursiverm() {
 
 
 recursiverm "."
+recursiverm "../3rdParty/src/"
 
 set +x
 printf 'done\n'

@@ -198,13 +198,13 @@
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
-      <Project>{044E8D0A-A7F7-44B8-8F63-1F011FEBCF0F}</Project>
-      <Name>Limaki.Core</Name>
+    <ProjectReference Include="..\Limada.Core\Limada.Core.csproj">
+      <Project>{b28433e8-bba2-4cb5-a7a2-10ae6aeddfb7}</Project>
+      <Name>Limada.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
-      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
-      <Name>Limaki.View.Resources</Name>
+    <ProjectReference Include="..\Limada.View.Resources\Limada.View.Resources.csproj">
+      <Project>{ca6c22ca-dc4a-4f47-88da-17c64c9bddc4}</Project>
+      <Name>Limada.View.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
@@ -214,9 +214,9 @@
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
       <Name>Xwt.Gdi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
-      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
-      <Name>Limaki.View</Name>
+    <ProjectReference Include="..\Limada.View\Limada.View.csproj">
+      <Project>{3434f6bc-d6aa-4c53-b359-a1b114364025}</Project>
+      <Name>Limada.View</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
