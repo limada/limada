@@ -23,7 +23,7 @@ namespace Limaki.Web.MvcCore
 
     public class MvcAppFactory : AppFactory<Limada.Usecases.LimadaResourceLoader> {
         public MvcAppFactory () {
-            this.Create (new WebCmsContextResourceLoader ());
+            this.Configure (new WebCmsContextResourceLoader ());
         }
     }
 
