@@ -27,7 +27,7 @@
         <ProjectReference Include="..\Limada.Tests\Limada.Tests.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
+        <PackageReference Include="SharpZipLib" Version="1.3.3" />
         <PackageReference Include="NUnit" Version="3.9.0" />
     </ItemGroup>
 </Project>
